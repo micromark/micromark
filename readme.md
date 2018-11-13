@@ -5,6 +5,12 @@ Welcome to micromark: a new, tiny, and fast, markdown parser written in
 TypeScript under the [unified umbrella][unified] that’s different.
 (And just an idea, for now.)
 
+---
+
+> 💁🏽‍♀️ [**Did you see our blog post announcing this? It’s a great introduction**][medium]
+
+---
+
 ## What’s micromark
 
 **micromark** is a super low-level markdown parser in JavaScript. In nerdy terms, it’s a lexer 👩🏽‍🏫
@@ -37,3 +43,5 @@ Either through ideas, code contributions, or through [open collective][collectiv
 [unified]: https://github.com/unifiedjs/unified
 
 [collective]: https://opencollective.com/unified
+
+[medium]: https://medium.com/unifiedjs/collectively-evolving-through-crowdsourcing-22c359ea95cc
