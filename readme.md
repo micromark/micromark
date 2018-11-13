@@ -31,7 +31,7 @@ TypeScript under the [unified umbrella][unified] that’s different.
 
 ### 🙅🏽‍♀️ It’s not
 
-*   something that creates HTML and the like; other projects can use marydown for that
+*   something that creates HTML and the like; other projects can use micromark for that
 *   something that creates a syntax tree; remark will use micromark to do that
 
 
