@@ -1,14 +1,13 @@
 # micromark
 
-Hey folks! 👋 Welcome to micromark, a markdown parser under the
-[unified collective][unified] that’s different.
+Hey folks! 👋
+Welcome to micromark: a new, tiny, and fast, markdown parser written in
+TypeScript under the [unified umbrella][unified] that’s different.
 (And just an idea, for now.)
 
 ## What’s micromark
 
 **micromark** is a super low-level markdown parser in JavaScript. In nerdy terms, it’s a lexer 👩🏽‍🏫
-
-<small>We’d also like this to be in typescript, to catch bugs, but also because we like the idea of WASM.</small>
 
 ### 💁🏽‍♀️ It is
 
