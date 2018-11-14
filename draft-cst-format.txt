@@ -1,0 +1,26 @@
+`***`
+"thematicBreak"
+"thematicBreakStart"
+"thematicBreakSequence" {value: "***"}
+"thematicBreakEnd"
+
+`* * *`
+"thematicBreak"
+"thematicBreakStart"
+"thematicBreakSequence" {value: "*"}
+"thematicBreakPadding" {value: " "}
+"thematicBreakSequence" {value: "*"}
+"thematicBreakPadding" {value: " "}
+"thematicBreakSequence" {value: "*"}
+"thematicBreakEnd"
+
+`# Hello World! ######## `
+"atxHeading"
+"atxHeadingStart"
+"atxHeadingSequenceStart" {rank: 1, value: "#"}
+"atxHeadingPaddingStart" {value: " "}
+"atxHeadingContent" {value: "Hello World!"}
+"atxHeadingPaddingEnd" {value: " "}
+"atxHeadingSequenceStart" {rank: 8, value: "########"}
+"atxHeadingExtend" {value: " "}
+"atxHeadingEnd"

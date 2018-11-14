@@ -1,0 +1,50 @@
+{
+  "name": "micromark",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [],
+  "repository": "micromark/micromark",
+  "bugs": "https://github.com/micromark/micromark/issues",
+  "author": "Titus Wormer <tituswormer@gmail.com> (wooorm.com)",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com> (wooorm.com)"
+  ],
+  "main": "lib",
+  "files": [
+    "lib"
+  ],
+  "devDependencies": {
+    "prettier": "^1.14.2",
+    "remark-cli": "^6.0.0",
+    "remark-preset-wooorm": "^4.0.0",
+    "xo": "^0.23.0"
+  },
+  "scripts": {
+    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
+    "test": "npm run format"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "semi": false,
+    "trailingComma": "none"
+  },
+  "xo": {
+    "prettier": true,
+    "esnext": false
+  },
+  "remarkConfig": {
+    "plugins": [
+      "preset-wooorm",
+      [
+        "lint-maximum-line-length",
+        false
+      ]
+    ]
+  }
+}

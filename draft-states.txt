@@ -1,0 +1,79 @@
+block data state
+if # change before atx heading opening sequence state
+if ` change before fenced code state (marker='`') # could be inline code?
+if ~ change before fenced code state (marker='~') # could be strike through
+if · change before indent state (could be indented code)
+if » change before indented code state
+if > change before block quote state
+if < change before block html state # could be inline auto-link or inline html
+if [ change before definition state # could be inline link or an inline reference
+if 0-9 change before ordered list state (marker='?', start='\d')
+if | change before table state
+if * change before unordered list state (marker='*') # could be strong, emphasis, thematic break
+if - change before unordered list state (marker='-') # could be frontmatter, thematic break, setext header underline
+if + change before unordered list state (marker='+') # could be frontmatter, thematic break
+if = change before setext header underline state (marker='=')
+else change before paragraph state (could be setext header)
+
+# `###   Hello!   ####  `
+#  ^^^
+atx heading sequence start state (rank = 0, max = 6)
+if #
+  if rank is max exit
+  else consume; rank++
+if ␊ or ␄
+  if rank is 0 exit
+  else change to after atx heading state
+if · change to atx heading padding start state
+else exit
+
+# `###   Hello!   ####  `
+#     ^^^
+atx heading start padding state
+if ␊ or ␄ change to after atx heading state
+if # change to atx heading sequence end state
+if · consume
+else change to atx heading content state
+
+# `###   Hello!   ####  `
+#        ^^^^^^
+atx heading content state
+if ␊ or ␄ change to after atx heading state
+if # change to atx heading sequence end state
+if · change to atx heading padding end state
+else consume
+
+# `###   Hello!   ####  `
+#              ^^^
+atx heading padding end state
+if ␊ or ␄ change to after atx heading state
+if # change to atx heading sequence end state
+if · consume
+else change to atx heading content state
+
+# `###   Hello!   ####  `
+#                 ^^^^
+atx heading sequence end state
+if ␊ or ␄ change to after atx heading state
+if # consume
+if · change to atx trailing whitespace state
+else change to atx heading content state
+
+# `###   Hello!   ####  `
+#                     ^^
+atx trailing whitespace state
+if ␊ or ␄ change to after atx heading state
+if · consume
+else change to atx heading content state
+
+inline data state
+if * change before mark state (marker="*")
+if _ change before mark state (marker="_")
+if ~ change before mark state (marker="~")
+if ` change before inline code state
+if ! change before image state # could be image reference
+if < change before inline html or auto link state # could be inline auto-link
+if & change before entity state
+if \ change before escape state
+if ␊ change before newline state
+else before text state
