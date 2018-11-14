@@ -1,6 +1,6 @@
-<p align="center">
-  <img src="micromark-logo.svg" alt="Prompts" width="400" />
-</p>
+<h1 align="center">
+  <img src="https://raw.githubusercontent.com/micromark/micromark/9c34547/logo.svg?sanitize=true" alt="micromark" width="400" />
+</h1>
 
 <p align="center">
   <b>a new, tiny, and fast, markdown parser <br> written in TypeScript under the unified umbrella</br></b>
