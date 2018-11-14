@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/micromark-logo.svg" alt="Prompts" width="400" />
+  <img src="micromark-logo.svg" alt="Prompts" width="400" />
 </p>
 
 <p align="center">
