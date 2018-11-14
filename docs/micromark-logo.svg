@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="330" height="76" viewBox="0 0 330 76">
+  <g fill="none" fill-rule="evenodd">
+    <rect width="330" height="76" fill="#FFF"/>
+    <text font-family="SFProText-Medium, SF Pro Text" font-size="64" font-weight="400" letter-spacing=".117">
+      <tspan x="0" y="61" fill="#D80303">micro</tspan> <tspan x="173.958" y="61" fill="#000">mark</tspan>
+    </text>
+  </g>
+</svg>
