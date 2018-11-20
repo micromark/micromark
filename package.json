@@ -1,0 +1,48 @@
+{
+  "name": "micromark",
+  "version": "0.0.1",
+  "description": "markdown parser under @unifiedjs that’s different",
+  "main": "built/lib/index.js",
+  "types": "built/lib/index.d.ts",
+  "module": "lib/index.ts",
+  "scripts": {
+    "build": "rimraf built && tsc",
+    "watch": "tsc --watch",
+    "lint": "tslint -p ./tsconfig.json",
+    "test": "mocha 'test/**/*-test.ts'",
+    "prettier": "prettier --config ./.prettierrc --write \"{test,bin,lib}/**/*.{ts,json}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micromark/micromark.git"
+  },
+  "keywords": [
+    "markdown",
+    "lexer",
+    "lexing",
+    "unifiedjs"
+  ],
+  "author": "",
+  "contributors": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/micromark/micromark/issues"
+  },
+  "homepage": "https://github.com/micromark/micromark#readme",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.9",
+    "@types/sinon": "^5.0.6",
+    "@types/sinon-chai": "^3.2.1",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "prettier": "^1.15.2",
+    "rimraf": "^2.6.2",
+    "sinon": "^7.1.1",
+    "sinon-chai": "^3.2.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
+  }
+}

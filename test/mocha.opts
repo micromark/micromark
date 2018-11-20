@@ -1,0 +1,4 @@
+--require ts-node/register
+--require test/setup
+--check-leaks
+--watch-extensions ts
