@@ -10,7 +10,7 @@
     "watch": "tsc --watch",
     "lint": "tslint -p ./tsconfig.json",
     "test": "jest",
-    "prettier": "prettier --config ./.prettierrc --write \"{test,bin,lib}/**/*.{ts,json}\""
+    "prettier": "prettier --config ./.prettierrc --write \"{bin,lib}/**/*.{ts,json}\""
   },
   "repository": {
     "type": "git",
