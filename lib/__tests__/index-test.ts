@@ -1,8 +1,7 @@
-import { expect } from 'chai'
-import sum from '../../../lib'
+import sum from '../'
 
 describe('index#default', () => {
   it('should return the sum of given input numbers', () => {
-    expect(sum(2, 3)).to.equal(5)
+    expect(sum(2, 3)).toBe(5)
   })
 })
