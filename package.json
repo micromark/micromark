@@ -47,9 +47,6 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {},
-  "engines": {
-    "node": ">=10"
-  },
   "jest": {
     "roots": [
       "<rootDir>/lib/"
