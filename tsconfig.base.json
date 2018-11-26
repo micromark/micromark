@@ -17,5 +17,6 @@
     "declaration": true,
     "declarationMap": true
   },
-  "include": ["bin/**/*", "lib/**/*"]
+  "include": ["bin/**/*", "lib/**/*"],
+  "exclude": ["node_modules", "built/**", "**/__tests__/*"]
 }
