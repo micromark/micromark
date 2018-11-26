@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2018"],
+
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "project": "./",
+
+    "strict": true,
+    "noEmitOnError": true,
+    "noErrorTruncation": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": ["bin/**/*", "lib/**/*"]
+}

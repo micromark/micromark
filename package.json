@@ -2,15 +2,21 @@
   "name": "micromark",
   "version": "0.0.1",
   "description": "markdown parser under @unifiedjs that’s different",
-  "main": "built/lib/index.js",
-  "types": "built/lib/index.d.ts",
-  "module": "lib/index.ts",
+  "main": "built/es5-cjs/lib/index.js",
+  "types": "built/es5-cjs/lib/index.d.ts",
+  "module": "built/es5-esm/lib/index.js",
+  "es": "built/es9-esm/lib/index.js",
+  "main-es": "built/es9-esm/lib/index.js",
   "scripts": {
-    "build": "rimraf built && tsc",
+    "build": "rimraf built && npm run build-es5-cjs && npm run build-es5-esm && npm run build-es9-esm",
+    "build-es5-cjs": "tsc -p ./tsconfig.es5.cjs.json",
+    "build-es5-esm": "tsc -p ./tsconfig.es5.esm.json",
+    "build-es9-esm": "tsc -p ./tsconfig.es9.esm.json",
     "watch": "tsc --watch",
     "lint": "tslint -p ./tsconfig.json",
     "test": "jest",
-    "prettier": "prettier --config ./.prettierrc --write \"{bin,lib}/**/*.{ts,json}\""
+    "prettier": "prettier --config ./.prettierrc --write \"{bin,lib}/**/*.{ts,json}\"",
+    "prepare": "npm run build"
   },
   "repository": "micromark/micromark",
   "keywords": [
@@ -41,6 +47,9 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {},
+  "engines": {
+    "node": ">=10"
+  },
   "jest": {
     "roots": [
       "<rootDir>/lib/"

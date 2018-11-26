@@ -37,4 +37,4 @@ node_modules/
 # misc
 .tern-*
 TAGS
-built/
+built/**
