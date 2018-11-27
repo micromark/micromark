@@ -1,0 +1,71 @@
+{
+  "name": "micromark",
+  "version": "0.0.1",
+  "description": "markdown parser under @unifiedjs that’s different",
+  "main": "built/es5-cjs/lib/index.js",
+  "types": "built/es5-cjs/lib/index.d.ts",
+  "module": "built/es5-esm/lib/index.js",
+  "es": "built/es9-esm/lib/index.js",
+  "main-es": "built/es9-esm/lib/index.js",
+  "scripts": {
+    "build": "rimraf built && npm run build-es5-cjs && npm run build-es5-esm && npm run build-es9-esm",
+    "build-es5-cjs": "tsc -p ./tsconfig.es5.cjs.json",
+    "build-es5-esm": "tsc -p ./tsconfig.es5.esm.json",
+    "build-es9-esm": "tsc -p ./tsconfig.es9.esm.json",
+    "watch": "tsc --watch",
+    "lint": "tslint -p ./tsconfig.json",
+    "test": "jest",
+    "prettier": "prettier --config ./.prettierrc --write \"{bin,lib}/**/*.{ts,json}\"",
+    "prepare": "npm run build"
+  },
+  "repository": "micromark/micromark",
+  "keywords": [
+    "markdown",
+    "lexer",
+    "lexing",
+    "unifiedjs"
+  ],
+  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+    "John Otander <johnotander@gmail.com> (http://johnotander.com)",
+    "Stephan Schneider <stephanschndr@gmail.com>",
+    "Victor Felder <victor@draft.li> (https://draft.li)",
+    "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)"
+  ],
+  "license": "MIT",
+  "bugs": "https://github.com/micromark/micromark/issues",
+  "homepage": "https://unified.js.org",
+  "devDependencies": {
+    "@types/jest": "^23.3.9",
+    "@types/node": "^10.12.9",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.2",
+    "rimraf": "^2.6.2",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
+  },
+  "dependencies": {},
+  "jest": {
+    "roots": [
+      "<rootDir>/lib/"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/__tests__/**/*.ts"
+    ]
+  }
+}
