@@ -106,6 +106,6 @@ export const lineSeparator = 8232
 export const paragraphSeparator = 8233
 export const replacementCharacter = 65533 // '�'
 
-export function isDigit(code) {
+export function isDigit(code: number) {
   return code >= 48 && code <= 57
 }

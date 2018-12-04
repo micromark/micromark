@@ -3,6 +3,8 @@ import atxHeading from './atx-heading'
 import paragraph from './paragraph'
 import block from './block'
 
+type ContextType = 'atxHeading' | 'paragraph' | 'block'
+
 export class Tokenizer {
   data = ''
   line = 1
@@ -11,7 +13,7 @@ export class Tokenizer {
   offset = 0
   tabSize = 2
 
-  context: string = ''
+  context: ContextType = 'block'
   stateHandlers: any
   contextInfo = {}
   state: string = ''
@@ -20,7 +22,7 @@ export class Tokenizer {
     this.switch('block')
   }
 
-  write(chunk) {
+  write(chunk: string) {
     this.data += chunk
 
     while (this.offset <= this.data.length) {
@@ -54,20 +56,21 @@ export class Tokenizer {
     var code = this.current()
     var tabSize = this.tabSize
 
-    if (code === c.eof || code === c.lineFeed) {
+    if (code === null || code === c.eof || code === c.lineFeed) {
       this.line++
       this.column = 0
     } else if (code === c.tab) {
       this.virtualColumn = Math.floor(this.virtualColumn / tabSize) * tabSize + tabSize
     }
 
-    console.log('consume: %s', this.state, this.now(), [String.fromCharCode(code)])
+    // TODO handling code === null
+    console.log('consume: %s', this.state, this.now(), [String.fromCharCode(code!)])
 
     this.column++
     this.offset++
   }
 
-  reconsume(state) {
+  reconsume(state: string) {
     this.state = state
     this.next()
   }
@@ -79,10 +82,10 @@ export class Tokenizer {
       throw new Error('Cannot handle `' + this.context + '.' + this.state + '`')
     }
 
-    fn.call(this, this.current())
+    fn(this, this.current())
   }
 
-  switch(name) {
+  switch(name: ContextType) {
     this.context = name
     this.stateHandlers = this[name]
     this.contextInfo = {}

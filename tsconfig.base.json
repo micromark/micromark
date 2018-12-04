@@ -6,12 +6,12 @@
     "resolveJsonModule": true,
     "project": "./",
 
-    //"strict": true,
-    //"noEmitOnError": true,
-    //"noErrorTruncation": true,
-    //"noImplicitReturns": true,
-    //"noUnusedLocals": true,
-    //"noUnusedParameters": true,
+    "strict": true,
+    "noEmitOnError": true,
+    "noErrorTruncation": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
 
     "composite": true,
     "declaration": true,

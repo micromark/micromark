@@ -1,7 +1,7 @@
 import { Tokenizer } from '../'
 
 describe('index', () => {
-  let logs = []
+  let logs: any[] = []
   const mockLogger = jest.fn((...args) => logs.push(args))
   const originalLogger = console.log
   beforeEach(() => {

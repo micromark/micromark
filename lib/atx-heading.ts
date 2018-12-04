@@ -58,13 +58,12 @@ export default {
 // ^^^ before
 //    ^^^ value
 // after ^^^
-function startState() {
-  var self = this
-  var info = self.contextInfo
+function startState(tokenizer: any) {
+  var info = tokenizer.contextInfo
 
   info.tokens = []
   info.rank = 0
-  info.initial = self.offset
+  info.initial = tokenizer.offset
   info.openingSequenceBefore = null
   info.openingSequence = null
   info.openingSequenceAfter = null
@@ -73,242 +72,233 @@ function startState() {
   info.closingSequence = null
   info.closingSequenceAfter = null
 
-  self.reconsume(OPENING_SEQUENCE_BEFORE_STATE)
+  tokenizer.reconsume(OPENING_SEQUENCE_BEFORE_STATE)
 }
 
-function openingSequenceBeforeState(code) {
-  var self = this
-  var info = self.contextInfo
+function openingSequenceBeforeState(tokenizer: any, code: number) {
+  var info = tokenizer.contextInfo
   var tail = info.token
 
   if (code === c.space) {
-    if (tail && self.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
-      self.reconsume(BOGUS_STATE)
+    if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
+      tokenizer.reconsume(BOGUS_STATE)
     } else {
       if (!tail) {
-        tail = { type: T_SPACE, position: { start: self.now() } }
+        tail = { type: T_SPACE, position: { start: tokenizer.now() } }
         info.token = tail
         info.tokens.push(tail)
       }
 
-      self.consume()
+      tokenizer.consume()
     }
   } else if (code === c.numberSign) {
     if (tail) {
-      tail.position.end = self.now()
+      tail.position.end = tokenizer.now()
     }
 
-    self.reconsume(OPENING_SEQUENCE_STATE)
+    tokenizer.reconsume(OPENING_SEQUENCE_STATE)
   } else {
-    self.reconsume(BOGUS_STATE)
+    tokenizer.reconsume(BOGUS_STATE)
   }
 }
 
-function openingSequenceState(code) {
-  var self = this
-  var info = self.contextInfo
+function openingSequenceState(tokenizer: any, code: number) {
+  var info = tokenizer.contextInfo
   var sequence = info.openingSequence
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (sequence) {
-      sequence.end = self.now()
+      sequence.end = tokenizer.now()
     }
 
-    self.reconsume(END_STATE)
+    tokenizer.reconsume(END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (sequence) {
-      sequence.end = self.now()
+      sequence.end = tokenizer.now()
     }
 
-    self.reconsume(OPENING_SEQUENCE_AFTER_STATE)
+    tokenizer.reconsume(OPENING_SEQUENCE_AFTER_STATE)
   } else if (code === c.numberSign) {
     if (info.rank === maxOpeningSequenceSize) {
-      self.reconsume(BOGUS_STATE)
+      tokenizer.reconsume(BOGUS_STATE)
     } else {
       if (sequence === null) {
-        sequence = { start: self.now() }
+        sequence = { start: tokenizer.now() }
         info.openingSequence = sequence
       }
 
       info.rank++
-      self.consume()
+      tokenizer.consume()
     }
   } else {
     // Any other character is a bogus heading.
     // CommonMark requires a the opening sequence after space.
-    self.reconsume(BOGUS_STATE)
+    tokenizer.reconsume(BOGUS_STATE)
   }
 }
 
-function openingSequenceAfterState(code) {
-  var self = this
-  var info = self.contextInfo
+function openingSequenceAfterState(tokenizer: any, code: number) {
+  var info = tokenizer.contextInfo
   var after = info.openingSequenceAfter
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (after) {
-      after.end = self.now()
+      after.end = tokenizer.now()
     }
 
-    self.reconsume(END_STATE)
+    tokenizer.reconsume(END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (after === null) {
-      after = { start: self.now() }
+      after = { start: tokenizer.now() }
       info.openingSequenceAfter = after
     }
 
-    self.consume()
+    tokenizer.consume()
   } else if (code === c.numberSign) {
     if (after) {
-      after.end = self.now()
+      after.end = tokenizer.now()
     }
 
     // This could also be a hash in the content, CLOSING_SEQUENCE_STATE
     // switches back.
-    self.reconsume(CLOSING_SEQUENCE_STATE)
+    tokenizer.reconsume(CLOSING_SEQUENCE_STATE)
   } else {
     if (after) {
-      after.end = self.now()
+      after.end = tokenizer.now()
     }
 
-    self.reconsume(CONTENT_STATE)
+    tokenizer.reconsume(CONTENT_STATE)
   }
 }
 
-function contentState(code) {
-  var self = this
-  var info = self.contextInfo
+function contentState(tokenizer: any, code: number) {
+  var info = tokenizer.contextInfo
   var content = info.content
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (content) {
-      content.end = self.now()
+      content.end = tokenizer.now()
     }
 
-    self.reconsume(END_STATE)
+    tokenizer.reconsume(END_STATE)
   } else if (code === c.space) {
     if (content) {
-      content.end = self.now()
+      content.end = tokenizer.now()
     }
 
-    self.reconsume(CLOSING_SEQUENCE_BEFORE_STATE)
+    tokenizer.reconsume(CLOSING_SEQUENCE_BEFORE_STATE)
   } else if (code === c.numberSign) {
     if (content) {
-      content.end = self.now()
+      content.end = tokenizer.now()
     }
 
-    self.reconsume(CLOSING_SEQUENCE_STATE)
+    tokenizer.reconsume(CLOSING_SEQUENCE_STATE)
   } else {
     if (content === null) {
-      content = { start: self.now() }
+      content = { start: tokenizer.now() }
       info.content = content
     }
 
-    self.consume()
+    tokenizer.consume()
   }
 }
 
-function closingSequenceBeforeState(code) {
-  var self = this
-  var info = self.contextInfo
+function closingSequenceBeforeState(tokenizer: any, code: number) {
+  var info = tokenizer.contextInfo
   var before = info.closingSequenceBefore
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (before) {
-      before.end = self.now()
+      before.end = tokenizer.now()
     }
 
-    self.reconsume(END_STATE)
+    tokenizer.reconsume(END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (info.closingSequenceBefore === null) {
-      before = { start: self.now() }
+      before = { start: tokenizer.now() }
       info.closingSequenceBefore = before
     }
 
-    self.consume()
+    tokenizer.consume()
   } else if (code === c.numberSign) {
     if (before) {
-      before.end = self.now()
+      before.end = tokenizer.now()
     }
 
-    self.reconsume(CLOSING_SEQUENCE_STATE)
+    tokenizer.reconsume(CLOSING_SEQUENCE_STATE)
   } else {
     info.closingSequenceBefore = null
-    self.reconsume(CONTENT_STATE)
+    tokenizer.reconsume(CONTENT_STATE)
   }
 }
 
-function closingSequenceState(code) {
-  var self = this
-  var info = self.contextInfo
+function closingSequenceState(tokenizer: any, code: number) {
+  var info = tokenizer.contextInfo
   var sequence = info.closingSequence
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (sequence) {
-      sequence.end = self.now()
+      sequence.end = tokenizer.now()
     }
 
-    self.reconsume(END_STATE)
+    tokenizer.reconsume(END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (sequence) {
-      sequence.end = self.now()
+      sequence.end = tokenizer.now()
     }
 
-    self.reconsume(CLOSING_SEQUENCE_AFTER_STATE)
+    tokenizer.reconsume(CLOSING_SEQUENCE_AFTER_STATE)
   } else if (code === c.numberSign) {
     if (sequence === null) {
-      sequence = { start: self.now() }
+      sequence = { start: tokenizer.now() }
       info.closingSequence = sequence
     }
 
-    self.consume()
+    tokenizer.consume()
   } else {
     info.closingSequenceBefore = null
     info.closingSequence = null
-    self.reconsume(CONTENT_STATE)
+    tokenizer.reconsume(CONTENT_STATE)
   }
 }
 
-function closingSequenceAfterState(code) {
-  var self = this
-  var info = self.contextInfo
+function closingSequenceAfterState(tokenizer: any, code: number) {
+  var info = tokenizer.contextInfo
   var after = info.closingSequenceAfter
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (after) {
-      after.end = self.now()
+      after.end = tokenizer.now()
     }
-    self.reconsume(END_STATE)
+    tokenizer.reconsume(END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (after === null) {
-      after = { start: self.now() }
+      after = { start: tokenizer.now() }
       info.closingSequenceAfter = after
     }
 
-    self.consume()
+    tokenizer.consume()
   } else {
     info.closingSequenceBefore = null
     info.closingSequence = null
     info.closingSequenceAfter = null
-    self.reconsume(CONTENT_STATE)
+    tokenizer.reconsume(CONTENT_STATE)
   }
 }
 
-function bogusState() {
-  var self = this
-  var info = self.contextInfo
+function bogusState(tokenizer: any) {
+  var info = tokenizer.contextInfo
 
-  self.switch(self.returnContext)
-  self.state = self.bogusState
-  self.offset = info.initial
-  self.next()
+  tokenizer.switch(tokenizer.returnContext)
+  tokenizer.state = tokenizer.bogusState
+  tokenizer.offset = info.initial
+  tokenizer.next()
 }
 
-function endState() {
-  var self = this
-  var s = self.contextInfo
+function endState(tokenizer: any) {
+  var s = tokenizer.contextInfo
 
   console.log('heading: ', s)
-  self.consume()
-  self.switch(self.returnContext)
+  tokenizer.consume()
+  tokenizer.switch(tokenizer.returnContext)
 }

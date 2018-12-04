@@ -12,23 +12,21 @@ export default {
   [PARAGRAPH_STATE]: attempt('paragraph', BOGUS_STATE)
 }
 
-function startState() {
-  this.reconsume(ATX_HEADING_STATE)
+function startState(tokenizer: any) {
+  tokenizer.reconsume(ATX_HEADING_STATE)
 }
 
-function bogusState(code) {
+function bogusState(_tokenizer: any, code: number) {
   throw new Error(`Could not parse code ${fromCode(code)}`)
 }
 
-function attempt(context, bogus) {
-  return state
-  function state(code) {
-    var self = this
+function attempt(context: any, bogus: any) {
+  return (tokenizer: any, code: number) => {
     // When done, go back to this context.
-    self.returnContext = self.context
-    self.switch(context)
+    tokenizer.returnContext = tokenizer.context
+    tokenizer.switch(context)
     // When bogus, go to the `bogus` state.
-    self.bogusState = bogus || BOGUS_STATE
+    tokenizer.bogusState = bogus
     console.log('attempt: %s', context, [fromCode(code)])
   }
 }

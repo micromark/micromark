@@ -15,35 +15,32 @@ export default {
 }
 
 // Paragraph.
-function startState() {
-  var self = this
-  var info = self.contextInfo
+function startState(tokenizer: any) {
+  var info = tokenizer.contextInfo
 
-  info.initialIndex = self.offset
-  info.contentStart = self.offset
+  info.initialIndex = tokenizer.offset
+  info.contentStart = tokenizer.offset
   info.contentEnd = null
 
-  self.reconsume(CONTENT_STATE)
+  tokenizer.reconsume(CONTENT_STATE)
 }
 
-function contentState(code) {
-  var self = this
-  var info = self.contextInfo
+function contentState(tokenizer: any, code: number) {
+  var info = tokenizer.contextInfo
 
   if (code === c.eof || code === c.nil || code === c.lineFeed) {
-    self.reconsume(END_STATE)
+    tokenizer.reconsume(END_STATE)
   } else {
-    info.contentEnd = ++self.offset
+    info.contentEnd = ++tokenizer.offset
     console.log('p:consume: %s', arguments.callee.name, code, [fromCode(code)])
   }
 }
 
-function endState() {
-  var self = this
-  var s = self.contextInfo
-  var data = self.data
+function endState(tokenizer: any) {
+  var s = tokenizer.contextInfo
+  var data = tokenizer.data
   var tokens = [{ type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd) }]
 
   console.log('p: done! ', tokens)
-  self.offset++
+  tokenizer.offset++
 }
