@@ -1,6 +1,6 @@
 /* eslint-disable no-caller */
 
-var c = require('./characters')
+import * as c from './characters'
 
 var fromCode = String.fromCharCode
 
@@ -8,9 +8,11 @@ var START_STATE = 'START_STATE'
 var CONTENT_STATE = 'CONTENT_STATE'
 var END_STATE = 'END_STATE'
 
-exports[START_STATE] = startState
-exports[CONTENT_STATE] = contentState
-exports[END_STATE] = endState
+export default {
+  [START_STATE]: startState,
+  [CONTENT_STATE]: contentState,
+  [END_STATE]: endState
+}
 
 // Paragraph.
 function startState() {
@@ -40,9 +42,7 @@ function endState() {
   var self = this
   var s = self.contextInfo
   var data = self.data
-  var tokens = [
-    {type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd)}
-  ]
+  var tokens = [{ type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd) }]
 
   console.log('p: done! ', tokens)
   self.offset++

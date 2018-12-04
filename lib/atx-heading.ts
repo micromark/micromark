@@ -1,4 +1,4 @@
-var c = require('./characters')
+import * as c from './characters'
 
 var maxOpeningSequenceBeforeSize = 3
 var maxOpeningSequenceSize = 6
@@ -16,16 +16,18 @@ var CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE'
 var CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE'
 var CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
 
-exports[START_STATE] = startState
-exports[END_STATE] = endState
-exports[BOGUS_STATE] = bogusState
-exports[OPENING_SEQUENCE_BEFORE_STATE] = openingSequenceBeforeState
-exports[OPENING_SEQUENCE_STATE] = openingSequenceState
-exports[OPENING_SEQUENCE_AFTER_STATE] = openingSequenceAfterState
-exports[CONTENT_STATE] = contentState
-exports[CLOSING_SEQUENCE_BEFORE_STATE] = closingSequenceBeforeState
-exports[CLOSING_SEQUENCE_STATE] = closingSequenceState
-exports[CLOSING_SEQUENCE_AFTER_STATE] = closingSequenceAfterState
+export default {
+  [START_STATE]: startState,
+  [END_STATE]: endState,
+  [BOGUS_STATE]: bogusState,
+  [OPENING_SEQUENCE_BEFORE_STATE]: openingSequenceBeforeState,
+  [OPENING_SEQUENCE_STATE]: openingSequenceState,
+  [OPENING_SEQUENCE_AFTER_STATE]: openingSequenceAfterState,
+  [CONTENT_STATE]: contentState,
+  [CLOSING_SEQUENCE_BEFORE_STATE]: closingSequenceBeforeState,
+  [CLOSING_SEQUENCE_STATE]: closingSequenceState,
+  [CLOSING_SEQUENCE_AFTER_STATE]: closingSequenceAfterState
+}
 
 // ATX heading. Such as:
 //
@@ -80,14 +82,11 @@ function openingSequenceBeforeState(code) {
   var tail = info.token
 
   if (code === c.space) {
-    if (
-      tail &&
-      self.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize
-    ) {
+    if (tail && self.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
       self.reconsume(BOGUS_STATE)
     } else {
       if (!tail) {
-        tail = {type: T_SPACE, position: {start: self.now()}}
+        tail = { type: T_SPACE, position: { start: self.now() } }
         info.token = tail
         info.tokens.push(tail)
       }
@@ -127,7 +126,7 @@ function openingSequenceState(code) {
       self.reconsume(BOGUS_STATE)
     } else {
       if (sequence === null) {
-        sequence = {start: self.now()}
+        sequence = { start: self.now() }
         info.openingSequence = sequence
       }
 
@@ -154,7 +153,7 @@ function openingSequenceAfterState(code) {
     self.reconsume(END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (after === null) {
-      after = {start: self.now()}
+      after = { start: self.now() }
       info.openingSequenceAfter = after
     }
 
@@ -201,7 +200,7 @@ function contentState(code) {
     self.reconsume(CLOSING_SEQUENCE_STATE)
   } else {
     if (content === null) {
-      content = {start: self.now()}
+      content = { start: self.now() }
       info.content = content
     }
 
@@ -222,7 +221,7 @@ function closingSequenceBeforeState(code) {
     self.reconsume(END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (info.closingSequenceBefore === null) {
-      before = {start: self.now()}
+      before = { start: self.now() }
       info.closingSequenceBefore = before
     }
 
@@ -258,7 +257,7 @@ function closingSequenceState(code) {
     self.reconsume(CLOSING_SEQUENCE_AFTER_STATE)
   } else if (code === c.numberSign) {
     if (sequence === null) {
-      sequence = {start: self.now()}
+      sequence = { start: self.now() }
       info.closingSequence = sequence
     }
 
@@ -282,7 +281,7 @@ function closingSequenceAfterState(code) {
     self.reconsume(END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (after === null) {
-      after = {start: self.now()}
+      after = { start: self.now() }
       info.closingSequenceAfter = after
     }
 

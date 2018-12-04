@@ -1,9 +1,7 @@
-var atxHeading = require('./atx-heading')
-var paragraph = require('./paragraph')
-var block = require('./block')
-var c = require('./characters')
-
-module.exports = Tokenizer
+import * as c from './characters'
+import atxHeading from './atx-heading'
+import paragraph from './paragraph'
+import block from './block'
 
 Tokenizer.prototype.write = write
 Tokenizer.prototype.current = current
@@ -16,7 +14,7 @@ Tokenizer.prototype.block = block
 Tokenizer.prototype.atxHeading = atxHeading
 Tokenizer.prototype.paragraph = paragraph
 
-function Tokenizer() {
+export function Tokenizer() {
   this.data = ''
   this.line = 1
   this.column = 1
@@ -69,13 +67,10 @@ function consume() {
     self.line++
     self.column = 0
   } else if (code === c.tab) {
-    self.virtualColumn =
-      Math.floor(self.virtualColumn / tabSize) * tabSize + tabSize
+    self.virtualColumn = Math.floor(self.virtualColumn / tabSize) * tabSize + tabSize
   }
 
-  console.log('consume: %s', self.state, self.now(), [
-    String.fromCharCode(code)
-  ])
+  console.log('consume: %s', self.state, self.now(), [String.fromCharCode(code)])
 
   self.column++
   self.offset++
@@ -102,5 +97,5 @@ function current() {
 function now() {
   var self = this
 
-  return {line: self.line, column: self.column, offset: self.offset}
+  return { line: self.line, column: self.column, offset: self.offset }
 }
