@@ -1,17 +1,19 @@
-import sum, { padString } from '../'
+import { Tokenizer } from '../'
 
 describe('index', () => {
-  describe('#default', () => {
-    it('should return the sum of given input numbers', () => {
-      expect(sum(2, 3)).toBe(5)
-    })
+  let logs = []
+  const mockLogger = jest.fn((...args) => logs.push(args))
+  const originalLogger = console.log
+  beforeEach(() => {
+    logs = []
+    console.log = mockLogger
   })
-  describe('#padString', () => {
-    it('should pad a string evenly on both ends when given an even max length', () => {
-      expect(padString('12', 4, 'o')).toBe('oo12oo')
-    })
-    it('should pad a string unevenly with preference given to the end when given an odd max length', () => {
-      expect(padString('12', 5, 'o')).toBe('oo12ooo')
-    })
+  afterEach(() => {
+    console.log = originalLogger
+  })
+  it('should parse simple example', () => {
+    const tokenizer = new Tokenizer()
+    tokenizer.write('# Hello!')
+    expect(logs).toMatchSnapshot()
   })
 })
