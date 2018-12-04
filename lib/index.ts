@@ -21,19 +21,16 @@ export class Tokenizer {
   }
 
   write(chunk) {
-    var self = this
+    this.data += chunk
 
-    self.data += chunk
-
-    while (self.offset <= self.data.length) {
-      self.next()
+    while (this.offset <= this.data.length) {
+      this.next()
     }
   }
 
   current() {
-    var self = this
-    var length = self.data.length
-    var offset = self.offset
+    var length = this.data.length
+    var offset = this.offset
 
     if (offset > length) {
       throw new Error('Cannot read after end')
@@ -45,31 +42,29 @@ export class Tokenizer {
     }
 
     // Use `�` instead of `\0` (https://spec.commonmark.org/0.28/#insecure-characters).
-    return self.data.charCodeAt(offset) || c.replacementCharacter
+    return this.data.charCodeAt(offset) || c.replacementCharacter
   }
 
   now() {
-    var self = this
-
-    return { line: self.line, column: self.column, offset: self.offset }
+    const { line, column, offset } = this
+    return { line, column, offset }
   }
 
   consume() {
-    var self = this
-    var code = self.current()
-    var tabSize = self.tabSize
+    var code = this.current()
+    var tabSize = this.tabSize
 
     if (code === c.eof || code === c.lineFeed) {
-      self.line++
-      self.column = 0
+      this.line++
+      this.column = 0
     } else if (code === c.tab) {
-      self.virtualColumn = Math.floor(self.virtualColumn / tabSize) * tabSize + tabSize
+      this.virtualColumn = Math.floor(this.virtualColumn / tabSize) * tabSize + tabSize
     }
 
-    console.log('consume: %s', self.state, self.now(), [String.fromCharCode(code)])
+    console.log('consume: %s', this.state, this.now(), [String.fromCharCode(code)])
 
-    self.column++
-    self.offset++
+    this.column++
+    this.offset++
   }
 
   reconsume(state) {
@@ -78,16 +73,13 @@ export class Tokenizer {
   }
 
   next() {
-    var self = this
-    var fn
-
-    fn = self.stateHandlers[self.state]
+    const fn = this.stateHandlers[this.state]
 
     if (!fn) {
-      throw new Error('Cannot handle `' + self.context + '.' + self.state + '`')
+      throw new Error('Cannot handle `' + this.context + '.' + this.state + '`')
     }
 
-    fn.call(self, self.current())
+    fn.call(this, this.current())
   }
 
   switch(name) {
