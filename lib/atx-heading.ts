@@ -15,7 +15,7 @@ export enum StateType {
   CONTENT_STATE = 'CONTENT_STATE',
   CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE',
   CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE',
-  CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
+  CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE',
 }
 
 export default {
@@ -28,7 +28,7 @@ export default {
   [StateType.CONTENT_STATE]: contentState,
   [StateType.CLOSING_SEQUENCE_BEFORE_STATE]: closingSequenceBeforeState,
   [StateType.CLOSING_SEQUENCE_STATE]: closingSequenceState,
-  [StateType.CLOSING_SEQUENCE_AFTER_STATE]: closingSequenceAfterState
+  [StateType.CLOSING_SEQUENCE_AFTER_STATE]: closingSequenceAfterState,
 }
 
 // ATX heading. Such as:

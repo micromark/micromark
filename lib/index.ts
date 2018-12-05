@@ -1,28 +1,32 @@
-import * as c from './characters'
 import atxHeading from './atx-heading'
-import paragraph from './paragraph'
 import block from './block'
+import * as c from './characters'
+import paragraph from './paragraph'
 
 type ContextType = 'atxHeading' | 'paragraph' | 'block'
 
 export class Tokenizer {
-  data = ''
-  line = 1
-  column = 1
-  virtualColumn = 1
-  offset = 0
-  tabSize = 2
+  public data = ''
+  public line = 1
+  public column = 1
+  public virtualColumn = 1
+  public offset = 0
+  public tabSize = 2
 
-  context: ContextType = 'block'
-  stateHandlers: any
-  contextInfo = {}
-  state: string = ''
+  public context: ContextType = 'block'
+  public stateHandlers: any
+  public contextInfo = {}
+  public state: string = ''
+
+  public block: any = block
+  public atxHeading: any = atxHeading
+  public paragraph: any = paragraph
 
   constructor() {
     this.switch('block')
   }
 
-  write(chunk: string) {
+  public write(chunk: string) {
     this.data += chunk
 
     while (this.offset <= this.data.length) {
@@ -30,7 +34,7 @@ export class Tokenizer {
     }
   }
 
-  current() {
+  public current() {
     const length = this.data.length
     const offset = this.offset
 
@@ -47,12 +51,12 @@ export class Tokenizer {
     return this.data.charCodeAt(offset) || c.replacementCharacter
   }
 
-  now() {
+  public now() {
     const { line, column, offset } = this
     return { line, column, offset }
   }
 
-  consume() {
+  public consume() {
     const code = this.current()
     const tabSize = this.tabSize
 
@@ -70,12 +74,12 @@ export class Tokenizer {
     this.offset++
   }
 
-  reconsume(state: string) {
+  public reconsume(state: string) {
     this.state = state
     this.next()
   }
 
-  next() {
+  public next() {
     const fn = this.stateHandlers[this.state]
 
     if (!fn) {
@@ -85,14 +89,10 @@ export class Tokenizer {
     fn(this, this.current())
   }
 
-  switch(name: ContextType) {
+  public switch(name: ContextType) {
     this.context = name
     this.stateHandlers = this[name]
     this.contextInfo = {}
     this.state = 'START_STATE'
   }
-
-  block: any = block
-  atxHeading: any = atxHeading
-  paragraph: any = paragraph
 }

@@ -7,13 +7,13 @@ const fromCode = String.fromCharCode
 export enum StateType {
   START_STATE = 'START_STATE',
   CONTENT_STATE = 'CONTENT_STATE',
-  END_STATE = 'END_STATE'
+  END_STATE = 'END_STATE',
 }
 
 export default {
   [StateType.START_STATE]: startState,
   [StateType.CONTENT_STATE]: contentState,
-  [StateType.END_STATE]: endState
+  [StateType.END_STATE]: endState,
 }
 
 // Paragraph.
