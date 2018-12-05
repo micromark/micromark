@@ -1,10 +1,10 @@
-import atxHeading from './atx-heading'
-import block from './block'
 import * as c from './characters'
-import paragraph from './paragraph'
-import { ContextType } from './types'
+import { contextHandler as atxHeading } from './atx-heading'
+import { contextHandler as block } from './block'
+import { contextHandler as paragraph } from './paragraph'
+import { ContextType, TokenizeType, ContextHandlers, ContextHandler } from './types'
 
-export class Tokenizer {
+export class Tokenizer implements TokenizeType {
   public data = ''
   public line = 1
   public column = 1
@@ -13,13 +13,17 @@ export class Tokenizer {
   public tabSize = 2
 
   public context: ContextType = 'block'
-  public stateHandlers: any
+  public returnContext?: ContextType
+  public stateHandlers?: ContextHandler<string>
   public contextInfo = {}
+  public bogusState?: string
   public state: string = ''
 
-  public block: any = block
-  public atxHeading: any = atxHeading
-  public paragraph: any = paragraph
+  public contextHandlers: ContextHandlers = {
+    block,
+    atxHeading,
+    paragraph
+  }
 
   constructor() {
     this.switch('block')
@@ -66,9 +70,8 @@ export class Tokenizer {
       this.virtualColumn = Math.floor(this.virtualColumn / tabSize) * tabSize + tabSize
     }
 
-    // TODO handling code === null
     // tslint:disable-next-line:no-console
-    console.log('consume: %s', this.state, this.now(), [String.fromCharCode(code!)])
+    console.log('consume: %s', this.state, this.now(), [String.fromCharCode(code || 0)])
 
     this.column++
     this.offset++
@@ -80,7 +83,7 @@ export class Tokenizer {
   }
 
   public next() {
-    const fn = this.stateHandlers[this.state]
+    const fn = this.stateHandlers![this.state]
 
     if (!fn) {
       throw new Error('Cannot handle `' + this.context + '.' + this.state + '`')
@@ -91,7 +94,7 @@ export class Tokenizer {
 
   public switch(name: ContextType) {
     this.context = name
-    this.stateHandlers = this[name]
+    this.stateHandlers = this.contextHandlers[name]
     this.contextInfo = {}
     this.state = 'START_STATE'
   }

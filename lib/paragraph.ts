@@ -1,6 +1,7 @@
 /* eslint-disable no-caller */
 
 import * as c from './characters'
+import { TokenizeType, ContextHandler } from './types'
 
 const fromCode = String.fromCharCode
 
@@ -10,14 +11,14 @@ export enum StateType {
   END_STATE = 'END_STATE'
 }
 
-export default {
+export const contextHandler: ContextHandler<StateType> = {
   [StateType.START_STATE]: startState,
   [StateType.CONTENT_STATE]: contentState,
   [StateType.END_STATE]: endState
 }
 
 // Paragraph.
-function startState(tokenizer: any) {
+function startState(tokenizer: TokenizeType) {
   const info = tokenizer.contextInfo
 
   info.initialIndex = tokenizer.offset
@@ -27,7 +28,7 @@ function startState(tokenizer: any) {
   tokenizer.reconsume(StateType.CONTENT_STATE)
 }
 
-function contentState(tokenizer: any, code: number) {
+function contentState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
 
   if (code === c.eof || code === c.nil || code === c.lineFeed) {
@@ -39,7 +40,7 @@ function contentState(tokenizer: any, code: number) {
   }
 }
 
-function endState(tokenizer: any) {
+function endState(tokenizer: TokenizeType) {
   const s = tokenizer.contextInfo
   const data = tokenizer.data
   const tokens = [{ type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd) }]

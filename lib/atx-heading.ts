@@ -1,4 +1,5 @@
 import * as c from './characters'
+import { TokenizeType, ContextHandler } from './types'
 
 const maxOpeningSequenceBeforeSize = 3
 const maxOpeningSequenceSize = 6
@@ -18,7 +19,7 @@ export enum StateType {
   CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
 }
 
-export default {
+export const contextHandler: ContextHandler<StateType> = {
   [StateType.START_STATE]: startState,
   [StateType.END_STATE]: endState,
   [StateType.BOGUS_STATE]: bogusState,
@@ -60,7 +61,7 @@ export default {
 // ^^^ before
 //    ^^^ value
 // after ^^^
-function startState(tokenizer: any) {
+function startState(tokenizer: TokenizeType) {
   const info = tokenizer.contextInfo
 
   info.tokens = []
@@ -77,7 +78,7 @@ function startState(tokenizer: any) {
   tokenizer.reconsume(StateType.OPENING_SEQUENCE_BEFORE_STATE)
 }
 
-function openingSequenceBeforeState(tokenizer: any, code: number) {
+function openingSequenceBeforeState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let tail = info.token
 
@@ -104,7 +105,7 @@ function openingSequenceBeforeState(tokenizer: any, code: number) {
   }
 }
 
-function openingSequenceState(tokenizer: any, code: number) {
+function openingSequenceState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let sequence = info.openingSequence
 
@@ -139,7 +140,7 @@ function openingSequenceState(tokenizer: any, code: number) {
   }
 }
 
-function openingSequenceAfterState(tokenizer: any, code: number) {
+function openingSequenceAfterState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let after = info.openingSequenceAfter
 
@@ -173,7 +174,7 @@ function openingSequenceAfterState(tokenizer: any, code: number) {
   }
 }
 
-function contentState(tokenizer: any, code: number) {
+function contentState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let content = info.content
 
@@ -205,7 +206,7 @@ function contentState(tokenizer: any, code: number) {
   }
 }
 
-function closingSequenceBeforeState(tokenizer: any, code: number) {
+function closingSequenceBeforeState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let before = info.closingSequenceBefore
 
@@ -234,7 +235,7 @@ function closingSequenceBeforeState(tokenizer: any, code: number) {
   }
 }
 
-function closingSequenceState(tokenizer: any, code: number) {
+function closingSequenceState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let sequence = info.closingSequence
 
@@ -264,7 +265,7 @@ function closingSequenceState(tokenizer: any, code: number) {
   }
 }
 
-function closingSequenceAfterState(tokenizer: any, code: number) {
+function closingSequenceAfterState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let after = info.closingSequenceAfter
 
@@ -288,20 +289,20 @@ function closingSequenceAfterState(tokenizer: any, code: number) {
   }
 }
 
-function bogusState(tokenizer: any) {
+function bogusState(tokenizer: TokenizeType) {
   const info = tokenizer.contextInfo
 
-  tokenizer.switch(tokenizer.returnContext)
-  tokenizer.state = tokenizer.bogusState
+  tokenizer.switch(tokenizer.returnContext!)
+  tokenizer.state = tokenizer.bogusState!
   tokenizer.offset = info.initial
   tokenizer.next()
 }
 
-function endState(tokenizer: any) {
+function endState(tokenizer: TokenizeType) {
   const s = tokenizer.contextInfo
 
   // tslint:disable-next-line:no-console
   console.log('heading: ', s)
   tokenizer.consume()
-  tokenizer.switch(tokenizer.returnContext)
+  tokenizer.switch(tokenizer.returnContext!)
 }
