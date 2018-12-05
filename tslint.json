@@ -3,6 +3,7 @@
   "extends": ["tslint:recommended"],
   "jsRules": {},
   "rules": {
+    "variable-name": [true, "allow-leading-underscore"],
     "quotemark": false,
     "semicolon": false,
     "no-unused-variable": false,

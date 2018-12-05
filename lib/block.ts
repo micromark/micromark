@@ -18,7 +18,7 @@ function startState(tokenizer: any) {
   tokenizer.reconsume(StateType.ATX_HEADING_STATE)
 }
 
-function bogusState(tokenizer: any, code: number) {
+function bogusState(_tokenizer: any, code: number) {
   throw new Error(`Could not parse code ${fromCode(code)}`)
 }
 
