@@ -1,19 +1,21 @@
 var fromCode = String.fromCharCode
 
-var START_STATE = 'START_STATE'
-var BOGUS_STATE = 'BOGUS_STATE'
-var ATX_HEADING_STATE = 'ATX_HEADING_STATE'
-var PARAGRAPH_STATE = 'PARAGRAPH_STATE'
+export enum StateType {
+  START_STATE = 'START_STATE',
+  BOGUS_STATE = 'BOGUS_STATE',
+  ATX_HEADING_STATE = 'ATX_HEADING_STATE',
+  PARAGRAPH_STATE = 'PARAGRAPH_STATE'
+}
 
 export default {
-  [START_STATE]: startState,
-  [BOGUS_STATE]: bogusState,
-  [ATX_HEADING_STATE]: attempt('atxHeading', PARAGRAPH_STATE),
-  [PARAGRAPH_STATE]: attempt('paragraph', BOGUS_STATE)
+  [StateType.START_STATE]: startState,
+  [StateType.BOGUS_STATE]: bogusState,
+  [StateType.ATX_HEADING_STATE]: attempt('atxHeading', StateType.PARAGRAPH_STATE),
+  [StateType.PARAGRAPH_STATE]: attempt('paragraph', StateType.BOGUS_STATE)
 }
 
 function startState(tokenizer: any) {
-  tokenizer.reconsume(ATX_HEADING_STATE)
+  tokenizer.reconsume(StateType.ATX_HEADING_STATE)
 }
 
 function bogusState(_tokenizer: any, code: number) {

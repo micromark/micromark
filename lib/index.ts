@@ -31,8 +31,8 @@ export class Tokenizer {
   }
 
   current() {
-    var length = this.data.length
-    var offset = this.offset
+    const length = this.data.length
+    const offset = this.offset
 
     if (offset > length) {
       throw new Error('Cannot read after end')
@@ -53,8 +53,8 @@ export class Tokenizer {
   }
 
   consume() {
-    var code = this.current()
-    var tabSize = this.tabSize
+    const code = this.current()
+    const tabSize = this.tabSize
 
     if (code === null || code === c.eof || code === c.lineFeed) {
       this.line++
@@ -92,7 +92,7 @@ export class Tokenizer {
     this.state = 'START_STATE'
   }
 
-  block = block
-  atxHeading = atxHeading
-  paragraph = paragraph
+  block: any = block
+  atxHeading: any = atxHeading
+  paragraph: any = paragraph
 }

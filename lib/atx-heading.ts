@@ -5,28 +5,30 @@ var maxOpeningSequenceSize = 6
 
 var T_SPACE = 'space'
 
-var START_STATE = 'START_STATE'
-var END_STATE = 'END_STATE'
-var BOGUS_STATE = 'BOGUS_STATE'
-var OPENING_SEQUENCE_BEFORE_STATE = 'OPENING_SEQUENCE_BEFORE_STATE'
-var OPENING_SEQUENCE_STATE = 'OPENING_SEQUENCE_STATE'
-var OPENING_SEQUENCE_AFTER_STATE = 'OPENING_SEQUENCE_AFTER_STATE'
-var CONTENT_STATE = 'CONTENT_STATE'
-var CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE'
-var CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE'
-var CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
+export enum StateType {
+  START_STATE = 'START_STATE',
+  END_STATE = 'END_STATE',
+  BOGUS_STATE = 'BOGUS_STATE',
+  OPENING_SEQUENCE_BEFORE_STATE = 'OPENING_SEQUENCE_BEFORE_STATE',
+  OPENING_SEQUENCE_STATE = 'OPENING_SEQUENCE_STATE',
+  OPENING_SEQUENCE_AFTER_STATE = 'OPENING_SEQUENCE_AFTER_STATE',
+  CONTENT_STATE = 'CONTENT_STATE',
+  CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE',
+  CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE',
+  CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
+}
 
 export default {
-  [START_STATE]: startState,
-  [END_STATE]: endState,
-  [BOGUS_STATE]: bogusState,
-  [OPENING_SEQUENCE_BEFORE_STATE]: openingSequenceBeforeState,
-  [OPENING_SEQUENCE_STATE]: openingSequenceState,
-  [OPENING_SEQUENCE_AFTER_STATE]: openingSequenceAfterState,
-  [CONTENT_STATE]: contentState,
-  [CLOSING_SEQUENCE_BEFORE_STATE]: closingSequenceBeforeState,
-  [CLOSING_SEQUENCE_STATE]: closingSequenceState,
-  [CLOSING_SEQUENCE_AFTER_STATE]: closingSequenceAfterState
+  [StateType.START_STATE]: startState,
+  [StateType.END_STATE]: endState,
+  [StateType.BOGUS_STATE]: bogusState,
+  [StateType.OPENING_SEQUENCE_BEFORE_STATE]: openingSequenceBeforeState,
+  [StateType.OPENING_SEQUENCE_STATE]: openingSequenceState,
+  [StateType.OPENING_SEQUENCE_AFTER_STATE]: openingSequenceAfterState,
+  [StateType.CONTENT_STATE]: contentState,
+  [StateType.CLOSING_SEQUENCE_BEFORE_STATE]: closingSequenceBeforeState,
+  [StateType.CLOSING_SEQUENCE_STATE]: closingSequenceState,
+  [StateType.CLOSING_SEQUENCE_AFTER_STATE]: closingSequenceAfterState
 }
 
 // ATX heading. Such as:
@@ -72,7 +74,7 @@ function startState(tokenizer: any) {
   info.closingSequence = null
   info.closingSequenceAfter = null
 
-  tokenizer.reconsume(OPENING_SEQUENCE_BEFORE_STATE)
+  tokenizer.reconsume(StateType.OPENING_SEQUENCE_BEFORE_STATE)
 }
 
 function openingSequenceBeforeState(tokenizer: any, code: number) {
@@ -81,7 +83,7 @@ function openingSequenceBeforeState(tokenizer: any, code: number) {
 
   if (code === c.space) {
     if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
-      tokenizer.reconsume(BOGUS_STATE)
+      tokenizer.reconsume(StateType.BOGUS_STATE)
     } else {
       if (!tail) {
         tail = { type: T_SPACE, position: { start: tokenizer.now() } }
@@ -96,9 +98,9 @@ function openingSequenceBeforeState(tokenizer: any, code: number) {
       tail.position.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(OPENING_SEQUENCE_STATE)
+    tokenizer.reconsume(StateType.OPENING_SEQUENCE_STATE)
   } else {
-    tokenizer.reconsume(BOGUS_STATE)
+    tokenizer.reconsume(StateType.BOGUS_STATE)
   }
 }
 
@@ -111,16 +113,16 @@ function openingSequenceState(tokenizer: any, code: number) {
       sequence.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(END_STATE)
+    tokenizer.reconsume(StateType.END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (sequence) {
       sequence.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(OPENING_SEQUENCE_AFTER_STATE)
+    tokenizer.reconsume(StateType.OPENING_SEQUENCE_AFTER_STATE)
   } else if (code === c.numberSign) {
     if (info.rank === maxOpeningSequenceSize) {
-      tokenizer.reconsume(BOGUS_STATE)
+      tokenizer.reconsume(StateType.BOGUS_STATE)
     } else {
       if (sequence === null) {
         sequence = { start: tokenizer.now() }
@@ -133,7 +135,7 @@ function openingSequenceState(tokenizer: any, code: number) {
   } else {
     // Any other character is a bogus heading.
     // CommonMark requires a the opening sequence after space.
-    tokenizer.reconsume(BOGUS_STATE)
+    tokenizer.reconsume(StateType.BOGUS_STATE)
   }
 }
 
@@ -146,7 +148,7 @@ function openingSequenceAfterState(tokenizer: any, code: number) {
       after.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(END_STATE)
+    tokenizer.reconsume(StateType.END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (after === null) {
       after = { start: tokenizer.now() }
@@ -161,13 +163,13 @@ function openingSequenceAfterState(tokenizer: any, code: number) {
 
     // This could also be a hash in the content, CLOSING_SEQUENCE_STATE
     // switches back.
-    tokenizer.reconsume(CLOSING_SEQUENCE_STATE)
+    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
   } else {
     if (after) {
       after.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(CONTENT_STATE)
+    tokenizer.reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -180,19 +182,19 @@ function contentState(tokenizer: any, code: number) {
       content.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(END_STATE)
+    tokenizer.reconsume(StateType.END_STATE)
   } else if (code === c.space) {
     if (content) {
       content.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(CLOSING_SEQUENCE_BEFORE_STATE)
+    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_BEFORE_STATE)
   } else if (code === c.numberSign) {
     if (content) {
       content.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(CLOSING_SEQUENCE_STATE)
+    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
   } else {
     if (content === null) {
       content = { start: tokenizer.now() }
@@ -212,7 +214,7 @@ function closingSequenceBeforeState(tokenizer: any, code: number) {
       before.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(END_STATE)
+    tokenizer.reconsume(StateType.END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (info.closingSequenceBefore === null) {
       before = { start: tokenizer.now() }
@@ -225,10 +227,10 @@ function closingSequenceBeforeState(tokenizer: any, code: number) {
       before.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(CLOSING_SEQUENCE_STATE)
+    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
   } else {
     info.closingSequenceBefore = null
-    tokenizer.reconsume(CONTENT_STATE)
+    tokenizer.reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -241,13 +243,13 @@ function closingSequenceState(tokenizer: any, code: number) {
       sequence.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(END_STATE)
+    tokenizer.reconsume(StateType.END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (sequence) {
       sequence.end = tokenizer.now()
     }
 
-    tokenizer.reconsume(CLOSING_SEQUENCE_AFTER_STATE)
+    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_AFTER_STATE)
   } else if (code === c.numberSign) {
     if (sequence === null) {
       sequence = { start: tokenizer.now() }
@@ -258,7 +260,7 @@ function closingSequenceState(tokenizer: any, code: number) {
   } else {
     info.closingSequenceBefore = null
     info.closingSequence = null
-    tokenizer.reconsume(CONTENT_STATE)
+    tokenizer.reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -270,7 +272,7 @@ function closingSequenceAfterState(tokenizer: any, code: number) {
     if (after) {
       after.end = tokenizer.now()
     }
-    tokenizer.reconsume(END_STATE)
+    tokenizer.reconsume(StateType.END_STATE)
   } else if (code === c.tab || code === c.space) {
     if (after === null) {
       after = { start: tokenizer.now() }
@@ -282,7 +284,7 @@ function closingSequenceAfterState(tokenizer: any, code: number) {
     info.closingSequenceBefore = null
     info.closingSequence = null
     info.closingSequenceAfter = null
-    tokenizer.reconsume(CONTENT_STATE)
+    tokenizer.reconsume(StateType.CONTENT_STATE)
   }
 }
 
