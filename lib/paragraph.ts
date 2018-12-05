@@ -2,7 +2,7 @@
 
 import * as c from './characters'
 
-var fromCode = String.fromCharCode
+const fromCode = String.fromCharCode
 
 export enum StateType {
   START_STATE = 'START_STATE',
@@ -18,7 +18,7 @@ export default {
 
 // Paragraph.
 function startState(tokenizer: any) {
-  var info = tokenizer.contextInfo
+  const info = tokenizer.contextInfo
 
   info.initialIndex = tokenizer.offset
   info.contentStart = tokenizer.offset
@@ -28,7 +28,7 @@ function startState(tokenizer: any) {
 }
 
 function contentState(tokenizer: any, code: number) {
-  var info = tokenizer.contextInfo
+  const info = tokenizer.contextInfo
 
   if (code === c.eof || code === c.nil || code === c.lineFeed) {
     tokenizer.reconsume(StateType.END_STATE)
@@ -39,9 +39,9 @@ function contentState(tokenizer: any, code: number) {
 }
 
 function endState(tokenizer: any) {
-  var s = tokenizer.contextInfo
-  var data = tokenizer.data
-  var tokens = [{ type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd) }]
+  const s = tokenizer.contextInfo
+  const data = tokenizer.data
+  const tokens = [{ type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd) }]
 
   console.log('p: done! ', tokens)
   tokenizer.offset++

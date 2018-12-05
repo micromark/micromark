@@ -1,4 +1,4 @@
-var fromCode = String.fromCharCode
+const fromCode = String.fromCharCode
 
 export enum StateType {
   START_STATE = 'START_STATE',

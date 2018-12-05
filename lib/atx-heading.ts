@@ -1,9 +1,9 @@
 import * as c from './characters'
 
-var maxOpeningSequenceBeforeSize = 3
-var maxOpeningSequenceSize = 6
+const maxOpeningSequenceBeforeSize = 3
+const maxOpeningSequenceSize = 6
 
-var T_SPACE = 'space'
+const T_SPACE = 'space'
 
 export enum StateType {
   START_STATE = 'START_STATE',
@@ -61,7 +61,7 @@ export default {
 //    ^^^ value
 // after ^^^
 function startState(tokenizer: any) {
-  var info = tokenizer.contextInfo
+  const info = tokenizer.contextInfo
 
   info.tokens = []
   info.rank = 0
@@ -78,8 +78,8 @@ function startState(tokenizer: any) {
 }
 
 function openingSequenceBeforeState(tokenizer: any, code: number) {
-  var info = tokenizer.contextInfo
-  var tail = info.token
+  const info = tokenizer.contextInfo
+  let tail = info.token
 
   if (code === c.space) {
     if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
@@ -105,8 +105,8 @@ function openingSequenceBeforeState(tokenizer: any, code: number) {
 }
 
 function openingSequenceState(tokenizer: any, code: number) {
-  var info = tokenizer.contextInfo
-  var sequence = info.openingSequence
+  const info = tokenizer.contextInfo
+  let sequence = info.openingSequence
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (sequence) {
@@ -140,8 +140,8 @@ function openingSequenceState(tokenizer: any, code: number) {
 }
 
 function openingSequenceAfterState(tokenizer: any, code: number) {
-  var info = tokenizer.contextInfo
-  var after = info.openingSequenceAfter
+  const info = tokenizer.contextInfo
+  let after = info.openingSequenceAfter
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (after) {
@@ -174,8 +174,8 @@ function openingSequenceAfterState(tokenizer: any, code: number) {
 }
 
 function contentState(tokenizer: any, code: number) {
-  var info = tokenizer.contextInfo
-  var content = info.content
+  const info = tokenizer.contextInfo
+  let content = info.content
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (content) {
@@ -206,8 +206,8 @@ function contentState(tokenizer: any, code: number) {
 }
 
 function closingSequenceBeforeState(tokenizer: any, code: number) {
-  var info = tokenizer.contextInfo
-  var before = info.closingSequenceBefore
+  const info = tokenizer.contextInfo
+  let before = info.closingSequenceBefore
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (before) {
@@ -235,8 +235,8 @@ function closingSequenceBeforeState(tokenizer: any, code: number) {
 }
 
 function closingSequenceState(tokenizer: any, code: number) {
-  var info = tokenizer.contextInfo
-  var sequence = info.closingSequence
+  const info = tokenizer.contextInfo
+  let sequence = info.closingSequence
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (sequence) {
@@ -265,8 +265,8 @@ function closingSequenceState(tokenizer: any, code: number) {
 }
 
 function closingSequenceAfterState(tokenizer: any, code: number) {
-  var info = tokenizer.contextInfo
-  var after = info.closingSequenceAfter
+  const info = tokenizer.contextInfo
+  let after = info.closingSequenceAfter
 
   if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
     if (after) {
@@ -289,7 +289,7 @@ function closingSequenceAfterState(tokenizer: any, code: number) {
 }
 
 function bogusState(tokenizer: any) {
-  var info = tokenizer.contextInfo
+  const info = tokenizer.contextInfo
 
   tokenizer.switch(tokenizer.returnContext)
   tokenizer.state = tokenizer.bogusState
@@ -298,7 +298,7 @@ function bogusState(tokenizer: any) {
 }
 
 function endState(tokenizer: any) {
-  var s = tokenizer.contextInfo
+  const s = tokenizer.contextInfo
 
   console.log('heading: ', s)
   tokenizer.consume()
