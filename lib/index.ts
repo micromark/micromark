@@ -68,6 +68,7 @@ export class Tokenizer {
     }
 
     // TODO handling code === null
+    // tslint:disable-next-line:no-console
     console.log('consume: %s', this.state, this.now(), [String.fromCharCode(code!)])
 
     this.column++

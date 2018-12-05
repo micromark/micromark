@@ -34,7 +34,8 @@ function contentState(tokenizer: any, code: number) {
     tokenizer.reconsume(StateType.END_STATE)
   } else {
     info.contentEnd = ++tokenizer.offset
-    console.log('p:consume: %s', arguments.callee.name, code, [fromCode(code)])
+    // tslint:disable-next-line:no-console
+    console.log('p:consume: %s', contentState.name, code, [fromCode(code)])
   }
 }
 
@@ -43,6 +44,7 @@ function endState(tokenizer: any) {
   const data = tokenizer.data
   const tokens = [{ type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd) }]
 
+  // tslint:disable-next-line:no-console
   console.log('p: done! ', tokens)
   tokenizer.offset++
 }

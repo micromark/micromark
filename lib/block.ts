@@ -29,6 +29,7 @@ function attempt(context: any, bogus: any) {
     tokenizer.switch(context)
     // When bogus, go to the `bogus` state.
     tokenizer.bogusState = bogus
+    // tslint:disable-next-line:no-console
     console.log('attempt: %s', context, [fromCode(code)])
   }
 }

@@ -300,6 +300,7 @@ function bogusState(tokenizer: any) {
 function endState(tokenizer: any) {
   const s = tokenizer.contextInfo
 
+  // tslint:disable-next-line:no-console
   console.log('heading: ', s)
   tokenizer.consume()
   tokenizer.switch(tokenizer.returnContext)
