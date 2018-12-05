@@ -1,4 +1,5 @@
 const fromCode = String.fromCharCode
+import { ContextType } from './types'
 
 export enum StateType {
   START_STATE = 'START_STATE',
@@ -22,7 +23,7 @@ function bogusState(_tokenizer: any, code: number) {
   throw new Error(`Could not parse code ${fromCode(code)}`)
 }
 
-function attempt(context: any, bogus: any) {
+function attempt(context: ContextType, bogus: StateType) {
   return (tokenizer: any, code: number) => {
     // When done, go back to this context.
     tokenizer.returnContext = tokenizer.context

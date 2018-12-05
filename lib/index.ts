@@ -2,8 +2,7 @@ import atxHeading from './atx-heading'
 import block from './block'
 import * as c from './characters'
 import paragraph from './paragraph'
-
-type ContextType = 'atxHeading' | 'paragraph' | 'block'
+import { ContextType } from './types'
 
 export class Tokenizer {
   public data = ''
