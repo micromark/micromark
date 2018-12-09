@@ -108,7 +108,7 @@ function openingSequenceBeforeState(tokenizer: TokenizeType, code: number | null
 
 function openingSequenceState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
-  let sequence = info.openingSequence
+  const sequence = info.openingSequence
 
   switch (code) {
     case c.eof:
@@ -130,8 +130,7 @@ function openingSequenceState(tokenizer: TokenizeType, code: number | null) {
         return reconsume(StateType.BOGUS_STATE)
       }
       if (sequence === null) {
-        sequence = { start: tokenizer.now() }
-        info.openingSequence = sequence
+        info.openingSequence = { start: tokenizer.now() }
       }
 
       info.rank++
@@ -145,7 +144,7 @@ function openingSequenceState(tokenizer: TokenizeType, code: number | null) {
 
 function openingSequenceAfterState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
-  let after = info.openingSequenceAfter
+  const after = info.openingSequenceAfter
 
   switch (code) {
     case c.eof:
@@ -159,8 +158,7 @@ function openingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
     case c.tab:
     case c.space:
       if (after === null) {
-        after = { start: tokenizer.now() }
-        info.openingSequenceAfter = after
+        info.openingSequenceAfter = { start: tokenizer.now() }
       }
 
       return consume()
@@ -183,7 +181,7 @@ function openingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
 
 function contentState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
-  let content = info.content
+  const content = info.content
 
   switch (code) {
     case c.eof:
@@ -208,8 +206,7 @@ function contentState(tokenizer: TokenizeType, code: number | null) {
       return reconsume(StateType.CLOSING_SEQUENCE_STATE)
     default:
       if (content === null) {
-        content = { start: tokenizer.now() }
-        info.content = content
+        info.content = { start: tokenizer.now() }
       }
 
       return consume()
@@ -218,7 +215,7 @@ function contentState(tokenizer: TokenizeType, code: number | null) {
 
 function closingSequenceBeforeState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
-  let before = info.closingSequenceBefore
+  const before = info.closingSequenceBefore
 
   switch (code) {
     case c.eof:
@@ -232,8 +229,7 @@ function closingSequenceBeforeState(tokenizer: TokenizeType, code: number | null
     case c.tab:
     case c.space:
       if (info.closingSequenceBefore === null) {
-        before = { start: tokenizer.now() }
-        info.closingSequenceBefore = before
+        info.closingSequenceBefore = { start: tokenizer.now() }
       }
 
       return consume()
@@ -285,7 +281,7 @@ function closingSequenceState(tokenizer: TokenizeType, code: number | null) {
 
 function closingSequenceAfterState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
-  let after = info.closingSequenceAfter
+  const after = info.closingSequenceAfter
 
   switch (code) {
     case c.eof:
@@ -298,8 +294,7 @@ function closingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
     case c.tab:
     case c.space:
       if (after === null) {
-        after = { start: tokenizer.now() }
-        info.closingSequenceAfter = after
+        info.closingSequenceAfter = { start: tokenizer.now() }
       }
 
       return consume()
