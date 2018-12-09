@@ -3,6 +3,7 @@ import { contextHandler as atxHeading } from './atx-heading'
 import { contextHandler as block } from './block'
 import { contextHandler as paragraph } from './paragraph'
 import { ContextType, TokenizeType, ContextHandlers, ContextHandler } from './types'
+import { ParseActionType, noop } from './actions'
 
 export class Tokenizer implements TokenizeType {
   public data = ''
@@ -33,7 +34,7 @@ export class Tokenizer implements TokenizeType {
     this.data += chunk
 
     while (this.offset <= this.data.length) {
-      this.next()
+      this.exec()
     }
   }
 
@@ -59,7 +60,7 @@ export class Tokenizer implements TokenizeType {
     return { line, column, offset }
   }
 
-  public consume() {
+  private consume() {
     const code = this.current()
     const tabSize = this.tabSize
 
@@ -77,19 +78,37 @@ export class Tokenizer implements TokenizeType {
     this.offset++
   }
 
-  public reconsume(state: string) {
+  private reconsume(state: string) {
     this.state = state
-    this.next()
+    return this.next()
   }
 
-  public next() {
+  private next() {
     const fn = this.stateHandlers![this.state]
 
     if (!fn) {
       throw new Error('Cannot handle `' + this.context + '.' + this.state + '`')
     }
 
-    fn(this, this.current())
+    return fn(this, this.current())
+  }
+
+  public exec() {
+    let task = this.next()
+    while (task.type !== ParseActionType.NOOP) {
+      switch (task.type) {
+        case ParseActionType.CONSUME:
+          this.consume()
+          task = noop()
+          break
+        case ParseActionType.RECONSUME:
+          task = this.reconsume(task.state)
+          break
+        case ParseActionType.NEXT:
+          task = this.next()
+          break
+      }
+    }
   }
 
   public switch(name: ContextType) {

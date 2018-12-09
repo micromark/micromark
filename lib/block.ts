@@ -1,5 +1,6 @@
 const fromCode = String.fromCharCode
 import { ContextType, TokenizeType, ContextHandler } from './types'
+import { reconsume, noop } from './actions'
 
 export enum StateType {
   START_STATE = 'START_STATE',
@@ -15,11 +16,11 @@ export const contextHandler: ContextHandler<StateType> = {
   [StateType.PARAGRAPH_STATE]: attempt('paragraph', StateType.BOGUS_STATE)
 }
 
-function startState(tokenizer: TokenizeType) {
-  return tokenizer.reconsume(StateType.ATX_HEADING_STATE)
+function startState(_tokenizer: TokenizeType) {
+  return reconsume(StateType.ATX_HEADING_STATE)
 }
 
-function bogusState(_tokenizer: TokenizeType, code: number | null) {
+function bogusState(_tokenizer: TokenizeType, code: number | null): never {
   throw new Error(`Could not parse code ${fromCode(code || 0)}`)
 }
 
@@ -32,5 +33,6 @@ function attempt(context: ContextType, bogus: StateType) {
     tokenizer.bogusState = bogus
     // tslint:disable-next-line:no-console
     console.log('attempt: %s', context, [fromCode(code || 0)])
+    return noop()
   }
 }

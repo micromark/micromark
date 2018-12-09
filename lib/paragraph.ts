@@ -2,6 +2,7 @@
 
 import * as c from './characters'
 import { TokenizeType, ContextHandler } from './types'
+import { reconsume, noop } from './actions'
 
 const fromCode = String.fromCharCode
 
@@ -25,7 +26,7 @@ function startState(tokenizer: TokenizeType) {
   info.contentStart = tokenizer.offset
   info.contentEnd = null
 
-  return tokenizer.reconsume(StateType.CONTENT_STATE)
+  return reconsume(StateType.CONTENT_STATE)
 }
 
 function contentState(tokenizer: TokenizeType, code: number | null) {
@@ -35,11 +36,12 @@ function contentState(tokenizer: TokenizeType, code: number | null) {
     case c.eof:
     case c.nil:
     case c.lineFeed:
-      return tokenizer.reconsume(StateType.END_STATE)
+      return reconsume(StateType.END_STATE)
     default:
       info.contentEnd = ++tokenizer.offset
       // tslint:disable-next-line:no-console
       console.log('p:consume: %s', contentState.name, code, [fromCode(code)])
+      return noop()
   }
 }
 
@@ -51,4 +53,5 @@ function endState(tokenizer: TokenizeType) {
   // tslint:disable-next-line:no-console
   console.log('p: done! ', tokens)
   tokenizer.offset++
+  return noop()
 }

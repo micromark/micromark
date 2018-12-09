@@ -1,5 +1,6 @@
 import * as c from './characters'
 import { TokenizeType, ContextHandler } from './types'
+import { consume, reconsume, next } from './actions'
 
 const maxOpeningSequenceBeforeSize = 3
 const maxOpeningSequenceSize = 6
@@ -75,7 +76,7 @@ function startState(tokenizer: TokenizeType) {
   info.closingSequence = null
   info.closingSequenceAfter = null
 
-  tokenizer.reconsume(StateType.OPENING_SEQUENCE_BEFORE_STATE)
+  return reconsume(StateType.OPENING_SEQUENCE_BEFORE_STATE)
 }
 
 function openingSequenceBeforeState(tokenizer: TokenizeType, code: number | null) {
@@ -85,7 +86,7 @@ function openingSequenceBeforeState(tokenizer: TokenizeType, code: number | null
   switch (code) {
     case c.space:
       if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
-        return tokenizer.reconsume(StateType.BOGUS_STATE)
+        return reconsume(StateType.BOGUS_STATE)
       }
       if (!tail) {
         tail = { type: T_SPACE, position: { start: tokenizer.now() } }
@@ -93,15 +94,15 @@ function openingSequenceBeforeState(tokenizer: TokenizeType, code: number | null
         info.tokens.push(tail)
       }
 
-      return tokenizer.consume()
+      return consume()
     case c.numberSign:
       if (tail) {
         tail.position.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.OPENING_SEQUENCE_STATE)
+      return reconsume(StateType.OPENING_SEQUENCE_STATE)
     default:
-      return tokenizer.reconsume(StateType.BOGUS_STATE)
+      return reconsume(StateType.BOGUS_STATE)
   }
 }
 
@@ -116,17 +117,17 @@ function openingSequenceState(tokenizer: TokenizeType, code: number | null) {
       if (sequence) {
         sequence.end = tokenizer.now()
       }
-      return tokenizer.reconsume(StateType.END_STATE)
+      return reconsume(StateType.END_STATE)
     case c.tab:
     case c.space:
       if (sequence) {
         sequence.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.OPENING_SEQUENCE_AFTER_STATE)
+      return reconsume(StateType.OPENING_SEQUENCE_AFTER_STATE)
     case c.numberSign:
       if (info.rank === maxOpeningSequenceSize) {
-        return tokenizer.reconsume(StateType.BOGUS_STATE)
+        return reconsume(StateType.BOGUS_STATE)
       }
       if (sequence === null) {
         sequence = { start: tokenizer.now() }
@@ -134,11 +135,11 @@ function openingSequenceState(tokenizer: TokenizeType, code: number | null) {
       }
 
       info.rank++
-      return tokenizer.consume()
+      return consume()
     default:
       // Any other character is a bogus heading.
       // CommonMark requires a the opening sequence after space.
-      return tokenizer.reconsume(StateType.BOGUS_STATE)
+      return reconsume(StateType.BOGUS_STATE)
   }
 }
 
@@ -154,7 +155,7 @@ function openingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
         after.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.END_STATE)
+      return reconsume(StateType.END_STATE)
     case c.tab:
     case c.space:
       if (after === null) {
@@ -162,7 +163,7 @@ function openingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
         info.openingSequenceAfter = after
       }
 
-      return tokenizer.consume()
+      return consume()
     case c.numberSign:
       if (after) {
         after.end = tokenizer.now()
@@ -170,13 +171,13 @@ function openingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
 
       // This could also be a hash in the content, CLOSING_SEQUENCE_STATE
       // switches back.
-      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
+      return reconsume(StateType.CLOSING_SEQUENCE_STATE)
     default:
       if (after) {
         after.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.CONTENT_STATE)
+      return reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -192,26 +193,26 @@ function contentState(tokenizer: TokenizeType, code: number | null) {
         content.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.END_STATE)
+      return reconsume(StateType.END_STATE)
     case c.space:
       if (content) {
         content.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_BEFORE_STATE)
+      return reconsume(StateType.CLOSING_SEQUENCE_BEFORE_STATE)
     case c.numberSign:
       if (content) {
         content.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
+      return reconsume(StateType.CLOSING_SEQUENCE_STATE)
     default:
       if (content === null) {
         content = { start: tokenizer.now() }
         info.content = content
       }
 
-      return tokenizer.consume()
+      return consume()
   }
 }
 
@@ -227,7 +228,7 @@ function closingSequenceBeforeState(tokenizer: TokenizeType, code: number | null
         before.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.END_STATE)
+      return reconsume(StateType.END_STATE)
     case c.tab:
     case c.space:
       if (info.closingSequenceBefore === null) {
@@ -235,16 +236,16 @@ function closingSequenceBeforeState(tokenizer: TokenizeType, code: number | null
         info.closingSequenceBefore = before
       }
 
-      return tokenizer.consume()
+      return consume()
     case c.numberSign:
       if (before) {
         before.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
+      return reconsume(StateType.CLOSING_SEQUENCE_STATE)
     default:
       info.closingSequenceBefore = null
-      return tokenizer.reconsume(StateType.CONTENT_STATE)
+      return reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -260,25 +261,25 @@ function closingSequenceState(tokenizer: TokenizeType, code: number | null) {
         sequence.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.END_STATE)
+      return reconsume(StateType.END_STATE)
     case c.tab:
     case c.space:
       if (sequence) {
         sequence.end = tokenizer.now()
       }
 
-      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_AFTER_STATE)
+      return reconsume(StateType.CLOSING_SEQUENCE_AFTER_STATE)
     case c.numberSign:
       if (sequence === null) {
         sequence = { start: tokenizer.now() }
         info.closingSequence = sequence
       }
 
-      return tokenizer.consume()
+      return consume()
     default:
       info.closingSequenceBefore = null
       info.closingSequence = null
-      return tokenizer.reconsume(StateType.CONTENT_STATE)
+      return reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -293,7 +294,7 @@ function closingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
       if (after) {
         after.end = tokenizer.now()
       }
-      return tokenizer.reconsume(StateType.END_STATE)
+      return reconsume(StateType.END_STATE)
     case c.tab:
     case c.space:
       if (after === null) {
@@ -301,12 +302,12 @@ function closingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
         info.closingSequenceAfter = after
       }
 
-      return tokenizer.consume()
+      return consume()
     default:
       info.closingSequenceBefore = null
       info.closingSequence = null
       info.closingSequenceAfter = null
-      return tokenizer.reconsume(StateType.CONTENT_STATE)
+      return reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -316,7 +317,7 @@ function bogusState(tokenizer: TokenizeType) {
   tokenizer.switch(tokenizer.returnContext!)
   tokenizer.state = tokenizer.bogusState!
   tokenizer.offset = info.initial
-  tokenizer.next()
+  return next()
 }
 
 function endState(tokenizer: TokenizeType) {
@@ -324,6 +325,9 @@ function endState(tokenizer: TokenizeType) {
 
   // tslint:disable-next-line:no-console
   console.log('heading: ', s)
-  tokenizer.consume()
+
+  // TODO This has been temporarily move to before "consume"
   tokenizer.switch(tokenizer.returnContext!)
+
+  return consume()
 }
