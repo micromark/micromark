@@ -82,26 +82,26 @@ function openingSequenceBeforeState(tokenizer: TokenizeType, code: number | null
   const info = tokenizer.contextInfo
   let tail = info.token
 
-  if (code === c.space) {
-    if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
-      tokenizer.reconsume(StateType.BOGUS_STATE)
-    } else {
+  switch (code) {
+    case c.space:
+      if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
+        return tokenizer.reconsume(StateType.BOGUS_STATE)
+      }
       if (!tail) {
         tail = { type: T_SPACE, position: { start: tokenizer.now() } }
         info.token = tail
         info.tokens.push(tail)
       }
 
-      tokenizer.consume()
-    }
-  } else if (code === c.numberSign) {
-    if (tail) {
-      tail.position.end = tokenizer.now()
-    }
+      return tokenizer.consume()
+    case c.numberSign:
+      if (tail) {
+        tail.position.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.OPENING_SEQUENCE_STATE)
-  } else {
-    tokenizer.reconsume(StateType.BOGUS_STATE)
+      return tokenizer.reconsume(StateType.OPENING_SEQUENCE_STATE)
+    default:
+      return tokenizer.reconsume(StateType.BOGUS_STATE)
   }
 }
 
@@ -109,34 +109,36 @@ function openingSequenceState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let sequence = info.openingSequence
 
-  if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
-    if (sequence) {
-      sequence.end = tokenizer.now()
-    }
+  switch (code) {
+    case c.eof:
+    case c.lineFeed:
+    case c.carriageReturn:
+      if (sequence) {
+        sequence.end = tokenizer.now()
+      }
+      return tokenizer.reconsume(StateType.END_STATE)
+    case c.tab:
+    case c.space:
+      if (sequence) {
+        sequence.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.END_STATE)
-  } else if (code === c.tab || code === c.space) {
-    if (sequence) {
-      sequence.end = tokenizer.now()
-    }
-
-    tokenizer.reconsume(StateType.OPENING_SEQUENCE_AFTER_STATE)
-  } else if (code === c.numberSign) {
-    if (info.rank === maxOpeningSequenceSize) {
-      tokenizer.reconsume(StateType.BOGUS_STATE)
-    } else {
+      return tokenizer.reconsume(StateType.OPENING_SEQUENCE_AFTER_STATE)
+    case c.numberSign:
+      if (info.rank === maxOpeningSequenceSize) {
+        return tokenizer.reconsume(StateType.BOGUS_STATE)
+      }
       if (sequence === null) {
         sequence = { start: tokenizer.now() }
         info.openingSequence = sequence
       }
 
       info.rank++
-      tokenizer.consume()
-    }
-  } else {
-    // Any other character is a bogus heading.
-    // CommonMark requires a the opening sequence after space.
-    tokenizer.reconsume(StateType.BOGUS_STATE)
+      return tokenizer.consume()
+    default:
+      // Any other character is a bogus heading.
+      // CommonMark requires a the opening sequence after space.
+      return tokenizer.reconsume(StateType.BOGUS_STATE)
   }
 }
 
@@ -144,33 +146,37 @@ function openingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
   const info = tokenizer.contextInfo
   let after = info.openingSequenceAfter
 
-  if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
-    if (after) {
-      after.end = tokenizer.now()
-    }
+  switch (code) {
+    case c.eof:
+    case c.lineFeed:
+    case c.carriageReturn:
+      if (after) {
+        after.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.END_STATE)
-  } else if (code === c.tab || code === c.space) {
-    if (after === null) {
-      after = { start: tokenizer.now() }
-      info.openingSequenceAfter = after
-    }
+      return tokenizer.reconsume(StateType.END_STATE)
+    case c.tab:
+    case c.space:
+      if (after === null) {
+        after = { start: tokenizer.now() }
+        info.openingSequenceAfter = after
+      }
 
-    tokenizer.consume()
-  } else if (code === c.numberSign) {
-    if (after) {
-      after.end = tokenizer.now()
-    }
+      return tokenizer.consume()
+    case c.numberSign:
+      if (after) {
+        after.end = tokenizer.now()
+      }
 
-    // This could also be a hash in the content, CLOSING_SEQUENCE_STATE
-    // switches back.
-    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
-  } else {
-    if (after) {
-      after.end = tokenizer.now()
-    }
+      // This could also be a hash in the content, CLOSING_SEQUENCE_STATE
+      // switches back.
+      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
+    default:
+      if (after) {
+        after.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.CONTENT_STATE)
+      return tokenizer.reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -178,31 +184,34 @@ function contentState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let content = info.content
 
-  if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
-    if (content) {
-      content.end = tokenizer.now()
-    }
+  switch (code) {
+    case c.eof:
+    case c.lineFeed:
+    case c.carriageReturn:
+      if (content) {
+        content.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.END_STATE)
-  } else if (code === c.space) {
-    if (content) {
-      content.end = tokenizer.now()
-    }
+      return tokenizer.reconsume(StateType.END_STATE)
+    case c.space:
+      if (content) {
+        content.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_BEFORE_STATE)
-  } else if (code === c.numberSign) {
-    if (content) {
-      content.end = tokenizer.now()
-    }
+      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_BEFORE_STATE)
+    case c.numberSign:
+      if (content) {
+        content.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
-  } else {
-    if (content === null) {
-      content = { start: tokenizer.now() }
-      info.content = content
-    }
+      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
+    default:
+      if (content === null) {
+        content = { start: tokenizer.now() }
+        info.content = content
+      }
 
-    tokenizer.consume()
+      return tokenizer.consume()
   }
 }
 
@@ -210,28 +219,32 @@ function closingSequenceBeforeState(tokenizer: TokenizeType, code: number | null
   const info = tokenizer.contextInfo
   let before = info.closingSequenceBefore
 
-  if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
-    if (before) {
-      before.end = tokenizer.now()
-    }
+  switch (code) {
+    case c.eof:
+    case c.lineFeed:
+    case c.carriageReturn:
+      if (before) {
+        before.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.END_STATE)
-  } else if (code === c.tab || code === c.space) {
-    if (info.closingSequenceBefore === null) {
-      before = { start: tokenizer.now() }
-      info.closingSequenceBefore = before
-    }
+      return tokenizer.reconsume(StateType.END_STATE)
+    case c.tab:
+    case c.space:
+      if (info.closingSequenceBefore === null) {
+        before = { start: tokenizer.now() }
+        info.closingSequenceBefore = before
+      }
 
-    tokenizer.consume()
-  } else if (code === c.numberSign) {
-    if (before) {
-      before.end = tokenizer.now()
-    }
+      return tokenizer.consume()
+    case c.numberSign:
+      if (before) {
+        before.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
-  } else {
-    info.closingSequenceBefore = null
-    tokenizer.reconsume(StateType.CONTENT_STATE)
+      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_STATE)
+    default:
+      info.closingSequenceBefore = null
+      return tokenizer.reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -239,29 +252,33 @@ function closingSequenceState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
   let sequence = info.closingSequence
 
-  if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
-    if (sequence) {
-      sequence.end = tokenizer.now()
-    }
+  switch (code) {
+    case c.eof:
+    case c.lineFeed:
+    case c.carriageReturn:
+      if (sequence) {
+        sequence.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.END_STATE)
-  } else if (code === c.tab || code === c.space) {
-    if (sequence) {
-      sequence.end = tokenizer.now()
-    }
+      return tokenizer.reconsume(StateType.END_STATE)
+    case c.tab:
+    case c.space:
+      if (sequence) {
+        sequence.end = tokenizer.now()
+      }
 
-    tokenizer.reconsume(StateType.CLOSING_SEQUENCE_AFTER_STATE)
-  } else if (code === c.numberSign) {
-    if (sequence === null) {
-      sequence = { start: tokenizer.now() }
-      info.closingSequence = sequence
-    }
+      return tokenizer.reconsume(StateType.CLOSING_SEQUENCE_AFTER_STATE)
+    case c.numberSign:
+      if (sequence === null) {
+        sequence = { start: tokenizer.now() }
+        info.closingSequence = sequence
+      }
 
-    tokenizer.consume()
-  } else {
-    info.closingSequenceBefore = null
-    info.closingSequence = null
-    tokenizer.reconsume(StateType.CONTENT_STATE)
+      return tokenizer.consume()
+    default:
+      info.closingSequenceBefore = null
+      info.closingSequence = null
+      return tokenizer.reconsume(StateType.CONTENT_STATE)
   }
 }
 
@@ -269,23 +286,27 @@ function closingSequenceAfterState(tokenizer: TokenizeType, code: number | null)
   const info = tokenizer.contextInfo
   let after = info.closingSequenceAfter
 
-  if (code === c.eof || code === c.lineFeed || code === c.carriageReturn) {
-    if (after) {
-      after.end = tokenizer.now()
-    }
-    tokenizer.reconsume(StateType.END_STATE)
-  } else if (code === c.tab || code === c.space) {
-    if (after === null) {
-      after = { start: tokenizer.now() }
-      info.closingSequenceAfter = after
-    }
+  switch (code) {
+    case c.eof:
+    case c.lineFeed:
+    case c.carriageReturn:
+      if (after) {
+        after.end = tokenizer.now()
+      }
+      return tokenizer.reconsume(StateType.END_STATE)
+    case c.tab:
+    case c.space:
+      if (after === null) {
+        after = { start: tokenizer.now() }
+        info.closingSequenceAfter = after
+      }
 
-    tokenizer.consume()
-  } else {
-    info.closingSequenceBefore = null
-    info.closingSequence = null
-    info.closingSequenceAfter = null
-    tokenizer.reconsume(StateType.CONTENT_STATE)
+      return tokenizer.consume()
+    default:
+      info.closingSequenceBefore = null
+      info.closingSequence = null
+      info.closingSequenceAfter = null
+      return tokenizer.reconsume(StateType.CONTENT_STATE)
   }
 }
 

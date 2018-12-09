@@ -25,18 +25,21 @@ function startState(tokenizer: TokenizeType) {
   info.contentStart = tokenizer.offset
   info.contentEnd = null
 
-  tokenizer.reconsume(StateType.CONTENT_STATE)
+  return tokenizer.reconsume(StateType.CONTENT_STATE)
 }
 
 function contentState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
 
-  if (code === c.eof || code === c.nil || code === c.lineFeed) {
-    tokenizer.reconsume(StateType.END_STATE)
-  } else {
-    info.contentEnd = ++tokenizer.offset
-    // tslint:disable-next-line:no-console
-    console.log('p:consume: %s', contentState.name, code, [fromCode(code)])
+  switch (code) {
+    case c.eof:
+    case c.nil:
+    case c.lineFeed:
+      return tokenizer.reconsume(StateType.END_STATE)
+    default:
+      info.contentEnd = ++tokenizer.offset
+      // tslint:disable-next-line:no-console
+      console.log('p:consume: %s', contentState.name, code, [fromCode(code)])
   }
 }
 

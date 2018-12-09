@@ -16,7 +16,7 @@ export const contextHandler: ContextHandler<StateType> = {
 }
 
 function startState(tokenizer: TokenizeType) {
-  tokenizer.reconsume(StateType.ATX_HEADING_STATE)
+  return tokenizer.reconsume(StateType.ATX_HEADING_STATE)
 }
 
 function bogusState(_tokenizer: TokenizeType, code: number | null) {
