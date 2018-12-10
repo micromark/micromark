@@ -1,6 +1,6 @@
 import { ParseAction } from './actions'
+export { ContextType } from './actions'
 
-export type ContextType = 'atxHeading' | 'paragraph' | 'block'
 export interface Position {
   line: number
   column: number
@@ -16,14 +16,13 @@ export interface TokenizeType {
   bogusState?: string // TODO use a more specific type
   data: string
   offset: number
-  switch(name: ContextType): void
   now(): Position
 }
 
-export type ContextStateHandler<StateType extends string> = ((
+export type ContextStateHandler<StateType extends string> = (
   tokenizer: TokenizeType,
   code: number | null
-) => ParseAction<StateType>)
+) => IterableIterator<ParseAction<StateType>>
 
 export type ContextHandler<StateType extends string> = {
   [_ in StateType]: ContextStateHandler<StateType>

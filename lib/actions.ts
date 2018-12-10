@@ -1,8 +1,10 @@
+export type ContextType = 'atxHeading' | 'paragraph' | 'block'
+
 export enum ParseActionType {
-  NOOP = 'NOOP',
   CONSUME = 'CONSUME',
   RECONSUME = 'RECONSUME',
-  NEXT = 'NEXT'
+  NEXT = 'NEXT',
+  SWITCH_CONTEXT = 'SWITCH_CONTEXT'
 }
 
 export type ParseAction<StateType extends string> =
@@ -14,10 +16,11 @@ export type ParseAction<StateType extends string> =
       type: ParseActionType.CONSUME
     }
   | {
-      type: ParseActionType.NOOP
+      type: ParseActionType.NEXT
     }
   | {
-      type: ParseActionType.NEXT
+      type: ParseActionType.SWITCH_CONTEXT
+      context: ContextType
     }
 
 export function consume(): {
@@ -43,8 +46,11 @@ export function next(): {
   }
 }
 
-export function noop(): { type: ParseActionType.NOOP } {
+export function switchContext(
+  context: ContextType
+): { type: ParseActionType.SWITCH_CONTEXT; context: ContextType } {
   return {
-    type: ParseActionType.NOOP
+    type: ParseActionType.SWITCH_CONTEXT,
+    context
   }
 }

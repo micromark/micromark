@@ -1,8 +1,8 @@
 /* eslint-disable no-caller */
 
+import { reconsume } from './actions'
 import * as c from './characters'
-import { TokenizeType, ContextHandler } from './types'
-import { reconsume, noop } from './actions'
+import { ContextHandler, TokenizeType } from './types'
 
 const fromCode = String.fromCharCode
 
@@ -19,33 +19,34 @@ export const contextHandler: ContextHandler<StateType> = {
 }
 
 // Paragraph.
-function startState(tokenizer: TokenizeType) {
+function* startState(tokenizer: TokenizeType) {
   const info = tokenizer.contextInfo
 
   info.initialIndex = tokenizer.offset
   info.contentStart = tokenizer.offset
   info.contentEnd = null
 
-  return reconsume(StateType.CONTENT_STATE)
+  yield reconsume(StateType.CONTENT_STATE)
 }
 
-function contentState(tokenizer: TokenizeType, code: number | null) {
+function* contentState(tokenizer: TokenizeType, code: number | null) {
   const info = tokenizer.contextInfo
 
   switch (code) {
     case c.eof:
     case c.nil:
     case c.lineFeed:
-      return reconsume(StateType.END_STATE)
+      yield reconsume(StateType.END_STATE)
+      break
     default:
       info.contentEnd = ++tokenizer.offset
       // tslint:disable-next-line:no-console
-      console.log('p:consume: %s', contentState.name, code, [fromCode(code)])
-      return noop()
+      console.log('p:consume: %s', contentState.name, code, [fromCode(code!)])
+      break
   }
 }
 
-function endState(tokenizer: TokenizeType) {
+function* endState(tokenizer: TokenizeType): IterableIterator<any> {
   const s = tokenizer.contextInfo
   const data = tokenizer.data
   const tokens = [{ type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd) }]
@@ -53,5 +54,4 @@ function endState(tokenizer: TokenizeType) {
   // tslint:disable-next-line:no-console
   console.log('p: done! ', tokens)
   tokenizer.offset++
-  return noop()
 }

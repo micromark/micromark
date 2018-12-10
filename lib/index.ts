@@ -1,9 +1,9 @@
-import * as c from './characters'
+import { ParseActionType } from './actions'
 import { contextHandler as atxHeading } from './atx-heading'
 import { contextHandler as block } from './block'
+import * as c from './characters'
 import { contextHandler as paragraph } from './paragraph'
-import { ContextType, TokenizeType, ContextHandlers, ContextHandler } from './types'
-import { ParseActionType, noop } from './actions'
+import { ContextHandler, ContextHandlers, ContextType, TokenizeType } from './types'
 
 export class Tokenizer implements TokenizeType {
   public data = ''
@@ -60,6 +60,38 @@ export class Tokenizer implements TokenizeType {
     return { line, column, offset }
   }
 
+  public exec() {
+    const stack = [this.next()]
+    while (stack.length > 0) {
+      const { done: isTaskFinished, value: task } = stack[stack.length - 1].next()
+      if (isTaskFinished) {
+        stack.pop()
+        continue
+      }
+      switch (task.type) {
+        case ParseActionType.CONSUME:
+          this.consume()
+          break
+        case ParseActionType.NEXT:
+          stack.push(this.next())
+          break
+        case ParseActionType.RECONSUME:
+          stack.push(this.reconsume(task.state))
+          break
+        case ParseActionType.SWITCH_CONTEXT:
+          this.switch(task.context)
+          break
+      }
+    }
+  }
+
+  private switch(name: ContextType) {
+    this.context = name
+    this.stateHandlers = this.contextHandlers[name]
+    this.contextInfo = {}
+    this.state = 'START_STATE'
+  }
+
   private consume() {
     const code = this.current()
     const tabSize = this.tabSize
@@ -91,30 +123,5 @@ export class Tokenizer implements TokenizeType {
     }
 
     return fn(this, this.current())
-  }
-
-  public exec() {
-    let task = this.next()
-    while (task.type !== ParseActionType.NOOP) {
-      switch (task.type) {
-        case ParseActionType.CONSUME:
-          this.consume()
-          task = noop()
-          break
-        case ParseActionType.RECONSUME:
-          task = this.reconsume(task.state)
-          break
-        case ParseActionType.NEXT:
-          task = this.next()
-          break
-      }
-    }
-  }
-
-  public switch(name: ContextType) {
-    this.context = name
-    this.stateHandlers = this.contextHandlers[name]
-    this.contextInfo = {}
-    this.state = 'START_STATE'
   }
 }
