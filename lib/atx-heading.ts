@@ -9,7 +9,10 @@ const T_SPACE = 'space'
 
 type ParsingLocation = { start: Position; end?: Position } | null
 
-interface TokenType { type: string; position: NonNullable<ParsingLocation> }
+interface TokenType {
+  type: string
+  position: NonNullable<ParsingLocation>
+}
 
 export interface ContextInfo {
   token: TokenType

@@ -14,6 +14,23 @@ describe('index', () => {
   it('should parse simple example', () => {
     const tokenizer = new Tokenizer()
     tokenizer.write('# Hello!')
+    tokenizer.end()
     expect(logs).toMatchSnapshot()
+  })
+
+  it('should parse partial data', () => {
+    const runTokenizer = (dataStream: string[]) => {
+      const tokenizer = new Tokenizer()
+      for (const data of dataStream) {
+        tokenizer.write(data)
+      }
+      tokenizer.end()
+    }
+    runTokenizer(['#', '# Hello,', ' Wor', 'ld!'])
+    const firstLogs = logs
+    // TODO use something else than logs
+    logs = []
+    runTokenizer(['## Hello, World!'])
+    expect(logs).toEqual(firstLogs)
   })
 })

@@ -33,9 +33,13 @@ export class Tokenizer implements TokenizeType<any> {
   public write(chunk: string) {
     this.data += chunk
 
-    while (this.offset <= this.data.length) {
+    while (this.offset < this.data.length) {
       this.exec()
     }
+  }
+
+  public end() {
+    this.exec()
   }
 
   public current() {
