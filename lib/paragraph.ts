@@ -6,6 +6,12 @@ import { ContextHandler, TokenizeType } from './types'
 
 const fromCode = String.fromCharCode
 
+export interface ContextInfo {
+  initialIndex: number
+  contentStart: number
+  contentEnd: number | undefined
+}
+
 export enum StateType {
   START_STATE = 'START_STATE',
   CONTENT_STATE = 'CONTENT_STATE',
@@ -19,17 +25,17 @@ export const contextHandler: ContextHandler<StateType> = {
 }
 
 // Paragraph.
-function* startState(tokenizer: TokenizeType) {
+function* startState(tokenizer: TokenizeType<ContextInfo>) {
   const info = tokenizer.contextInfo
 
   info.initialIndex = tokenizer.offset
   info.contentStart = tokenizer.offset
-  info.contentEnd = null
+  info.contentEnd = undefined
 
   yield reconsume(StateType.CONTENT_STATE)
 }
 
-function* contentState(tokenizer: TokenizeType, code: number | null) {
+function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
 
   switch (code) {
@@ -46,10 +52,10 @@ function* contentState(tokenizer: TokenizeType, code: number | null) {
   }
 }
 
-function* endState(tokenizer: TokenizeType): IterableIterator<any> {
-  const s = tokenizer.contextInfo
+function* endState(tokenizer: TokenizeType<ContextInfo>): IterableIterator<any> {
+  const info = tokenizer.contextInfo
   const data = tokenizer.data
-  const tokens = [{ type: 'paragraph', value: data.slice(s.contentStart, s.contentEnd) }]
+  const tokens = [{ type: 'paragraph', value: data.slice(info.contentStart, info.contentEnd) }]
 
   // tslint:disable-next-line:no-console
   console.log('p: done! ', tokens)

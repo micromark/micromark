@@ -1,11 +1,29 @@
 import { consume, next, reconsume, switchContext } from './actions'
 import * as c from './characters'
-import { ContextHandler, TokenizeType } from './types'
+import { ContextHandler, Position, TokenizeType } from './types'
 
 const maxOpeningSequenceBeforeSize = 3
 const maxOpeningSequenceSize = 6
 
 const T_SPACE = 'space'
+
+type ParsingLocation = { start: Position; end?: Position } | null
+
+interface TokenType { type: string; position: NonNullable<ParsingLocation> }
+
+export interface ContextInfo {
+  token: TokenType
+  tokens: TokenType[]
+  rank: number
+  initial: number
+  openingSequenceBefore: ParsingLocation // TODO find out why this is needed
+  openingSequence: ParsingLocation
+  openingSequenceAfter: ParsingLocation
+  content: ParsingLocation
+  closingSequenceBefore: ParsingLocation
+  closingSequence: ParsingLocation
+  closingSequenceAfter: ParsingLocation
+}
 
 export enum StateType {
   START_STATE = 'START_STATE',
@@ -62,7 +80,7 @@ export const contextHandler: ContextHandler<StateType> = {
 // ^^^ before
 //    ^^^ value
 // after ^^^
-function* startState(tokenizer: TokenizeType) {
+function* startState(tokenizer: TokenizeType<ContextInfo>) {
   const info = tokenizer.contextInfo
 
   info.tokens = []
@@ -79,7 +97,7 @@ function* startState(tokenizer: TokenizeType) {
   yield reconsume(StateType.OPENING_SEQUENCE_BEFORE_STATE)
 }
 
-function* openingSequenceBeforeState(tokenizer: TokenizeType, code: number | null) {
+function* openingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
   let tail = info.token
 
@@ -110,7 +128,7 @@ function* openingSequenceBeforeState(tokenizer: TokenizeType, code: number | nul
   }
 }
 
-function* openingSequenceState(tokenizer: TokenizeType, code: number | null) {
+function* openingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
   const sequence = info.openingSequence
 
@@ -151,7 +169,7 @@ function* openingSequenceState(tokenizer: TokenizeType, code: number | null) {
   }
 }
 
-function* openingSequenceAfterState(tokenizer: TokenizeType, code: number | null) {
+function* openingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
   const after = info.openingSequenceAfter
 
@@ -192,7 +210,7 @@ function* openingSequenceAfterState(tokenizer: TokenizeType, code: number | null
   }
 }
 
-function* contentState(tokenizer: TokenizeType, code: number | null) {
+function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
   const content = info.content
 
@@ -230,7 +248,7 @@ function* contentState(tokenizer: TokenizeType, code: number | null) {
   }
 }
 
-function* closingSequenceBeforeState(tokenizer: TokenizeType, code: number | null) {
+function* closingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
   const before = info.closingSequenceBefore
 
@@ -266,9 +284,9 @@ function* closingSequenceBeforeState(tokenizer: TokenizeType, code: number | nul
   }
 }
 
-function* closingSequenceState(tokenizer: TokenizeType, code: number | null) {
+function* closingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  let sequence = info.closingSequence
+  const sequence = info.closingSequence
 
   switch (code) {
     case c.eof:
@@ -290,8 +308,7 @@ function* closingSequenceState(tokenizer: TokenizeType, code: number | null) {
       break
     case c.numberSign:
       if (sequence === null) {
-        sequence = { start: tokenizer.now() }
-        info.closingSequence = sequence
+        info.closingSequence = { start: tokenizer.now() }
       }
 
       yield consume()
@@ -304,7 +321,7 @@ function* closingSequenceState(tokenizer: TokenizeType, code: number | null) {
   }
 }
 
-function* closingSequenceAfterState(tokenizer: TokenizeType, code: number | null) {
+function* closingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
   const after = info.closingSequenceAfter
 
@@ -334,7 +351,7 @@ function* closingSequenceAfterState(tokenizer: TokenizeType, code: number | null
   }
 }
 
-function* bogusState(tokenizer: TokenizeType) {
+function* bogusState(tokenizer: TokenizeType<ContextInfo>) {
   const info = tokenizer.contextInfo
 
   yield switchContext(tokenizer.returnContext!)
@@ -343,11 +360,11 @@ function* bogusState(tokenizer: TokenizeType) {
   yield next()
 }
 
-function* endState(tokenizer: TokenizeType) {
-  const s = tokenizer.contextInfo
+function* endState(tokenizer: TokenizeType<ContextInfo>) {
+  const info = tokenizer.contextInfo
 
   // tslint:disable-next-line:no-console
-  console.log('heading: ', s)
+  console.log('heading: ', info)
 
   yield consume()
 

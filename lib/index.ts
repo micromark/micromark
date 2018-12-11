@@ -5,7 +5,7 @@ import * as c from './characters'
 import { contextHandler as paragraph } from './paragraph'
 import { ContextHandler, ContextHandlers, ContextType, TokenizeType } from './types'
 
-export class Tokenizer implements TokenizeType {
+export class Tokenizer implements TokenizeType<any> {
   public data = ''
   public line = 1
   public column = 1

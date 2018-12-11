@@ -1,4 +1,4 @@
-import { ParseAction } from './actions'
+import { ContextType, ParseAction } from './actions'
 export { ContextType } from './actions'
 
 export interface Position {
@@ -8,8 +8,8 @@ export interface Position {
 }
 
 // TODO this is temporary until the circular dependency between Tokenizer and the context handlers is solved
-export interface TokenizeType {
-  contextInfo: any // TODO use a more specific type
+export interface TokenizeType<ContextInfo> {
+  contextInfo: ContextInfo
   context: ContextType
   returnContext?: ContextType
   state: string // TODO use a more specific type
@@ -20,7 +20,7 @@ export interface TokenizeType {
 }
 
 export type ContextStateHandler<StateType extends string> = (
-  tokenizer: TokenizeType,
+  tokenizer: TokenizeType<any>,
   code: number | null
 ) => IterableIterator<ParseAction<StateType>>
 

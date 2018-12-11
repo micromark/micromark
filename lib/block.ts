@@ -16,16 +16,16 @@ export const contextHandler: ContextHandler<StateType> = {
   [StateType.PARAGRAPH_STATE]: attempt('paragraph', StateType.BOGUS_STATE)
 }
 
-function* startState(_tokenizer: TokenizeType) {
+function* startState(_tokenizer: TokenizeType<void>) {
   yield reconsume(StateType.ATX_HEADING_STATE)
 }
 
-function* bogusState(_tokenizer: TokenizeType, code: number | null): IterableIterator<never> {
+function* bogusState(_tokenizer: TokenizeType<void>, code: number | null): IterableIterator<never> {
   throw new Error(`Could not parse code ${fromCode(code || 0)}`)
 }
 
 function attempt(context: ContextType, bogus: StateType) {
-  return function*(tokenizer: TokenizeType, code: number | null): IterableIterator<any> {
+  return function*(tokenizer: TokenizeType<void>, code: number | null) {
     // When done, go back to this context.
     tokenizer.returnContext = tokenizer.context
     yield switchContext(context)
