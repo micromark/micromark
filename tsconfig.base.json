@@ -15,7 +15,9 @@
 
     "composite": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+
+    "importHelpers": true
   },
   "include": ["bin/**/*", "lib/**/*"],
   "exclude": ["node_modules", "built/**", "**/__tests__/*"]
