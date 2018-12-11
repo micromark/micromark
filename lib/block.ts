@@ -1,23 +1,23 @@
-const fromCode = String.fromCharCode
 import { reconsume, switchContext } from './actions'
 import { ContextHandler, ContextType, TokenizeType } from './types'
+const fromCode = String.fromCharCode
 
-export enum StateType {
-  START_STATE = 'START_STATE',
+export type StateType = 'START_STATE' | 'BOGUS_STATE' | 'ATX_HEADING_STATE' | 'PARAGRAPH_STATE'
+
+const START_STATE = 'START_STATE',
   BOGUS_STATE = 'BOGUS_STATE',
   ATX_HEADING_STATE = 'ATX_HEADING_STATE',
   PARAGRAPH_STATE = 'PARAGRAPH_STATE'
-}
 
 export const contextHandler: ContextHandler<StateType> = {
-  [StateType.START_STATE]: startState,
-  [StateType.BOGUS_STATE]: bogusState,
-  [StateType.ATX_HEADING_STATE]: attempt('atxHeading', StateType.PARAGRAPH_STATE),
-  [StateType.PARAGRAPH_STATE]: attempt('paragraph', StateType.BOGUS_STATE)
+  [START_STATE]: startState,
+  [BOGUS_STATE]: bogusState,
+  [ATX_HEADING_STATE]: attempt('atxHeading', PARAGRAPH_STATE),
+  [PARAGRAPH_STATE]: attempt('paragraph', BOGUS_STATE)
 }
 
 function* startState(_tokenizer: TokenizeType<void>) {
-  yield reconsume(StateType.ATX_HEADING_STATE)
+  yield reconsume(ATX_HEADING_STATE)
 }
 
 function* bogusState(_tokenizer: TokenizeType<void>, code: number | null): IterableIterator<never> {

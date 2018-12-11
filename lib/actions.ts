@@ -1,56 +1,56 @@
 export type ContextType = 'atxHeading' | 'paragraph' | 'block'
 
-export enum ParseActionType {
-  CONSUME = 'CONSUME',
-  RECONSUME = 'RECONSUME',
-  NEXT = 'NEXT',
-  SWITCH_CONTEXT = 'SWITCH_CONTEXT'
-}
+export type ParseActionType = 'CONSUME' | 'RECONSUME' | 'NEXT' | 'SWITCH_CONTEXT'
+
+export const CONSUME = 'CONSUME'
+export const RECONSUME = 'RECONSUME'
+export const NEXT = 'NEXT'
+export const SWITCH_CONTEXT = 'SWITCH_CONTEXT'
 
 export type ParseAction<StateType extends string> =
   | {
-      type: ParseActionType.RECONSUME
+      type: 'RECONSUME'
       state: StateType
     }
   | {
-      type: ParseActionType.CONSUME
+      type: 'CONSUME'
     }
   | {
-      type: ParseActionType.NEXT
+      type: 'NEXT'
     }
   | {
-      type: ParseActionType.SWITCH_CONTEXT
+      type: 'SWITCH_CONTEXT'
       context: ContextType
     }
 
 export function consume(): {
-  type: ParseActionType.CONSUME
+  type: 'CONSUME'
 } {
   return {
-    type: ParseActionType.CONSUME
+    type: CONSUME
   }
 }
 
 export function reconsume<StateType extends string>(state: StateType): ParseAction<StateType> {
   return {
-    type: ParseActionType.RECONSUME,
+    type: 'RECONSUME',
     state
   }
 }
 
 export function next(): {
-  type: ParseActionType.NEXT
+  type: 'NEXT'
 } {
   return {
-    type: ParseActionType.NEXT
+    type: NEXT
   }
 }
 
 export function switchContext(
   context: ContextType
-): { type: ParseActionType.SWITCH_CONTEXT; context: ContextType } {
+): { type: 'SWITCH_CONTEXT'; context: ContextType } {
   return {
-    type: ParseActionType.SWITCH_CONTEXT,
+    type: SWITCH_CONTEXT,
     context
   }
 }

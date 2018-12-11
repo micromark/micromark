@@ -1,7 +1,7 @@
-import { ParseActionType } from './actions'
+import { CONSUME, RECONSUME, NEXT, SWITCH_CONTEXT } from './actions'
 import { contextHandler as atxHeading } from './atx-heading'
 import { contextHandler as block } from './block'
-import * as c from './characters'
+import { replacementCharacter, tab, lineFeed, eof } from './characters'
 import { contextHandler as paragraph } from './paragraph'
 import { ContextHandler, ContextHandlers, ContextType, TokenizeType } from './types'
 
@@ -56,7 +56,7 @@ export class Tokenizer implements TokenizeType<any> {
     }
 
     // Use `�` instead of `\0` (https://spec.commonmark.org/0.28/#insecure-characters).
-    return this.data.charCodeAt(offset) || c.replacementCharacter
+    return this.data.charCodeAt(offset) || replacementCharacter
   }
 
   public now() {
@@ -73,16 +73,16 @@ export class Tokenizer implements TokenizeType<any> {
         continue
       }
       switch (task.type) {
-        case ParseActionType.CONSUME:
+        case CONSUME:
           this.consume()
           break
-        case ParseActionType.NEXT:
+        case NEXT:
           stack.push(this.next())
           break
-        case ParseActionType.RECONSUME:
+        case RECONSUME:
           stack.push(this.reconsume(task.state))
           break
-        case ParseActionType.SWITCH_CONTEXT:
+        case SWITCH_CONTEXT:
           this.switch(task.context)
           break
       }
@@ -100,10 +100,10 @@ export class Tokenizer implements TokenizeType<any> {
     const code = this.current()
     const tabSize = this.tabSize
 
-    if (code === null || code === c.eof || code === c.lineFeed) {
+    if (code === null || code === eof || code === lineFeed) {
       this.line++
       this.column = 0
-    } else if (code === c.tab) {
+    } else if (code === tab) {
       this.virtualColumn = Math.floor(this.virtualColumn / tabSize) * tabSize + tabSize
     }
 

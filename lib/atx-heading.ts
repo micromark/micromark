@@ -1,5 +1,5 @@
 import { consume, next, reconsume, switchContext } from './actions'
-import * as c from './characters'
+import { space, numberSign, tab, eof, lineFeed, carriageReturn } from './characters'
 import { ContextHandler, Position, TokenizeType } from './types'
 
 const maxOpeningSequenceBeforeSize = 3
@@ -15,7 +15,7 @@ interface TokenType {
 }
 
 export interface ContextInfo {
-  token: TokenType
+  token?: TokenType
   tokens: TokenType[]
   rank: number
   initial: number
@@ -28,8 +28,19 @@ export interface ContextInfo {
   closingSequenceAfter: ParsingLocation
 }
 
-export enum StateType {
-  START_STATE = 'START_STATE',
+export type StateType =
+  | 'START_STATE'
+  | 'END_STATE'
+  | 'BOGUS_STATE'
+  | 'OPENING_SEQUENCE_BEFORE_STATE'
+  | 'OPENING_SEQUENCE_STATE'
+  | 'OPENING_SEQUENCE_AFTER_STATE'
+  | 'CONTENT_STATE'
+  | 'CLOSING_SEQUENCE_BEFORE_STATE'
+  | 'CLOSING_SEQUENCE_STATE'
+  | 'CLOSING_SEQUENCE_AFTER_STATE'
+
+const START_STATE = 'START_STATE',
   END_STATE = 'END_STATE',
   BOGUS_STATE = 'BOGUS_STATE',
   OPENING_SEQUENCE_BEFORE_STATE = 'OPENING_SEQUENCE_BEFORE_STATE',
@@ -39,19 +50,18 @@ export enum StateType {
   CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE',
   CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE',
   CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
-}
 
 export const contextHandler: ContextHandler<StateType> = {
-  [StateType.START_STATE]: startState,
-  [StateType.END_STATE]: endState,
-  [StateType.BOGUS_STATE]: bogusState,
-  [StateType.OPENING_SEQUENCE_BEFORE_STATE]: openingSequenceBeforeState,
-  [StateType.OPENING_SEQUENCE_STATE]: openingSequenceState,
-  [StateType.OPENING_SEQUENCE_AFTER_STATE]: openingSequenceAfterState,
-  [StateType.CONTENT_STATE]: contentState,
-  [StateType.CLOSING_SEQUENCE_BEFORE_STATE]: closingSequenceBeforeState,
-  [StateType.CLOSING_SEQUENCE_STATE]: closingSequenceState,
-  [StateType.CLOSING_SEQUENCE_AFTER_STATE]: closingSequenceAfterState
+  [START_STATE]: startState,
+  [END_STATE]: endState,
+  [BOGUS_STATE]: bogusState,
+  [OPENING_SEQUENCE_BEFORE_STATE]: openingSequenceBeforeState,
+  [OPENING_SEQUENCE_STATE]: openingSequenceState,
+  [OPENING_SEQUENCE_AFTER_STATE]: openingSequenceAfterState,
+  [CONTENT_STATE]: contentState,
+  [CLOSING_SEQUENCE_BEFORE_STATE]: closingSequenceBeforeState,
+  [CLOSING_SEQUENCE_STATE]: closingSequenceState,
+  [CLOSING_SEQUENCE_AFTER_STATE]: closingSequenceAfterState
 }
 
 // ATX heading. Such as:
@@ -84,20 +94,20 @@ export const contextHandler: ContextHandler<StateType> = {
 //    ^^^ value
 // after ^^^
 function* startState(tokenizer: TokenizeType<ContextInfo>) {
-  const info = tokenizer.contextInfo
+  tokenizer.contextInfo = {
+    tokens: [],
+    rank: 0,
+    initial: tokenizer.offset,
+    openingSequenceBefore: null,
+    openingSequence: null,
+    openingSequenceAfter: null,
+    content: null,
+    closingSequenceBefore: null,
+    closingSequence: null,
+    closingSequenceAfter: null
+  }
 
-  info.tokens = []
-  info.rank = 0
-  info.initial = tokenizer.offset
-  info.openingSequenceBefore = null
-  info.openingSequence = null
-  info.openingSequenceAfter = null
-  info.content = null
-  info.closingSequenceBefore = null
-  info.closingSequence = null
-  info.closingSequenceAfter = null
-
-  yield reconsume(StateType.OPENING_SEQUENCE_BEFORE_STATE)
+  yield reconsume(OPENING_SEQUENCE_BEFORE_STATE)
 }
 
 function* openingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
@@ -105,9 +115,9 @@ function* openingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code:
   let tail = info.token
 
   switch (code) {
-    case c.space:
+    case space:
       if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
-        yield reconsume(StateType.BOGUS_STATE)
+        yield reconsume(BOGUS_STATE)
         break
       }
       if (!tail) {
@@ -118,15 +128,15 @@ function* openingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code:
 
       yield consume()
       break
-    case c.numberSign:
+    case numberSign:
       if (tail) {
         tail.position.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.OPENING_SEQUENCE_STATE)
+      yield reconsume(OPENING_SEQUENCE_STATE)
       break
     default:
-      yield reconsume(StateType.BOGUS_STATE)
+      yield reconsume(BOGUS_STATE)
       break
   }
 }
@@ -136,25 +146,25 @@ function* openingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
   const sequence = info.openingSequence
 
   switch (code) {
-    case c.eof:
-    case c.lineFeed:
-    case c.carriageReturn:
+    case eof:
+    case lineFeed:
+    case carriageReturn:
       if (sequence) {
         sequence.end = tokenizer.now()
       }
-      yield reconsume(StateType.END_STATE)
+      yield reconsume(END_STATE)
       break
-    case c.tab:
-    case c.space:
+    case tab:
+    case space:
       if (sequence) {
         sequence.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.OPENING_SEQUENCE_AFTER_STATE)
+      yield reconsume(OPENING_SEQUENCE_AFTER_STATE)
       break
-    case c.numberSign:
+    case numberSign:
       if (info.rank === maxOpeningSequenceSize) {
-        yield reconsume(StateType.BOGUS_STATE)
+        yield reconsume(BOGUS_STATE)
         break
       }
       if (sequence === null) {
@@ -167,7 +177,7 @@ function* openingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
     default:
       // Any other character is a bogus heading.
       // CommonMark requires a the opening sequence after space.
-      yield reconsume(StateType.BOGUS_STATE)
+      yield reconsume(BOGUS_STATE)
       break
   }
 }
@@ -177,38 +187,38 @@ function* openingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: 
   const after = info.openingSequenceAfter
 
   switch (code) {
-    case c.eof:
-    case c.lineFeed:
-    case c.carriageReturn:
+    case eof:
+    case lineFeed:
+    case carriageReturn:
       if (after) {
         after.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.END_STATE)
+      yield reconsume(END_STATE)
       break
-    case c.tab:
-    case c.space:
+    case tab:
+    case space:
       if (after === null) {
         info.openingSequenceAfter = { start: tokenizer.now() }
       }
 
       yield consume()
       break
-    case c.numberSign:
+    case numberSign:
       if (after) {
         after.end = tokenizer.now()
       }
 
       // This could also be a hash in the content, CLOSING_SEQUENCE_STATE
       // switches back.
-      yield reconsume(StateType.CLOSING_SEQUENCE_STATE)
+      yield reconsume(CLOSING_SEQUENCE_STATE)
       break
     default:
       if (after) {
         after.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.CONTENT_STATE)
+      yield reconsume(CONTENT_STATE)
       break
   }
 }
@@ -218,28 +228,28 @@ function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null
   const content = info.content
 
   switch (code) {
-    case c.eof:
-    case c.lineFeed:
-    case c.carriageReturn:
+    case eof:
+    case lineFeed:
+    case carriageReturn:
       if (content) {
         content.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.END_STATE)
+      yield reconsume(END_STATE)
       break
-    case c.space:
+    case space:
       if (content) {
         content.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.CLOSING_SEQUENCE_BEFORE_STATE)
+      yield reconsume(CLOSING_SEQUENCE_BEFORE_STATE)
       break
-    case c.numberSign:
+    case numberSign:
       if (content) {
         content.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.CLOSING_SEQUENCE_STATE)
+      yield reconsume(CLOSING_SEQUENCE_STATE)
       break
     default:
       if (content === null) {
@@ -256,33 +266,33 @@ function* closingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code:
   const before = info.closingSequenceBefore
 
   switch (code) {
-    case c.eof:
-    case c.lineFeed:
-    case c.carriageReturn:
+    case eof:
+    case lineFeed:
+    case carriageReturn:
       if (before) {
         before.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.END_STATE)
+      yield reconsume(END_STATE)
       break
-    case c.tab:
-    case c.space:
+    case tab:
+    case space:
       if (info.closingSequenceBefore === null) {
         info.closingSequenceBefore = { start: tokenizer.now() }
       }
 
       yield consume()
       break
-    case c.numberSign:
+    case numberSign:
       if (before) {
         before.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.CLOSING_SEQUENCE_STATE)
+      yield reconsume(CLOSING_SEQUENCE_STATE)
       break
     default:
       info.closingSequenceBefore = null
-      yield reconsume(StateType.CONTENT_STATE)
+      yield reconsume(CONTENT_STATE)
       break
   }
 }
@@ -292,24 +302,24 @@ function* closingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
   const sequence = info.closingSequence
 
   switch (code) {
-    case c.eof:
-    case c.lineFeed:
-    case c.carriageReturn:
+    case eof:
+    case lineFeed:
+    case carriageReturn:
       if (sequence) {
         sequence.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.END_STATE)
+      yield reconsume(END_STATE)
       break
-    case c.tab:
-    case c.space:
+    case tab:
+    case space:
       if (sequence) {
         sequence.end = tokenizer.now()
       }
 
-      yield reconsume(StateType.CLOSING_SEQUENCE_AFTER_STATE)
+      yield reconsume(CLOSING_SEQUENCE_AFTER_STATE)
       break
-    case c.numberSign:
+    case numberSign:
       if (sequence === null) {
         info.closingSequence = { start: tokenizer.now() }
       }
@@ -319,7 +329,7 @@ function* closingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
     default:
       info.closingSequenceBefore = null
       info.closingSequence = null
-      yield reconsume(StateType.CONTENT_STATE)
+      yield reconsume(CONTENT_STATE)
       break
   }
 }
@@ -329,16 +339,16 @@ function* closingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: 
   const after = info.closingSequenceAfter
 
   switch (code) {
-    case c.eof:
-    case c.lineFeed:
-    case c.carriageReturn:
+    case eof:
+    case lineFeed:
+    case carriageReturn:
       if (after) {
         after.end = tokenizer.now()
       }
-      yield reconsume(StateType.END_STATE)
+      yield reconsume(END_STATE)
       break
-    case c.tab:
-    case c.space:
+    case tab:
+    case space:
       if (after === null) {
         info.closingSequenceAfter = { start: tokenizer.now() }
       }
@@ -349,7 +359,7 @@ function* closingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: 
       info.closingSequenceBefore = null
       info.closingSequence = null
       info.closingSequenceAfter = null
-      yield reconsume(StateType.CONTENT_STATE)
+      yield reconsume(CONTENT_STATE)
       break
   }
 }
