@@ -123,7 +123,7 @@ export class Tokenizer implements TokenizeType<any> {
     const fn = this.stateHandlers![this.state]
 
     if (!fn) {
-      throw new Error('Cannot handle `' + this.context + '.' + this.state + '`')
+      throw new Error(`Cannot handle \`${this.context}.${this.state}\``)
     }
 
     return fn(this, this.current())
