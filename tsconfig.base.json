@@ -17,7 +17,11 @@
     "declaration": true,
     "declarationMap": true,
 
-    "importHelpers": true
+    "removeComments": true,
+
+    // We will handle importing from 'tslib' ourselves. See https://github.com/Microsoft/TypeScript/issues/16999
+    "importHelpers": false,
+    "noEmitHelpers": true
   },
   "include": ["bin/**/*", "lib/**/*"],
   "exclude": ["node_modules", "built/**", "**/__tests__/*"]

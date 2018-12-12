@@ -2,6 +2,8 @@
 import { reconsume } from './actions'
 import { eof, nil, lineFeed } from './characters'
 import { ContextHandler, TokenizeType } from './types'
+import { __generator as tslib__generator } from 'tslib'
+export const __generator = tslib__generator
 
 const fromCode = String.fromCharCode
 

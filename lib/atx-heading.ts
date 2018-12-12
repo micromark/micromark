@@ -1,6 +1,8 @@
 import { consume, next, reconsume, switchContext } from './actions'
 import { space, numberSign, tab, eof, lineFeed, carriageReturn } from './characters'
 import { ContextHandler, Position, TokenizeType } from './types'
+import { __generator as tslib__generator } from 'tslib'
+export const __generator = tslib__generator
 
 const maxOpeningSequenceBeforeSize = 3
 const maxOpeningSequenceSize = 6

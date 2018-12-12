@@ -1,5 +1,8 @@
 import { reconsume, switchContext } from './actions'
 import { ContextHandler, ContextType, TokenizeType } from './types'
+import { __generator as tslib__generator } from 'tslib'
+export const __generator = tslib__generator
+
 const fromCode = String.fromCharCode
 
 export type StateType = 'START_STATE' | 'BOGUS_STATE' | 'ATX_HEADING_STATE' | 'PARAGRAPH_STATE'
