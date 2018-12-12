@@ -33,7 +33,7 @@ export function consume(): {
 
 export function reconsume<StateType extends string>(state: StateType): ParseAction<StateType> {
   return {
-    type: 'RECONSUME',
+    type: RECONSUME,
     state
   }
 }
