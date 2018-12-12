@@ -1,7 +1,7 @@
-import { CONSUME, RECONSUME, NEXT, SWITCH_CONTEXT } from './actions'
+import { CONSUME, NEXT, RECONSUME, SWITCH_CONTEXT } from './actions'
 import { contextHandler as atxHeading } from './atx-heading'
 import { contextHandler as block } from './block'
-import { replacementCharacter, tab, lineFeed, eof } from './characters'
+import { eof, lineFeed, replacementCharacter, tab } from './characters'
 import { contextHandler as paragraph } from './paragraph'
 import { ContextHandler, ContextHandlers, ContextType, TokenizeType } from './types'
 

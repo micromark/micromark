@@ -1,7 +1,8 @@
-import { consume, next, reconsume, switchContext } from './actions'
-import { space, numberSign, tab, eof, lineFeed, carriageReturn } from './characters'
-import { ContextHandler, Position, TokenizeType } from './types'
 import { __generator as tslib__generator } from 'tslib'
+import { consume, next, reconsume, switchContext } from './actions'
+import { carriageReturn, eof, lineFeed, numberSign, space, tab } from './characters'
+import { ContextHandler, Position, TokenizeType } from './types'
+// tslint:disable-next-line:variable-name
 export const __generator = tslib__generator
 
 const maxOpeningSequenceBeforeSize = 3
@@ -42,16 +43,16 @@ export type StateType =
   | 'CLOSING_SEQUENCE_STATE'
   | 'CLOSING_SEQUENCE_AFTER_STATE'
 
-const START_STATE = 'START_STATE',
-  END_STATE = 'END_STATE',
-  BOGUS_STATE = 'BOGUS_STATE',
-  OPENING_SEQUENCE_BEFORE_STATE = 'OPENING_SEQUENCE_BEFORE_STATE',
-  OPENING_SEQUENCE_STATE = 'OPENING_SEQUENCE_STATE',
-  OPENING_SEQUENCE_AFTER_STATE = 'OPENING_SEQUENCE_AFTER_STATE',
-  CONTENT_STATE = 'CONTENT_STATE',
-  CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE',
-  CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE',
-  CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
+const START_STATE = 'START_STATE'
+const END_STATE = 'END_STATE'
+const BOGUS_STATE = 'BOGUS_STATE'
+const OPENING_SEQUENCE_BEFORE_STATE = 'OPENING_SEQUENCE_BEFORE_STATE'
+const OPENING_SEQUENCE_STATE = 'OPENING_SEQUENCE_STATE'
+const OPENING_SEQUENCE_AFTER_STATE = 'OPENING_SEQUENCE_AFTER_STATE'
+const CONTENT_STATE = 'CONTENT_STATE'
+const CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE'
+const CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE'
+const CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
 
 export const contextHandler: ContextHandler<StateType> = {
   [START_STATE]: startState,

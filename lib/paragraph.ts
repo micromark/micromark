@@ -1,8 +1,8 @@
-/* eslint-disable no-caller */
-import { reconsume } from './actions'
-import { eof, nil, lineFeed } from './characters'
-import { ContextHandler, TokenizeType } from './types'
 import { __generator as tslib__generator } from 'tslib'
+import { reconsume } from './actions'
+import { eof, lineFeed, nil } from './characters'
+import { ContextHandler, TokenizeType } from './types'
+// tslint:disable-next-line:variable-name
 export const __generator = tslib__generator
 
 const fromCode = String.fromCharCode
@@ -15,9 +15,9 @@ export interface ContextInfo {
 
 export type StateType = 'START_STATE' | 'CONTENT_STATE' | 'END_STATE'
 
-const START_STATE = 'START_STATE',
-  CONTENT_STATE = 'CONTENT_STATE',
-  END_STATE = 'END_STATE'
+const START_STATE = 'START_STATE'
+const CONTENT_STATE = 'CONTENT_STATE'
+const END_STATE = 'END_STATE'
 
 export const contextHandler: ContextHandler<StateType> = {
   [START_STATE]: startState,

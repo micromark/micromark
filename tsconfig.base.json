@@ -17,8 +17,6 @@
     "declaration": true,
     "declarationMap": true,
 
-    "removeComments": true,
-
     // We will handle importing from 'tslib' ourselves. See https://github.com/Microsoft/TypeScript/issues/16999
     "importHelpers": false,
     "noEmitHelpers": true
