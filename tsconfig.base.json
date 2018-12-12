@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2018"],
+    "lib": ["es2018"],
 
     "sourceMap": true,
     "resolveJsonModule": true,
