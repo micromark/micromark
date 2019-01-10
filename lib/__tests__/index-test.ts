@@ -1,17 +1,36 @@
-import sum, { padString } from '../'
+import { Tokenizer } from '../'
 
 describe('index', () => {
-  describe('#default', () => {
-    it('should return the sum of given input numbers', () => {
-      expect(sum(2, 3)).toBe(5)
-    })
+  let logs: any[] = []
+  const mockLogger = jest.fn((...args) => logs.push(args))
+  const originalLogger = console.log
+  beforeEach(() => {
+    logs = []
+    console.log = mockLogger
   })
-  describe('#padString', () => {
-    it('should pad a string evenly on both ends when given an even max length', () => {
-      expect(padString('12', 4, 'o')).toBe('oo12oo')
-    })
-    it('should pad a string unevenly with preference given to the end when given an odd max length', () => {
-      expect(padString('12', 5, 'o')).toBe('oo12ooo')
-    })
+  afterEach(() => {
+    console.log = originalLogger
+  })
+  it('should parse simple example', () => {
+    const tokenizer = new Tokenizer()
+    tokenizer.write('# Hello!')
+    tokenizer.end()
+    expect(logs).toMatchSnapshot()
+  })
+
+  it('should parse partial data', () => {
+    const runTokenizer = (dataStream: string[]) => {
+      const tokenizer = new Tokenizer()
+      for (const data of dataStream) {
+        tokenizer.write(data)
+      }
+      tokenizer.end()
+    }
+    runTokenizer(['#', '# Hello,', ' Wor', 'ld!'])
+    const firstLogs = logs
+    // TODO use something else than logs
+    logs = []
+    runTokenizer(['## Hello, World!'])
+    expect(logs).toEqual(firstLogs)
   })
 })

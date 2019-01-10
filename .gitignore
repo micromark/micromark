@@ -35,7 +35,7 @@ node_modules/
 .envrc
 
 # lockfiles
-.yarn.lock
+yarn.lock
 package-lock.json
 
 # misc
