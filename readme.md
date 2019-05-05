@@ -54,7 +54,7 @@ But we imagine it to be**:
 *   **small** in file size, max 10 kB minzipped, and tiny in memory use
 *   **fast** in speed, compared to existing parsers on real world documents
 *   **safe** to use, it should safely work on untrusted content by default
-*   **compliant** to CommonMark but **extendable** for GFM (GitHub Flavored
+*   **compliant** to CommonMark but **extensible** for GFM (GitHub Flavored
     Markdown), MDX, etc.
 *   **complete**, in that it should give access to all info in the source
     document
