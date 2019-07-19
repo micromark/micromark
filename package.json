@@ -37,7 +37,7 @@
   "bugs": "https://github.com/micromark/micromark/issues",
   "homepage": "https://unified.js.org",
   "devDependencies": {
-    "@types/jest": "^23.3.9",
+    "@types/jest": "^23.3.14",
     "@types/node": "^10.12.9",
     "jest": "^23.6.0",
     "prettier": "^1.15.2",

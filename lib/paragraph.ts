@@ -1,5 +1,5 @@
 import { __generator as tslib__generator } from 'tslib'
-import { reconsume } from './actions'
+import { consume, reconsume, switchContext } from './actions'
 import { eof, lineFeed, nil } from './characters'
 import { ContextHandler, TokenizeType } from './types'
 // tslint:disable-next-line:variable-name
@@ -54,10 +54,12 @@ function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null
 }
 
 function* endState(tokenizer: TokenizeType<ContextInfo>): IterableIterator<any> {
-  const { contextInfo: info, data } = tokenizer
-  const tokens = [{ type: 'paragraph', value: data.slice(info.contentStart, info.contentEnd) }]
+  const info = tokenizer.contextInfo
 
   // tslint:disable-next-line:no-console
-  console.log('p: done! ', tokens)
-  tokenizer.offset++
+  console.log('heading: ', info)
+
+  yield consume()
+
+  yield switchContext(tokenizer.returnContext!)
 }

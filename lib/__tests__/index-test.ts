@@ -1,3 +1,4 @@
+// tslint:disable:no-console
 import { Tokenizer } from '../'
 
 describe('index', () => {

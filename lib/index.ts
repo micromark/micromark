@@ -2,6 +2,7 @@ import { CONSUME, NEXT, RECONSUME, SWITCH_CONTEXT } from './actions'
 import { contextHandler as atxHeading } from './atx-heading'
 import { contextHandler as block } from './block'
 import { eof, lineFeed, replacementCharacter, tab } from './characters'
+import { contextHandler as codeFenced } from './code-fenced'
 import { contextHandler as paragraph } from './paragraph'
 import { ContextHandler, ContextHandlers, ContextType, TokenizeType } from './types'
 
@@ -23,7 +24,8 @@ export class Tokenizer implements TokenizeType<any> {
   public contextHandlers: ContextHandlers = {
     block,
     atxHeading,
-    paragraph
+    paragraph,
+    codeFenced
   }
 
   constructor() {

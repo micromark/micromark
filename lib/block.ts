@@ -6,17 +6,24 @@ export const __generator = tslib__generator
 
 const fromCode = String.fromCharCode
 
-export type StateType = 'START_STATE' | 'BOGUS_STATE' | 'ATX_HEADING_STATE' | 'PARAGRAPH_STATE'
+export type StateType =
+  | 'START_STATE'
+  | 'BOGUS_STATE'
+  | 'ATX_HEADING_STATE'
+  | 'PARAGRAPH_STATE'
+  | 'CODE_FENCED_STATE'
 
 const START_STATE = 'START_STATE'
 const BOGUS_STATE = 'BOGUS_STATE'
 const ATX_HEADING_STATE = 'ATX_HEADING_STATE'
 const PARAGRAPH_STATE = 'PARAGRAPH_STATE'
+const CODE_FENCED_STATE = 'CODE_FENCED_STATE'
 
 export const contextHandler: ContextHandler<StateType> = {
   [START_STATE]: startState,
   [BOGUS_STATE]: bogusState,
-  [ATX_HEADING_STATE]: attempt('atxHeading', PARAGRAPH_STATE),
+  [ATX_HEADING_STATE]: attempt('atxHeading', CODE_FENCED_STATE),
+  [CODE_FENCED_STATE]: attempt('codeFenced', PARAGRAPH_STATE),
   [PARAGRAPH_STATE]: attempt('paragraph', BOGUS_STATE)
 }
 
