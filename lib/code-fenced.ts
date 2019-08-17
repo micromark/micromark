@@ -5,8 +5,7 @@ import { ContextHandler, Position, TokenizeType } from './types'
 // tslint:disable-next-line:variable-name
 export const __generator = tslib__generator
 
-const maxOpeningSequenceBeforeSize = 3
-const T_SPACE = 'space'
+const maxOpeningSequenceSize = 3
 
 type ParsingLocation = { start: Position; end?: Position } | null
 
@@ -20,8 +19,7 @@ export interface ContextInfo {
   tokens: TokenType[]
   initial: number
   infoString: { lang: string | null; meta: string | null }
-  usesGraveAccent: boolean
-  usesTilde: boolean
+  marker: null | 126 /* tilde */ | 96 /* graveAccent */
   openingSequenceBefore: ParsingLocation
   openingSequence: ParsingLocation
   openingSequenceAfter: ParsingLocation
@@ -39,6 +37,9 @@ export type StateType =
   | 'OPENING_SEQUENCE_STATE'
   | 'OPENING_SEQUENCE_AFTER_STATE'
   | 'CONTENT_STATE'
+  | 'CLOSING_SEQUENCE_BEFORE_STATE'
+  | 'CLOSING_SEQUENCE_STATE'
+  | 'CLOSING_SEQUENCE_AFTER_STATE'
 
 const START_STATE = 'START_STATE'
 const END_STATE = 'END_STATE'
@@ -47,6 +48,9 @@ const OPENING_SEQUENCE_BEFORE_STATE = 'OPENING_SEQUENCE_BEFORE_STATE'
 const OPENING_SEQUENCE_STATE = 'OPENING_SEQUENCE_STATE'
 const OPENING_SEQUENCE_AFTER_STATE = 'OPENING_SEQUENCE_AFTER_STATE'
 const CONTENT_STATE = 'CONTENT_STATE'
+const CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE'
+const CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE'
+const CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
 
 export const contextHandler: ContextHandler<StateType> = {
   [START_STATE]: startState,
@@ -55,6 +59,9 @@ export const contextHandler: ContextHandler<StateType> = {
   [OPENING_SEQUENCE_STATE]: openingSequenceState,
   [OPENING_SEQUENCE_AFTER_STATE]: openingSequenceAfterState,
   [CONTENT_STATE]: contentState,
+  [CLOSING_SEQUENCE_BEFORE_STATE]: closingSequenceBeforeState,
+  [CLOSING_SEQUENCE_STATE]: closingSequenceState,
+  [CLOSING_SEQUENCE_AFTER_STATE]: closingSequenceAfterState,
   [BOGUS_STATE]: bogusState
 }
 
@@ -94,8 +101,7 @@ function* startState(tokenizer: TokenizeType<ContextInfo>) {
   tokenizer.contextInfo = {
     tokens: [],
     infoString: { lang: null, meta: null },
-    usesGraveAccent: false,
-    usesTilde: false,
+    marker: null,
     initial: tokenizer.offset,
     openingSequenceBefore: null,
     openingSequence: null,
@@ -111,25 +117,23 @@ function* startState(tokenizer: TokenizeType<ContextInfo>) {
 
 function* openingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  let tail = info.token
+  const before = info.openingSequenceBefore
 
   switch (code) {
     case space:
-      if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
+      if (before && tokenizer.offset - before.start.offset === maxOpeningSequenceSize) {
         yield reconsume(BOGUS_STATE)
         break
       }
-      if (!tail) {
-        tail = { type: T_SPACE, position: { start: tokenizer.now() } }
-        info.token = tail
-        info.tokens.push(tail)
+      if (info.openingSequenceBefore === null) {
+        info.openingSequenceBefore = { start: tokenizer.now() }
       }
       yield consume()
       break
     case graveAccent:
     case tilde:
-      if (tail) {
-        tail.position.end = tokenizer.now()
+      if (before) {
+        before.end = tokenizer.now()
       }
 
       yield reconsume(OPENING_SEQUENCE_STATE)
@@ -146,12 +150,17 @@ function* openingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
 
   switch (code) {
     case eof:
+      if (sequence) {
+        sequence.end = tokenizer.now()
+      }
+      yield reconsume(END_STATE)
+      break
     case lineFeed:
     case carriageReturn:
       if (sequence) {
         sequence.end = tokenizer.now()
       }
-      yield reconsume(END_STATE)
+      yield reconsume(CONTENT_STATE)
       break
     case tab:
     case space:
@@ -162,27 +171,16 @@ function* openingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
       yield reconsume(OPENING_SEQUENCE_AFTER_STATE)
       break
     case graveAccent:
-      if (sequence === null) {
-        info.openingSequence = { start: tokenizer.now() }
-      }
-
-      if (code === graveAccent && info.usesTilde) {
-        yield reconsume(BOGUS_STATE)
-      }
-
-      info.usesGraveAccent = true
-
-      yield consume()
-      break
     case tilde:
       if (sequence === null) {
         info.openingSequence = { start: tokenizer.now() }
       }
-      if (code === tilde && info.usesGraveAccent) {
+      if (info.marker === null) {
+        info.marker = code
+      }
+      if (info.marker !== code) {
         yield reconsume(BOGUS_STATE)
       }
-
-      info.usesTilde = true
 
       yield consume()
       break
@@ -229,16 +227,32 @@ function* openingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: 
 function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
   const content = info.content
+  const marker = info.marker
 
   switch (code) {
     case eof:
-    case lineFeed:
-    case carriageReturn:
       if (content) {
         content.end = tokenizer.now()
       }
 
       yield reconsume(END_STATE)
+      break
+    case graveAccent:
+    case tilde:
+      if (code !== marker) {
+        if (content === null) {
+          info.content = { start: tokenizer.now() }
+        }
+        yield consume()
+      }
+
+      yield reconsume(CLOSING_SEQUENCE_STATE)
+      break
+    case space:
+      if (content) {
+        content.end = tokenizer.now()
+      }
+      yield reconsume(CLOSING_SEQUENCE_BEFORE_STATE)
       break
     default:
       if (content === null) {
@@ -246,6 +260,106 @@ function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null
       }
 
       yield consume()
+      break
+  }
+}
+
+function* closingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code: null | number) {
+  const info = tokenizer.contextInfo
+  const before = info.closingSequenceBefore
+
+  switch (code) {
+    case eof:
+      if (before) {
+        before.end = tokenizer.now()
+      }
+
+      yield reconsume(END_STATE)
+      break
+    case space:
+      if (info.closingSequenceBefore === null) {
+        info.closingSequenceBefore = { start: tokenizer.now() }
+      }
+
+      yield consume()
+      break
+    case graveAccent:
+    case tilde:
+      if (before) {
+        before.end = tokenizer.now()
+      }
+
+      yield reconsume(CLOSING_SEQUENCE_STATE)
+      break
+    default:
+      info.closingSequenceBefore = null
+      yield reconsume(CONTENT_STATE)
+      break
+  }
+}
+
+function* closingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
+  const info = tokenizer.contextInfo
+  const sequence = info.closingSequence
+
+  switch (code) {
+    case eof:
+    case lineFeed:
+    case carriageReturn:
+      if (sequence) {
+        sequence.end = tokenizer.now()
+      }
+
+      yield reconsume(END_STATE)
+      break
+    case space:
+      if (sequence) {
+        sequence.end = tokenizer.now()
+      }
+
+      yield reconsume(CLOSING_SEQUENCE_AFTER_STATE)
+      break
+    case graveAccent:
+    case tilde:
+      if (sequence === null) {
+        info.closingSequence = { start: tokenizer.now() }
+      }
+
+      yield consume()
+      break
+    default:
+      info.closingSequenceBefore = null
+      info.closingSequence = null
+      yield reconsume(CONTENT_STATE)
+      break
+  }
+}
+
+function* closingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
+  const info = tokenizer.contextInfo
+  const after = info.closingSequenceAfter
+
+  switch (code) {
+    case eof:
+    case lineFeed:
+    case carriageReturn:
+      if (after) {
+        after.end = tokenizer.now()
+      }
+      yield reconsume(END_STATE)
+      break
+    case space:
+      if (after === null) {
+        info.closingSequenceAfter = { start: tokenizer.now() }
+      }
+
+      yield consume()
+      break
+    default:
+      info.closingSequenceBefore = null
+      info.closingSequence = null
+      info.closingSequenceAfter = null
+      yield reconsume(CONTENT_STATE)
       break
   }
 }
