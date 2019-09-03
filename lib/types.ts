@@ -1,5 +1,5 @@
-import { ContextType, ParseAction } from './actions'
-export { ContextType } from './actions'
+import {ContextType, ParseAction} from './actions'
+export {ContextType} from './actions'
 
 export interface Position {
   line: number
@@ -28,4 +28,4 @@ export type ContextHandler<StateType extends string> = {
   [_ in StateType]: ContextStateHandler<StateType>
 }
 
-export type ContextHandlers = { [Context in ContextType]: ContextHandler<string> }
+export type ContextHandlers = {[Context in ContextType]: ContextHandler<string>}

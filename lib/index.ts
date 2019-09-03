@@ -1,9 +1,9 @@
-import { CONSUME, NEXT, RECONSUME, SWITCH_CONTEXT } from './actions'
-import { contextHandler as atxHeading } from './atx-heading'
-import { contextHandler as block } from './block'
-import { eof, lineFeed, replacementCharacter, tab } from './characters'
-import { contextHandler as paragraph } from './paragraph'
-import { ContextHandler, ContextHandlers, ContextType, TokenizeType } from './types'
+import {CONSUME, NEXT, RECONSUME, SWITCH_CONTEXT} from './actions'
+import {contextHandler as atxHeading} from './atx-heading'
+import {contextHandler as block} from './block'
+import {eof, lineFeed, replacementCharacter, tab} from './characters'
+import {contextHandler as paragraph} from './paragraph'
+import {ContextHandler, ContextHandlers, ContextType, TokenizeType} from './types'
 
 export class Tokenizer implements TokenizeType<any> {
   public data = ''
@@ -60,14 +60,14 @@ export class Tokenizer implements TokenizeType<any> {
   }
 
   public now() {
-    const { line, column, offset } = this
-    return { line, column, offset }
+    const {line, column, offset} = this
+    return {line, column, offset}
   }
 
   public exec() {
     const stack = [this.next()]
     while (stack.length > 0) {
-      const { done: isTaskFinished, value: task } = stack[stack.length - 1].next()
+      const {done: isTaskFinished, value: task} = stack[stack.length - 1].next()
       if (isTaskFinished) {
         stack.pop()
         continue

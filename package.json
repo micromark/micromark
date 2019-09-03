@@ -15,7 +15,7 @@
     "watch": "tsc --watch",
     "lint": "tslint -p ./tsconfig.json",
     "test": "jest",
-    "prettier": "prettier --config ./.prettierrc --write \"{bin,lib}/**/*.{ts,json}\"",
+    "prettier": "prettier --write \"**/*.{json,js,ts}\"",
     "prepare": "npm run build"
   },
   "repository": "micromark/micromark",
@@ -48,6 +48,12 @@
   },
   "dependencies": {
     "tslib": "^1.9.3"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": false
   },
   "jest": {
     "roots": [

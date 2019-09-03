@@ -48,7 +48,7 @@ export function next(): {
 
 export function switchContext(
   context: ContextType
-): { type: 'SWITCH_CONTEXT'; context: ContextType } {
+): {type: 'SWITCH_CONTEXT'; context: ContextType} {
   return {
     type: SWITCH_CONTEXT,
     context

@@ -1,4 +1,4 @@
-import { Tokenizer } from '../'
+import {Tokenizer} from '../'
 
 describe('index', () => {
   let logs: any[] = []

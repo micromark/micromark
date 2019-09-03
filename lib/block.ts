@@ -1,6 +1,6 @@
-import { __generator as tslib__generator } from 'tslib'
-import { reconsume, switchContext } from './actions'
-import { ContextHandler, ContextType, TokenizeType } from './types'
+import {__generator as tslib__generator} from 'tslib'
+import {reconsume, switchContext} from './actions'
+import {ContextHandler, ContextType, TokenizeType} from './types'
 // tslint:disable-next-line:variable-name
 export const __generator = tslib__generator
 

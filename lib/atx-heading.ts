@@ -1,7 +1,7 @@
-import { __generator as tslib__generator } from 'tslib'
-import { consume, next, reconsume, switchContext } from './actions'
-import { carriageReturn, eof, lineFeed, numberSign, space, tab } from './characters'
-import { ContextHandler, Position, TokenizeType } from './types'
+import {__generator as tslib__generator} from 'tslib'
+import {consume, next, reconsume, switchContext} from './actions'
+import {carriageReturn, eof, lineFeed, numberSign, space, tab} from './characters'
+import {ContextHandler, Position, TokenizeType} from './types'
 // tslint:disable-next-line:variable-name
 export const __generator = tslib__generator
 
@@ -10,7 +10,7 @@ const maxOpeningSequenceSize = 6
 
 const T_SPACE = 'space'
 
-type ParsingLocation = { start: Position; end?: Position } | null
+type ParsingLocation = {start: Position; end?: Position} | null
 
 interface TokenType {
   type: string
@@ -124,7 +124,7 @@ function* openingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code:
         break
       }
       if (!tail) {
-        tail = { type: T_SPACE, position: { start: tokenizer.now() } }
+        tail = {type: T_SPACE, position: {start: tokenizer.now()}}
         info.token = tail
         info.tokens.push(tail)
       }
@@ -171,7 +171,7 @@ function* openingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
         break
       }
       if (sequence === null) {
-        info.openingSequence = { start: tokenizer.now() }
+        info.openingSequence = {start: tokenizer.now()}
       }
 
       info.rank++
@@ -202,7 +202,7 @@ function* openingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: 
     case tab:
     case space:
       if (after === null) {
-        info.openingSequenceAfter = { start: tokenizer.now() }
+        info.openingSequenceAfter = {start: tokenizer.now()}
       }
 
       yield consume()
@@ -256,7 +256,7 @@ function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null
       break
     default:
       if (content === null) {
-        info.content = { start: tokenizer.now() }
+        info.content = {start: tokenizer.now()}
       }
 
       yield consume()
@@ -281,7 +281,7 @@ function* closingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code:
     case tab:
     case space:
       if (info.closingSequenceBefore === null) {
-        info.closingSequenceBefore = { start: tokenizer.now() }
+        info.closingSequenceBefore = {start: tokenizer.now()}
       }
 
       yield consume()
@@ -324,7 +324,7 @@ function* closingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
       break
     case numberSign:
       if (sequence === null) {
-        info.closingSequence = { start: tokenizer.now() }
+        info.closingSequence = {start: tokenizer.now()}
       }
 
       yield consume()
@@ -353,7 +353,7 @@ function* closingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: 
     case tab:
     case space:
       if (after === null) {
-        info.closingSequenceAfter = { start: tokenizer.now() }
+        info.closingSequenceAfter = {start: tokenizer.now()}
       }
 
       yield consume()
