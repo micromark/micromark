@@ -22,13 +22,13 @@
     "Victor Felder <victor@draft.li> (https://draft.li)",
     "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)"
   ],
-  "main": "built/es5-cjs/lib/index.js",
-  "types": "built/es5-cjs/lib/index.d.ts",
-  "module": "built/es5-esm/lib/index.js",
-  "es": "built/es9-esm/lib/index.js",
-  "main-es": "built/es9-esm/lib/index.js",
+  "main": "dist/es5-cjs/lib/index.js",
+  "types": "dist/es5-cjs/lib/index.d.ts",
+  "module": "dist/es5-esm/lib/index.js",
+  "es": "dist/es9-esm/lib/index.js",
+  "main-es": "dist/es9-esm/lib/index.js",
   "files": [
-    "built/",
+    "dist/",
     "lib/"
   ],
   "dependencies": {
@@ -48,7 +48,7 @@
   },
   "scripts": {
     "format": "remark . -qfo && tslint -p ./tsconfig.json && prettier --write \"**/*.{json,js,ts}\"",
-    "build": "rimraf built && npm run build-es5-cjs && npm run build-es5-esm && npm run build-es9-esm",
+    "build": "rimraf dist && npm run build-es5-cjs && npm run build-es5-esm && npm run build-es9-esm",
     "build-es5-cjs": "tsc -p ./tsconfig.es5.cjs.json",
     "build-es5-esm": "tsc -p ./tsconfig.es5.esm.json",
     "build-es9-esm": "tsc -p ./tsconfig.es9.esm.json",
