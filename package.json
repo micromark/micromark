@@ -39,13 +39,15 @@
     "@types/node": "^12.0.0",
     "jest": "^24.0.0",
     "prettier": "^1.0.0",
+    "remark-cli": "^7.0.0",
+    "remark-preset-wooorm": "^6.0.1",
     "rimraf": "^3.0.0",
     "ts-jest": "^24.0.0",
     "tslint": "^5.0.0",
     "typescript": "^3.0.0"
   },
   "scripts": {
-    "format": "tslint -p ./tsconfig.json && prettier --write \"**/*.{json,js,ts}\"",
+    "format": "remark . -qfo && tslint -p ./tsconfig.json && prettier --write \"**/*.{json,js,ts}\"",
     "build": "rimraf built && npm run build-es5-cjs && npm run build-es5-esm && npm run build-es9-esm",
     "build-es5-cjs": "tsc -p ./tsconfig.es5.cjs.json",
     "build-es5-esm": "tsc -p ./tsconfig.es5.esm.json",
@@ -80,6 +82,11 @@
     },
     "testMatch": [
       "**/__tests__/**/*.ts"
+    ]
+  },
+  "remarkConfig": {
+    "plugins": [
+      "preset-wooorm"
     ]
   }
 }
