@@ -1,4 +1,4 @@
-export type ContextType = 'atxHeading' | 'paragraph' | 'block'
+export type ContextType = 'atxHeading' | 'indentedCode' | 'thematicBreak' | 'paragraph' | 'block'
 
 export type ParseActionType = 'CONSUME' | 'RECONSUME' | 'NEXT' | 'SWITCH_CONTEXT'
 

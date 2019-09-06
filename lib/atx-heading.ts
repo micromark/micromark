@@ -1,34 +1,24 @@
 import {__generator as tslib__generator} from 'tslib'
-import {consume, next, reconsume, switchContext} from './actions'
+import {consume, reconsume, switchContext} from './actions'
 import {carriageReturn, eof, lineFeed, numberSign, space, tab} from './characters'
-import {ContextHandler, Position, TokenizeType} from './types'
+import {ContextHandler, Place, Position, TokenizeType} from './types'
 // tslint:disable-next-line:variable-name
 export const __generator = tslib__generator
 
 const maxOpeningSequenceBeforeSize = 3
 const maxOpeningSequenceSize = 6
 
-const T_SPACE = 'space'
-
-type ParsingLocation = {start: Position; end?: Position} | null
-
-interface TokenType {
-  type: string
-  position: NonNullable<ParsingLocation>
-}
-
 export interface ContextInfo {
-  token?: TokenType
-  tokens: TokenType[]
+  safePlace: Place
+  temporaryBuffer: string
   rank: number
-  initial: number
-  openingSequenceBefore: ParsingLocation // TODO find out why this is needed
-  openingSequence: ParsingLocation
-  openingSequenceAfter: ParsingLocation
-  content: ParsingLocation
-  closingSequenceBefore: ParsingLocation
-  closingSequence: ParsingLocation
-  closingSequenceAfter: ParsingLocation
+  openingSequenceBefore?: Position
+  openingSequence?: Position
+  openingSequenceAfter?: Position
+  content?: Position
+  closingSequenceBefore?: Position
+  closingSequence?: Position
+  closingSequenceAfter?: Position
 }
 
 export type StateType =
@@ -54,6 +44,8 @@ const CLOSING_SEQUENCE_BEFORE_STATE = 'CLOSING_SEQUENCE_BEFORE_STATE'
 const CLOSING_SEQUENCE_STATE = 'CLOSING_SEQUENCE_STATE'
 const CLOSING_SEQUENCE_AFTER_STATE = 'CLOSING_SEQUENCE_AFTER_STATE'
 
+// Note that `openingSequenceState` is the last state that can go to bogus.
+// After it, we’re sure it’s an ATX heading
 export const contextHandler: ContextHandler<StateType> = {
   [START_STATE]: startState,
   [END_STATE]: endState,
@@ -84,6 +76,9 @@ export const contextHandler: ContextHandler<StateType> = {
 // # Hello #########
 // ```
 //
+// ATX headings are divided into the following segments:
+//
+// ```markdown
 // ␠␠␠###␠␠␠foo␠␠␠###␠␠␠
 // ^^^^^^^^^^^^^^^^^^^^^ heading
 //
@@ -96,18 +91,21 @@ export const contextHandler: ContextHandler<StateType> = {
 // ^^^ before
 //    ^^^ value
 // after ^^^
+// ```
 function* startState(tokenizer: TokenizeType<ContextInfo>) {
+  const {line, column, offset, virtualColumn} = tokenizer
+
   tokenizer.contextInfo = {
-    tokens: [],
+    safePlace: {line, column, offset, virtualColumn},
+    temporaryBuffer: '',
     rank: 0,
-    initial: tokenizer.offset,
-    openingSequenceBefore: null,
-    openingSequence: null,
-    openingSequenceAfter: null,
-    content: null,
-    closingSequenceBefore: null,
-    closingSequence: null,
-    closingSequenceAfter: null
+    openingSequenceBefore: undefined,
+    openingSequence: undefined,
+    openingSequenceAfter: undefined,
+    content: undefined,
+    closingSequenceBefore: undefined,
+    closingSequence: undefined,
+    closingSequenceAfter: undefined
   }
 
   yield reconsume(OPENING_SEQUENCE_BEFORE_STATE)
@@ -115,54 +113,65 @@ function* startState(tokenizer: TokenizeType<ContextInfo>) {
 
 function* openingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  let tail = info.token
+  const token = info.openingSequenceBefore
 
   switch (code) {
     case space:
-      if (tail && tokenizer.offset - tail.position.start.offset === maxOpeningSequenceBeforeSize) {
+      // Too much indent.
+      if (token && tokenizer.offset - token.start.offset === maxOpeningSequenceBeforeSize) {
         yield reconsume(BOGUS_STATE)
         break
       }
-      if (!tail) {
-        tail = {type: T_SPACE, position: {start: tokenizer.now()}}
-        info.token = tail
-        info.tokens.push(tail)
-      }
 
+      start()
+      buffer()
       yield consume()
       break
+    case tab:
+      yield reconsume(BOGUS_STATE)
+      break
     case numberSign:
-      if (tail) {
-        tail.position.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(OPENING_SEQUENCE_STATE)
       break
     default:
       yield reconsume(BOGUS_STATE)
       break
   }
+
+  function start() {
+    if (token === undefined) {
+      info.openingSequenceBefore = {start: tokenizer.now()}
+    }
+  }
+
+  function buffer() {
+    if (code !== null) {
+      info.temporaryBuffer += String.fromCharCode(code)
+    }
+  }
+
+  function end() {
+    if (token !== undefined) {
+      token.end = tokenizer.now()
+    }
+  }
 }
 
 function* openingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  const sequence = info.openingSequence
+  const token = info.openingSequence
 
   switch (code) {
     case eof:
     case lineFeed:
     case carriageReturn:
-      if (sequence) {
-        sequence.end = tokenizer.now()
-      }
+      end()
       yield reconsume(END_STATE)
       break
     case tab:
     case space:
-      if (sequence) {
-        sequence.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(OPENING_SEQUENCE_AFTER_STATE)
       break
     case numberSign:
@@ -170,219 +179,262 @@ function* openingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: numbe
         yield reconsume(BOGUS_STATE)
         break
       }
-      if (sequence === null) {
-        info.openingSequence = {start: tokenizer.now()}
-      }
 
+      start()
+      buffer()
       info.rank++
       yield consume()
       break
     default:
       // Any other character is a bogus heading.
-      // CommonMark requires a the opening sequence after space.
+      // CommonMark requires a space after the opening sequence.
       yield reconsume(BOGUS_STATE)
       break
+  }
+
+  function start() {
+    if (token === undefined) {
+      info.openingSequence = {start: tokenizer.now()}
+    }
+  }
+
+  function buffer() {
+    if (code !== null) {
+      info.temporaryBuffer += String.fromCharCode(code)
+    }
+  }
+
+  function end() {
+    if (token !== undefined) {
+      token.end = tokenizer.now()
+    }
   }
 }
 
 function* openingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  const after = info.openingSequenceAfter
+  const token = info.openingSequenceAfter
 
   switch (code) {
     case eof:
     case lineFeed:
     case carriageReturn:
-      if (after) {
-        after.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(END_STATE)
       break
     case tab:
     case space:
-      if (after === null) {
-        info.openingSequenceAfter = {start: tokenizer.now()}
-      }
-
+      start()
       yield consume()
       break
     case numberSign:
-      if (after) {
-        after.end = tokenizer.now()
-      }
-
+      end()
       // This could also be a hash in the content, CLOSING_SEQUENCE_STATE
       // switches back.
       yield reconsume(CLOSING_SEQUENCE_STATE)
       break
     default:
-      if (after) {
-        after.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(CONTENT_STATE)
       break
+  }
+
+  function end() {
+    if (token !== undefined) {
+      token.end = tokenizer.now()
+    }
+  }
+
+  function start() {
+    if (token === undefined) {
+      info.openingSequenceAfter = {start: tokenizer.now()}
+    }
   }
 }
 
 function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  const content = info.content
+  const token = info.content
 
   switch (code) {
     case eof:
     case lineFeed:
     case carriageReturn:
-      if (content) {
-        content.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(END_STATE)
       break
     case space:
-      if (content) {
-        content.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(CLOSING_SEQUENCE_BEFORE_STATE)
       break
     case numberSign:
-      if (content) {
-        content.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(CLOSING_SEQUENCE_STATE)
       break
     default:
-      if (content === null) {
-        info.content = {start: tokenizer.now()}
-      }
-
+      start()
       yield consume()
       break
+  }
+
+  function end() {
+    if (token !== undefined) {
+      token.end = tokenizer.now()
+    }
+  }
+
+  function start() {
+    if (token === undefined) {
+      info.content = {start: tokenizer.now()}
+    }
   }
 }
 
 function* closingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  const before = info.closingSequenceBefore
+  const token = info.closingSequenceBefore
 
   switch (code) {
     case eof:
     case lineFeed:
     case carriageReturn:
-      if (before) {
-        before.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(END_STATE)
       break
     case tab:
     case space:
-      if (info.closingSequenceBefore === null) {
-        info.closingSequenceBefore = {start: tokenizer.now()}
-      }
-
+      start()
       yield consume()
       break
     case numberSign:
-      if (before) {
-        before.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(CLOSING_SEQUENCE_STATE)
       break
     default:
-      info.closingSequenceBefore = null
+      clear()
       yield reconsume(CONTENT_STATE)
       break
+  }
+
+  function end() {
+    if (token !== undefined) {
+      token.end = tokenizer.now()
+    }
+  }
+
+  function start() {
+    if (token === undefined) {
+      info.closingSequenceBefore = {start: tokenizer.now()}
+    }
+  }
+
+  function clear() {
+    info.closingSequenceBefore = undefined
   }
 }
 
 function* closingSequenceState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  const sequence = info.closingSequence
+  const token = info.closingSequence
 
   switch (code) {
     case eof:
     case lineFeed:
     case carriageReturn:
-      if (sequence) {
-        sequence.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(END_STATE)
       break
     case tab:
     case space:
-      if (sequence) {
-        sequence.end = tokenizer.now()
-      }
-
+      end()
       yield reconsume(CLOSING_SEQUENCE_AFTER_STATE)
       break
     case numberSign:
-      if (sequence === null) {
-        info.closingSequence = {start: tokenizer.now()}
-      }
-
+      start()
       yield consume()
       break
     default:
-      info.closingSequenceBefore = null
-      info.closingSequence = null
+      clear()
       yield reconsume(CONTENT_STATE)
       break
+  }
+
+  function end() {
+    if (token !== undefined) {
+      token.end = tokenizer.now()
+    }
+  }
+
+  function start() {
+    if (token === undefined) {
+      info.closingSequence = {start: tokenizer.now()}
+    }
+  }
+
+  function clear() {
+    info.closingSequenceBefore = undefined
+    info.closingSequence = undefined
   }
 }
 
 function* closingSequenceAfterState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
   const info = tokenizer.contextInfo
-  const after = info.closingSequenceAfter
+  const token = info.closingSequenceAfter
 
   switch (code) {
     case eof:
     case lineFeed:
     case carriageReturn:
-      if (after) {
-        after.end = tokenizer.now()
-      }
+      end()
       yield reconsume(END_STATE)
       break
     case tab:
     case space:
-      if (after === null) {
-        info.closingSequenceAfter = {start: tokenizer.now()}
-      }
-
+      start()
       yield consume()
       break
     default:
-      info.closingSequenceBefore = null
-      info.closingSequence = null
-      info.closingSequenceAfter = null
+      clear()
       yield reconsume(CONTENT_STATE)
       break
+  }
+
+  function end() {
+    if (token !== undefined) {
+      token.end = tokenizer.now()
+    }
+  }
+
+  function start() {
+    if (token === undefined) {
+      info.closingSequenceAfter = {start: tokenizer.now()}
+    }
+  }
+
+  function clear() {
+    info.closingSequenceBefore = undefined
+    info.closingSequence = undefined
+    info.closingSequenceAfter = undefined
   }
 }
 
 function* bogusState(tokenizer: TokenizeType<ContextInfo>) {
-  const info = tokenizer.contextInfo
+  const {contextInfo} = tokenizer
 
   yield switchContext(tokenizer.returnContext!)
   tokenizer.state = tokenizer.bogusState!
-  tokenizer.offset = info.initial
-  yield next()
+
+  // Todo: use the temporary buffer if we start dropping characters.
+  Object.assign(tokenizer, contextInfo.safePlace)
+  // yield next()
 }
 
 function* endState(tokenizer: TokenizeType<ContextInfo>) {
-  const info = tokenizer.contextInfo
+  const {contextInfo} = tokenizer
 
   // tslint:disable-next-line:no-console
-  console.log('heading: ', info)
+  console.log('heading:', contextInfo)
 
   yield consume()
-
   yield switchContext(tokenizer.returnContext!)
 }

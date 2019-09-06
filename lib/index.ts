@@ -1,8 +1,10 @@
 import {CONSUME, NEXT, RECONSUME, SWITCH_CONTEXT} from './actions'
 import {contextHandler as atxHeading} from './atx-heading'
 import {contextHandler as block} from './block'
-import {eof, lineFeed, replacementCharacter, tab} from './characters'
+import {eof, lineFeed, replacementCharacter, space, tab} from './characters'
+import {contextHandler as indentedCode} from './indented-code'
 import {contextHandler as paragraph} from './paragraph'
+import {contextHandler as thematicBreak} from './thematic-break'
 import {ContextHandler, ContextHandlers, ContextType, TokenizeType} from './types'
 
 export class Tokenizer implements TokenizeType<any> {
@@ -11,7 +13,7 @@ export class Tokenizer implements TokenizeType<any> {
   public column = 1
   public virtualColumn = 1
   public offset = 0
-  public tabSize = 2
+  public tabSize = 4
 
   public context: ContextType = 'block'
   public returnContext?: ContextType
@@ -23,7 +25,9 @@ export class Tokenizer implements TokenizeType<any> {
   public contextHandlers: ContextHandlers = {
     block,
     atxHeading,
-    paragraph
+    indentedCode,
+    paragraph,
+    thematicBreak
   }
 
   constructor() {
@@ -100,9 +104,12 @@ export class Tokenizer implements TokenizeType<any> {
     const code = this.current()
     const tabSize = this.tabSize
 
+    // Todo: support carriage return.
     if (code === null || code === eof || code === lineFeed) {
       this.line++
       this.column = 0
+    } else if (code === space) {
+      this.virtualColumn++
     } else if (code === tab) {
       this.virtualColumn = Math.floor(this.virtualColumn / tabSize) * tabSize + tabSize
     }
