@@ -42,6 +42,13 @@ describe('index', () => {
     expect(logs).toMatchSnapshot()
   })
 
+  it('should parse some HTML', () => {
+    const tokenizer = new Tokenizer()
+    tokenizer.write('<script>\nalert(1)</script>')
+    tokenizer.end()
+    expect(logs).toMatchSnapshot()
+  })
+
   it('should parse partial data', () => {
     const runTokenizer = (dataStream: string[]) => {
       const tokenizer = new Tokenizer()

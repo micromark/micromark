@@ -8,9 +8,9 @@ import {
   formFeed,
   lineFeed,
   lineTabulation,
-  underscore,
   space,
-  tab
+  tab,
+  underscore
 } from './characters'
 import {ContextHandler, Place, Position, TokenizeType} from './types'
 // tslint:disable-next-line:variable-name
@@ -145,7 +145,6 @@ function* indentState(tokenizer: TokenizeType<ContextInfo>, code: number | null)
       yield reconsume(THEMATIC_BREAK_SEQUENCE_STATE)
       break
     default:
-      console.log('bogus:', code)
       yield reconsume(BOGUS_STATE)
       break
   }

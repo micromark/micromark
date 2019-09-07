@@ -2,6 +2,7 @@ import {CONSUME, NEXT, RECONSUME, SWITCH_CONTEXT} from './actions'
 import {contextHandler as atxHeading} from './atx-heading'
 import {contextHandler as block} from './block'
 import {eof, lineFeed, replacementCharacter, space, tab} from './characters'
+import {contextHandler as htmlBlock} from './html-block'
 import {contextHandler as indentedCode} from './indented-code'
 import {contextHandler as paragraph} from './paragraph'
 import {contextHandler as thematicBreak} from './thematic-break'
@@ -25,6 +26,7 @@ export class Tokenizer implements TokenizeType<any> {
   public contextHandlers: ContextHandlers = {
     block,
     atxHeading,
+    htmlBlock,
     indentedCode,
     paragraph,
     thematicBreak
@@ -72,10 +74,12 @@ export class Tokenizer implements TokenizeType<any> {
     const stack = [this.next()]
     while (stack.length > 0) {
       const {done: isTaskFinished, value: task} = stack[stack.length - 1].next()
+
       if (isTaskFinished) {
         stack.pop()
         continue
       }
+
       switch (task.type) {
         case CONSUME:
           this.consume()
@@ -115,14 +119,24 @@ export class Tokenizer implements TokenizeType<any> {
     }
 
     // tslint:disable-next-line:no-console
-    console.log('consume: %s', this.state, this.now(), [String.fromCharCode(code || 0)])
+    console.log('consume:', [String.fromCharCode(code || 0)], this.state, this.now())
 
     this.column++
     this.offset++
   }
 
   private reconsume(state: string) {
+    const cur = this.state
     this.state = state
+
+    // tslint:disable-next-line:no-console
+    console.log(
+      'reconsume:',
+      [String.fromCharCode(this.current() || 0)],
+      cur + ':' + state,
+      this.now()
+    )
+
     return this.next()
   }
 
