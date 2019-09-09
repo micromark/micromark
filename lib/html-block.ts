@@ -200,12 +200,12 @@ export const contextHandler: ContextHandler<StateType> = {
 
 // HTML blocks.
 function* startState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
-  const {line, column, offset, virtualColumn} = tokenizer
-
   // Exit immediately if this can’t be an HTML block.
   switch (code) {
     case space:
     case lessThan:
+      const {line, column, offset, virtualColumn} = tokenizer
+
       tokenizer.contextInfo = {
         safePlace: {line, column, offset, virtualColumn},
         temporaryBuffer: '',

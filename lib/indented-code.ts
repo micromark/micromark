@@ -33,35 +33,35 @@ export interface ContextInfo {
 
 export type StateType =
   | 'START_STATE'
-  | 'INDENTED_CODE_END_STATE'
-  | 'INDENTED_CODE_BOGUS_STATE'
-  | 'INDENTED_CODE_BEFORE_LINE_STATE'
-  | 'INDENTED_CODE_INDENT_STATE'
-  | 'INDENTED_CODE_CONTENT_STATE'
-  | 'INDENTED_CODE_LINE_ENDING_STATE'
-  | 'INDENTED_CODE_AFTER_LINE_STATE'
+  | 'END_STATE'
+  | 'BOGUS_STATE'
+  | 'BEFORE_LINE_STATE'
+  | 'INDENT_STATE'
+  | 'CONTENT_STATE'
+  | 'LINE_ENDING_STATE'
+  | 'AFTER_LINE_STATE'
 
 const START_STATE = 'START_STATE'
-const INDENTED_CODE_BEFORE_LINE_STATE = 'INDENTED_CODE_BEFORE_LINE_STATE'
-const INDENTED_CODE_INDENT_STATE = 'INDENTED_CODE_INDENT_STATE'
-const INDENTED_CODE_CONTENT_STATE = 'INDENTED_CODE_CONTENT_STATE'
-const INDENTED_CODE_LINE_ENDING_STATE = 'INDENTED_CODE_LINE_ENDING_STATE'
-const INDENTED_CODE_AFTER_LINE_STATE = 'INDENTED_CODE_AFTER_LINE_STATE'
-const INDENTED_CODE_END_STATE = 'INDENTED_CODE_END_STATE'
-const INDENTED_CODE_BOGUS_STATE = 'INDENTED_CODE_BOGUS_STATE'
+const BEFORE_LINE_STATE = 'BEFORE_LINE_STATE'
+const INDENT_STATE = 'INDENT_STATE'
+const CONTENT_STATE = 'CONTENT_STATE'
+const LINE_ENDING_STATE = 'LINE_ENDING_STATE'
+const AFTER_LINE_STATE = 'AFTER_LINE_STATE'
+const END_STATE = 'END_STATE'
+const BOGUS_STATE = 'BOGUS_STATE'
 
 // Note that where there’s a non-blank line, we don’t go to bogus anymore.
 // When we have one, we can only end by a EOF or a bogus line, in which case
 // we have to backtrack all trailing blank lines.
 export const contextHandler: ContextHandler<StateType> = {
   [START_STATE]: startState,
-  [INDENTED_CODE_BEFORE_LINE_STATE]: beforeLineState,
-  [INDENTED_CODE_INDENT_STATE]: indentState,
-  [INDENTED_CODE_CONTENT_STATE]: contentState,
-  [INDENTED_CODE_LINE_ENDING_STATE]: lineEndingState,
-  [INDENTED_CODE_AFTER_LINE_STATE]: afterLineState,
-  [INDENTED_CODE_END_STATE]: endState,
-  [INDENTED_CODE_BOGUS_STATE]: bogusState
+  [BEFORE_LINE_STATE]: beforeLineState,
+  [INDENT_STATE]: indentState,
+  [CONTENT_STATE]: contentState,
+  [LINE_ENDING_STATE]: lineEndingState,
+  [AFTER_LINE_STATE]: afterLineState,
+  [END_STATE]: endState,
+  [BOGUS_STATE]: bogusState
 }
 
 // Indented code.
@@ -129,18 +129,27 @@ export const contextHandler: ContextHandler<StateType> = {
 // …at that point (the B), we backtrack to before the current queue’s first
 // blank line, the current queue of blank lines is flushed, and end the code
 // there.
-function* startState(tokenizer: TokenizeType<ContextInfo>) {
-  const {line, column, offset, virtualColumn} = tokenizer
+function* startState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
+  // Exit immediately if this can’t be indented code.
+  switch (code) {
+    case space:
+    case tab:
+      const {line, column, offset, virtualColumn} = tokenizer
 
-  tokenizer.contextInfo = {
-    open: false,
-    safePlace: {line, column, offset, virtualColumn},
-    lines: [],
-    blanks: [],
-    lineToken: undefined
+      tokenizer.contextInfo = {
+        open: false,
+        safePlace: {line, column, offset, virtualColumn},
+        lines: [],
+        blanks: [],
+        lineToken: undefined
+      }
+
+      yield reconsume(BEFORE_LINE_STATE)
+      break
+    default:
+      yield reconsume(BOGUS_STATE)
+      break
   }
-
-  yield reconsume(INDENTED_CODE_BEFORE_LINE_STATE)
 }
 
 function* beforeLineState(tokenizer: TokenizeType<ContextInfo>) {
@@ -154,7 +163,7 @@ function* beforeLineState(tokenizer: TokenizeType<ContextInfo>) {
     position: {start: tokenizer.now()}
   }
 
-  yield reconsume(INDENTED_CODE_INDENT_STATE)
+  yield reconsume(INDENT_STATE)
 }
 
 function* indentState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
@@ -166,18 +175,18 @@ function* indentState(tokenizer: TokenizeType<ContextInfo>, code: number | null)
   }
 
   if (lineToken.indentSize >= minOpeningSequenceBeforeSize) {
-    return yield reconsume(INDENTED_CODE_CONTENT_STATE)
+    return yield reconsume(CONTENT_STATE)
   }
 
   let token = lineToken.indent
 
   switch (code) {
     case eof:
-      yield reconsume(INDENTED_CODE_AFTER_LINE_STATE)
+      yield reconsume(AFTER_LINE_STATE)
       break
     case carriageReturn:
     case lineFeed:
-      yield reconsume(INDENTED_CODE_LINE_ENDING_STATE)
+      yield reconsume(LINE_ENDING_STATE)
       break
     case tab:
     case space:
@@ -199,7 +208,7 @@ function* indentState(tokenizer: TokenizeType<ContextInfo>, code: number | null)
 
       break
     default:
-      yield reconsume(INDENTED_CODE_END_STATE)
+      yield reconsume(END_STATE)
       break
   }
 }
@@ -216,11 +225,11 @@ function* contentState(tokenizer: TokenizeType<ContextInfo>, code: number | null
 
   switch (code) {
     case eof:
-      yield reconsume(INDENTED_CODE_AFTER_LINE_STATE)
+      yield reconsume(AFTER_LINE_STATE)
       break
     case carriageReturn:
     case lineFeed:
-      yield reconsume(INDENTED_CODE_LINE_ENDING_STATE)
+      yield reconsume(LINE_ENDING_STATE)
       break
     default:
       if (token === undefined) {
@@ -249,7 +258,7 @@ function* lineEndingState(tokenizer: TokenizeType<ContextInfo>, code: number | n
   }
 
   if (code === null) {
-    return yield reconsume(INDENTED_CODE_AFTER_LINE_STATE)
+    return yield reconsume(AFTER_LINE_STATE)
   }
 
   if (lineToken.lineEnding === undefined) {
@@ -263,7 +272,7 @@ function* lineEndingState(tokenizer: TokenizeType<ContextInfo>, code: number | n
 
     lineToken.lineEnding.position.end = tokenizer.now()
   } else {
-    yield reconsume(INDENTED_CODE_AFTER_LINE_STATE)
+    yield reconsume(AFTER_LINE_STATE)
   }
 }
 
@@ -278,7 +287,7 @@ function* afterLineState(tokenizer: TokenizeType<ContextInfo>, code: number | nu
 
   // Initial blank lines:
   if (lineToken.blank === true && contextInfo.open === false) {
-    return yield reconsume(INDENTED_CODE_BOGUS_STATE)
+    return yield reconsume(BOGUS_STATE)
   }
 
   lineToken.position.end = tokenizer.now()
@@ -302,7 +311,7 @@ function* afterLineState(tokenizer: TokenizeType<ContextInfo>, code: number | nu
   }
 
   // If this is the EOF, end the code, otherwise start a new line.
-  yield reconsume(code === null ? INDENTED_CODE_END_STATE : INDENTED_CODE_BEFORE_LINE_STATE)
+  yield reconsume(code === null ? END_STATE : BEFORE_LINE_STATE)
 }
 
 function* bogusState(tokenizer: TokenizeType<ContextInfo>) {
@@ -322,7 +331,7 @@ function* endState(tokenizer: TokenizeType<ContextInfo>) {
 
   // If for some reason we aren’t open:
   if (contextInfo.open === false) {
-    return yield reconsume(INDENTED_CODE_BOGUS_STATE)
+    return yield reconsume(BOGUS_STATE)
   }
 
   // tslint:disable-next-line:no-console

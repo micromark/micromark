@@ -92,23 +92,32 @@ export const contextHandler: ContextHandler<StateType> = {
 //    ^^^ value
 // after ^^^
 // ```
-function* startState(tokenizer: TokenizeType<ContextInfo>) {
-  const {line, column, offset, virtualColumn} = tokenizer
+function* startState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
+  // Exit immediately if this can’t be an ATX heading.
+  switch (code) {
+    case space:
+    case numberSign:
+      const {line, column, offset, virtualColumn} = tokenizer
 
-  tokenizer.contextInfo = {
-    safePlace: {line, column, offset, virtualColumn},
-    temporaryBuffer: '',
-    rank: 0,
-    openingSequenceBefore: undefined,
-    openingSequence: undefined,
-    openingSequenceAfter: undefined,
-    content: undefined,
-    closingSequenceBefore: undefined,
-    closingSequence: undefined,
-    closingSequenceAfter: undefined
+      tokenizer.contextInfo = {
+        safePlace: {line, column, offset, virtualColumn},
+        temporaryBuffer: '',
+        rank: 0,
+        openingSequenceBefore: undefined,
+        openingSequence: undefined,
+        openingSequenceAfter: undefined,
+        content: undefined,
+        closingSequenceBefore: undefined,
+        closingSequence: undefined,
+        closingSequenceAfter: undefined
+      }
+
+      yield reconsume(OPENING_SEQUENCE_BEFORE_STATE)
+      break
+    default:
+      yield reconsume(BOGUS_STATE)
+      break
   }
-
-  yield reconsume(OPENING_SEQUENCE_BEFORE_STATE)
 }
 
 function* openingSequenceBeforeState(tokenizer: TokenizeType<ContextInfo>, code: number | null) {
