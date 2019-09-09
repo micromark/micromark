@@ -102,12 +102,38 @@ export const leftCurlyBrace = 123 // '{'
 export const verticalBar = 124 // '|'
 export const rightCurlyBrace = 125 // '}'
 export const tilde = 126 // '~'
+export const del = 127
 export const nonBreakingSpace = 160
 export const oghamSpaceMark = 5760
 export const lineSeparator = 8232
 export const paragraphSeparator = 8233
 export const replacementCharacter = 65533 // '�'
 
-export function isDigit(code: number) {
+export function digit(code: number) {
   return code >= 48 && code <= 57
+}
+
+export function asciiPunctuation(code: number | null) {
+  return (
+    code !== null &&
+    ((code >= exclamationMark && code <= slash) ||
+      (code >= colon && code <= atSign) ||
+      (code >= leftSquareBracket && code <= graveAccent) ||
+      (code >= leftCurlyBrace && code <= tilde))
+  )
+}
+
+export function asciiControl(code: number | null) {
+  return code !== null && (code < space || code === del)
+}
+
+export function whitespace(code: number | null) {
+  return (
+    code === tab ||
+    code === space ||
+    code === lineTabulation ||
+    code === formFeed ||
+    code === lineFeed ||
+    code === carriageReturn
+  )
 }

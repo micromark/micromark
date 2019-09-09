@@ -2,6 +2,7 @@ import {CONSUME, NEXT, RECONSUME, SWITCH_CONTEXT} from './actions'
 import {contextHandler as atxHeading} from './atx-heading'
 import {contextHandler as block} from './block'
 import {eof, lineFeed, replacementCharacter, space, tab} from './characters'
+import {contextHandler as definition} from './definition'
 import {contextHandler as htmlBlock} from './html-block'
 import {contextHandler as indentedCode} from './indented-code'
 import {contextHandler as paragraph} from './paragraph'
@@ -28,6 +29,7 @@ export class Tokenizer implements TokenizeType<any> {
     atxHeading,
     htmlBlock,
     indentedCode,
+    definition,
     paragraph,
     thematicBreak
   }

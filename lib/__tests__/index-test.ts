@@ -49,6 +49,13 @@ describe('index', () => {
     expect(logs).toMatchSnapshot()
   })
 
+  it('should parse a definition', () => {
+    const tokenizer = new Tokenizer()
+    tokenizer.write('[alpha]: bravo')
+    tokenizer.end()
+    expect(logs).toMatchSnapshot()
+  })
+
   it('should parse partial data', () => {
     const runTokenizer = (dataStream: string[]) => {
       const tokenizer = new Tokenizer()

@@ -3,6 +3,7 @@ export type ContextType =
   | 'indentedCode'
   | 'thematicBreak'
   | 'htmlBlock'
+  | 'definition'
   | 'paragraph'
   | 'block'
 
