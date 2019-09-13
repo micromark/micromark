@@ -1,30 +1,19 @@
 {
+  "private": true,
   "name": "micromark",
-  "version": "0.0.1",
-  "description": "markdown parser under @unifiedjs that’s different",
-  "main": "built/es5-cjs/lib/index.js",
-  "types": "built/es5-cjs/lib/index.d.ts",
-  "module": "built/es5-esm/lib/index.js",
-  "es": "built/es9-esm/lib/index.js",
-  "main-es": "built/es9-esm/lib/index.js",
-  "scripts": {
-    "build": "rimraf built && npm run build-es5-cjs && npm run build-es5-esm && npm run build-es9-esm",
-    "build-es5-cjs": "tsc -p ./tsconfig.es5.cjs.json",
-    "build-es5-esm": "tsc -p ./tsconfig.es5.esm.json",
-    "build-es9-esm": "tsc -p ./tsconfig.es9.esm.json",
-    "watch": "tsc --watch",
-    "lint": "tslint -p ./tsconfig.json",
-    "test": "jest",
-    "prettier": "prettier --config ./.prettierrc --write \"{bin,lib}/**/*.{ts,json}\"",
-    "prepare": "npm run build"
-  },
-  "repository": "micromark/micromark",
+  "version": "0.0.0",
+  "description": "new, tiny, and fast markdown parser",
+  "license": "MIT",
   "keywords": [
     "markdown",
     "lexer",
     "lexing",
-    "unifiedjs"
+    "parser",
+    "unified"
   ],
+  "homepage": "https://unifiedjs.com",
+  "repository": "micromark/micromark",
+  "bugs": "https://github.com/micromark/micromark/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
@@ -33,21 +22,50 @@
     "Victor Felder <victor@draft.li> (https://draft.li)",
     "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)"
   ],
-  "license": "MIT",
-  "bugs": "https://github.com/micromark/micromark/issues",
-  "homepage": "https://unified.js.org",
-  "devDependencies": {
-    "@types/jest": "^23.3.14",
-    "@types/node": "^10.12.9",
-    "jest": "^23.6.0",
-    "prettier": "^1.15.2",
-    "rimraf": "^2.6.2",
-    "ts-jest": "^23.10.5",
-    "tslint": "^5.11.0",
-    "typescript": "^3.1.6"
-  },
+  "main": "dist/es5-cjs/lib/index.js",
+  "types": "dist/es5-cjs/lib/index.d.ts",
+  "module": "dist/es5-esm/lib/index.js",
+  "es": "dist/es9-esm/lib/index.js",
+  "main-es": "dist/es9-esm/lib/index.js",
+  "files": [
+    "dist/",
+    "lib/"
+  ],
   "dependencies": {
     "tslib": "^1.9.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "browserify": "^16.0.0",
+    "gzip-size": "^5.0.0",
+    "jest": "^24.0.0",
+    "prettier": "^1.0.0",
+    "remark-cli": "^7.0.0",
+    "remark-preset-wooorm": "^6.0.0",
+    "rimraf": "^3.0.0",
+    "tinyify": "^2.0.0",
+    "ts-jest": "^24.0.0",
+    "tslint": "^5.0.0",
+    "typescript": "^3.0.0"
+  },
+  "scripts": {
+    "format": "remark . -qfo && tslint -p ./tsconfig.json && prettier --write \"**/*.{json,js,ts}\"",
+    "build": "rimraf dist && npm run build-es5-cjs && npm run build-es5-esm && npm run build-es9-esm",
+    "build-es5-cjs": "tsc -p ./tsconfig.es5.cjs.json",
+    "build-es5-esm": "tsc -p ./tsconfig.es5.esm.json",
+    "build-es9-esm": "tsc -p ./tsconfig.es9.esm.json",
+    "size": "browserify . -p tinyify | gzip-size",
+    "test-api": "jest",
+    "prepare": "npm run build",
+    "test": "npm run format && npm run build && npm run test-api",
+    "watch": "tsc --watch"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": false
   },
   "jest": {
     "roots": [
@@ -68,6 +86,11 @@
     },
     "testMatch": [
       "**/__tests__/**/*.ts"
+    ]
+  },
+  "remarkConfig": {
+    "plugins": [
+      "preset-wooorm"
     ]
   }
 }

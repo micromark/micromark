@@ -4,6 +4,6 @@
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
-    "outDir": "./built/es5-esm"
+    "outDir": "./dist/es5-esm"
   }
 }

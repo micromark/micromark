@@ -7,13 +7,15 @@ if » change before indented code state
 if > change before block quote state
 if < change before block html state # could be inline auto-link or inline html
 if [ change before definition state # could be inline link or an inline reference
+    link definitions need up to two Infinity lines to know if it’s valid `[foo]:\n/url '\ntitle\nline1\nline2` is invalid
 if 0-9 change before ordered list state (marker='?', start='\d')
 if | change before table state
 if * change before unordered list state (marker='*') # could be strong, emphasis, thematic break
-if - change before unordered list state (marker='-') # could be frontmatter, thematic break, setext header underline
+if - change before unordered list state (marker='-') # could be frontmatter, thematic break, setext heading underline
 if + change before unordered list state (marker='+') # could be frontmatter, thematic break
-if = change before setext header underline state (marker='=')
-else change before paragraph state (could be setext header)
+if = change before setext heading underline state (marker='=')
+    setext heading is a suffix marker: it modifies the previous paragraph which can be many lines.
+else change before paragraph state (could be setext heading)
 
 # `###   Hello!   ####  `
 #  ^^^

@@ -5,12 +5,16 @@
 </h1>
 
 <p align="center">
-  <b>a new, tiny, and fast, markdown parser <br> written in TypeScript under the unified umbrella</br></b>
+  <a href="https://opencollective.com/unified"><img src="https://opencollective.com/unified/sponsors/badge.svg" alt="Sponsors"></a>
+  <a href="https://opencollective.com/unified"><img src="https://opencollective.com/unified/backers/badge.svg" alt="Backers"></a>
+  <a href="https://spectrum.chat/unified/micromark"><img src="https://img.shields.io/badge/chat-spectrum-7b16ff.svg" alt="Chat"></a>
+</p>
+
+<p align="center">
+  <b>New, tiny, and fast Markdown parser <br> part of the unified collective</b>
 </p>
 
 ## Sponsors
-
-<!--lint ignore no-html maximum-line-length-->
 
 <table>
   <tr valign="top">
@@ -22,11 +26,12 @@
     <td width="20%" align="center">
       <a href="https://www.gatsbyjs.org"><img src="https://avatars1.githubusercontent.com/u/12551863?s=400&v=4"></a>
       <br><br>🥇
-      <a href="https://www.gatsbyjs.org">Gatsby</a></td>
+      <a href="https://www.gatsbyjs.org">Gatsby</a>
+    </td>
     <td width="20%" align="center">
-      <a href="https://compositor.io"><img src="https://avatars1.githubusercontent.com/u/19245838?s=400&v=4"></a>
-      <br><br>🥉
-      <a href="https://compositor.io">Compositor</a>
+      <a href="https://www.netlify.com"><img src="https://avatars1.githubusercontent.com/u/7892489?s=400&v=4"></a>
+      <br><br>🥇
+      <a href="https://www.netlify.com">Netlify</a>
     </td>
     <td width="20%" align="center">
       <a href="https://www.holloway.com"><img src="https://avatars1.githubusercontent.com/u/35904294?s=400&v=4"></a>
@@ -42,7 +47,7 @@
 
 ## What’s micromark
 
-Something like [remark][] (markdown processor powered by plugins based on
+Something like [remark][] (Markdown processor powered by plugins based on
 [unified][]), but on a lower level: a [lexer][] (in nerdy terms 🤓).
 Syntax trees have many good things, but they do come with the downside of
 having a big memory footprint and sometimes being more than what you need.
@@ -59,7 +64,7 @@ But we imagine it to be**:
 *   **complete**, in that it should give access to all info in the source
     document
 
-_But it’s not:_
+*But it’s not:*
 
 *   something that creates HTML and the like: other projects use micromark for
     that
@@ -67,23 +72,46 @@ _But it’s not:_
 
 ## How it’ll be used
 
-**micromark will be part of [unified][]**.
+**micromark is part of the [unified][] collective**.
 But it will likely not be something you’d directly interact with, unless
-you’re interested in working on parsers, but it will make high-level tooling
-better.
+you’re interested in working on parsers,.
+It will make high-level tooling better.
 
 Evolving unified shouldn’t just be about new high-level features but also about
 rethinking core mechanisms.
-**That’s where micromark comes in, so unified can build the most friendly, secure,
-fast, and extensive bridges between content formats.**
+**That’s where micromark comes in, so unified can build the most friendly,
+secure, fast, and extensive bridges between content formats.**
 
-* * *
+## Contribute
 
-<p align="center">🎉 <strong>micromark is part of the unified collective!</strong> 🎉</p>
-<p align="center"><a href="https://medium.com/unifiedjs/collectively-evolving-through-crowdsourcing-22c359ea95cc">Read more about it on Medium »</a></p>
+See [`contributing.md`][contributing] in [`micromark/.github`][health] for ways
+to get started.
+See [`support.md`][support] for ways to get help.
+
+This project has a [Code of Conduct][coc].
+By interacting with this repository, organisation, or community you agree to
+abide by its terms.
+
+## License
+
+[MIT][license] © [Titus Wormer][author]
+
+<!-- Definitions -->
 
 [remark]: https://github.com/remarkjs/remark
 
 [unified]: https://github.com/unifiedjs/unified
 
 [lexer]: https://en.wikipedia.org/wiki/Lexical_analysis
+
+[health]: https://github.com/micromark/.github
+
+[contributing]: https://github.com/micromark/.github/blob/master/contributing.md
+
+[support]: https://github.com/micromark/.github/blob/master/support.md
+
+[coc]: https://github.com/micromark/.github/blob/master/code-of-conduct.md
+
+[license]: license
+
+[author]: https://wooorm.com

@@ -2,6 +2,6 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "target": "es5",
-    "outDir": "./built/es5-cjs"
+    "outDir": "./dist/es5-cjs"
   }
 }

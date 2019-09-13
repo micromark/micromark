@@ -3,7 +3,7 @@
   "extends": ["tslint:recommended"],
   "jsRules": {},
   "rules": {
-    "trailing-comma": [true, { "multiline": "never", "singleline": "never" }],
+    "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
     "variable-name": [true, "allow-leading-underscore"],
     "quotemark": false,
     "semicolon": false,

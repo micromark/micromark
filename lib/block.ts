@@ -1,6 +1,6 @@
-import { __generator as tslib__generator } from 'tslib'
-import { reconsume, switchContext } from './actions'
-import { ContextHandler, ContextType, TokenizeType } from './types'
+import {__generator as tslib__generator} from 'tslib'
+import {reconsume, switchContext} from './actions'
+import {ContextHandler, ContextType, TokenizeType} from './types'
 // tslint:disable-next-line:variable-name
 export const __generator = tslib__generator
 
@@ -10,20 +10,32 @@ export type StateType =
   | 'START_STATE'
   | 'BOGUS_STATE'
   | 'ATX_HEADING_STATE'
+  | 'HTML_BLOCK_STATE'
+  | 'INDENTED_CODE_STATE'
+  | 'DEFINITION_STATE'
   | 'PARAGRAPH_STATE'
+  | 'THEMATIC_BREAK_STATE'
   | 'CODE_FENCED_STATE'
 
 const START_STATE = 'START_STATE'
 const BOGUS_STATE = 'BOGUS_STATE'
 const ATX_HEADING_STATE = 'ATX_HEADING_STATE'
+const HTML_BLOCK_STATE = 'HTML_BLOCK_STATE'
+const INDENTED_CODE_STATE = 'INDENTED_CODE_STATE'
+const DEFINITION_STATE = 'DEFINITION_STATE'
 const PARAGRAPH_STATE = 'PARAGRAPH_STATE'
 const CODE_FENCED_STATE = 'CODE_FENCED_STATE'
+const THEMATIC_BREAK_STATE = 'THEMATIC_BREAK_STATE'
 
 export const contextHandler: ContextHandler<StateType> = {
   [START_STATE]: startState,
   [BOGUS_STATE]: bogusState,
-  [ATX_HEADING_STATE]: attempt('atxHeading', CODE_FENCED_STATE),
-  [CODE_FENCED_STATE]: attempt('codeFenced', PARAGRAPH_STATE),
+  [ATX_HEADING_STATE]: attempt('atxHeading', THEMATIC_BREAK_STATE),
+  [THEMATIC_BREAK_STATE]: attempt('thematicBreak', INDENTED_CODE_STATE),
+  [INDENTED_CODE_STATE]: attempt('indentedCode', HTML_BLOCK_STATE),
+  [CODE_FENCED_STATE]: attempt('codeFenced', CODE_FENCED_STATE)
+  [HTML_BLOCK_STATE]: attempt('htmlBlock', DEFINITION_STATE),
+  [DEFINITION_STATE]: attempt('definition', PARAGRAPH_STATE),
   [PARAGRAPH_STATE]: attempt('paragraph', BOGUS_STATE)
 }
 

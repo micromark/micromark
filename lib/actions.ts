@@ -1,4 +1,12 @@
-export type ContextType = 'atxHeading' | 'paragraph' | 'block' | 'codeFenced'
+export type ContextType =
+  | 'atxHeading'
+  | 'indentedCode'
+  | 'thematicBreak'
+  | 'htmlBlock'
+  | 'definition'
+  | 'paragraph'
+  | 'block'
+  | 'codeFenced'
 
 export type ParseActionType = 'CONSUME' | 'RECONSUME' | 'NEXT' | 'SWITCH_CONTEXT'
 
@@ -48,7 +56,7 @@ export function next(): {
 
 export function switchContext(
   context: ContextType
-): { type: 'SWITCH_CONTEXT'; context: ContextType } {
+): {type: 'SWITCH_CONTEXT'; context: ContextType} {
   return {
     type: SWITCH_CONTEXT,
     context

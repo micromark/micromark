@@ -22,5 +22,5 @@
     "noEmitHelpers": true
   },
   "include": ["bin/**/*", "lib/**/*"],
-  "exclude": ["node_modules", "built/**", "**/__tests__/*"]
+  "exclude": ["node_modules", "dist/**", "**/__tests__/*"]
 }
