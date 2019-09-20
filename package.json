@@ -20,7 +20,8 @@
     "John Otander <johnotander@gmail.com> (http://johnotander.com)",
     "Stephan Schneider <stephanschndr@gmail.com>",
     "Victor Felder <victor@draft.li> (https://draft.li)",
-    "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)"
+    "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)",
+    "Merlijn Vos <merlijn@soverin.net>"
   ],
   "main": "dist/es5-cjs/lib/index.js",
   "types": "dist/es5-cjs/lib/index.d.ts",

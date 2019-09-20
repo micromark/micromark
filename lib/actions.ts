@@ -6,7 +6,7 @@ export type ContextType =
   | 'definition'
   | 'paragraph'
   | 'block'
-  | 'codeFenced'
+  | 'fencedCode'
 
 export type ParseActionType = 'CONSUME' | 'RECONSUME' | 'NEXT' | 'SWITCH_CONTEXT'
 

@@ -814,15 +814,17 @@ function* endState(tokenizer: TokenizeType<ContextInfo>) {
   const {contextInfo, data} = tokenizer
   const now = tokenizer.now()
 
-  contextInfo.position.end = now
+  if (contextInfo.position) {
+    contextInfo.position.end = now
 
-  // tslint:disable-next-line:no-console
-  console.log('html block:', {
-    type: 'htmlBlock',
-    value: data.slice(contextInfo.position.start.offset, now.offset),
-    children: contextInfo.tokens,
-    position: contextInfo.position
-  })
+    // tslint:disable-next-line:no-console
+    console.log('html block:', {
+      type: 'htmlBlock',
+      value: data.slice(contextInfo.position.start.offset, now.offset),
+      children: contextInfo.tokens,
+      position: contextInfo.position
+    })
+  }
 
   yield consume()
   yield switchContext(tokenizer.returnContext!)

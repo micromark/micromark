@@ -3,9 +3,9 @@ import {contextHandler as atxHeading} from './atx-heading'
 import {contextHandler as block} from './block'
 import {eof, lineFeed, replacementCharacter, space, tab} from './characters'
 import {contextHandler as definition} from './definition'
+import {contextHandler as fencedCode} from './fenced-code'
 import {contextHandler as htmlBlock} from './html-block'
 import {contextHandler as indentedCode} from './indented-code'
-import {contextHandler as codeFenced} from './code-fenced'
 import {contextHandler as paragraph} from './paragraph'
 import {contextHandler as thematicBreak} from './thematic-break'
 import {ContextHandler, ContextHandlers, ContextType, TokenizeType} from './types'
@@ -30,10 +30,10 @@ export class Tokenizer implements TokenizeType<any> {
     atxHeading,
     htmlBlock,
     indentedCode,
-    codeFenced,
+    fencedCode,
     definition,
     paragraph,
-    thematicBreak,
+    thematicBreak
   }
 
   constructor() {

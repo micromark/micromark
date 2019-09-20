@@ -15,7 +15,7 @@ export type StateType =
   | 'DEFINITION_STATE'
   | 'PARAGRAPH_STATE'
   | 'THEMATIC_BREAK_STATE'
-  | 'CODE_FENCED_STATE'
+  | 'FENCED_CODE_STATE'
 
 const START_STATE = 'START_STATE'
 const BOGUS_STATE = 'BOGUS_STATE'
@@ -24,7 +24,7 @@ const HTML_BLOCK_STATE = 'HTML_BLOCK_STATE'
 const INDENTED_CODE_STATE = 'INDENTED_CODE_STATE'
 const DEFINITION_STATE = 'DEFINITION_STATE'
 const PARAGRAPH_STATE = 'PARAGRAPH_STATE'
-const CODE_FENCED_STATE = 'CODE_FENCED_STATE'
+const FENCED_CODE_STATE = 'FENCED_CODE_STATE'
 const THEMATIC_BREAK_STATE = 'THEMATIC_BREAK_STATE'
 
 export const contextHandler: ContextHandler<StateType> = {
@@ -32,8 +32,8 @@ export const contextHandler: ContextHandler<StateType> = {
   [BOGUS_STATE]: bogusState,
   [ATX_HEADING_STATE]: attempt('atxHeading', THEMATIC_BREAK_STATE),
   [THEMATIC_BREAK_STATE]: attempt('thematicBreak', INDENTED_CODE_STATE),
-  [INDENTED_CODE_STATE]: attempt('indentedCode', HTML_BLOCK_STATE),
-  [CODE_FENCED_STATE]: attempt('codeFenced', CODE_FENCED_STATE)
+  [INDENTED_CODE_STATE]: attempt('indentedCode', FENCED_CODE_STATE),
+  [FENCED_CODE_STATE]: attempt('fencedCode', HTML_BLOCK_STATE),
   [HTML_BLOCK_STATE]: attempt('htmlBlock', DEFINITION_STATE),
   [DEFINITION_STATE]: attempt('definition', PARAGRAPH_STATE),
   [PARAGRAPH_STATE]: attempt('paragraph', BOGUS_STATE)
