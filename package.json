@@ -17,7 +17,10 @@
   "files": [
     "index.js"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "character-entities": "^1.2.4",
+    "stringify-entities": "^3.0.0"
+  },
   "devDependencies": {
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
@@ -48,7 +51,13 @@
   },
   "xo": {
     "prettier": true,
-    "esnext": false
+    "esnext": false,
+    "rules": {
+      "unicorn/prefer-number-properties": "off",
+      "capitalized-comments": "off",
+      "no-lonely-if": "off",
+      "no-self-compare": "off"
+    }
   },
   "remarkConfig": {
     "plugins": [
