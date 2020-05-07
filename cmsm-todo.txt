@@ -1,1 +1,0 @@
-cmsm: email label -> email domain, email atext -> email local part

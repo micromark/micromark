@@ -68,6 +68,7 @@ function mm(value) {
       characterEscapeCharacter: onexitcharacterescapecharacter,
       characterReferenceSequence: onexitcharacterreferencesequence,
       autolinkUri: onexitautolinkuri,
+      autolinkEmail: onexitautolinkemail,
       code: onexitcode
     }
   }
@@ -208,6 +209,11 @@ function mm(value) {
   function onexitautolinkuri(t) {
     var uri = encode(slice(t))
     out.push('<a href="' + encodeURI(uri) + '">' + uri + '</a>')
+  }
+
+  function onexitautolinkemail(t) {
+    var uri = encode(slice(t))
+    out.push('<a href="mailto:' + encodeURI(uri) + '">' + uri + '</a>')
   }
 
   function encode(value) {

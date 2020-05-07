@@ -1,0 +1,9 @@
+CMSM:
+
+- email label -> email domain, email atext -> email local part
+- “Autolink email atext state” `@` case must set `sizeLabel` to `0`, instead of `1`
+- “Autolink email label state” `.` case must set `sizeLabel` to `0`, instead of incrementing it
+
+CM:
+
+How do other character references work in HTML? E.g., `&copy` -> `&amp;copy`? What about HTMLs other numeric references? (e.g., the western set?)
