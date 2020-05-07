@@ -1,6 +1,8 @@
-.DS_Store
-*.log
 .nyc_output/
 coverage/
 node_modules/
+*.log
+.DS_Store
+micromark.js
+micromark.min.js
 yarn.lock

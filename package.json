@@ -22,18 +22,24 @@
     "stringify-entities": "^3.0.0"
   },
   "devDependencies": {
+    "browserify": "^16.0.0",
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
     "remark-cli": "^8.0.0",
     "remark-preset-wooorm": "^7.0.0",
     "tape": "^5.0.0",
+    "tinyify": "^2.0.0",
+    "unassertify": "^2.0.0",
     "xo": "^0.30.0"
   },
   "scripts": {
     "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
+    "build-bundle": "browserify . -s micromark -t unassertify > micromark.js",
+    "build-mangle": "browserify . -s micromark -t unassertify -p tinyify > micromark.min.js",
+    "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
-    "test": "npm run format && npm run test-coverage"
+    "test": "npm run format && npm run build && npm run test-coverage"
   },
   "nyc": {
     "check-coverage": true,
