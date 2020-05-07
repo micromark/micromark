@@ -39,7 +39,8 @@
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
-    "test": "npm run format && npm run build && npm run test-coverage"
+    "test": "npm run format && npm run build && npm run test-coverage",
+    "posttest": "gzip-size micromark.min.js"
   },
   "nyc": {
     "check-coverage": true,

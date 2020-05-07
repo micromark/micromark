@@ -8,3 +8,6 @@ CM:
 
 - How do other character references work in HTML? E.g., `&copy` -> `&amp;copy`? What about HTMLs other numeric references? (e.g., the western set?)
 - Is there a reason that ```` ```asd``  ```` does not work? Whereas `***asd**` does.
+- What is the reason for `` `a\nb` `` becoming `a b` instead of `a\nb`, whereas line endings in text are preserved?
+- Soft breaks: are only spaces trimmed? (dingus shows tabs too. )
+- Hard breaks: is there a reason tabs, that in block structure act as 4 spaces, cannot be used to create hard breaks?

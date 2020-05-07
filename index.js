@@ -177,7 +177,7 @@ function mm(value) {
   //
 
   function onexitdata(t) {
-    out.push(encode(slice(t)))
+    out.push(encode(slice(t).replace(/[ \t]*\n[ \t]*/g, '\n')))
   }
 
   function onentercode() {
@@ -288,7 +288,8 @@ function mm(value) {
     }
 
     function nok() {
-      console.groupEnd()
+      var n = 10
+      while (n--) console.groupEnd()
       console.info('nok :(')
       index = startIndex
       place = startPlace
