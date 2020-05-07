@@ -1,7 +1,7 @@
 'use strict'
 
 var test = require('tape')
-var m = require('../..')
+var m = require('../../..')
 
 test('code', function (t) {
   t.equal(m('`foo`'), '<p><code>foo</code></p>', 'should support code')

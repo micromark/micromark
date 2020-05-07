@@ -1,1 +1,2 @@
-require('./text')
+require('./io')
+require('./stream')

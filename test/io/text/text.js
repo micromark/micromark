@@ -1,7 +1,7 @@
 'use strict'
 
 var test = require('tape')
-var m = require('../..')
+var m = require('../../..')
 
 test('text', function (t) {
   t.equal(
