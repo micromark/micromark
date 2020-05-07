@@ -50,7 +50,7 @@ function mm(value) {
   var queue // Event queue.
 
   var effects = {
-    prev: prev,
+    prev: previous,
     consume: consume,
     enter: enter,
     exit: exit
@@ -67,6 +67,7 @@ function mm(value) {
       codeWhitespace: onexitcodedata,
       characterEscapeCharacter: onexitcharacterescapecharacter,
       characterReferenceSequence: onexitcharacterreferencesequence,
+      autolinkUri: onexitautolinkuri,
       code: onexitcode
     }
   }
@@ -82,7 +83,7 @@ function mm(value) {
   assert.equal(stack.length, 0)
 
   console.info('settled!', settled)
-  return out.join('')
+  return '<p>' + out.join('') + '</p>'
 
   //
   // State management.
@@ -101,14 +102,7 @@ function mm(value) {
     return Object.assign({}, place)
   }
 
-  // Clone the current point: note that tokens also have an `index` in their
-  // points, refererring to the place in the input string, which we don’t want
-  // in the tree.
-  function point(source) {
-    return {line: source.line, column: source.column, offset: source.offset}
-  }
-
-  function prev() {
+  function previous() {
     console.log('prev:index', index)
     return index === 0 ? NaN : value.charCodeAt(index - 1)
   }
@@ -209,6 +203,11 @@ function mm(value) {
 
   function onexitcharacterreferencesequence(t) {
     out.push(encode(t.value))
+  }
+
+  function onexitautolinkuri(t) {
+    var uri = encode(slice(t))
+    out.push('<a href="' + encodeURI(uri) + '">' + uri + '</a>')
   }
 
   function encode(value) {

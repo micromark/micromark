@@ -18,7 +18,7 @@
     "index.js"
   ],
   "dependencies": {
-    "character-entities": "^1.2.4",
+    "character-entities": "^1.0.0",
     "stringify-entities": "^3.0.0"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
   "scripts": {
     "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
     "test-api": "node test",
-    "test-coverage": "nyc --reporter lcov tape test.js",
+    "test-coverage": "nyc --reporter lcov tape test/index.js",
     "test": "npm run format && npm run test-coverage"
   },
   "nyc": {
@@ -54,6 +54,7 @@
     "esnext": false,
     "rules": {
       "unicorn/prefer-number-properties": "off",
+      "import/no-unassigned-import": "off",
       "capitalized-comments": "off",
       "no-lonely-if": "off",
       "no-self-compare": "off"
