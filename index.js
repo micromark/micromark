@@ -6,7 +6,8 @@ var assert = require('assert')
 var stringifyEntities = require('stringify-entities')
 var serializeCharCode = require('./util-serialize-char-code')
 var serializeFormattedCode = require('./util-serialize-formatted-code')
-var textCode = require('./lib/tokenize/text/code')
+var autolink = require('./lib/tokenize/text/autolink')
+var code = require('./lib/tokenize/text/code')
 var characterReference = require('./lib/tokenize/text/character-reference')
 var characterEscape = require('./lib/tokenize/text/character-escape')
 
@@ -18,7 +19,7 @@ var ampersand = 38 // '&'
 // var dot = 46 // '.'
 // var slash = 47 // '/'
 // var colon = 58 // ':'
-// var lessThan = 60 // '<'
+var lessThan = 60 // '<'
 // var equalsTo = 61 // '='
 // var greaterThan = 62 // '>'
 var backslash = 92 // '\'
@@ -31,9 +32,10 @@ var own = {}.hasOwnProperty
 // Text only, for now.
 var hooks = {}
 
-hooks[graveAccent] = textCode
-hooks[backslash] = characterEscape
 hooks[ampersand] = characterReference
+hooks[lessThan] = autolink
+hooks[backslash] = characterEscape
+hooks[graveAccent] = code
 
 function mm(value) {
   var index = 0
