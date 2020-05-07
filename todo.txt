@@ -6,4 +6,5 @@ CMSM:
 
 CM:
 
-How do other character references work in HTML? E.g., `&copy` -> `&amp;copy`? What about HTMLs other numeric references? (e.g., the western set?)
+- How do other character references work in HTML? E.g., `&copy` -> `&amp;copy`? What about HTMLs other numeric references? (e.g., the western set?)
+- Is there a reason that ```` ```asd``  ```` does not work? Whereas `***asd**` does.

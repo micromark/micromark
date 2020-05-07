@@ -46,7 +46,6 @@ function mm(value) {
   var state = textStart
   var stack = [] // Current open tokens.
   var settled = false
-  var crashed = false
   var queue // Event queue.
 
   var effects = {
@@ -75,11 +74,6 @@ function mm(value) {
 
   // Run the state machine.
   main()
-
-  if (crashed) {
-    console.info('crashed!', crashed)
-    return
-  }
 
   assert.equal(stack.length, 0)
 
@@ -191,7 +185,7 @@ function mm(value) {
   }
 
   function onexitcodedata(t) {
-    out.push(encode(slice(t)))
+    out.push(encode(slice(t).replace(/\n/g, ' ')))
   }
 
   function onexitcode() {
