@@ -16,6 +16,8 @@
   ],
   "files": [
     "lib/",
+    "buffer.js",
+    "stream.js",
     "index.js"
   ],
   "dependencies": {
