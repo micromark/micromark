@@ -66,8 +66,7 @@
       "import/no-unassigned-import": "off",
       "capitalized-comments": "off",
       "no-lonely-if": "off",
-      "no-self-compare": "off",
-      "no-unmodified-loop-condition": "off"
+      "no-self-compare": "off"
     }
   },
   "remarkConfig": {
