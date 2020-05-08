@@ -15,6 +15,7 @@
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
   "files": [
+    "lib/",
     "index.js"
   ],
   "dependencies": {
@@ -36,13 +37,13 @@
   },
   "scripts": {
     "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
-    "build-bundle": "browserify . -s micromark -t unassertify > micromark.js",
-    "build-mangle": "browserify . -s micromark -t unassertify -p tinyify > micromark.min.js",
-    "build": "npm run build-bundle && npm run build-mangle",
+    "build-buffer": "browserify . -s micromark -t unassertify -p tinyify > micromark-buffer.min.js",
+    "build-stream": "browserify lib/stream -s micromark -t unassertify -p tinyify > micromark-stream.min.js",
+    "build": "npm run build-buffer && npm run build-stream",
+    "postbuild": "echo \"buffer: $(gzip-size micromark-buffer.min.js), stream: $(gzip-size micromark-stream.min.js)\"",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
-    "test": "npm run format && npm run build && npm run test-coverage",
-    "posttest": "gzip-size micromark.min.js"
+    "test": "npm run format && npm run build && npm run test-coverage"
   },
   "nyc": {
     "check-coverage": true,
@@ -62,6 +63,7 @@
     "prettier": true,
     "esnext": false,
     "rules": {
+      "unicorn/prefer-reflect-apply": "off",
       "unicorn/prefer-number-properties": "off",
       "import/no-unassigned-import": "off",
       "capitalized-comments": "off",

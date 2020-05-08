@@ -3,6 +3,6 @@ coverage/
 node_modules/
 *.log
 .DS_Store
-micromark.js
-micromark.min.js
+micromark-buffer.min.js
+micromark-stream.min.js
 yarn.lock

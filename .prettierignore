@@ -1,3 +1,3 @@
 coverage/
-micromark.js
-micromark.min.js
+micromark-buffer.min.js
+micromark-stream.min.js
