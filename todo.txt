@@ -6,9 +6,11 @@ CMSM:
 - Use “HTML End” state (also in CDATA close) when expecting a `>` (comment end, tagOpenSelfClosing can use it)
 - Allow `?` inside instructions, and allow `]]]]>` to end cdata.
 - Use “HTML tag close inside” state should forward `>` to tag close between too.
-- Use “HTML tag open inside” state should forward `>` to tag close between too.
+- Use “HTML tag open inside” state should forward `>` to tag open between too.
+- “HTML tag open inside state” should forward `/` too.
 - Allow two boolean attributes
 - tagOpenAttributeBefore should use “value” in name?
+- Comment may not start with `>` or `->`.
 
 CM:
 
