@@ -10,11 +10,11 @@ test('hard linebreaks', function (t) {
     'should support hard breaks with two spaces'
   )
 
-  // t.equal(
-  //   m('foo\\\nbaz'),
-  //   '<p>foo<br />\nbaz</p>',
-  //   'should support hard breaks with escape'
-  // )
+  t.equal(
+    m('foo\\\nbaz'),
+    '<p>foo<br />\nbaz</p>',
+    'should support hard breaks with escape'
+  )
 
   t.equal(
     m('foo       \nbaz'),
@@ -28,11 +28,11 @@ test('hard linebreaks', function (t) {
     'should support leading and trailing whitespace'
   )
 
-  // t.equal(
-  //   m('foo\\\n     bar'),
-  //   '<p>foo<br />\nbar</p>',
-  //   'should support leading and trailing whitespace for escapes'
-  // )
+  t.equal(
+    m('foo\\\n     bar'),
+    '<p>foo<br />\nbar</p>',
+    'should support leading and trailing whitespace for escapes'
+  )
 
   // t.equal(
   //   m('*foo  \nbar*'),
