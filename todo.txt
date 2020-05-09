@@ -3,6 +3,12 @@ CMSM:
 - email label -> email domain, email atext -> email local part
 - “Autolink email atext state” `@` case must set `sizeLabel` to `0`, instead of `1`
 - “Autolink email label state” `.` case must set `sizeLabel` to `0`, instead of incrementing it
+- Use “HTML End” state (also in CDATA close) when expecting a `>` (comment end, tagOpenSelfClosing can use it)
+- Allow `?` inside instructions, and allow `]]]]>` to end cdata.
+- Use “HTML tag close inside” state should forward `>` to tag close between too.
+- Use “HTML tag open inside” state should forward `>` to tag close between too.
+- Allow two boolean attributes
+- tagOpenAttributeBefore should use “value” in name?
 
 CM:
 
