@@ -96,11 +96,11 @@ test('code', function (t) {
     'should have same precedence as HTML (1)'
   )
 
-  // t.equal(
-  //   m('`<a href="`">``'),
-  //   '<p><a href="`">`</p>',
-  //   'should have same precedence as HTML (2)'
-  // )
+  t.equal(
+    m('<a href="`">`'),
+    '<p><a href="`">`</p>',
+    'should have same precedence as HTML (2)'
+  )
 
   t.equal(
     m('`<http://foo.bar.`baz>`'),

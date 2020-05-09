@@ -27,20 +27,6 @@ test('stream', function (t) {
     }
   })
 
-  // t.test('should support streaming buffers in non-UTF8', function (t) {
-  //   t.plan(1)
-  //
-  //   slowStream(Buffer.from('bär'), 'hex').pipe(m()).pipe(concat(onconcat))
-  //
-  //   function onconcat(result) {
-  //     t.equal(
-  //       result,
-  //       '<p><a href="mailto:admin@example.com">admin@example.com</a></p>',
-  //       'pass'
-  //     )
-  //   }
-  // })
-
   t.test('should support streaming buffers', function (t) {
     t.plan(1)
 

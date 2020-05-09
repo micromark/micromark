@@ -46,11 +46,11 @@ test('character-escape', function (t) {
     'should escape other constructs'
   )
 
-  // t.equal(
-  //   m('foo\\\nbar'),
-  //   '<p>foo<br />\nbar</p>',
-  //   'should escape a line break'
-  // )
+  t.equal(
+    m('foo\\\nbar'),
+    '<p>foo<br />\nbar</p>',
+    'should escape a line break'
+  )
 
   t.equal(
     m('`` \\[\\` ``'),
