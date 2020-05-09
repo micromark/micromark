@@ -1,1 +1,1 @@
-foo <a bool bool>
+a<!--->
