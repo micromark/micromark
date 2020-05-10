@@ -22,8 +22,7 @@
   ],
   "dependencies": {
     "once": "^1.4.0",
-    "parse-entities": "^2.0.0",
-    "stringify-entities": "^3.0.0"
+    "parse-entities": "^2.0.0"
   },
   "devDependencies": {
     "browserify": "^16.0.0",
