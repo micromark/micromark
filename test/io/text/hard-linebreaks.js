@@ -34,17 +34,17 @@ test('hard linebreaks', function (t) {
     'should support leading and trailing whitespace for escapes'
   )
 
-  // t.equal(
-  //   m('*foo  \nbar*'),
-  //   '<p><em>foo<br />\nbar</em></p>',
-  //   'should support trailing breaks in emphasis'
-  // )
+  t.equal(
+    m('*foo  \nbar*'),
+    '<p><em>foo<br />\nbar</em></p>',
+    'should support trailing breaks in emphasis'
+  )
 
-  // t.equal(
-  //   m('*foo\\\nbar*'),
-  //   '<p><em>foo<br />\nbar</em></p>',
-  //   'should support escape breaks in emphasis'
-  // )
+  t.equal(
+    m('*foo\\\nbar*'),
+    '<p><em>foo<br />\nbar</em></p>',
+    'should support escape breaks in emphasis'
+  )
 
   t.equal(
     m('`code  \nspan`'),
