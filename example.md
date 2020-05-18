@@ -1,1 +1,1 @@
-a<!--->
+[![moon](moon.jpg)](/uri)

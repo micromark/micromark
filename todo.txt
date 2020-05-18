@@ -1,8 +1,13 @@
+How about https://spec.commonmark.org/0.29/#example-508 if `[bar]` is defined?
+
 MM
 - Case normalization MDIT does a great job! <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L257>
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>
 - MM: I think we can use `\s` for unicode whitespace? (that’s what CM.js does!)
 - `previous` should be different when escaped? E.g.: ``` "\``asd`" ``` is fine. `\**asd*` too, probably?
+- make sure all constructs can start with a an escape!
+- Invalid resources and references are still shortcut references.
+- autolink/link: check why autolink does both encode and encodeURI, whereas link only does encodeURI?
 
 CMSM:
 
@@ -17,6 +22,9 @@ CMSM:
 - Allow two boolean attributes
 - tagOpenAttributeBefore should use “value” in name?
 - Comment may not start with `>` or `->`.
+- Label reference shortcut close state -> Label shortcut reference
+- Label resource isn’t very good
+- Resource information destination unquoted inside state should not handle `>`?!!!
 
 CM:
 
@@ -26,3 +34,7 @@ CM:
 - Soft breaks: are only spaces trimmed? (dingus shows tabs too. )
 - Hard breaks: is there a reason tabs, that in block structure act as 4 spaces, cannot be used to create hard breaks?
 - Example 637 has one space too few
+- “numeric character references” at example 502 should be named. However, a better fix would be to drop “numeric”.
+- links with resources should have precedence over link with references.
+- image vs. link differences: https://spec.commonmark.org/dingus/?text=!%5Bfoo%20!%5Bbar%5D(%2Furl)%5D(%2Furl2) vs https://spec.commonmark.org/dingus/?text=%5Bfoo%20%5Bbar%5D(%2Furl)%5D(%2Furl2)
+- Update examples to specify when they’re a recommendation instead of required: https://spec.commonmark.org/0.29/#example-572
