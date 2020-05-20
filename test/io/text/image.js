@@ -136,5 +136,42 @@ test('image', function (t) {
   //   'should support an escaped bang instead of an image, but still have a link'
   // )
 
+  // Extra
+  t.equal(
+    m('![foo]()'),
+    '<p><img src="" alt="foo" /></p>',
+    'should support images w/o destination (1)'
+  )
+
+  t.equal(
+    m('![foo](<>)'),
+    '<p><img src="" alt="foo" /></p>',
+    'should support images w/o destination (2)'
+  )
+
+  t.equal(
+    m('![](example.png)'),
+    '<p><img src="example.png" alt="" /></p>',
+    'should support images w/o alt'
+  )
+
+  t.equal(
+    m('![alpha](bravo.png "")'),
+    '<p><img src="bravo.png" alt="alpha" /></p>',
+    'should support images w/ empty title (1)'
+  )
+
+  t.equal(
+    m("![alpha](bravo.png '')"),
+    '<p><img src="bravo.png" alt="alpha" /></p>',
+    'should support images w/ empty title (2)'
+  )
+
+  t.equal(
+    m('![alpha](bravo.png ())'),
+    '<p><img src="bravo.png" alt="alpha" /></p>',
+    'should support images w/ empty title (3)'
+  )
+
   t.end()
 })

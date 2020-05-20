@@ -82,11 +82,11 @@ test('link', function (t) {
     'should support links w/ destinations w/ balanced parens'
   )
 
-  // t.equal(
-  //   m('[link](foo\\(and\\(bar\\))'),
-  //   '<p><a href="foo(and(bar)">link</a></p>',
-  //   'should support links w/ destinations w/ escaped parens'
-  // )
+  t.equal(
+    m('[link](foo\\(and\\(bar\\))'),
+    '<p><a href="foo(and(bar)">link</a></p>',
+    'should support links w/ destinations w/ escaped parens'
+  )
 
   t.equal(
     m('[link](<foo(and(bar)>)'),
@@ -94,11 +94,11 @@ test('link', function (t) {
     'should support links w/ enclosed destinations w/ parens'
   )
 
-  // t.equal(
-  //   m('[link](foo\\)\\:)'),
-  //   '<p><a href="foo):">link</a></p>',
-  //   'should support links w/ escapes in destinations'
-  // )
+  t.equal(
+    m('[link](foo\\)\\:)'),
+    '<p><a href="foo):">link</a></p>',
+    'should support links w/ escapes in destinations'
+  )
 
   t.equal(
     m('[link](#fragment)'),
@@ -124,11 +124,11 @@ test('link', function (t) {
     'should not support non-punctuation character escapes in links'
   )
 
-  // t.equal(
-  //   m('[link](foo%20b&auml;)'),
-  //   '<p><a href="foo%20b%C3%A4">link</a></p>',
-  //   'should support character references in links'
-  // )
+  t.equal(
+    m('[link](foo%20b&auml;)'),
+    '<p><a href="foo%20b%C3%A4">link</a></p>',
+    'should support character references in links'
+  )
 
   t.equal(
     m('[link]("title")'),
@@ -154,11 +154,11 @@ test('link', function (t) {
     'should support titles w/ parens'
   )
 
-  // t.equal(
-  //   m('[link](/url "title \\"&quot;")'),
-  //   '<p><a href="/url" title="title &quot;&quot;">link</a></p>',
-  //   'should support character references and escapes in titles'
-  // )
+  t.equal(
+    m('[link](/url "title \\"&quot;")'),
+    '<p><a href="/url" title="title &quot;&quot;">link</a></p>',
+    'should support character references and escapes in titles'
+  )
 
   t.equal(
     m('[link](/url "title")'),
@@ -287,6 +287,94 @@ test('link', function (t) {
   )
 
   // To do: reference tests.
+
+  // Extra
+
+  t.equal(
+    m('[](<'),
+    '<p>[](&lt;</p>',
+    'should not support an unclosed enclosed destination'
+  )
+
+  t.equal(m('[]('), '<p>[](</p>', 'should not support an unclosed destination')
+
+  t.equal(
+    m('[](\\<)'),
+    '<p><a href="%3C"></a></p>',
+    'should support unenclosed link destination starting with escapes'
+  )
+
+  t.equal(
+    m('[](<\\<>)'),
+    '<p><a href="%3C"></a></p>',
+    'should support enclosed link destination starting with escapes'
+  )
+
+  t.equal(
+    m('[](\\'),
+    '<p>[](\\</p>',
+    'should not support unenclosed link destination starting with an incorrect escape'
+  )
+
+  t.equal(
+    m('[](<\\'),
+    '<p>[](&lt;\\</p>',
+    'should not support enclosed link destination starting with an incorrect escape'
+  )
+
+  t.equal(
+    m('[](a "'),
+    '<p>[](a &quot;</p>',
+    'should not support an eof in a link title (1)'
+  )
+
+  t.equal(
+    m("[](a '"),
+    "<p>[](a '</p>",
+    'should not support an eof in a link title (2)'
+  )
+
+  t.equal(
+    m('[](a ('),
+    '<p>[](a (</p>',
+    'should not support an eof in a link title (3)'
+  )
+
+  t.equal(
+    m('[](a "\\'),
+    '<p>[](a &quot;\\</p>',
+    'should not support an eof in a link title escape (1)'
+  )
+
+  t.equal(
+    m("[](a '\\"),
+    "<p>[](a '\\</p>",
+    'should not support an eof in a link title escape (2)'
+  )
+
+  t.equal(
+    m('[](a (\\'),
+    '<p>[](a (\\</p>',
+    'should not support an eof in a link title escape (3)'
+  )
+
+  t.equal(
+    m('[](a "\\"")'),
+    '<p><a href="a" title="&quot;"></a></p>',
+    'should support a character escape to start a link title (1)'
+  )
+
+  t.equal(
+    m("[](a '\\'')"),
+    '<p><a href="a" title="\'"></a></p>',
+    'should support a character escape to start a link title (2)'
+  )
+
+  t.equal(
+    m('[](a (\\)))'),
+    '<p><a href="a" title=")"></a></p>',
+    'should support a character escape to start a link title (3)'
+  )
 
   t.end()
 })
