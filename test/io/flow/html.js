@@ -177,12 +177,11 @@ test('html', function (t) {
 
     t.equal(m('<!---->'), '<!---->', 'should support empty comments')
 
-    // // To do: prefix.
-    // t.equal(
-    //   m('  <!-- foo -->'),
-    //   '  <!-- foo -->',
-    //   'should support comments w/ indent'
-    // )
+    t.equal(
+      m('  <!-- foo -->'),
+      '  <!-- foo -->',
+      'should support comments w/ indent'
+    )
 
     // // To do: indented code.
     // t.equal(
@@ -299,12 +298,11 @@ test('html', function (t) {
       'should support html of type 6 (1)'
     )
 
-    // // To do: prefix is part of HTML.
-    // t.equal(
-    //   m(' <div>\n  *hello*\n         <foo><a>'),
-    //   ' <div>\n  *hello*\n         <foo><a>',
-    //   'should support html of type 6 (2)'
-    // )
+    t.equal(
+      m(' <div>\n  *hello*\n         <foo><a>'),
+      ' <div>\n  *hello*\n         <foo><a>',
+      'should support html of type 6 (2)'
+    )
 
     t.equal(
       m('</div>\n*foo*'),
@@ -393,8 +391,7 @@ test('html', function (t) {
     //   'should support basic tags without ending in containers (2)'
     // )
 
-    // // To do: prefix.
-    // t.equal(m('  <div>'), '  <div>', 'should support basic tags w/ indent')
+    t.equal(m('  <div>'), '  <div>', 'should support basic tags w/ indent')
 
     // // To do: indented code.
     // t.equal(
@@ -572,7 +569,6 @@ test('html', function (t) {
       'should not support interleaving w/o blank lines'
     )
 
-    // To do: interrupting.
     t.equal(
       m('Foo\n<a href="bar">\nbaz'),
       '<p>Foo\n<a href="bar">\nbaz</p>',
