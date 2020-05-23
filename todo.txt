@@ -8,6 +8,7 @@ MM
 - make sure all constructs can start with a an escape!
 - Invalid resources and references are still shortcut references.
 - autolink/link: check why autolink does both encode and encodeURI, whereas link only does encodeURI?
+- Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
 
 CMSM:
 
@@ -25,6 +26,7 @@ CMSM:
 - Label reference shortcut close state -> Label shortcut reference
 - Label resource isn’t very good
 - Resource information destination unquoted inside state should not handle `>`?!!!
+- HTML flow should look more like HTML text.
 
 CM:
 
@@ -38,3 +40,5 @@ CM:
 - links with resources should have precedence over link with references.
 - image vs. link differences: https://spec.commonmark.org/dingus/?text=!%5Bfoo%20!%5Bbar%5D(%2Furl)%5D(%2Furl2) vs https://spec.commonmark.org/dingus/?text=%5Bfoo%20%5Bbar%5D(%2Furl)%5D(%2Furl2)
 - Update examples to specify when they’re a recommendation instead of required: https://spec.commonmark.org/0.29/#example-572
+- Flow HTML declaration: “followed by an uppercase ASCII letter” should be any letter probably? (I’ve implemented this) (I remember I did something with a PR here)
+- `<a b="c"d="f">` is valid according to spec, and should be (same w/ HTML), but in dingus.

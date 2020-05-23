@@ -115,7 +115,6 @@ test('stream', function (t) {
     s = m()
     s.pipe(
       concat(function (value) {
-        // To do: should be an empty string if we support blocks.
         t.equal(String(value), '', 'should end without ever receiving data')
       })
     )

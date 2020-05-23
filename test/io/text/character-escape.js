@@ -70,11 +70,11 @@ test('character-escape', function (t) {
     'should not escape in autolink'
   )
 
-  // t.equal(
-  //   m('<a href="/bar\\/)">'),
-  //   '<a href="/bar\\/)">',
-  //   'should not escape in block html'
-  // )
+  t.equal(
+    m('<a href="/bar\\/)">'),
+    '<a href="/bar\\/)">',
+    'should not escape in block html'
+  )
 
   // t.equal(
   //   m('[foo](/bar\\* "ti\\*tle")'),

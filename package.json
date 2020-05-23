@@ -69,8 +69,9 @@
     "esnext": false,
     "rules": {
       "unicorn/no-hex-escape": "off",
-      "unicorn/prefer-reflect-apply": "off",
+      "unicorn/prefer-includes": "off",
       "unicorn/prefer-number-properties": "off",
+      "unicorn/prefer-reflect-apply": "off",
       "import/no-unassigned-import": "off",
       "capitalized-comments": "off",
       "no-lonely-if": "off",

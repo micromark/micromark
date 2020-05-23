@@ -58,11 +58,11 @@ test('character-reference', function (t) {
     'should not support unknown named character references'
   )
 
-  // t.equal(
-  //   m('<a href="&ouml;&ouml;.html">'),
-  //   '<a href="&ouml;&ouml;.html">',
-  //   'should not care about character references in html'
-  // )
+  t.equal(
+    m('<a href="&ouml;&ouml;.html">'),
+    '<a href="&ouml;&ouml;.html">',
+    'should not care about character references in html'
+  )
 
   // t.equal(
   //   m('[foo](/f&ouml;&ouml; "f&ouml;&ouml;")'),

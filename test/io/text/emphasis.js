@@ -328,11 +328,11 @@ test('emphasis', function (t) {
   )
 
   // Rule 9.
-  // t.equal(
-  //   m('*foo [bar](/url)*'),
-  //   '<p><em>foo <a href="/url">bar</a></em></p>',
-  //   'should support content in emphasis'
-  // )
+  t.equal(
+    m('*foo [bar](/url)*'),
+    '<p><em>foo <a href="/url">bar</a></em></p>',
+    'should support content in emphasis'
+  )
 
   t.equal(
     m('*foo\nbar*'),
@@ -415,11 +415,11 @@ test('emphasis', function (t) {
     'should support indefinite nesting of emphasis (1)'
   )
 
-  // t.equal(
-  //   m('*foo [*bar*](/url)*'),
-  //   '<p><em>foo <a href="/url"><em>bar</em></a></em></p>',
-  //   'should support indefinite nesting of emphasis (2)'
-  // )
+  t.equal(
+    m('*foo [*bar*](/url)*'),
+    '<p><em>foo <a href="/url"><em>bar</em></a></em></p>',
+    'should support indefinite nesting of emphasis (2)'
+  )
 
   t.equal(
     m('** is not an empty emphasis'),
@@ -434,11 +434,11 @@ test('emphasis', function (t) {
   )
 
   // Rule 10.
-  // t.equal(
-  //   m('**foo [bar](/url)**'),
-  //   '<p><strong>foo <a href="/url">bar</a></strong></p>',
-  //   'should support content in strong emphasis'
-  // )
+  t.equal(
+    m('**foo [bar](/url)**'),
+    '<p><strong>foo <a href="/url">bar</a></strong></p>',
+    'should support content in strong emphasis'
+  )
 
   t.equal(
     m('**foo\nbar**'),
@@ -500,11 +500,11 @@ test('emphasis', function (t) {
     'should support indefinite nesting of emphasis (1)'
   )
 
-  // t.equal(
-  //   m('**foo [*bar*](/url)**'),
-  //   '<p><strong>foo <a href="/url"><em>bar</em></a></strong></p>',
-  //   'should support indefinite nesting of emphasis (2)'
-  // )
+  t.equal(
+    m('**foo [*bar*](/url)**'),
+    '<p><strong>foo <a href="/url"><em>bar</em></a></strong></p>',
+    'should support indefinite nesting of emphasis (2)'
+  )
 
   t.equal(
     m('__ is not an empty emphasis'),

@@ -71,11 +71,11 @@ test('hard linebreaks', function (t) {
     'should not support escape breaks at the end of a paragraph'
   )
 
-  // t.equal(
-  //   m('### foo  '),
-  //   '<h3>foo</h3>',
-  //   'should not support trailing breaks at the end of a heading'
-  // )
+  t.equal(
+    m('### foo  '),
+    '<h3>foo</h3>',
+    'should not support trailing breaks at the end of a heading'
+  )
 
   // t.equal(
   //   m('### foo\\'),
