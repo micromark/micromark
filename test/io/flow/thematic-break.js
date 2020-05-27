@@ -50,17 +50,17 @@ test('thematic-break', function (t) {
     'should support thematic breaks w/ three spaces'
   )
 
-  // t.equal(
-  //   m('    ***'),
-  //   '<pre><code>***\n</code></pre>',
-  //   'should not support thematic breaks w/ four spaces'
-  // )
+  t.equal(
+    m('    ***'),
+    '<pre><code>***\n</code></pre>',
+    'should not support thematic breaks w/ four spaces'
+  )
 
-  // t.equal(
-  //   m('Foo\n    ***'),
-  //   '<p>Foo\n***</p>',
-  //   'should not support thematic breaks w/ four spaces as paragraph continuation'
-  // )
+  t.equal(
+    m('Foo\n    ***'),
+    '<p>Foo\n***</p>',
+    'should not support thematic breaks w/ four spaces as paragraph continuation'
+  )
 
   t.equal(
     m('_____________________________________'),
@@ -112,30 +112,35 @@ test('thematic-break', function (t) {
     'should not support thematic breaks w/ mixed markers'
   )
 
+  // // To do: lists.
   // t.equal(
   //   m('- foo\n***\n- bar'),
   //   '<ul>\n<li>foo</li>\n</ul>\n<hr />\n<ul>\n<li>bar</li>\n</ul>',
   //   'should support thematic breaks mixed w/ lists (1)'
   // )
 
+  // // To do: lists.
   // t.equal(
   //   m('* Foo\n* * *\n* Bar'),
   //   '<ul>\n<li>Foo</li>\n</ul>\n<hr />\n<ul>\n<li>Bar</li>\n</ul>',
   //   'should support thematic breaks mixed w/ lists (2)'
   // )
 
+  // // To do: interrupting.
   // t.equal(
   //   m('Foo\n***\nbar'),
   //   '<p>Foo</p>\n<hr />\n<p>bar</p>',
   //   'should support thematic breaks interrupting paragraphs'
   // )
 
+  // // To do: interrupting.
   // t.equal(
   //   m('Foo\n---\nbar'),
   //   '<h2>Foo</h2>\n<p>bar</p>',
   //   'should not support thematic breaks w/ dashes interrupting paragraphs (setext heading)'
   // )
 
+  // // To do: lists.
   // t.equal(
   //   m('- Foo\n- * * *'),
   //   '<ul>\n<li>Foo</li>\n<li>\n<hr />\n</li>\n</ul>',

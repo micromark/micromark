@@ -183,12 +183,11 @@ test('html', function (t) {
       'should support comments w/ indent'
     )
 
-    // // To do: indented code.
-    // t.equal(
-    //   m('   <!-- foo -->'),
-    //   '<pre><code>&lt;!-- foo --&gt;\n</code></pre>',
-    //   'should not support comments w/ a 4 character indent'
-    // )
+    t.equal(
+      m('    <!-- foo -->'),
+      '<pre><code>&lt;!-- foo --&gt;\n</code></pre>',
+      'should not support comments w/ a 4 character indent'
+    )
 
     t.end()
   })
@@ -393,12 +392,11 @@ test('html', function (t) {
 
     t.equal(m('  <div>'), '  <div>', 'should support basic tags w/ indent')
 
-    // // To do: indented code.
-    // t.equal(
-    //   m('    <div>'),
-    //   '<pre><code>&lt;div&gt;\n</code></pre>',
-    //   'should not support basic tags w/ a 4 character indent'
-    // )
+    t.equal(
+      m('    <div>'),
+      '<pre><code>&lt;div&gt;\n</code></pre>',
+      'should not support basic tags w/ a 4 character indent'
+    )
 
     // // To do: interrupting.
     // t.equal(
@@ -432,35 +430,34 @@ test('html', function (t) {
       'should support blank lines between adjacent html'
     )
 
-    // To do: indented code.
-    // t.equal(
-    //   m(
-    //     [
-    //       '<table>',
-    //       '',
-    //       '  <tr>',
-    //       '',
-    //       '    <td>',
-    //       '      Hi',
-    //       '    </td>',
-    //       '',
-    //       '  </tr>',
-    //       '',
-    //       '</table>'
-    //     ].join('\n')
-    //   ),
-    //   [
-    //     '<table>',
-    //     '  <tr>',
-    //     '<pre><code>&lt;td&gt;',
-    //     '  Hi',
-    //     '&lt;/td&gt;',
-    //     '</code></pre>',
-    //     '  </tr>',
-    //     '</table>'
-    //   ].join('\n'),
-    //   'should not support indented, blank-line delimited, adjacent html'
-    // )
+    t.equal(
+      m(
+        [
+          '<table>',
+          '',
+          '  <tr>',
+          '',
+          '    <td>',
+          '      Hi',
+          '    </td>',
+          '',
+          '  </tr>',
+          '',
+          '</table>'
+        ].join('\n')
+      ),
+      [
+        '<table>',
+        '  <tr>',
+        '<pre><code>&lt;td&gt;',
+        '  Hi',
+        '&lt;/td&gt;',
+        '</code></pre>',
+        '  </tr>',
+        '</table>'
+      ].join('\n'),
+      'should not support indented, blank-line delimited, adjacent html'
+    )
 
     t.equal(
       m('</1>'),

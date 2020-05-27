@@ -94,12 +94,11 @@ test('fenced-code', function (t) {
     'should remove as much indent from the content as was on the opening (3)'
   )
 
-  // // To do: indented code.
-  // t.equal(
-  //   m('    ```\n    aaa\n    ```'),
-  //   '<pre><code>```\naaa\n```\n</code></pre>',
-  //   'should not support fenced code w/ 4 spaces'
-  // )
+  t.equal(
+    m('    ```\n    aaa\n    ```'),
+    '<pre><code>```\naaa\n```\n</code></pre>',
+    'should not support fenced code w/ 4 spaces'
+  )
 
   t.equal(
     m('```\naaa\n  ```'),
@@ -216,7 +215,7 @@ test('fenced-code', function (t) {
 
   t.equal(
     m('```\n  '),
-    '<pre><code>  </code></pre>',
+    '<pre><code>  \n</code></pre>',
     'should support an EOF after whitespace in content'
   )
 

@@ -64,11 +64,11 @@ test('character-reference', function (t) {
     'should not care about character references in html'
   )
 
-  // t.equal(
-  //   m('[foo](/f&ouml;&ouml; "f&ouml;&ouml;")'),
-  //   '<p><a href="/f%C3%B6%C3%B6" title="föö">foo</a></p>',
-  //   'should support character references in resource URLs and titles'
-  // )
+  t.equal(
+    m('[foo](/f&ouml;&ouml; "f&ouml;&ouml;")'),
+    '<p><a href="/f%C3%B6%C3%B6" title="föö">foo</a></p>',
+    'should support character references in resource URLs and titles'
+  )
 
   // t.equal(
   //   m('[foo]\n\n[foo]: /f&ouml;&ouml; "f&ouml;&ouml;"'),
@@ -88,19 +88,19 @@ test('character-reference', function (t) {
     'should not support character references in text code'
   )
 
-  // t.equal(
-  //   m('    f&ouml;f&ouml;'),
-  //   '<pre><code>f&amp;ouml;f&amp;ouml;</code></pre>',
-  //   'should not support character references in indented block code'
-  // )
+  t.equal(
+    m('    f&ouml;f&ouml;'),
+    '<pre><code>f&amp;ouml;f&amp;ouml;\n</code></pre>',
+    'should not support character references in indented block code'
+  )
 
-  // t.equal(
-  //   m('    f&ouml;f&ouml;'),
-  //   '<pre><code>f&amp;ouml;f&amp;ouml;</code></pre>',
-  //   'should not support character references in indented block code'
-  // )
+  t.equal(
+    m('    f&ouml;f&ouml;'),
+    '<pre><code>f&amp;ouml;f&amp;ouml;\n</code></pre>',
+    'should not support character references in indented block code'
+  )
 
-  // CM has some more tests for other constructs.
+  // To do: CM has some more tests for other constructs.
 
   // Our own:
   t.equal(

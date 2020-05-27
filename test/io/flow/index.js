@@ -1,4 +1,5 @@
 require('./atx-heading')
+require('./fenced-code')
 require('./html')
 require('./thematic-break')
-require('./fenced-code')
+require('./indented-code')

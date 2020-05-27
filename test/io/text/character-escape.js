@@ -58,11 +58,11 @@ test('character-escape', function (t) {
     'should not escape in text code'
   )
 
-  // t.equal(
-  //   m('    \\[\\]'),
-  //   '<pre><code>\\[\\]</code></pre>',
-  //   'should not escape in indented block code'
-  // )
+  t.equal(
+    m('    \\[\\]'),
+    '<pre><code>\\[\\]\n</code></pre>',
+    'should not escape in indented block code'
+  )
 
   t.equal(
     m('<http://example.com?find=\\*>'),
@@ -76,11 +76,11 @@ test('character-escape', function (t) {
     'should not escape in block html'
   )
 
-  // t.equal(
-  //   m('[foo](/bar\\* "ti\\*tle")'),
-  //   '<p><a href="/bar*" title="ti*tle">foo</a></p>',
-  //   'should escape in resource and title'
-  // )
+  t.equal(
+    m('[foo](/bar\\* "ti\\*tle")'),
+    '<p><a href="/bar*" title="ti*tle">foo</a></p>',
+    'should escape in resource and title'
+  )
 
   // t.equal(
   //   m('[foo]\n\n[foo]: /bar\\* "ti\\*tle"'),
@@ -88,11 +88,11 @@ test('character-escape', function (t) {
   //   'should escape in definition resource and title'
   // )
 
-  // t.equal(
-  //   m('``` foo\\+bar\nfoo\n```'),
-  //   '<pre><code class="language-foo+bar">foo\n</code></pre>',
-  //   'should escape in block code info'
-  // )
+  t.equal(
+    m('``` foo\\+bar\nfoo\n```'),
+    '<pre><code class="language-foo+bar">foo\n</code></pre>',
+    'should escape in block code info'
+  )
 
   t.end()
 })

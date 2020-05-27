@@ -82,11 +82,11 @@ test('atx-heading', function (t) {
 
   t.equal(m('   # foo'), '<h1>foo</h1>', 'should support three initial spaces')
 
-  // t.equal(
-  //   m('    # foo'),
-  //   '<pre><code># foo\n</code></pre>',
-  //   'should not support four initial spaces (1)'
-  // )
+  t.equal(
+    m('    # foo'),
+    '<pre><code># foo\n</code></pre>',
+    'should not support four initial spaces (1)'
+  )
 
   t.equal(
     m('foo\n    # bar'),
@@ -154,11 +154,11 @@ test('atx-heading', function (t) {
     'should not support a character escaped closing sequence (3)'
   )
 
-  // t.equal(
-  //   m('****\n## foo\n****'),
-  //   '<hr />\n<h2>foo</h2>\n<hr />',
-  //   'should support atx headings when not surrounded by blank lines'
-  // )
+  t.equal(
+    m('****\n## foo\n****'),
+    '<hr />\n<h2>foo</h2>\n<hr />',
+    'should support atx headings when not surrounded by blank lines'
+  )
 
   // t.equal(
   //   m('Foo bar\n# baz\nBar foo'),
