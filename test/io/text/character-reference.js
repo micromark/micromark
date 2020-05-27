@@ -76,11 +76,11 @@ test('character-reference', function (t) {
   //   'should support character references in definition URLs and titles'
   // )
 
-  // t.equal(
-  //   m('``` f&ouml;&ouml;\nfoo\n```'),
-  //   '<pre><code class="language-föö">foo\n</code></pre>',
-  //   'should support character references in code language'
-  // )
+  t.equal(
+    m('``` f&ouml;&ouml;\nfoo\n```'),
+    '<pre><code class="language-föö">foo\n</code></pre>',
+    'should support character references in code language'
+  )
 
   t.equal(
     m('`f&ouml;&ouml;`'),
