@@ -112,12 +112,11 @@ test('fenced-code', function (t) {
     'should support a differently indented closing fence than the opening fence'
   )
 
-  // // To do:
-  // t.equal(
-  //   m('```\naaa\n    ```'),
-  //   '<pre><code>aaa\n    ```\n</code></pre>',
-  //   'should not support a closing fence w/ too much indent'
-  // )
+  t.equal(
+    m('```\naaa\n    ```'),
+    '<pre><code>aaa\n    ```\n</code></pre>',
+    'should not support a closing fence w/ too much indent'
+  )
 
   t.equal(
     m('``` ```\naaa'),
@@ -229,6 +228,12 @@ test('fenced-code', function (t) {
     m('```j\\+s&copy;'),
     '<pre><code class="language-j+s©"></code></pre>',
     'should support character escapes and character references in info strings'
+  )
+
+  t.equal(
+    m('   ```\naaa\n    ```'),
+    '<pre><code>aaa\n ```\n</code></pre>',
+    'should not support a closing fence w/ too much indent, regardless of opening fence'
   )
 
   t.end()
