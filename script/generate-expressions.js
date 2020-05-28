@@ -1,30 +1,23 @@
 var fs = require('fs')
 var path = require('path')
 var regenerate = require('regenerate')
-
-var tab = 9 // '\t'
-var lineFeed = 10 // '\n'
-var formFeed = 12 // '\f'
-var carriageReturn = 13 // '\r'
-var exclamationMark = 33 // '!'
-var slash = 47 // '/'
-var colon = 58 // ':'
-var atSign = 64 // '@'
-var leftSquareBracket = 91 // '['
-var graveAccent = 96 // '`'
-var leftCurlyBrace = 123 // '{'
-var tilde = 126 // '~'
+var characters = require('../lib/util/characters')
 
 var ws = regenerate()
-  .add(tab, lineFeed, formFeed, carriageReturn)
+  .add(
+    characters.tab,
+    characters.lineFeed,
+    characters.formFeed,
+    characters.carriageReturn
+  )
   .add(unicode('Space_Separator'))
   .toRegExp()
 
 var pcAll = regenerate()
-  .addRange(exclamationMark, slash)
-  .addRange(colon, atSign)
-  .addRange(leftSquareBracket, graveAccent)
-  .addRange(leftCurlyBrace, tilde)
+  .addRange(characters.exclamationMark, characters.slash)
+  .addRange(characters.colon, characters.atSign)
+  .addRange(characters.leftSquareBracket, characters.graveAccent)
+  .addRange(characters.leftCurlyBrace, characters.tilde)
   .add(unicode('Connector_Punctuation'))
   .add(unicode('Dash_Punctuation'))
   .add(unicode('Close_Punctuation'))
