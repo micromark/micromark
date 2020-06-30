@@ -11,16 +11,17 @@ process.on('exit', () => {
 })
 
 test('commonmark', function (t) {
-  var examples = cm.reduce((all, d) => {
+  var examples = {}
+
+  cm.forEach((d) => {
     var {section, markdown, html} = d
-    var list = all[section] || (all[section] = [])
+    var list = examples[section] || (examples[section] = [])
     // To do: paragraph whitespace:
     list.push({
       input: markdown.replace(/\n$/, ''),
       expected: html.replace(/\n$/, '')
     })
-    return all
-  }, {})
+  })
 
   Object.keys(examples).forEach((section) => {
     t.test(section, function (t) {

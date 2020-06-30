@@ -39,7 +39,7 @@
     "tinyify": "^2.0.0",
     "unassertify": "^2.0.0",
     "unicode-13.0.0": "^0.8.0",
-    "xo": "^0.30.0"
+    "xo": "^0.32.0"
   },
   "scripts": {
     "generate-expressions": "node script/generate-expressions",
@@ -70,11 +70,12 @@
     "prettier": true,
     "esnext": false,
     "rules": {
+      "import/no-unassigned-import": "off",
+      "unicorn/no-fn-reference-in-iterator": "off",
       "unicorn/no-hex-escape": "off",
       "unicorn/prefer-includes": "off",
       "unicorn/prefer-number-properties": "off",
       "unicorn/prefer-reflect-apply": "off",
-      "import/no-unassigned-import": "off",
       "capitalized-comments": "off",
       "no-lonely-if": "off",
       "no-self-compare": "off"
