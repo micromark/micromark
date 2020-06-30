@@ -77,7 +77,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   //     return resourceDestinationEnclosedBefore
   //   }
   //
-  //   if (code !== code || asciiControl(code)) {
+  //   if (code === characters.eof || asciiControl(code)) {
   //     return nok
   //   }
   //
@@ -87,7 +87,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   // }
   //
   // function resourceDestinationEnclosedBefore(code) {
-  //   if (code !== code || code === lineFeed || code === lessThan) {
+  //   if (code === characters.eof || code === lineFeed || code === lessThan) {
   //     return nok
   //   }
   //
@@ -101,7 +101,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   // }
   //
   // function resourceDestinationEnclosed(code) {
-  //   if (code !== code || code === lineFeed || code === lessThan) {
+  //   if (code === characters.eof || code === lineFeed || code === lessThan) {
   //     return nok
   //   }
   //
@@ -170,7 +170,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   //     return resourceDestinationCharacterEscapeOpen
   //   }
   //
-  //   if (code !== code || asciiControl(code)) {
+  //   if (code === characters.eof || asciiControl(code)) {
   //     return nok
   //   }
   //
@@ -221,7 +221,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   // }
   //
   // function resourceTitleDoubleQuoted(code) {
-  //   if (code !== code) {
+  //   if (code === characters.eof) {
   //     return nok
   //   }
   //
@@ -247,7 +247,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   // }
   //
   // function resourceTitleSingleQuoted(code) {
-  //   if (code !== code) {
+  //   if (code === characters.eof) {
   //     return nok
   //   }
   //
@@ -273,7 +273,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   // }
   //
   // function resourceTitleParenQuoted(code) {
-  //   if (code !== code) {
+  //   if (code === characters.eof) {
   //     return nok
   //   }
   //
@@ -334,7 +334,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   // }
   //
   // function referenceStart(code) {
-  //   if (code !== code) {
+  //   if (code === characters.eof) {
   //     return nok
   //   }
   //
@@ -347,7 +347,7 @@ function tokenizeLabelResource(effects, ok, nok) {
   // }
   //
   // function reference(code) {
-  //   if (code !== code) {
+  //   if (code === characters.eof) {
   //     return nok
   //   }
   //
