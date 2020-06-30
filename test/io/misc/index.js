@@ -1,1 +1,2 @@
 require('./tab')
+require('./newline')
