@@ -46,5 +46,41 @@ test('newline', function (t) {
     'should support a line feed in indented code'
   )
 
+  t.equal(
+    m('***\n### Heading'),
+    '<hr />\n<h3>Heading</h3>',
+    'should support a line feed between blocks'
+  )
+
+  t.equal(
+    m('***\r### Heading'),
+    '<hr />\r<h3>Heading</h3>',
+    'should support a carriage return between blocks'
+  )
+
+  t.equal(
+    m('***\r\n### Heading'),
+    '<hr />\r\n<h3>Heading</h3>',
+    'should support a carriage return + line feed between blocks'
+  )
+
+  t.equal(
+    m('***\n\n\n### Heading\n'),
+    '<hr />\n<h3>Heading</h3>\n',
+    'should support several line feeds between blocks'
+  )
+
+  t.equal(
+    m('***\r\r\r### Heading\r'),
+    '<hr />\r<h3>Heading</h3>\r',
+    'should support several carriage returns between blocks'
+  )
+
+  t.equal(
+    m('***\r\n\r\n\r\n### Heading\r\n'),
+    '<hr />\r\n<h3>Heading</h3>\r\n',
+    'should support several carriage return + line feeds between blocks'
+  )
+
   t.end()
 })

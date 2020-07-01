@@ -43,6 +43,41 @@ test('stream', function (t) {
     }
   })
 
+  t.test('should support carriage returns between blocks', function (t) {
+    t.plan(1)
+
+    slowStream('***\r\r    fn()\r\r### Heading\r\r')
+      .pipe(m())
+      .pipe(concat(onconcat))
+
+    function onconcat(result) {
+      t.equal(
+        result,
+        '<hr />\r<pre><code>fn()\n</code></pre>\r<h3>Heading</h3>\r',
+        'pass'
+      )
+    }
+  })
+
+  t.test(
+    'should support carriage return + line feeds between blocks',
+    function (t) {
+      t.plan(1)
+
+      slowStream('***\r\n\r\n    fn()\r\n\r\n### Heading\r\n\r\n')
+        .pipe(m())
+        .pipe(concat(onconcat))
+
+      function onconcat(result) {
+        t.equal(
+          result,
+          '<hr />\r\n<pre><code>fn()\n</code></pre>\r\n<h3>Heading</h3>\r\n',
+          'pass'
+        )
+      }
+    }
+  )
+
   t.test('should integrate with `fs.create{Read,Write}Stream`', function (t) {
     t.plan(1)
 
