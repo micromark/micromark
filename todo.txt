@@ -5,7 +5,7 @@ MM
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>
 - MM: I think we can use `\s` for unicode whitespace? (that’s what CM.js does!)
 - `previous` should be different when escaped? E.g.: ``` "\``asd`" ``` is fine. `\**asd*` too, probably?
-- make sure all constructs can start with a an escape!
+- make sure all constructs can start with a an escape (as in: add tests for this)!
 - Invalid resources and references are still shortcut references.
 - autolink/link: check why autolink does both encode and encodeURI, whereas link only does encodeURI?
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.

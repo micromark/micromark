@@ -82,5 +82,23 @@ test('newline', function (t) {
     'should support several carriage return + line feeds between blocks'
   )
 
+  t.equal(
+    m('```x\n\n\ny\n\n\n```\n\n\n'),
+    '<pre><code class="language-x">\n\ny\n\n\n</code></pre>\n',
+    'should support several line feeds in fenced code'
+  )
+
+  t.equal(
+    m('```x\r\r\ry\r\r\r```\r\r\r'),
+    '<pre><code class="language-x">\r\ry\r\r\r</code></pre>\r',
+    'should support several carriage returns in fenced code'
+  )
+
+  t.equal(
+    m('```x\r\n\r\n\r\ny\r\n\r\n\r\n```\r\n\r\n\r\n'),
+    '<pre><code class="language-x">\r\n\r\ny\r\n\r\n\r\n</code></pre>\r\n',
+    'should support several carriage return + line feeds in fenced code'
+  )
+
   t.end()
 })
