@@ -1,2 +1,3 @@
-require('./tab')
 require('./newline')
+require('./nul')
+require('./tab')
