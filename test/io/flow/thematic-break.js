@@ -126,14 +126,13 @@ test('thematic-break', function (t) {
   //   'should support thematic breaks mixed w/ lists (2)'
   // )
 
-  // // To do: interrupting.
-  // t.equal(
-  //   m('Foo\n***\nbar'),
-  //   '<p>Foo</p>\n<hr />\n<p>bar</p>',
-  //   'should support thematic breaks interrupting paragraphs'
-  // )
+  t.equal(
+    m('Foo\n***\nbar'),
+    '<p>Foo</p>\n<hr />\n<p>bar</p>',
+    'should support thematic breaks interrupting paragraphs'
+  )
 
-  // // To do: interrupting.
+  // // To do: Setext headings.
   // t.equal(
   //   m('Foo\n---\nbar'),
   //   '<h2>Foo</h2>\n<p>bar</p>',

@@ -160,11 +160,11 @@ test('atx-heading', function (t) {
     'should support atx headings when not surrounded by blank lines'
   )
 
-  // t.equal(
-  //   m('Foo bar\n# baz\nBar foo'),
-  //   '<p>Foo bar</p>\n<h1>baz</h1>\n<p>Bar foo</p>',
-  //   'should support atx headings when interrupting paragraphs'
-  // )
+  t.equal(
+    m('Foo bar\n# baz\nBar foo'),
+    '<p>Foo bar</p>\n<h1>baz</h1>\n<p>Bar foo</p>',
+    'should support atx headings when interrupting paragraphs'
+  )
 
   t.equal(
     m('## \n#\n### ###'),

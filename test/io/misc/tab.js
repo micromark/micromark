@@ -197,7 +197,8 @@ test('tabs', function (t) {
       'should support a space starting, and a tab ending, code'
     )
 
-    // // To do: paragraph trailing:
+    // // To do: Support better block parsing instead of whitespace trimming in
+    // `html-adapter`
     // t.equal(
     //   m('x\t\ny'),
     //   '<p>x\t\ny</p>',

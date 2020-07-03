@@ -747,6 +747,7 @@ test('emphasis', function (t) {
   )
 
   // Rule 17.
+  // To do: links + emphasis resolving.
   // t.equal(
   //   m('*[bar*](/url)'),
   //   '<p>*<a href="/url">bar*</a></p>',

@@ -1,5 +1,28 @@
 How about https://spec.commonmark.org/0.29/#example-508 if `[bar]` is defined?
 
+Shortlist:
+- Higher-level:
+  - Containers
+  - Content
+- Constructs:
+  - Block:
+    - Blank lines
+  - Containers:
+    - Block quotes
+    - Lists
+  - Content:
+    - Definitions
+    - Setext heading
+  - Text:
+    - References
+
+Interruption:
+
+- [ ] `isConstructs` for multiple checks
+- [ ] Be smart when interrupting (html, fenced code can interrupt if first line match, and don’t need to check the rest)
+
+`lineFeed` -> new name (`newline`?)
+
 MM
 - Case normalization MDIT does a great job! <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L257>
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>

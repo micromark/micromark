@@ -261,14 +261,13 @@ test('html', function (t) {
   })
 
   t.test('6 (basic)', function (t) {
-    // To do: paragaph.
-    // t.equal(
-    //   m(
-    //     '<table><tr><td>\n<pre>\n**Hello**,\n\n_world_.\n</pre>\n</td></tr></table>'
-    //   ),
-    //   '<table><tr><td>\n<pre>\n**Hello**,\n<p><em>world</em>.\n</pre></p>\n</td></tr></table>',
-    //   'should support html (complex)'
-    // )
+    t.equal(
+      m(
+        '<table><tr><td>\n<pre>\n**Hello**,\n\n_world_.\n</pre>\n</td></tr></table>'
+      ),
+      '<table><tr><td>\n<pre>\n**Hello**,\n<p><em>world</em>.\n</pre></p>\n</td></tr></table>',
+      'should support html (complex)'
+    )
 
     t.equal(
       m(
@@ -309,12 +308,11 @@ test('html', function (t) {
       'should support flow HTML starting with a closing tag'
     )
 
-    // To do: paragraph endings.
-    // t.equal(
-    //   m('<DIV CLASS="foo">\n\n*Markdown*\n\n</DIV>'),
-    //   '<DIV CLASS="foo">\n<p><em>Markdown</em></p>\n</DIV>',
-    //   'should support flow HTML with markdown in between'
-    // )
+    t.equal(
+      m('<DIV CLASS="foo">\n\n*Markdown*\n\n</DIV>'),
+      '<DIV CLASS="foo">\n<p><em>Markdown</em></p>\n</DIV>',
+      'should support flow HTML with markdown in between'
+    )
 
     t.equal(
       m('<div id="foo"\n  class="bar">\n</div>'),
@@ -398,12 +396,11 @@ test('html', function (t) {
       'should not support basic tags w/ a 4 character indent'
     )
 
-    // // To do: interrupting.
-    // t.equal(
-    //   m('Foo\n<div>\nbar\n</div>'),
-    //   '<p>Foo</p>\n<div>\nbar\n</div>',
-    //   'should support interrupting paragraphs w/ basic tags'
-    // )
+    t.equal(
+      m('Foo\n<div>\nbar\n</div>'),
+      '<p>Foo</p>\n<div>\nbar\n</div>',
+      'should support interrupting paragraphs w/ basic tags'
+    )
 
     t.equal(
       m('<div>\nbar\n</div>\n*foo*'),
@@ -411,12 +408,11 @@ test('html', function (t) {
       'should require a blank line to end'
     )
 
-    // To do: paragraph.
-    // t.equal(
-    //   m('<div>\n\n*Emphasized* text.\n\n</div>'),
-    //   '<div>\n<p><em>Emphasized</em> text.</p>\n</div>',
-    //   'should support interleaving w/ blank lines'
-    // )
+    t.equal(
+      m('<div>\n\n*Emphasized* text.\n\n</div>'),
+      '<div>\n<p><em>Emphasized</em> text.</p>\n</div>',
+      'should support interleaving w/ blank lines'
+    )
 
     t.equal(
       m('<div>\n*Emphasized* text.\n</div>'),
@@ -553,12 +549,11 @@ test('html', function (t) {
       'should support closing tags to start HTML'
     )
 
-    // To do: paragraph endings.
-    // t.equal(
-    //   m('<del>\n\n*foo*\n\n</del>'),
-    //   '<del>\n<p><em>foo</em></p>\n</del>',
-    //   'should support interleaving'
-    // )
+    t.equal(
+      m('<del>\n\n*foo*\n\n</del>'),
+      '<del>\n<p><em>foo</em></p>\n</del>',
+      'should support interleaving'
+    )
 
     t.equal(
       m('<del>*foo*</del>'),
@@ -584,12 +579,11 @@ test('html', function (t) {
       'should not support an EOF directly after a closing slash'
     )
 
-    // To do: EOL not part of paragraph
-    // t.equal(
-    //   m('<x\n'),
-    //   '<p>&lt;x</p>\n',
-    //   'should not support an EOL directly after a tag name'
-    // )
+    t.equal(
+      m('<x\n'),
+      '<p>&lt;x</p>\n',
+      'should not support an EOL directly after a tag name'
+    )
 
     // To do: trailing whitespace not part of paragraph.
     // t.equal(
@@ -653,12 +647,11 @@ test('html', function (t) {
     //   'should not support an EOL w/ whitespace before an attribute name'
     // )
 
-    // // To do: paragraph splits.
-    // t.equal(
-    //   m('<x\n  \ny>'),
-    //   '<p>&lt;x</p>\n<p>y&gt;</p>',
-    //   'should not support an EOL with whitespace and another EOL before an attribute name'
-    // )
+    t.equal(
+      m('<x\n  \ny>'),
+      '<p>&lt;x</p>\n<p>y&gt;</p>',
+      'should not support an EOL with whitespace and another EOL before an attribute name'
+    )
 
     t.equal(
       m('<x y\nz>'),

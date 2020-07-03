@@ -54,7 +54,7 @@ test('indented-code', function (t) {
     'should support paragraphs directly after indented code'
   )
 
-  // // To do: Setext headings, interrupting paragraphs.
+  // // To do: Setext.
   // t.equal(
   //   m('# Heading\n    foo\nHeading\n------\n    foo\n----'),
   //   '<h1>Heading</h1>\n<pre><code>foo\n</code></pre>\n<h2>Heading</h2>\n<pre><code>foo\n</code></pre>\n<hr />',
@@ -67,12 +67,11 @@ test('indented-code', function (t) {
     'should support extra whitespace on the first line'
   )
 
-  // // To do: blank lines.
-  // t.equal(
-  //   m('\n    \n    foo\n    '),
-  //   '<pre><code>foo\n</code></pre>',
-  //   'should not support initial blank lines'
-  // )
+  t.equal(
+    m('\n    \n    foo\n    '),
+    '<pre><code>foo\n</code></pre>\n',
+    'should not support initial blank lines'
+  )
 
   t.equal(
     m('    foo  '),

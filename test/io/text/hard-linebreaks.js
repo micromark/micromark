@@ -58,7 +58,7 @@ test('hard linebreaks', function (t) {
     'should not support escape breaks in code'
   )
 
-  // Not support yet, as we don’t support “paragraphs”.
+  // To do: better block whitespace parsing.
   // t.equal(
   //   m('foo  '),
   //   '<p>foo</p>',
@@ -72,16 +72,16 @@ test('hard linebreaks', function (t) {
   )
 
   t.equal(
+    m('### foo\\'),
+    '<h3>foo\\</h3>',
+    'should not support escape breaks at the end of a heading'
+  )
+
+  t.equal(
     m('### foo  '),
     '<h3>foo</h3>',
     'should not support trailing breaks at the end of a heading'
   )
-
-  // t.equal(
-  //   m('### foo\\'),
-  //   '<h3>foo</h3>',
-  //   'should not support escape breaks at the end of a heading'
-  // )
 
   t.end()
 })

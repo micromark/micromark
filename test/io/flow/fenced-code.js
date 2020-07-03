@@ -58,6 +58,7 @@ test('fenced-code', function (t) {
     'should support an EOF in content'
   )
 
+  // To do: block quote.
   // t.equal(
   //   m('> ```\n> aaa\n\nbbb'),
   //   '<blockquote>\n<pre><code>aaa\n</code></pre>\n</blockquote>\n<p>bbb</p>',
@@ -130,14 +131,13 @@ test('fenced-code', function (t) {
     'should not support spaces in the closing fence'
   )
 
-  // // To do: interrupt.
-  // t.equal(
-  //   m('foo\n```\nbar\n```\nbaz'),
-  //   '<p>foo</p>\n<pre><code>bar\n</code></pre>\n<p>baz</p>',
-  //   'should support interrupting paragraphs'
-  // )
+  t.equal(
+    m('foo\n```\nbar\n```\nbaz'),
+    '<p>foo</p>\n<pre><code>bar\n</code></pre>\n<p>baz</p>',
+    'should support interrupting paragraphs'
+  )
 
-  // // To do: interrupt.
+  // // To do: Setext.
   // t.equal(
   //   m('foo\n---\n~~~\nbar\n~~~\n# baz'),
   //   '<h2>foo</h2>\n<pre><code>bar\n</code></pre>\n<h1>baz</h1>',
@@ -180,8 +180,7 @@ test('fenced-code', function (t) {
     'should not support info string on closing fences'
   )
 
-  // Extra:
-
+  // Our own:
   t.equal(
     m('```'),
     '<pre><code></code></pre>',
