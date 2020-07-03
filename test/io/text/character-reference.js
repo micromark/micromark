@@ -96,12 +96,35 @@ test('character-reference', function (t) {
   )
 
   t.equal(
-    m('    f&ouml;f&ouml;'),
-    '<pre><code>f&amp;ouml;f&amp;ouml;\n</code></pre>',
-    'should not support character references in indented block code'
+    m('&#42;foo&#42;\n*foo*'),
+    '<p>*foo*\n<em>foo</em></p>',
+    'should not support character references as construct markers (1)'
   )
 
-  // To do: CM has some more tests for other constructs.
+  // // To do: lists.
+  // t.equal(
+  //   m('&#42; foo\n\n* foo'),
+  //   '<p>* foo</p>\n<ul>\n<li>foo</li>\n</ul>',
+  //   'should not support character references as construct markers (2)'
+  // )
+
+  t.equal(
+    m('[a](url &quot;tit&quot;)'),
+    '<p>[a](url &quot;tit&quot;)</p>',
+    'should not support character references as construct markers (3)'
+  )
+
+  t.equal(
+    m('foo&#10;&#10;bar'),
+    '<p>foo\n\nbar</p>',
+    'should not support character references as whitespace (1)'
+  )
+
+  t.equal(
+    m('&#9;foo'),
+    '<p>\tfoo</p>',
+    'should not support character references as whitespace (2)'
+  )
 
   // Our own:
   t.equal(
