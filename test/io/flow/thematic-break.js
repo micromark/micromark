@@ -132,12 +132,11 @@ test('thematic-break', function (t) {
     'should support thematic breaks interrupting paragraphs'
   )
 
-  // // To do: Setext headings.
-  // t.equal(
-  //   m('Foo\n---\nbar'),
-  //   '<h2>Foo</h2>\n<p>bar</p>',
-  //   'should not support thematic breaks w/ dashes interrupting paragraphs (setext heading)'
-  // )
+  t.equal(
+    m('Foo\n---\nbar'),
+    '<h2>Foo</h2>\n<p>bar</p>',
+    'should not support thematic breaks w/ dashes interrupting paragraphs (setext heading)'
+  )
 
   // // To do: lists.
   // t.equal(

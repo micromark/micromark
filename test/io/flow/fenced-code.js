@@ -137,12 +137,11 @@ test('fenced-code', function (t) {
     'should support interrupting paragraphs'
   )
 
-  // // To do: Setext.
-  // t.equal(
-  //   m('foo\n---\n~~~\nbar\n~~~\n# baz'),
-  //   '<h2>foo</h2>\n<pre><code>bar\n</code></pre>\n<h1>baz</h1>',
-  //   'should support interrupting other content'
-  // )
+  t.equal(
+    m('foo\n---\n~~~\nbar\n~~~\n# baz'),
+    '<h2>foo</h2>\n<pre><code>bar\n</code></pre>\n<h1>baz</h1>',
+    'should support interrupting other content'
+  )
 
   t.equal(
     m('```ruby\ndef foo(x)\n  return 3\nend\n```'),

@@ -1,20 +1,19 @@
 How about https://spec.commonmark.org/0.29/#example-508 if `[bar]` is defined?
 
 Shortlist:
-- Higher-level:
+- Fix setext
+- Add definitions
+- Complex:
   - Containers
-  - Content
+  - Reference resolving
+  - Link vs. emphasis
 - Constructs:
-  - Block:
-    - Blank lines
   - Containers:
     - Block quotes
     - Lists
-  - Content:
-    - Definitions
-    - Setext heading
   - Text:
     - References
+
 
 Interruption:
 

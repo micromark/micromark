@@ -100,5 +100,11 @@ test('newline', function (t) {
     'should support several carriage return + line feeds in fenced code'
   )
 
+  t.equal(
+    m('A\r\nB\r\n-\r\nC'),
+    '<h2>A\r\nB</h2>\r\n<p>C</p>',
+    'should support a carriage return + line feed in content'
+  )
+
   t.end()
 })
