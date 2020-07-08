@@ -158,7 +158,7 @@ test('setext-heading', function (t) {
     'should see prefer other constructs over headings (1)'
   )
 
-  // // To do: list/
+  // // To do: list
   // t.equal(
   //   m('- foo\n-----'),
   //   '<ul>\n<li>foo</li>\n</ul>\n<hr />',

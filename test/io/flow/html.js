@@ -246,12 +246,6 @@ test('html', function (t) {
     )
 
     t.equal(
-      m('<![cdata[]]>'),
-      '<p>&lt;[]&gt;</p>',
-      'should not support non-uppercase cdata'
-    )
-
-    t.equal(
       m('<![CDATA[]]]>'),
       '<![CDATA[]]]>',
       'should support cdata with a single `]`'
