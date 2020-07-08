@@ -4,10 +4,16 @@ var cm = require('commonmark.json')
 var test = require('tape')
 var m = require('../buffer')
 
+var total = 0
 var skipped = 0
 
 process.on('exit', () => {
-  console.log('\nCM skipped: %d', skipped)
+  console.log(
+    '\nCM skipped: %d (of %d; %s done)',
+    skipped,
+    total,
+    (1 - skipped / total).toLocaleString('en', {style: 'percent'})
+  )
 })
 
 test('commonmark', function (t) {
@@ -29,10 +35,13 @@ test('commonmark', function (t) {
         var {input, expected} = example
         var actual = m(input)
 
+        total++
+
         if (actual === expected) {
           t.equal(actual, expected)
         } else {
           skipped++
+          t.comment(input)
           t.skip(actual + ' !== ' + expected)
         }
       })
