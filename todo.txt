@@ -1,8 +1,7 @@
 How about https://spec.commonmark.org/0.29/#example-508 if `[bar]` is defined?
 
 Shortlist:
-- Fix setext
-- Add definitions
+- Fix setext (MAYBE IT’S A NORMAL CONSTRUCT, just like ATX headings and such?, interrupting block quotes and paragraphs?)
 - Complex:
   - Containers
   - Reference resolving
@@ -11,9 +10,6 @@ Shortlist:
   - Containers:
     - Block quotes
     - Lists
-  - Text:
-    - References
-
 
 Interruption:
 
@@ -31,6 +27,8 @@ MM
 - Invalid resources and references are still shortcut references.
 - autolink/link: check why autolink does both encode and encodeURI, whereas link only does encodeURI?
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
+- Check all `istanbul ignore` / eslint comments
+- Replace console calls with `debug`, and create a `undebugify` babel script.
 
 CMSM:
 
@@ -64,3 +62,4 @@ CM:
 - Update examples to specify when they’re a recommendation instead of required: https://spec.commonmark.org/0.29/#example-572
 - Flow HTML declaration: “followed by an uppercase ASCII letter” should be any letter probably? (I’ve implemented this) (I remember I did something with a PR here)
 - `<a b="c"d="f">` is valid according to spec, and should be (same w/ HTML), but in dingus.
+- Lift the definition unquoted destination parentheses limitation: not needed in definitions.
