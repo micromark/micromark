@@ -191,7 +191,7 @@ test('link (resource)', function (t) {
     'should not support whitespace between label and information'
   )
 
-  // // To do: balance
+  // // To do: stable/unstable
   // t.equal(
   //   m('[link [foo [bar]]](/uri)'),
   //   '<p><a href="/uri">link [foo [bar]]</a></p>',
@@ -247,12 +247,11 @@ test('link (resource)', function (t) {
   //   'should not support links in links (3)'
   // )
 
-  // // To do: emphasis/links
-  // t.equal(
-  //   m('*[foo*](/uri)'),
-  //   '<p>*<a href="/uri">foo*</a></p>',
-  //   'should prefer links over emphasis (1)'
-  // )
+  t.equal(
+    m('*[foo*](/uri)'),
+    '<p>*<a href="/uri">foo*</a></p>',
+    'should prefer links over emphasis (1)'
+  )
 
   t.equal(
     m('[foo *bar](baz*)'),
@@ -260,7 +259,7 @@ test('link (resource)', function (t) {
     'should prefer links over emphasis (2)'
   )
 
-  // // To do: emphasis/links
+  // // To do: stable/unstable
   // t.equal(
   //   m('*foo [bar* baz]'),
   //   '<p><em>foo [bar</em> baz]</p>',
@@ -292,7 +291,6 @@ test('link (resource)', function (t) {
   )
 
   // Extra
-
   t.equal(
     m('[](<'),
     '<p>[](&lt;</p>',

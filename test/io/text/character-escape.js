@@ -82,12 +82,11 @@ test('character-escape', function (t) {
     'should escape in resource and title'
   )
 
-  // To do: definitions.
-  // t.equal(
-  //   m('[foo]\n\n[foo]: /bar\\* "ti\\*tle"'),
-  //   '<p><a href="/bar*" title="ti*tle">foo</a></p>',
-  //   'should escape in definition resource and title'
-  // )
+  t.equal(
+    m('[foo]: /bar\\* "ti\\*tle"\n\n[foo]'),
+    '<p><a href="/bar*" title="ti*tle">foo</a></p>',
+    'should escape in definition resource and title'
+  )
 
   t.equal(
     m('``` foo\\+bar\nfoo\n```'),

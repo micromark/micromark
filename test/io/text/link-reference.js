@@ -10,7 +10,7 @@ test('link (reference)', function (t) {
     'should support link references'
   )
 
-  // // To do: ???
+  // To do: stable/unstable.
   // t.equal(
   //   m('[ref]: /uri\n\n[link [foo [bar]]][ref]'),
   //   '<p><a href="/uri">link [foo [bar]]</a></p>',
@@ -47,12 +47,11 @@ test('link (reference)', function (t) {
     'should not support deep links in link references'
   )
 
-  // // To do: break emphasis
-  // t.equal(
-  //   m('[ref]: /uri\n\n*[foo*][ref]'),
-  //   '<p>*<a href="/uri">foo*</a></p>',
-  //   'should prefer link references over emphasis (1)'
-  // )
+  t.equal(
+    m('[ref]: /uri\n\n*[foo*][ref]'),
+    '<p>*<a href="/uri">foo*</a></p>',
+    'should prefer link references over emphasis (1)'
+  )
 
   t.equal(
     m('[ref]: /uri\n\n[foo *bar][ref]'),
@@ -170,7 +169,7 @@ test('link (reference)', function (t) {
     'should support collaped references'
   )
 
-  // // To do: ???
+  // // To do: content.
   // t.equal(
   //   m('[*foo* bar]: /url "title"\n\n[*foo* bar][]'),
   //   '<p><a href="/url" title="title"><em>foo</em> bar</a></p>',
@@ -239,12 +238,11 @@ test('link (reference)', function (t) {
     'should support an escaped shortcut reference'
   )
 
-  // // To do: break emphasis
-  // t.equal(
-  //   m('[foo*]: /url\n\n*[foo*]'),
-  //   '<p>*<a href="/url">foo*</a></p>',
-  //   'should prefer shortcut references over emphasis'
-  // )
+  t.equal(
+    m('[foo*]: /url\n\n*[foo*]'),
+    '<p>*<a href="/url">foo*</a></p>',
+    'should prefer shortcut references over emphasis'
+  )
 
   t.equal(
     m('[foo]: /url1\n[bar]: /url2\n\n[foo][bar]'),

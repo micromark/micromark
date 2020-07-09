@@ -747,18 +747,17 @@ test('emphasis', function (t) {
   )
 
   // Rule 17.
-  // To do: links + emphasis resolving.
-  // t.equal(
-  //   m('*[bar*](/url)'),
-  //   '<p>*<a href="/url">bar*</a></p>',
-  //   'should not mismatch inside links (1)'
-  // )
+  t.equal(
+    m('*[bar*](/url)'),
+    '<p>*<a href="/url">bar*</a></p>',
+    'should not mismatch inside links (1)'
+  )
 
-  // t.equal(
-  //   m('_[bar_](/url)'),
-  //   '<p>_<a href="/url">bar_</a></p>',
-  //   'should not mismatch inside links (1)'
-  // )
+  t.equal(
+    m('_[bar_](/url)'),
+    '<p>_<a href="/url">bar_</a></p>',
+    'should not mismatch inside links (1)'
+  )
 
   t.equal(
     m('*<img src="foo" title="*"/>'),
