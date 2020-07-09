@@ -21,6 +21,8 @@ function transform() {
           declaration.init &&
           declaration.init.type === 'CallExpression' &&
           declaration.init.callee &&
+          declaration.init.callee.type === 'Identifier' &&
+          declaration.init.callee.name === 'require' &&
           declaration.init.arguments.length === 1 &&
           declaration.init.arguments[0].type === 'StringLiteral'
         ) {
