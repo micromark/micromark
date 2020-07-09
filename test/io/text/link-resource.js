@@ -3,7 +3,7 @@
 var test = require('tape')
 var m = require('../../..')
 
-test('link', function (t) {
+test('link (resource)', function (t) {
   t.equal(
     m('[link](/uri "title")'),
     '<p><a href="/uri" title="title">link</a></p>',
@@ -70,6 +70,7 @@ test('link', function (t) {
     'should not support links w/ unmatched enclosed destinations'
   )
 
+  // // To do: balance
   // t.equal(
   //   m('[link](\\(foo\\))'),
   //   '<p><a href="(foo)">link</a></p>',
@@ -190,6 +191,7 @@ test('link', function (t) {
     'should not support whitespace between label and information'
   )
 
+  // // To do: balance
   // t.equal(
   //   m('[link [foo [bar]]](/uri)'),
   //   '<p><a href="/uri">link [foo [bar]]</a></p>',
@@ -226,24 +228,26 @@ test('link', function (t) {
     'should support an image as content'
   )
 
-  // t.equal(
-  //   m('[foo [bar](/uri)](/uri)'),
-  //   '<p>[foo <a href="/uri">bar</a>](/uri)</p>',
-  //   'should not support links in links (1)'
-  // )
+  t.equal(
+    m('[foo [bar](/uri)](/uri)'),
+    '<p>[foo <a href="/uri">bar</a>](/uri)</p>',
+    'should not support links in links (1)'
+  )
 
-  // t.equal(
-  //   m('[foo *[bar [baz](/uri)](/uri)*](/uri)'),
-  //   '<p>[foo <em>[bar <a href="/uri">baz</a>](/uri)</em>](/uri)</p>',
-  //   'should not support links in links (2)'
-  // )
+  t.equal(
+    m('[foo *[bar [baz](/uri)](/uri)*](/uri)'),
+    '<p>[foo <em>[bar <a href="/uri">baz</a>](/uri)</em>](/uri)</p>',
+    'should not support links in links (2)'
+  )
 
+  // // To do: image/link nesting.
   // t.equal(
   //   m('![[[foo](uri1)](uri2)](uri3)'),
   //   '<p><img src="uri3" alt="[foo](uri2)" /></p>',
   //   'should not support links in links (3)'
   // )
 
+  // // To do: emphasis/links
   // t.equal(
   //   m('*[foo*](/uri)'),
   //   '<p>*<a href="/uri">foo*</a></p>',
@@ -256,6 +260,7 @@ test('link', function (t) {
     'should prefer links over emphasis (2)'
   )
 
+  // // To do: emphasis/links
   // t.equal(
   //   m('*foo [bar* baz]'),
   //   '<p><em>foo [bar</em> baz]</p>',
@@ -285,8 +290,6 @@ test('link', function (t) {
     '<p>[foo<a href="http://example.com/?search=%5D(uri)">http://example.com/?search=](uri)</a></p>',
     'should prefer autolinks over links'
   )
-
-  // To do: reference tests.
 
   // Extra
 

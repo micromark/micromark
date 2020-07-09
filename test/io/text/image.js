@@ -10,32 +10,37 @@ test('image', function (t) {
     'should support images'
   )
 
+  // // To do: content.
   // t.equal(
-  //   m('![foo *bar*]\n\n[foo *bar*]: train.jpg "train & tracks"'),
+  //   m('[foo *bar*]: train.jpg "train & tracks"\n\n![foo *bar*]'),
   //   '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
   //   'should support image as references'
   // )
 
+  // // To do: content in images
   // t.equal(
   //   m('![foo ![bar](/url)](/url2)'),
   //   '<p><img src="/url2" alt="foo bar" /></p>',
   //   'should support images (2)'
   // )
 
+  // // To do: content in images
   // t.equal(
   //   m('![foo [bar](/url)](/url2)'),
   //   '<p><img src="/url2" alt="foo bar" /></p>',
   //   'should support images (3)'
   // )
 
+  // // To do: match.
   // t.equal(
-  //   m('![foo *bar*][]\n\n[foo *bar*]: train.jpg "train & tracks"'),
+  //   m('[foo *bar*]: train.jpg "train & tracks"\n\n![foo *bar*][]'),
   //   '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
   //   'should support “content” in images'
   // )
 
+  // // To do: content.
   // t.equal(
-  //   m('![foo *bar*][foobar]\n\n[FOOBAR]: train.jpg "train & tracks"'),
+  //   m('[FOOBAR]: train.jpg "train & tracks"\n\n![foo *bar*][foobar]'),
   //   '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
   //   'should support “content” in images'
   // )
@@ -64,77 +69,79 @@ test('image', function (t) {
     'should support images w/ empty titles'
   )
 
-  // t.equal(
-  //   m('![foo][bar]\n\n[bar]: /url'),
-  //   '<p><img src="/url" alt="foo" /></p>',
-  //   'should support full references (1)'
-  // )
+  t.equal(
+    m('[bar]: /url\n\n![foo][bar]'),
+    '<p><img src="/url" alt="foo" /></p>',
+    'should support full references (1)'
+  )
 
-  // t.equal(
-  //   m('![foo][bar]\n\n[BAR]: /url'),
-  //   '<p><img src="/url" alt="foo" /></p>',
-  //   'should support full references (2)'
-  // )
+  t.equal(
+    m('[BAR]: /url\n\n![foo][bar]'),
+    '<p><img src="/url" alt="foo" /></p>',
+    'should support full references (2)'
+  )
 
+  t.equal(
+    m('[foo]: /url "title"\n\n![foo][]'),
+    '<p><img src="/url" alt="foo" title="title" /></p>',
+    'should support collapsed references (1)'
+  )
+
+  // // To do: content.
   // t.equal(
-  //   m('![foo][]\n\n[foo]: /url "title"'),
-  //   '<p><img src="/url" alt="foo" title="title" /></p>',
-  //   'should support collapsed references (1)'
-  // )
-  //
-  // t.equal(
-  //   m('![*foo* bar][]\n\n[*foo* bar]: /url "title"'),
+  //   m('[*foo* bar]: /url "title"\n\n![*foo* bar][]'),
   //   '<p><img src="/url" alt="foo bar" title="title" /></p>',
   //   'should support collapsed references (2)'
   // )
 
-  // t.equal(
-  //   m('![Foo][]\n\n[foo]: /url "title"'),
-  //   '<p><img src="/url" alt="Foo" title="title" /></p>',
-  //   'should support case-insensitive labels'
-  // )
+  t.equal(
+    m('[foo]: /url "title"\n\n![Foo][]'),
+    '<p><img src="/url" alt="Foo" title="title" /></p>',
+    'should support case-insensitive labels'
+  )
 
-  // t.equal(
-  //   m('![foo] \n[]\n\n[foo]: /url "title"'),
-  //   '<p><img src="/url" alt="foo" title="title" />\n[]</p>',
-  //   'should not support whitespace between sets of brackets'
-  // )
+  t.equal(
+    m('[foo]: /url "title"\n\n![foo] \n[]'),
+    '<p><img src="/url" alt="foo" title="title" />\n[]</p>',
+    'should not support whitespace between sets of brackets'
+  )
 
-  // t.equal(
-  //   m('![foo]\n\n[foo]: /url "title"'),
-  //   '<p><img src="/url" alt="foo" title="title" /></p>',
-  //   'should support shortcut references (1)'
-  // )
+  t.equal(
+    m('[foo]: /url "title"\n\n![foo]'),
+    '<p><img src="/url" alt="foo" title="title" /></p>',
+    'should support shortcut references (1)'
+  )
 
+  // // To do: content.
   // t.equal(
-  //   m('![*foo* bar]\n\n[*foo* bar]: /url "title"'),
+  //   m('[*foo* bar]: /url "title"\n\n![*foo* bar]'),
   //   '<p><img src="/url" alt="foo bar" title="title" /></p>',
   //   'should support shortcut references (2)'
   // )
 
-  // t.equal(
-  //   m('![[foo]]\n\n[[foo]]: /url "title"'),
-  //   '<p>![[foo]]</p>\n<p>[[foo]]: /url &quot;title&quot;</p>',
-  //   'should not support link labels with unescaped brackets'
-  // )
+  t.equal(
+    m('[[foo]]: /url "title"\n\n![[foo]]'),
+    '<p>[[foo]]: /url &quot;title&quot;</p>\n<p>![[foo]]</p>',
+    'should not support link labels with unescaped brackets'
+  )
 
-  // t.equal(
-  //   m('![Foo]\n\n[foo]: /url "title"'),
-  //   '<p><img src="/url" alt="Foo" title="title" /></p>',
-  //   'should support case-insensitive label matching'
-  // )
+  t.equal(
+    m('[foo]: /url "title"\n\n![Foo]'),
+    '<p><img src="/url" alt="Foo" title="title" /></p>',
+    'should support case-insensitive label matching'
+  )
 
-  // t.equal(
-  //   m('!\\[foo]\n\n[foo]: /url "title"'),
-  //   '<p>![foo]</p>',
-  //   'should support an escaped brace instead of an image'
-  // )
+  t.equal(
+    m('[foo]: /url "title"\n\n!\\[foo]'),
+    '<p>![foo]</p>',
+    'should support an escaped brace instead of an image'
+  )
 
-  // t.equal(
-  //   m('\\![foo]\n\n[foo]: /url "title"'),
-  //   '<p>!<a href="/url" title="title">foo</a></p>',
-  //   'should support an escaped bang instead of an image, but still have a link'
-  // )
+  t.equal(
+    m('[foo]: /url "title"\n\n\\![foo]'),
+    '<p>!<a href="/url" title="title">foo</a></p>',
+    'should support an escaped bang instead of an image, but still have a link'
+  )
 
   // Extra
   t.equal(
