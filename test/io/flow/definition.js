@@ -177,5 +177,114 @@ test('definition', function (t) {
   //   'should support definitions in block quotes'
   // )
 
+  // Extra
+  t.equal(
+    m('[\\[\\+\\]]: example.com\n\nLink: [\\[\\+\\]].'),
+    '<p>Link: <a href="example.com">[+]</a>.</p>',
+    'should match w/ escapes'
+  )
+
+  t.equal(
+    m('[x]: \\"&#x20;\\(\\)\\"\n\n[x]'),
+    '<p><a href="%22%20()%22">x</a></p>',
+    'should support character escapes & references in unenclosed destinations'
+  )
+
+  t.equal(
+    m('[x]: <\\>&#x20;\\+\\>>\n\n[x]'),
+    '<p><a href="%3E%20+%3E">x</a></p>',
+    'should support character escapes & references in unenclosed destinations'
+  )
+
+  t.equal(
+    m('[x]: <\n\n[x]'),
+    '<p>[x]: &lt;</p>\n<p>[x]</p>',
+    'should not support EOL at start of enclosed destination'
+  )
+
+  t.equal(
+    m('[x]: <x\n\n[x]'),
+    '<p>[x]: &lt;x</p>\n<p>[x]</p>',
+    'should not support EOL in enclosed destination'
+  )
+
+  t.equal(
+    m('[x]: \va\n\n[x]'),
+    '<p>[x]: \va</p>\n<p>[x]</p>',
+    'should not support ASCII control characters at the start of destination'
+  )
+
+  t.equal(
+    m('[x]: a\vb\n\n[x]'),
+    '<p>[x]: a\vb</p>\n<p>[x]</p>',
+    'should not support ASCII control characters in destination'
+  )
+
+  t.equal(
+    m('[x]: <\va>\n\n[x]'),
+    '<p><a href="%0Ba">x</a></p>',
+    'should support ASCII control characters at the start of enclosed destination'
+  )
+
+  t.equal(
+    m('[x]: <a\vb>\n\n[x]'),
+    '<p><a href="a%0Bb">x</a></p>',
+    'should support ASCII control characters in enclosed destinations'
+  )
+
+  t.equal(
+    m('[x]: a "\\""\n\n[x]'),
+    '<p><a href="a" title="&quot;">x</a></p>',
+    'should support escapes at the start of a title'
+  )
+
+  t.equal(
+    m('[x]: a "\\\'"\n\n[x]'),
+    '<p><a href="a" title="\'">x</a></p>',
+    'should support double quoted titles'
+  )
+
+  t.equal(
+    m("[x]: a '\"'\n\n[x]"),
+    '<p><a href="a" title="&quot;">x</a></p>',
+    'should support double quoted titles'
+  )
+
+  t.equal(
+    m('[x]: a ("\')\n\n[x]'),
+    '<p><a href="a" title="&quot;\'">x</a></p>',
+    'should support paren enclosed titles'
+  )
+
+  t.equal(
+    m('[x]: a(()\n\n[x]'),
+    '<p>[x]: a(()</p>\n<p>[x]</p>',
+    'should not support more opening than closing parens in the destination'
+  )
+
+  t.equal(
+    m('[x]: a(())\n\n[x]'),
+    '<p><a href="a(())">x</a></p>',
+    'should support balanced opening and closing parens in the destination'
+  )
+
+  t.equal(
+    m('[x]: a())\n\n[x]'),
+    '<p>[x]: a())</p>\n<p>[x]</p>',
+    'should not support more closing than opening parens in the destination'
+  )
+
+  t.equal(
+    m('[x]: a  \t\n\n[x]'),
+    '<p><a href="a">x</a></p>',
+    'should support trailing whitespace after a destination'
+  )
+
+  t.equal(
+    m('[x]: a "x" \t\n\n[x]'),
+    '<p><a href="a" title="x">x</a></p>',
+    'should support trailing whitespace after a destination'
+  )
+
   t.end()
 })
