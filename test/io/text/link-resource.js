@@ -70,12 +70,11 @@ test('link (resource)', function (t) {
     'should not support links w/ unmatched enclosed destinations'
   )
 
-  // // To do: balance
-  // t.equal(
-  //   m('[link](\\(foo\\))'),
-  //   '<p><a href="(foo)">link</a></p>',
-  //   'should support links w/ destinations w/ escaped parens'
-  // )
+  t.equal(
+    m('[link](\\(foo\\))'),
+    '<p><a href="(foo)">link</a></p>',
+    'should support links w/ destinations w/ escaped parens'
+  )
 
   t.equal(
     m('[link](foo(and(bar)))'),
@@ -240,12 +239,11 @@ test('link (resource)', function (t) {
     'should not support links in links (2)'
   )
 
-  // // To do: image/link nesting.
-  // t.equal(
-  //   m('![[[foo](uri1)](uri2)](uri3)'),
-  //   '<p><img src="uri3" alt="[foo](uri2)" /></p>',
-  //   'should not support links in links (3)'
-  // )
+  t.equal(
+    m('![[[foo](uri1)](uri2)](uri3)'),
+    '<p><img src="uri3" alt="[foo](uri2)" /></p>',
+    'should not support links in links (3)'
+  )
 
   t.equal(
     m('*[foo*](/uri)'),

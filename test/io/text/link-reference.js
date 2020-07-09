@@ -113,7 +113,8 @@ test('link (reference)', function (t) {
     'should prefer earlier definitions'
   )
 
-  // // To do: <https://github.com/commonmark/commonmark-spec/issues/616>
+  // // To do: content.
+  // // See also: <https://github.com/commonmark/commonmark-spec/issues/616>
   // t.equal(
   //   m('[foo!]: /url\n\n[bar][foo\\!]'),
   //   '<p>[bar][foo!]</p>',
@@ -287,6 +288,15 @@ test('link (reference)', function (t) {
   //   '<p>[foo]<a href="/url1">bar</a></p>',
   //   'stable/unstable (3)'
   // )
+
+  // Extra
+  // This matches spec, but is different from most implementations.
+  // See: <https://github.com/commonmark/commonmark-spec/issues/653>
+  t.equal(
+    m('[x]: /url\n\n[x][ ], [x][\t], [x][\n], [x][]'),
+    '<p><a href="/url">x</a>[ ], <a href="/url">x</a>[\t], <a href="/url">x</a>[\n], <a href="/url">x</a></p>',
+    'should not support whitespace-only full references'
+  )
 
   t.end()
 })
