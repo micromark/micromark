@@ -10,40 +10,35 @@ test('image', function (t) {
     'should support images'
   )
 
-  // // To do: content.
-  // t.equal(
-  //   m('[foo *bar*]: train.jpg "train & tracks"\n\n![foo *bar*]'),
-  //   '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
-  //   'should support image as references'
-  // )
+  t.equal(
+    m('[foo *bar*]: train.jpg "train & tracks"\n\n![foo *bar*]'),
+    '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
+    'should support image as references'
+  )
 
-  // // To do: content in images
-  // t.equal(
-  //   m('![foo ![bar](/url)](/url2)'),
-  //   '<p><img src="/url2" alt="foo bar" /></p>',
-  //   'should support images (2)'
-  // )
+  t.equal(
+    m('![foo ![bar](/url)](/url2)'),
+    '<p><img src="/url2" alt="foo bar" /></p>',
+    'should support images (2)'
+  )
 
-  // // To do: content in images
-  // t.equal(
-  //   m('![foo [bar](/url)](/url2)'),
-  //   '<p><img src="/url2" alt="foo bar" /></p>',
-  //   'should support images (3)'
-  // )
+  t.equal(
+    m('![foo [bar](/url)](/url2)'),
+    '<p><img src="/url2" alt="foo bar" /></p>',
+    'should support images (3)'
+  )
 
-  // // To do: match.
-  // t.equal(
-  //   m('[foo *bar*]: train.jpg "train & tracks"\n\n![foo *bar*][]'),
-  //   '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
-  //   'should support “content” in images'
-  // )
+  t.equal(
+    m('[foo *bar*]: train.jpg "train & tracks"\n\n![foo *bar*][]'),
+    '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
+    'should support “content” in images'
+  )
 
-  // // To do: content.
-  // t.equal(
-  //   m('[FOOBAR]: train.jpg "train & tracks"\n\n![foo *bar*][foobar]'),
-  //   '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
-  //   'should support “content” in images'
-  // )
+  t.equal(
+    m('[FOOBAR]: train.jpg "train & tracks"\n\n![foo *bar*][foobar]'),
+    '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
+    'should support “content” in images'
+  )
 
   t.equal(
     m('![foo](train.jpg)'),
@@ -87,12 +82,11 @@ test('image', function (t) {
     'should support collapsed references (1)'
   )
 
-  // // To do: content.
-  // t.equal(
-  //   m('[*foo* bar]: /url "title"\n\n![*foo* bar][]'),
-  //   '<p><img src="/url" alt="foo bar" title="title" /></p>',
-  //   'should support collapsed references (2)'
-  // )
+  t.equal(
+    m('[*foo* bar]: /url "title"\n\n![*foo* bar][]'),
+    '<p><img src="/url" alt="foo bar" title="title" /></p>',
+    'should support collapsed references (2)'
+  )
 
   t.equal(
     m('[foo]: /url "title"\n\n![Foo][]'),
@@ -112,12 +106,11 @@ test('image', function (t) {
     'should support shortcut references (1)'
   )
 
-  // // To do: content.
-  // t.equal(
-  //   m('[*foo* bar]: /url "title"\n\n![*foo* bar]'),
-  //   '<p><img src="/url" alt="foo bar" title="title" /></p>',
-  //   'should support shortcut references (2)'
-  // )
+  t.equal(
+    m('[*foo* bar]: /url "title"\n\n![*foo* bar]'),
+    '<p><img src="/url" alt="foo bar" title="title" /></p>',
+    'should support shortcut references (2)'
+  )
 
   t.equal(
     m('[[foo]]: /url "title"\n\n![[foo]]'),
@@ -178,6 +171,12 @@ test('image', function (t) {
     m('![alpha](bravo.png ())'),
     '<p><img src="bravo.png" alt="alpha" /></p>',
     'should support images w/ empty title (3)'
+  )
+
+  t.equal(
+    m('![&amp;&copy;&](example.com/&amp;&copy;& "&amp;&copy;&")'),
+    '<p><img src="example.com/&amp;%C2%A9&amp;" alt="&amp;©&amp;" title="&amp;©&amp;" /></p>',
+    'should support character references in images'
   )
 
   t.end()

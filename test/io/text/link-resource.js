@@ -375,5 +375,11 @@ test('link (resource)', function (t) {
     'should support a character escape to start a link title (3)'
   )
 
+  t.equal(
+    m('[&amp;&copy;&](example.com/&amp;&copy;& "&amp;&copy;&")'),
+    '<p><a href="example.com/&amp;%C2%A9&amp;" title="&amp;©&amp;">&amp;©&amp;</a></p>',
+    'should support character references in links'
+  )
+
   t.end()
 })

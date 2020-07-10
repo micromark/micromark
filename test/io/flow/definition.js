@@ -286,5 +286,27 @@ test('definition', function (t) {
     'should support trailing whitespace after a destination'
   )
 
+  t.equal(
+    m(
+      '[&amp;&copy;&]: example.com/&amp;&copy;& "&amp;&copy;&"\n\n[&amp;&copy;&]'
+    ),
+    '<p><a href="example.com/&amp;%C2%A9&amp;" title="&amp;©&amp;">&amp;©&amp;</a></p>',
+    'should support character references in definitions'
+  )
+
+  // // To do: whitespace.
+  // t.equal(
+  //   m('[x]:\nexample.com\n\n[x]'),
+  //   '<p><a href="example.com">x</a></p>',
+  //   'should support an EOL before a destination'
+  // )
+
+  // // To do: whitespace.
+  // t.equal(
+  //   m('[x]: \t\nexample.com\n\n[x]'),
+  //   '<p><a href="example.com">x</a></p>',
+  //   'should support whitespace before a destination'
+  // )
+
   t.end()
 })

@@ -113,13 +113,11 @@ test('link (reference)', function (t) {
     'should prefer earlier definitions'
   )
 
-  // // To do: content.
-  // // See also: <https://github.com/commonmark/commonmark-spec/issues/616>
-  // t.equal(
-  //   m('[foo!]: /url\n\n[bar][foo\\!]'),
-  //   '<p>[bar][foo!]</p>',
-  //   'should not match references to definitions w/ escapes'
-  // )
+  t.equal(
+    m('[foo!]: /url\n\n[bar][foo\\!]'),
+    '<p>[bar][foo!]</p>',
+    'should not match references to definitions w/ escapes'
+  )
 
   t.equal(
     m('[ref[]: /uri\n\n[foo][ref[]'),
@@ -170,12 +168,11 @@ test('link (reference)', function (t) {
     'should support collaped references'
   )
 
-  // // To do: content.
-  // t.equal(
-  //   m('[*foo* bar]: /url "title"\n\n[*foo* bar][]'),
-  //   '<p><a href="/url" title="title"><em>foo</em> bar</a></p>',
-  //   'should support content in collaped references'
-  // )
+  t.equal(
+    m('[*foo* bar]: /url "title"\n\n[*foo* bar][]'),
+    '<p><a href="/url" title="title"><em>foo</em> bar</a></p>',
+    'should support content in collaped references'
+  )
 
   t.equal(
     m('[foo]: /url "title"\n\n[Foo][]'),
@@ -195,19 +192,17 @@ test('link (reference)', function (t) {
     'should support shortcut references'
   )
 
-  // // To do: content.
-  // t.equal(
-  //   m('[*foo* bar]: /url "title"\n\n[*foo* bar]'),
-  //   '<p><a href="/url" title="title"><em>foo</em> bar</a></p>',
-  //   'should support content in shortcut references (1)'
-  // )
+  t.equal(
+    m('[*foo* bar]: /url "title"\n\n[*foo* bar]'),
+    '<p><a href="/url" title="title"><em>foo</em> bar</a></p>',
+    'should support content in shortcut references (1)'
+  )
 
-  // // To do: content.
-  // t.equal(
-  //   m('[*foo* bar]: /url "title"\n\n[[*foo* bar]]'),
-  //   '<p>[<a href="/url" title="title"><em>foo</em> bar</a>]</p>',
-  //   'should support content in shortcut references (2)'
-  // )
+  t.equal(
+    m('[*foo* bar]: /url "title"\n\n[[*foo* bar]]'),
+    '<p>[<a href="/url" title="title"><em>foo</em> bar</a>]</p>',
+    'should support content in shortcut references (2)'
+  )
 
   t.equal(
     m('[foo]: /url\n\n[[bar [foo]'),
@@ -296,6 +291,49 @@ test('link (reference)', function (t) {
     m('[x]: /url\n\n[x][ ], [x][\t], [x][\n], [x][]'),
     '<p><a href="/url">x</a>[ ], <a href="/url">x</a>[\t], <a href="/url">x</a>[\n], <a href="/url">x</a></p>',
     'should not support whitespace-only full references'
+  )
+
+  // See also: <https://github.com/commonmark/commonmark-spec/issues/616>
+  t.equal(
+    m('[+]: example.com\n[\\;]: example.com\n\nWill it link? [\\+], [;]'),
+    '<p>Will it link? [+], [;]</p>',
+    'should not support mismatched character escapes in shortcuts'
+  )
+
+  t.equal(
+    m('[©]: example.com\n[&amp;]: example.com\n\nWill it link? [&copy;], [&]'),
+    '<p>Will it link? [©], [&amp;]</p>',
+    'should not support mismatched character references in shortcuts'
+  )
+
+  t.equal(
+    m('[+]: example.com\n[\\;]: example.com\n\nWill it link? [\\+][], [;][]'),
+    '<p>Will it link? [+][], [;][]</p>',
+    'should not support mismatched character escapes in collapsed'
+  )
+
+  t.equal(
+    m(
+      '[©]: example.com\n[&amp;]: example.com\n\nWill it link? [&copy;][], [&][]'
+    ),
+    '<p>Will it link? [©][], [&amp;][]</p>',
+    'should not support mismatched character references in collapsed'
+  )
+
+  t.equal(
+    m(
+      '[+]: example.com\n[\\;]: example.com\n\nWill it link? [a][ \\+ ], [b][ ; ]'
+    ),
+    '<p>Will it link? [a][ + ], [b][ ; ]</p>',
+    'should not support mismatched character escapes in fulls'
+  )
+
+  t.equal(
+    m(
+      '[©]: example.com\n[&amp;]: example.com\n\nWill it link? [a][ &copy; ], [b][ & ]'
+    ),
+    '<p>Will it link? [a][ © ], [b][ &amp; ]</p>',
+    'should not support mismatched character references in fulls'
   )
 
   t.end()

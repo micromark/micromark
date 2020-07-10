@@ -70,12 +70,11 @@ test('character-reference', function (t) {
     'should support character references in resource URLs and titles'
   )
 
-  // To do: definitions.
-  // t.equal(
-  //   m('[foo]\n\n[foo]: /f&ouml;&ouml; "f&ouml;&ouml;"'),
-  //   '<p><a href="/f%C3%B6%C3%B6" title="föö">foo</a></p>',
-  //   'should support character references in definition URLs and titles'
-  // )
+  t.equal(
+    m('[foo]: /f&ouml;&ouml; "f&ouml;&ouml;"\n\n[foo]'),
+    '<p><a href="/f%C3%B6%C3%B6" title="föö">foo</a></p>',
+    'should support character references in definition URLs and titles'
+  )
 
   t.equal(
     m('``` f&ouml;&ouml;\nfoo\n```'),
@@ -132,11 +131,13 @@ test('character-reference', function (t) {
     '<p>∳</p>',
     'should support the longest possible named character reference'
   )
+
   t.equal(
     m('&#xff9999;'),
     '<p>香</p>',
     'should support a longest possible hexadecimal character reference'
   )
+
   t.equal(
     m('&#9999999;'),
     '<p>陿</p>',
@@ -148,11 +149,13 @@ test('character-reference', function (t) {
     '<p>&amp;CounterClockwiseContourIntegrali;</p>',
     'should not support the longest possible named character reference'
   )
+
   t.equal(
     m('&#xff99999;'),
     '<p>&amp;#xff99999;</p>',
     'should not support a longest possible hexadecimal character reference'
   )
+
   t.equal(
     m('&#99999999;'),
     '<p>&amp;#99999999;</p>',

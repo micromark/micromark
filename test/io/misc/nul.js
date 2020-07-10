@@ -12,7 +12,8 @@ test('nul', function (t) {
 
   t.equal(m('&#0;'), '<p>�</p>', 'should replace NUL in a character reference')
 
-  // Markdown would never support this, as escapes only work on ASCII punctuation.
+  // This doesn’t make sense in MD, as escapes only work on ASCII punctuation,
+  // but it’s good to demonstrate the behavior.
   t.equal(
     m('\\0'),
     '<p>\\0</p>',
