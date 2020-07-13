@@ -463,7 +463,7 @@ test('html', function (t) {
 
     t.equal(
       m('<div\n'),
-      '<div',
+      '<div\n',
       'should support an EOL directly after a tag name'
     )
 

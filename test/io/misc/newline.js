@@ -106,5 +106,51 @@ test('newline', function (t) {
     'should support a carriage return + line feed in content'
   )
 
+  t.equal(m('<div\n'), '<div\n', 'should support a line feed after html')
+
+  t.equal(m('<div\r'), '<div\r', 'should support a carriage return after html')
+
+  t.equal(
+    m('<div\r\n'),
+    '<div\r\n',
+    'should support a carriage return + line feed after html'
+  )
+
+  t.equal(
+    m('<div>\n\nx'),
+    '<div>\n<p>x</p>',
+    'should support a blank line w/ line feeds after html'
+  )
+
+  t.equal(
+    m('<div>\r\rx'),
+    '<div>\r<p>x</p>',
+    'should support a blank line w/ carriage returns after html'
+  )
+
+  t.equal(
+    m('<div>\r\n\r\nx'),
+    '<div>\r\n<p>x</p>',
+    'should support a blank line w/ carriage return + line feeds after html'
+  )
+
+  t.equal(
+    m('<div>\nx'),
+    '<div>\nx',
+    'should support a non-blank line w/ line feed in html'
+  )
+
+  t.equal(
+    m('<div>\rx'),
+    '<div>\rx',
+    'should support a non-blank line w/ carriage return in html'
+  )
+
+  t.equal(
+    m('<div>\r\nx'),
+    '<div>\r\nx',
+    'should support a non-blank line w/ carriage return + line feed in html'
+  )
+
   t.end()
 })
