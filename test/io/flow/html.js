@@ -463,7 +463,7 @@ test('html', function (t) {
 
     t.equal(
       m('<div\n'),
-      '<div\n',
+      '<div',
       'should support an EOL directly after a tag name'
     )
 
@@ -556,6 +556,12 @@ test('html', function (t) {
     )
 
     t.equal(
+      m('<div>\n  \nasd'),
+      '<div>\n<p>asd</p>',
+      'should support interleaving w/ whitespace-only blank lines'
+    )
+
+    t.equal(
       m('Foo\n<a href="bar">\nbaz'),
       '<p>Foo\n<a href="bar">\nbaz</p>',
       'should not support interrupting paragraphs w/ complete tags'
@@ -579,12 +585,11 @@ test('html', function (t) {
       'should not support an EOL directly after a tag name'
     )
 
-    // To do: trailing whitespace not part of paragraph.
-    // t.equal(
-    //   m('<x '),
-    //   '<p>&lt;x</p>',
-    //   'should not support an EOF after a space directly after a tag name'
-    // )
+    t.equal(
+      m('<x '),
+      '<p>&lt;x</p>',
+      'should not support an EOF after a space directly after a tag name'
+    )
 
     t.equal(
       m('<x/'),
@@ -634,12 +639,11 @@ test('html', function (t) {
       'should not support an EOL before an attribute name'
     )
 
-    // // To do: whitespace trimming
-    // t.equal(
-    //   m('<x\n  y>'),
-    //   '<p><x\ny></p>',
-    //   'should not support an EOL w/ whitespace before an attribute name'
-    // )
+    t.equal(
+      m('<x\n  y>'),
+      '<p><x\ny></p>',
+      'should not support an EOL w/ whitespace before an attribute name'
+    )
 
     t.equal(
       m('<x\n  \ny>'),

@@ -22,11 +22,7 @@ test('commonmark', function (t) {
   cm.forEach((d) => {
     var {section, markdown, html} = d
     var list = examples[section] || (examples[section] = [])
-    // To do: paragraph whitespace:
-    list.push({
-      input: markdown.replace(/\n$/, ''),
-      expected: html.replace(/\n$/, '')
-    })
+    list.push({input: markdown, expected: html})
   })
 
   Object.keys(examples).forEach((section) => {

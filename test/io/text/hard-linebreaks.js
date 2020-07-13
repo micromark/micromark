@@ -58,12 +58,11 @@ test('hard linebreaks', function (t) {
     'should not support escape breaks in code'
   )
 
-  // To do: better block whitespace parsing.
-  // t.equal(
-  //   m('foo  '),
-  //   '<p>foo</p>',
-  //   'should not support trailing breaks at the end of a paragraph'
-  // )
+  t.equal(
+    m('foo  '),
+    '<p>foo</p>',
+    'should not support trailing breaks at the end of a paragraph'
+  )
 
   t.equal(
     m('foo\\'),

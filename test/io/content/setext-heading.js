@@ -22,12 +22,11 @@ test('setext-heading', function (t) {
     'should support line endings in setext headings'
   )
 
-  // // To do: trailing whitespace.
-  // t.equal(
-  //   m('  Foo *bar\nbaz*\t\n===='),
-  //   '<h1>Foo <em>bar\nbaz</em></h1>',
-  //   'should not include initial and final whitespace around content'
-  // )
+  t.equal(
+    m('  Foo *bar\nbaz*\t\n===='),
+    '<h1>Foo <em>bar\nbaz</em></h1>',
+    'should not include initial and final whitespace around content'
+  )
 
   t.equal(
     m('Foo\n-------------------------'),
@@ -49,12 +48,11 @@ test('setext-heading', function (t) {
     'should support indented content (2)'
   )
 
-  // // To do: trailing whitespace.
-  // t.equal(
-  //   m('  Foo\n  ==='),
-  //   '<h1>Foo</h1>',
-  //   'should support indented content (3)'
-  // )
+  t.equal(
+    m('  Foo\n  ==='),
+    '<h1>Foo</h1>',
+    'should support indented content (3)'
+  )
 
   t.equal(
     m('    Foo\n    ---'),
@@ -68,12 +66,11 @@ test('setext-heading', function (t) {
     'should not support too much indented content (2)'
   )
 
-  // // To do: trailing whitespace.
-  // t.equal(
-  //   m('Foo\n   ----      '),
-  //   '<h2>Foo</h2>',
-  //   'should support initial and final whitespace around the underline'
-  // )
+  t.equal(
+    m('Foo\n   ----      '),
+    '<h2>Foo</h2>',
+    'should support initial and final whitespace around the underline'
+  )
 
   t.equal(
     m('Foo\n= ='),
@@ -88,12 +85,11 @@ test('setext-heading', function (t) {
   //   'should not support internal whitespace in the underline (2)'
   // )
 
-  // // To do: trailing whitespace.
-  // t.equal(
-  //   m('Foo  \n-----'),
-  //   '<h2>Foo</h2>',
-  //   'should not support a hard break w/ spaces at the end'
-  // )
+  t.equal(
+    m('Foo  \n-----'),
+    '<h2>Foo</h2>',
+    'should not support a hard break w/ spaces at the end'
+  )
 
   t.equal(
     m('Foo\\\n-----'),

@@ -155,12 +155,11 @@ test('link (reference)', function (t) {
     'should not support empty references (1)'
   )
 
-  // // To do: whitespace
-  // t.equal(
-  //   m('[\n ]: /uri\n\n[\n ]'),
-  //   '<p>[\n]: /uri</p>\n<p>[\n]</p>',
-  //   'should not support empty references (2)'
-  // )
+  t.equal(
+    m('[\n ]: /uri\n\n[\n ]'),
+    '<p>[\n]: /uri</p>\n<p>[\n]</p>',
+    'should not support empty references (2)'
+  )
 
   t.equal(
     m('[foo]: /url "title"\n\n[foo][]'),

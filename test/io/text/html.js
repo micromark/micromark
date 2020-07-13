@@ -132,7 +132,7 @@ test('html', function (t) {
     'should not support character escapes (2)'
   )
 
-  // Our own:
+  // Extra:
   t.equal(
     m('foo <!1>'),
     '<p>foo &lt;!1&gt;</p>',

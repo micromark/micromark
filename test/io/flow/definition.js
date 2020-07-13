@@ -10,12 +10,11 @@ test('definition', function (t) {
     'should support link definitions'
   )
 
-  // // To do: paragraph whitespace.
-  // t.equal(
-  //   m("   [foo]: \n      /url  \n           'the title'  \n\n[foo]"),
-  //   '<p><a href="/url" title="the title">foo</a></p>',
-  //   'should support whitespace around definitions'
-  // )
+  t.equal(
+    m("   [foo]: \n      /url  \n           'the title'  \n\n[foo]"),
+    '<p><a href="/url" title="the title">foo</a></p>',
+    'should support whitespace around definitions'
+  )
 
   t.equal(
     m("[Foo*bar\\]]:my_(url) 'title (with parens)'\n\n[Foo*bar\\]]"),
@@ -23,12 +22,11 @@ test('definition', function (t) {
     'should support complex definitions (1)'
   )
 
-  // // To do: paragraph whitespace.
-  // t.equal(
-  //   m("[Foo bar]:\n<my url>\n'title'\n\n[Foo bar]"),
-  //   '<p><a href="my%20url" title="title">Foo bar</a></p>',
-  //   'should support complex definitions (2)'
-  // )
+  t.equal(
+    m("[Foo bar]:\n<my url>\n'title'\n\n[Foo bar]"),
+    '<p><a href="my%20url" title="title">Foo bar</a></p>',
+    'should support complex definitions (2)'
+  )
 
   t.equal(
     m("[foo]: /url '\ntitle\nline1\nline2\n'\n\n[foo]"),
@@ -42,12 +40,11 @@ test('definition', function (t) {
     'should not support blank lines in titles'
   )
 
-  // // To do: paragraph whitespace.
-  // t.equal(
-  //   m('[foo]:\n/url\n\n[foo]'),
-  //   '<p><a href="/url">foo</a></p>',
-  //   'should support definitions w/o title'
-  // )
+  t.equal(
+    m('[foo]:\n/url\n\n[foo]'),
+    '<p><a href="/url">foo</a></p>',
+    'should support definitions w/o title'
+  )
 
   t.equal(
     m('[foo]:\n\n[foo]'),
@@ -104,12 +101,11 @@ test('definition', function (t) {
     'should not contribute anything w/o reference (1)'
   )
 
-  // // To do: whitespace.
-  // t.equal(
-  //   m('[\nfoo\n]: /url\nbar'),
-  //   '<p>bar</p>',
-  //   'should not contribute anything w/o reference (2)'
-  // )
+  t.equal(
+    m('[\nfoo\n]: /url\nbar'),
+    '<p>bar</p>',
+    'should not contribute anything w/o reference (2)'
+  )
 
   t.equal(
     m('[foo]: /url "title" ok'),
@@ -161,14 +157,13 @@ test('definition', function (t) {
     'should not support setext heading underlines after definitions'
   )
 
-  // // To do: whitespace
-  // t.equal(
-  //   m(
-  //     '[foo]: /foo-url "foo"\n[bar]: /bar-url\n  "bar"\n[baz]: /baz-url\n\n[foo],\n[bar],\n[baz]'
-  //   ),
-  //   '<p><a href="/foo-url" title="foo">foo</a>,\n<a href="/bar-url" title="bar">bar</a>,\n<a href="/baz-url">baz</a></p>',
-  //   'should support definitions after definitions'
-  // )
+  t.equal(
+    m(
+      '[foo]: /foo-url "foo"\n[bar]: /bar-url\n  "bar"\n[baz]: /baz-url\n\n[foo],\n[bar],\n[baz]'
+    ),
+    '<p><a href="/foo-url" title="foo">foo</a>,\n<a href="/bar-url" title="bar">bar</a>,\n<a href="/baz-url">baz</a></p>',
+    'should support definitions after definitions'
+  )
 
   // // To do: block quote
   // t.equal(
@@ -294,19 +289,17 @@ test('definition', function (t) {
     'should support character references in definitions'
   )
 
-  // // To do: whitespace.
-  // t.equal(
-  //   m('[x]:\nexample.com\n\n[x]'),
-  //   '<p><a href="example.com">x</a></p>',
-  //   'should support an EOL before a destination'
-  // )
+  t.equal(
+    m('[x]:\nexample.com\n\n[x]'),
+    '<p><a href="example.com">x</a></p>',
+    'should support an EOL before a destination'
+  )
 
-  // // To do: whitespace.
-  // t.equal(
-  //   m('[x]: \t\nexample.com\n\n[x]'),
-  //   '<p><a href="example.com">x</a></p>',
-  //   'should support whitespace before a destination'
-  // )
+  t.equal(
+    m('[x]: \t\nexample.com\n\n[x]'),
+    '<p><a href="example.com">x</a></p>',
+    'should support whitespace before a destination'
+  )
 
   t.end()
 })

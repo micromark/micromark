@@ -128,7 +128,7 @@ test('code', function (t) {
     'should not support no closing fence (2)'
   )
 
-  // Our own:
+  // Extra:
   t.equal(
     m('`foo\t\tbar`'),
     '<p><code>foo\t\tbar</code></p>',

@@ -114,7 +114,7 @@ test('autolink', function (t) {
     'should not support email autolinks w/o angle brackets'
   )
 
-  // Our own:
+  // Extra:
   t.equal(
     m('<*@example.com>'),
     '<p><a href="mailto:*@example.com">*@example.com</a></p>',

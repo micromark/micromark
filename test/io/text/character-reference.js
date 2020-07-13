@@ -125,7 +125,7 @@ test('character-reference', function (t) {
     'should not support character references as whitespace (2)'
   )
 
-  // Our own:
+  // Extra:
   t.equal(
     m('&CounterClockwiseContourIntegral;'),
     '<p>∳</p>',

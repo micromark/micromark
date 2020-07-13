@@ -197,13 +197,14 @@ test('tabs', function (t) {
       'should support a space starting, and a tab ending, code'
     )
 
-    // // To do: Support better block parsing instead of whitespace trimming in
-    // `html-adapter`
-    // t.equal(
-    //   m('x\t\ny'),
-    //   '<p>x\t\ny</p>',
-    //   'should support a trailing tab at a line ending in a paragraph'
-    // )
+    // Note: CM does not strip it in this case.
+    // However, that should be a bug there: makes more sense to remove it like
+    // trailing spaces.
+    t.equal(
+      m('x\t\ny'),
+      '<p>x\ny</p>',
+      'should support a trailing tab at a line ending in a paragraph'
+    )
 
     t.equal(
       m('x\n\ty'),

@@ -3,9 +3,8 @@ How about https://spec.commonmark.org/0.29/#example-508 if `[bar]` is defined?
 Shortlist:
 - Fix setext (MAYBE IT’S A NORMAL CONSTRUCT, just like ATX headings and such?, interrupting block quotes and paragraphs?)
 - Complex:
+  - Definition order + stable/unstable
   - Containers
-  - Reference resolving
-  - Link vs. emphasis
 - Constructs:
   - Containers:
     - Block quotes
@@ -19,9 +18,8 @@ Interruption:
 `lineFeed` -> new name (`newline`?)
 
 MM
-- Case normalization MDIT does a great job! <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L257>
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>
-- MM: I think we can use `\s` for unicode whitespace? (that’s what CM.js does!)
+- MM: I think we can use `\s` for the unicode whitespace expression? (that’s what CM.js does!)
 - `previous` should be different when escaped? E.g.: ``` "\``asd`" ``` is fine. `\**asd*` too, probably?
 - make sure all constructs can start with a an escape (as in: add tests for this)!
 - Invalid resources and references are still shortcut references.
@@ -29,6 +27,7 @@ MM
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
 - Check all `istanbul ignore` / eslint comments
 - Replace console calls with `debug`, and create a `undebugify` babel script.
+- Add many more `assert` calls
 
 CMSM:
 
@@ -63,3 +62,4 @@ CM:
 - Flow HTML declaration: “followed by an uppercase ASCII letter” should be any letter probably? (I’ve implemented this) (I remember I did something with a PR here)
 - `<a b="c"d="f">` is valid according to spec, and should be (same w/ HTML), but in dingus.
 - Lift the definition unquoted destination parentheses limitation: not needed in definitions.
+- Example 188 equals Example 176
