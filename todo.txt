@@ -1,14 +1,11 @@
 How about https://spec.commonmark.org/0.29/#example-508 if `[bar]` is defined?
 
 Shortlist:
-- Fix setext (MAYBE IT’S A NORMAL CONSTRUCT, just like ATX headings and such?, interrupting block quotes and paragraphs?)
-- Complex:
-  - Definition order + stable/unstable
-  - Containers
-- Constructs:
-  - Containers:
-    - Block quotes
-    - Lists
+- Definition order
+- Unstable definitions (current: stable & orderless, or PR into spec)
+- Containers
+  - Block quotes
+  - Lists
 
 Interruption:
 
@@ -28,6 +25,7 @@ MM
 - Check all `istanbul ignore` / eslint comments
 - Replace console calls with `debug`, and create a `undebugify` babel script.
 - Add many more `assert` calls
+- https://github.com/commonmark/commonmark.js/issues/129
 
 CMSM:
 
