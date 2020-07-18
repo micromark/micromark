@@ -34,7 +34,6 @@
     "index.js"
   ],
   "dependencies": {
-    "once": "^1.4.0",
     "parse-entities": "^2.0.0"
   },
   "devDependencies": {
