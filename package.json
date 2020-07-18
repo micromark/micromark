@@ -25,6 +25,7 @@
     "parse-entities": "^2.0.0"
   },
   "devDependencies": {
+    "babel-plugin-unassert": "^3.0.0",
     "babelify": "^10.0.0",
     "browserify": "^16.0.0",
     "commonmark.json": "^0.29.0",
@@ -37,7 +38,6 @@
     "resolve-from": "^5.0.0",
     "tape": "^5.0.0",
     "tinyify": "^2.0.0",
-    "unassertify": "^2.0.0",
     "unicode-13.0.0": "^0.8.0",
     "xo": "^0.32.0"
   },
@@ -45,8 +45,8 @@
     "generate-expressions": "node script/generate-expressions",
     "generate": "npm run generate-expressions",
     "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
-    "build-buffer": "browserify . -t [ babelify --plugins [ ./script/babel-transform-characters.js ] ] -t unassertify -p tinyify -s micromark -o micromark-buffer.min.js; gzip-size micromark-buffer.min.js",
-    "build-stream": "browserify lib/stream -t [ babelify --plugins [ ./script/babel-transform-characters.js ] ] -t unassertify -p tinyify -s micromark -o micromark-stream.min.js; gzip-size micromark-stream.min.js",
+    "build-buffer": "browserify . -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-characters.js ] ] -p tinyify -s micromark -o micromark-buffer.min.js; gzip-size micromark-buffer.min.js",
+    "build-stream": "browserify lib/stream -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-characters.js ] ] -p tinyify -s micromark -o micromark-stream.min.js; gzip-size micromark-stream.min.js",
     "build": "npm run build-buffer && npm run build-stream",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
