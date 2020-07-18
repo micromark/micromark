@@ -44,7 +44,7 @@
   "scripts": {
     "generate-expressions": "node script/generate-expressions",
     "generate": "npm run generate-expressions",
-    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
+    "format": "remark . -qfo && prettier --write . && xo --fix",
     "build-buffer": "browserify . -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-characters.js ] ] -p tinyify -s micromark -o micromark-buffer.min.js; gzip-size micromark-buffer.min.js",
     "build-stream": "browserify lib/stream -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-characters.js ] ] -p tinyify -s micromark -o micromark-stream.min.js; gzip-size micromark-stream.min.js",
     "build": "npm run build-buffer && npm run build-stream",
