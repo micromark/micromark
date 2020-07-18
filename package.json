@@ -6,10 +6,16 @@
   "keywords": [],
   "repository": "micromark/mm",
   "bugs": "https://github.com/micromark/mm/issues",
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/unified"
-  },
+  "funding": [
+    {
+      "type": "GitHub Sponsors",
+      "url": "https://github.com/sponsors/unifiedjs"
+    },
+    {
+      "type": "OpenCollective",
+      "url": "https://opencollective.com/unified"
+    }
+  ],
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
