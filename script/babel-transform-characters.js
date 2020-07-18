@@ -1,10 +1,10 @@
 var path = require('path')
 var resolveFrom = require('resolve-from')
-var characters = require('../lib/util/characters')
+var codes = require('../lib/character/codes')
 
 module.exports = transform
 
-var expected = require.resolve('../lib/util/characters')
+var expected = require.resolve('../lib/character/codes')
 
 function transform() {
   return {
@@ -31,7 +31,7 @@ function transform() {
 
           if (expected === actual) {
             // Save identifier.
-            state.charactersLocalName = id
+            state.characterCodesLocalName = id
 
             // Remove the whole thing.
             p.remove()
@@ -43,13 +43,13 @@ function transform() {
         var name
 
         if (
-          state.charactersLocalName !== undefined &&
-          p.node.object.name === state.charactersLocalName
+          state.characterCodesLocalName !== undefined &&
+          p.node.object.name === state.characterCodesLocalName
         ) {
           name = p.node.property.name
 
-          if (name in characters) {
-            p.replaceWith({type: 'NumericLiteral', value: characters[name]})
+          if (name in codes) {
+            p.replaceWith({type: 'NumericLiteral', value: codes[name]})
           } else {
             throw new Error('Unknown character `' + name + '`')
           }
