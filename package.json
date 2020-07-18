@@ -18,7 +18,14 @@
   ],
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
   "contributors": [
-    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+    "John Otander <johnotander@gmail.com> (http://johnotander.com)",
+    "Stephan Schneider <stephanschndr@gmail.com>",
+    "Victor Felder <victor@draft.li> (https://draft.li)",
+    "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)",
+    "Christian Murphy <christian.murphy.42@gmail.com>",
+    "Marouane Fazouane <fazouanem3@gmail.com>",
+    "Merlijn Vos <merlijn@soverin.net>"
   ],
   "files": [
     "lib/",
