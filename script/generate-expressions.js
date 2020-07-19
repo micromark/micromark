@@ -25,7 +25,7 @@ var pcAll = regenerate()
 // To do: support astrals as well.
 var pc = regenerate()
   // Ignore non-BMP characters.
-  .add(pcAll.filter((d) => d <= 0xffff))
+  .add(pcAll.filter(isBmp))
   .toRegExp()
 
 fs.writeFileSync(
@@ -40,4 +40,8 @@ fs.writeFileSync(
 
 function unicode(d) {
   return require('unicode-13.0.0/General_Category/' + d + '/code-points')
+}
+
+function isBmp(d) {
+  return d <= 0xffff
 }
