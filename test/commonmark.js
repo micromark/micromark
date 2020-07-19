@@ -10,12 +10,10 @@ var skipped = 0
 
 process.on('exit', onexit)
 
-commonmark.forEach(each)
-
-function each(d) {
+commonmark.forEach(function (d) {
   var list = sections[d.section] || (sections[d.section] = [])
   list.push({input: d.markdown, output: d.html})
-}
+})
 
 test('commonmark', function (t) {
   Object.keys(sections).forEach(function (name) {

@@ -83,14 +83,9 @@
     "esnext": false,
     "rules": {
       "import/no-unassigned-import": "off",
-      "unicorn/no-fn-reference-in-iterator": "off",
-      "unicorn/no-hex-escape": "off",
       "unicorn/prefer-includes": "off",
       "unicorn/prefer-number-properties": "off",
-      "unicorn/prefer-reflect-apply": "off",
-      "capitalized-comments": "off",
-      "no-lonely-if": "off",
-      "no-self-compare": "off"
+      "no-lonely-if": "off"
     }
   },
   "remarkConfig": {
