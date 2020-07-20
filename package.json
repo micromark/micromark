@@ -83,6 +83,7 @@
     "esnext": false,
     "rules": {
       "import/no-unassigned-import": "off",
+      "unicorn/explicit-length-check": "off",
       "unicorn/prefer-includes": "off",
       "unicorn/prefer-number-properties": "off",
       "no-lonely-if": "off"
