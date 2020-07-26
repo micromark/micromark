@@ -6,14 +6,13 @@ module.exports = transform
 var supported = [
   require.resolve('../lib/character/codes'),
   require.resolve('../lib/character/values'),
-  require.resolve('../lib/constant/constants')
+  require.resolve('../lib/constant/constants'),
+  require.resolve('../lib/constant/types')
 ]
 
-var evaluated = [
-  require('../lib/character/codes'),
-  require('../lib/character/values'),
-  require('../lib/constant/constants')
-]
+var evaluated = supported.map(function (filePath) {
+  return require(filePath)
+})
 
 function transform() {
   return {
@@ -56,14 +55,10 @@ function transform() {
         var objectName = p.node.object.name
         var propertyName = p.node.property.name
         var exported
-        var name
         var value
         var type
 
-        if (
-          state.constantLocalIds !== undefined &&
-          objectName in state.constantLocalIds
-        ) {
+        if (state.constantLocalIds && objectName in state.constantLocalIds) {
           exported = evaluated[state.constantLocalIds[objectName]]
 
           if (propertyName in exported) {
@@ -80,12 +75,12 @@ function transform() {
                 ? 'Null'
                 : undefined
 
-            if (type === undefined) {
+            if (!type) {
               throw new Error(
                 'Unexpected non-literal `' +
                   value +
                   '` in at `' +
-                  name +
+                  propertyName +
                   '` in `' +
                   objectName +
                   '`'
@@ -95,7 +90,7 @@ function transform() {
             p.replaceWith({type: type + 'Literal', value: value})
           } else {
             throw new Error(
-              'Unknown field `' + name + '` in `' + objectName + '`'
+              'Unknown field `' + propertyName + '` in `' + objectName + '`'
             )
           }
         }

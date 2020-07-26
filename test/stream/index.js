@@ -245,13 +245,9 @@ test('stream', function (t) {
           'should pipe the processed result'
         )
       })
-    ).on(
-      'error',
-      /* istanbul ignore next */
-      function () {
-        st.fail('should not trigger `error`')
-      }
-    )
+    ).on('error', function () {
+      st.fail('should not trigger `error`')
+    })
 
     tr.write('alpha')
     tr.write('bravo')

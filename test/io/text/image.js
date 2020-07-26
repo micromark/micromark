@@ -179,5 +179,13 @@ test('image', function (t) {
     'should support character references in images'
   )
 
+  // Extra
+  // See: <https://github.com/commonmark/commonmark.js/issues/192>
+  t.equal(
+    m('![](<> "")'),
+    '<p><img src="" alt="" /></p>',
+    'should ignore an empty title'
+  )
+
   t.end()
 })

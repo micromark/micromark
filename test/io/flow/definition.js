@@ -301,5 +301,13 @@ test('definition', function (t) {
     'should support whitespace before a destination'
   )
 
+  // Extra.
+  // See: <https://github.com/commonmark/commonmark.js/issues/192>
+  t.equal(
+    m('[x]: <> ""\n[][x]'),
+    '<p><a href=""></a></p>',
+    'should ignore an empty title'
+  )
+
   t.end()
 })

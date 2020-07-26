@@ -289,6 +289,15 @@ test('link (resource)', function (t) {
   )
 
   // Extra
+  t.equal(m('[]()'), '<p><a href=""></a></p>', 'should support an empty link')
+
+  // See: <https://github.com/commonmark/commonmark.js/issues/192>
+  t.equal(
+    m('[](<> "")'),
+    '<p><a href=""></a></p>',
+    'should ignore an empty title'
+  )
+
   t.equal(
     m('[](<'),
     '<p>[](&lt;</p>',
