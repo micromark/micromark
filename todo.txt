@@ -12,38 +12,13 @@ Interruption:
 - [ ] `isConstructs` for multiple checks
 - [ ] Be smart when interrupting (html, fenced code can interrupt if first line match, and don’t need to check the rest)
 
-`lineFeed` -> new name (`newline`?)
-
 MM
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>
-- MM: I think we can use `\s` for the unicode whitespace expression? (that’s what CM.js does!)
 - `previous` should be different when escaped? E.g.: ``` "\``asd`" ``` is fine. `\**asd*` too, probably?
-- make sure all constructs can start with a an escape (as in: add tests for this)!
-- Invalid resources and references are still shortcut references.
-- autolink/link: check why autolink does both encode and encodeURI, whereas link only does encodeURI?
+- make sure all constructs can start with an escape (as in: add tests for this)!
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
-- Check all `istanbul ignore` / eslint comments
 - Replace console calls with `debug`, and create a `undebugify` babel script.
-- Add many more `assert` calls
 - https://github.com/commonmark/commonmark.js/issues/129
-
-CMSM:
-
-- email label -> email domain, email atext -> email local part
-- “Autolink email atext state” `@` case must set `sizeLabel` to `0`, instead of `1`
-- “Autolink email label state” `.` case must set `sizeLabel` to `0`, instead of incrementing it
-- Use “HTML End” state (also in CDATA close) when expecting a `>` (comment end, tagOpenSelfClosing can use it)
-- Allow `?` inside instructions, and allow `]]]]>` to end cdata.
-- Use “HTML tag close inside” state should forward `>` to tag close between too.
-- Use “HTML tag open inside” state should forward `>` to tag open between too.
-- “HTML tag open inside state” should forward `/` too.
-- Allow two boolean attributes
-- tagOpenAttributeBefore should use “value” in name?
-- Comment may not start with `>` or `->`.
-- Label reference shortcut close state -> Label shortcut reference
-- Label resource isn’t very good
-- Resource information destination unquoted inside state should not handle `>`?!!!
-- HTML flow should look more like HTML text.
 
 CM:
 
