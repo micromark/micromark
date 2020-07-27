@@ -60,7 +60,7 @@ test('link (reference)', function (t) {
   )
 
   t.equal(
-    m('[ref]: /uri\n\n[foo <bar attr="][ref]">'),
+    m('[ref]: /uri\n\n[foo <bar attr="][ref]">', {allowDangerousHtml: true}),
     '<p>[foo <bar attr="][ref]"></p>',
     'should prefer HTML over link references'
   )

@@ -47,7 +47,7 @@ test('link (resource)', function (t) {
   )
 
   t.equal(
-    m('[link](<foo\nbar>)'),
+    m('[link](<foo\nbar>)', {allowDangerousHtml: true}),
     '<p>[link](<foo\nbar>)</p>',
     'should not support links w/ line endings in enclosed destination'
   )
@@ -65,7 +65,7 @@ test('link (resource)', function (t) {
   )
 
   t.equal(
-    m('[a](<b)c\n[a](<b)c>\n[a](<b>c)'),
+    m('[a](<b)c\n[a](<b)c>\n[a](<b>c)', {allowDangerousHtml: true}),
     '<p>[a](&lt;b)c\n[a](&lt;b)c&gt;\n[a](<b>c)</p>',
     'should not support links w/ unmatched enclosed destinations'
   )
@@ -265,7 +265,7 @@ test('link (resource)', function (t) {
   // )
 
   t.equal(
-    m('[foo <bar attr="](baz)">'),
+    m('[foo <bar attr="](baz)">', {allowDangerousHtml: true}),
     '<p>[foo <bar attr="](baz)"></p>',
     'should prefer HTML over links'
   )

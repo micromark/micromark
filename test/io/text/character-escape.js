@@ -71,7 +71,7 @@ test('character-escape', function (t) {
   )
 
   t.equal(
-    m('<a href="/bar\\/)">'),
+    m('<a href="/bar\\/)">', {allowDangerousHtml: true}),
     '<a href="/bar\\/)">',
     'should not escape in block html'
   )

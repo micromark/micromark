@@ -97,7 +97,7 @@ test('code', function (t) {
   )
 
   t.equal(
-    m('<a href="`">`'),
+    m('<a href="`">`', {allowDangerousHtml: true}),
     '<p><a href="`">`</p>',
     'should have same precedence as HTML (2)'
   )

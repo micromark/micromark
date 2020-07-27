@@ -20,7 +20,7 @@ test('commonmark', function (t) {
     t.test(name, function (t) {
       sections[name].forEach(function (example) {
         var expected = example.output
-        var actual = m(example.input)
+        var actual = m(example.input, {allowDangerousHtml: true})
 
         if (actual === expected) {
           t.equal(actual, expected)

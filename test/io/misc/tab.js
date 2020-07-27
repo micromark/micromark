@@ -114,7 +114,7 @@ test('tabs', function (t) {
     )
 
     t.equal(
-      m('<x\ty\tz\t=\t"\tx\t">'),
+      m('<x\ty\tz\t=\t"\tx\t">', {allowDangerousHtml: true}),
       '<x\ty\tz\t=\t"\tx\t">',
       'should support tabs in HTML (if whitespace is allowed)'
     )

@@ -760,25 +760,25 @@ test('emphasis', function (t) {
   )
 
   t.equal(
-    m('*<img src="foo" title="*"/>'),
+    m('*<img src="foo" title="*"/>', {allowDangerousHtml: true}),
     '<p>*<img src="foo" title="*"/></p>',
     'should not end inside HTML'
   )
 
   t.equal(
-    m('*<img src="foo" title="*"/>'),
+    m('*<img src="foo" title="*"/>', {allowDangerousHtml: true}),
     '<p>*<img src="foo" title="*"/></p>',
     'should not end emphasis inside HTML'
   )
 
   t.equal(
-    m('**<a href="**">'),
+    m('**<a href="**">', {allowDangerousHtml: true}),
     '<p>**<a href="**"></p>',
     'should not end strong inside HTML (1)'
   )
 
   t.equal(
-    m('__<a href="__">'),
+    m('__<a href="__">', {allowDangerousHtml: true}),
     '<p>__<a href="__"></p>',
     'should not end strong inside HTML (2)'
   )

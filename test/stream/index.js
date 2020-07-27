@@ -96,6 +96,28 @@ test('stream', function (t) {
     }
   })
 
+  t.test('should should be safe by default', function (t) {
+    t.plan(1)
+
+    slowStream('<x>').pipe(m()).pipe(concat(onconcat))
+
+    function onconcat(result) {
+      t.equal(result, '&lt;x&gt;', 'pass')
+    }
+  })
+
+  t.test('should be unsafe w/ `allowDangerousHtml`', function (t) {
+    t.plan(1)
+
+    slowStream('<x>')
+      .pipe(m({allowDangerousHtml: true}))
+      .pipe(concat(onconcat))
+
+    function onconcat(result) {
+      t.equal(result, '<x>', 'pass')
+    }
+  })
+
   t.test('should stream in non-UTF8', function (t) {
     var encoding = 'utf16le'
     var doc = [

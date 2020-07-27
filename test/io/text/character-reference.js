@@ -59,7 +59,7 @@ test('character-reference', function (t) {
   )
 
   t.equal(
-    m('<a href="&ouml;&ouml;.html">'),
+    m('<a href="&ouml;&ouml;.html">', {allowDangerousHtml: true}),
     '<a href="&ouml;&ouml;.html">',
     'should not care about character references in html'
   )

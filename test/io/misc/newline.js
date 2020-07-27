@@ -106,48 +106,56 @@ test('newline', function (t) {
     'should support a carriage return + line feed in content'
   )
 
-  t.equal(m('<div\n'), '<div\n', 'should support a line feed after html')
-
-  t.equal(m('<div\r'), '<div\r', 'should support a carriage return after html')
+  t.equal(
+    m('<div\n', {allowDangerousHtml: true}),
+    '<div\n',
+    'should support a line feed after html'
+  )
 
   t.equal(
-    m('<div\r\n'),
+    m('<div\r', {allowDangerousHtml: true}),
+    '<div\r',
+    'should support a carriage return after html'
+  )
+
+  t.equal(
+    m('<div\r\n', {allowDangerousHtml: true}),
     '<div\r\n',
     'should support a carriage return + line feed after html'
   )
 
   t.equal(
-    m('<div>\n\nx'),
+    m('<div>\n\nx', {allowDangerousHtml: true}),
     '<div>\n<p>x</p>',
     'should support a blank line w/ line feeds after html'
   )
 
   t.equal(
-    m('<div>\r\rx'),
+    m('<div>\r\rx', {allowDangerousHtml: true}),
     '<div>\r<p>x</p>',
     'should support a blank line w/ carriage returns after html'
   )
 
   t.equal(
-    m('<div>\r\n\r\nx'),
+    m('<div>\r\n\r\nx', {allowDangerousHtml: true}),
     '<div>\r\n<p>x</p>',
     'should support a blank line w/ carriage return + line feeds after html'
   )
 
   t.equal(
-    m('<div>\nx'),
+    m('<div>\nx', {allowDangerousHtml: true}),
     '<div>\nx',
     'should support a non-blank line w/ line feed in html'
   )
 
   t.equal(
-    m('<div>\rx'),
+    m('<div>\rx', {allowDangerousHtml: true}),
     '<div>\rx',
     'should support a non-blank line w/ carriage return in html'
   )
 
   t.equal(
-    m('<div>\r\nx'),
+    m('<div>\r\nx', {allowDangerousHtml: true}),
     '<div>\r\nx',
     'should support a non-blank line w/ carriage return + line feed in html'
   )

@@ -59,7 +59,7 @@ test('definition', function (t) {
   )
 
   t.equal(
-    m('[foo]: <bar>(baz)\n\n[foo]'),
+    m('[foo]: <bar>(baz)\n\n[foo]', {allowDangerousHtml: true}),
     '<p>[foo]: <bar>(baz)</p>\n<p>[foo]</p>',
     'should not support definitions w/ no whitespace between destination and title'
   )
