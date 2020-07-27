@@ -78,12 +78,11 @@ test('setext-heading', function (t) {
     'should not support internal whitespace in the underline (1)'
   )
 
-  // // To do: `<hr />` with `-` *can* interrupt if not a setext heading.
-  // t.equal(
-  //   m('Foo\n--- -'),
-  //   '<p>Foo</p>\n<hr />',
-  //   'should not support internal whitespace in the underline (2)'
-  // )
+  t.equal(
+    m('Foo\n--- -'),
+    '<p>Foo</p>\n<hr />',
+    'should not support internal whitespace in the underline (2)'
+  )
 
   t.equal(
     m('Foo  \n-----'),
