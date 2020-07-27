@@ -25,8 +25,8 @@ test('commonmark', function (t) {
         if (actual === expected) {
           t.equal(actual, expected)
         } else {
-          skipped++
           t.skip(actual + ' !== ' + expected)
+          skipped++
         }
       })
 

@@ -193,8 +193,8 @@ test('fenced-code', function (t) {
   )
 
   t.equal(
-    m('```  js\nconsole.log(1)\n```'),
-    '<pre><code class="language-js">console.log(1)\n</code></pre>',
+    m('```  js\nalert(1)\n```'),
+    '<pre><code class="language-js">alert(1)\n</code></pre>',
     'should support whitespace between the fence sequence and the info string'
   )
 
@@ -205,8 +205,8 @@ test('fenced-code', function (t) {
   )
 
   t.equal(
-    m('```  js \nconsole.log(1)\n```'),
-    '<pre><code class="language-js">console.log(1)\n</code></pre>',
+    m('```  js \nalert(1)\n```'),
+    '<pre><code class="language-js">alert(1)\n</code></pre>',
     'should support whitespace after the info string'
   )
 

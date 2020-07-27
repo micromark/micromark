@@ -34,6 +34,7 @@
     "index.js"
   ],
   "dependencies": {
+    "debug": "^4.0.0",
     "parse-entities": "^2.0.0"
   },
   "devDependencies": {
@@ -57,8 +58,8 @@
     "generate-expressions": "node script/generate-expressions",
     "generate": "npm run generate-expressions",
     "format": "remark . -qfo && prettier --write . && xo --fix",
-    "build-buffer": "browserify . -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-constants.js ] ] -p tinyify -s micromark -o micromark-buffer.min.js; gzip-size micromark-buffer.min.js; gzip-size --raw micromark-buffer.min.js",
-    "build-stream": "browserify lib/stream -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-constants.js ] ] -p tinyify -s micromark -o micromark-stream.min.js; gzip-size micromark-stream.min.js; gzip-size --raw micromark-stream.min.js",
+    "build-buffer": "browserify lib/buffer -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-undebug.js ./script/babel-transform-constants.js ] ] -p tinyify -s micromark -o micromark-buffer.min.js; gzip-size micromark-buffer.min.js; gzip-size --raw micromark-buffer.min.js",
+    "build-stream": "browserify lib/stream -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-undebug.js ./script/babel-transform-constants.js ] ] -p tinyify -s micromark -o micromark-stream.min.js; gzip-size micromark-stream.min.js; gzip-size --raw micromark-stream.min.js",
     "build": "npm run build-buffer && npm run build-stream",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
@@ -86,6 +87,7 @@
       "unicorn/explicit-length-check": "off",
       "unicorn/prefer-includes": "off",
       "unicorn/prefer-number-properties": "off",
+      "unicorn/prefer-type-error": "off",
       "no-lonely-if": "off"
     }
   },
