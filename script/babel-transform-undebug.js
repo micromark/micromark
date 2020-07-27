@@ -1,6 +1,4 @@
-/**
- * Mini script for us, based on `unassert`.
- */
+// Mini script for us to remove `debug` calls, based on `unassert`.
 'use strict'
 
 module.exports = () => {
