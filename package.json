@@ -83,12 +83,13 @@
     "prettier": true,
     "esnext": false,
     "rules": {
+      "complexity": "off",
       "import/no-unassigned-import": "off",
+      "no-lonely-if": "off",
       "unicorn/explicit-length-check": "off",
       "unicorn/prefer-includes": "off",
       "unicorn/prefer-number-properties": "off",
-      "unicorn/prefer-type-error": "off",
-      "no-lonely-if": "off"
+      "unicorn/prefer-type-error": "off"
     }
   },
   "remarkConfig": {
