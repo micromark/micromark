@@ -7,9 +7,6 @@ Shortlist:
   - Block quotes
   - Lists
 
-resolve first, then tokenize
-add dot to imf atext
-assert === to assert.equal
 externalize sliceStream: `startBufferIndex !== -1`: add `shift` if empty?
 asserts for consuming
 plain text -> string
