@@ -9,7 +9,6 @@ Shortlist:
 
 externalize sliceStream: `startBufferIndex !== -1`: add `shift` if empty?
 asserts for consuming
-codeSpanFence -> codeSpanSequence?
 Remove `enter`, `exit` if unneeded
 Reorder to use length first, then index, then result
 Merge setext and paragraph.
