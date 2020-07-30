@@ -96,7 +96,7 @@ test('stream', function (t) {
     }
   })
 
-  t.test('should should be safe by default', function (t) {
+  t.test('should be safe by default', function (t) {
     t.plan(1)
 
     slowStream('<x>').pipe(m()).pipe(concat(onconcat))
@@ -155,7 +155,7 @@ test('stream', function (t) {
     var s
     var phase
 
-    t.plan(7)
+    t.plan(8)
 
     t.equal(m().end(), true, 'should return true for `end`')
 
@@ -176,6 +176,15 @@ test('stream', function (t) {
       })
     )
     s.end()
+
+    s = m()
+    s.pipe(
+      concat(function (value) {
+        t.equal(String(value), '<p>x</p>', 'should end')
+      }),
+      {end: true}
+    )
+    s.end('x')
 
     s = m()
     s.pipe(
