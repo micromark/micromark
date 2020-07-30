@@ -7,7 +7,6 @@ Shortlist:
   - Block quotes
   - Lists
 
-imf atext to ascii-imf-atext
 resolve first, then tokenize
 add dot to imf atext
 assert === to assert.equal
