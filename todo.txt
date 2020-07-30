@@ -12,7 +12,6 @@ externalize sliceStream: `startBufferIndex !== -1`: add `shift` if empty?
 stream -> chunks / view
 asserts for consuming
 !== -1 etc, use <
-self -> this
 eventQueue -> events
 previousCode -> last
 
