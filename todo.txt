@@ -9,7 +9,6 @@ Shortlist:
 
 externalize sliceStream: `startBufferIndex !== -1`: add `shift` if empty?
 asserts for consuming
-Remove `enter`, `exit` if unneeded
 Reorder to use length first, then index, then result
 Merge setext and paragraph.
 plain text -> string
@@ -19,6 +18,7 @@ imf atext to ascii-imf-atext
 resolve first, then tokenize
 add dot to imf atext
 assert === to assert.equal
+check if `.ensure` would help?
 
 MM
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>
