@@ -135,5 +135,11 @@ test('code', function (t) {
     'should support tabs in code'
   )
 
+  t.equal(
+    m('\\``x`'),
+    '<p>`<code>x</code></p>',
+    'should support an escaped initial grave accent'
+  )
+
   t.end()
 })

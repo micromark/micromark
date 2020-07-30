@@ -12,8 +12,6 @@ check if `.ensure` would help?
 
 MM
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>
-- `previous` should be different when escaped? E.g.: ``` "\``asd`" ``` is fine. `\**asd*` too, probably?
-- make sure all constructs can start with an escape (as in: add tests for this)!
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
 - Make HTML, fenced code, other multiline constructs faster when interrupting
 - https://github.com/commonmark/commonmark.js/issues/129
