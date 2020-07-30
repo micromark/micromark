@@ -7,6 +7,15 @@ Shortlist:
   - Block quotes
   - Lists
 
+isConstructs
+externalize sliceStream: `startBufferIndex !== -1`: add `shift` if empty?
+stream -> chunks / view
+asserts for consuming
+!== -1 etc, use <
+self -> this
+eventQueue -> events
+previousCode -> last
+
 MM
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>
 - `previous` should be different when escaped? E.g.: ``` "\``asd`" ``` is fine. `\**asd*` too, probably?
