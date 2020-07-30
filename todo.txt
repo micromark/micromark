@@ -7,7 +7,6 @@ Shortlist:
   - Block quotes
   - Lists
 
-rename html adapter to compiler
 asserts for consuming
 plain text -> string
 update token types
