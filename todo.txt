@@ -23,7 +23,7 @@ inline character checks
 imf atext to ascii-imf-atext
 resolve first, then tokenize
 inline preceding check in label-end
-check ternarries, can we use `&&`? Drop undefined?
+buffer vs. name
 
 MM
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>
