@@ -7,7 +7,7 @@ Shortlist:
   - Block quotes
   - Lists
 
-externalize sliceStream: `startBufferIndex !== -1`: add `shift` if empty?
+rename html adapter to compiler
 asserts for consuming
 plain text -> string
 update token types
