@@ -1,7 +1,7 @@
+module.exports = transform
+
 var path = require('path')
 var resolveFrom = require('resolve-from')
-
-module.exports = transform
 
 var supported = [
   require.resolve('../lib/character/codes'),

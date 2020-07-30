@@ -1,7 +1,9 @@
 // Mini script for us to remove `debug` calls, based on `unassert`.
 'use strict'
 
-module.exports = () => {
+module.exports = undebug
+
+function undebug() {
   return {
     visitor: {
       AssignmentExpression(nodePath) {
