@@ -12,6 +12,10 @@ externalize sliceStream: `startBufferIndex !== -1`: add `shift` if empty?
 stream -> chunks / view
 asserts for consuming
 !== -1 etc, use <
+codeSpanFence -> codeSpanSequence?
+<= >= to single
+Remove `enter`, `exit` if unneeded
+Reorder to use length first, then index, then result
 
 MM
 - MDIT *does* some invalid numeric character reference checking: <https://github.com/markdown-it/markdown-it/blob/d08c7c38976f5dcdf8dfe9ea3fdf149905001d16/lib/common/utils.js#L44>

@@ -40,7 +40,7 @@ function transform() {
           actual = resolveFrom(dirname, declaration.init.arguments[0].value)
           position = supported.indexOf(actual)
 
-          if (position !== -1) {
+          if (position > -1) {
             // Save identifier.
             local = state.constantLocalIds || (state.constantLocalIds = {})
             local[id] = position
