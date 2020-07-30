@@ -101,7 +101,7 @@ test('html', function (t) {
     t.equal(
       m('<script', unsafe),
       '<script',
-      'should support an EOF directly after a tag name'
+      'should support an EOF directly after a raw tag name'
     )
 
     t.equal(
@@ -143,7 +143,7 @@ test('html', function (t) {
     t.equal(
       m('<script>a', unsafe),
       '<script>a',
-      'should support another character after an opening tag to start html'
+      'should support another character after a raw opening tag to start html'
     )
 
     t.end()
@@ -479,7 +479,7 @@ test('html', function (t) {
     t.equal(
       m('<div', unsafe),
       '<div',
-      'should support an EOF directly after a tag name'
+      'should support an EOF directly after a basic tag name'
     )
 
     t.equal(
@@ -527,7 +527,7 @@ test('html', function (t) {
     t.equal(
       m('<div>a', unsafe),
       '<div>a',
-      'should support another character after an opening tag to start html'
+      'should support another character after a basic opening tag to start html'
     )
 
     t.end()

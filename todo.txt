@@ -7,7 +7,6 @@ Shortlist:
   - Block quotes
   - Lists
 
-asserts for consuming
 Merge setext and paragraph.
 check if `.ensure` would help?
 
