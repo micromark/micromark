@@ -8,8 +8,6 @@ Shortlist:
   - Lists
 
 asserts for consuming
-plain text -> string
-update token types
 Merge setext and paragraph.
 check if `.ensure` would help?
 
