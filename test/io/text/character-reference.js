@@ -134,14 +134,14 @@ test('character-reference', function (t) {
 
   t.equal(
     m('&#xff9999;'),
-    '<p>香</p>',
-    'should support a longest possible hexadecimal character reference'
+    '<p>�</p>',
+    'should “support” a longest possible hexadecimal character reference'
   )
 
   t.equal(
     m('&#9999999;'),
-    '<p>陿</p>',
-    'should support a longest possible decimal character reference'
+    '<p>�</p>',
+    'should “support” a longest possible decimal character reference'
   )
 
   t.equal(

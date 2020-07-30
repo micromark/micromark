@@ -188,7 +188,7 @@ test('definition', function (t) {
   t.equal(
     m('[x]: <\\>&#x20;\\+\\>>\n\n[x]'),
     '<p><a href="%3E%20+%3E">x</a></p>',
-    'should support character escapes & references in unenclosed destinations'
+    'should support character escapes & references in enclosed destinations'
   )
 
   t.equal(
