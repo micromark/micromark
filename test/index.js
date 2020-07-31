@@ -1,3 +1,3 @@
-// Require('./commonmark')
+require('./commonmark')
 require('./io')
 require('./stream')

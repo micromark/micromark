@@ -146,6 +146,13 @@ test('html', function (t) {
       'should support another character after a raw opening tag to start html'
     )
 
+    // Extra.
+    t.equal(
+      m('Foo\n<script', unsafe),
+      '<p>Foo</p>\n<script',
+      'should support interrupting paragraphs w/ raw tags'
+    )
+
     t.end()
   })
 
@@ -194,6 +201,13 @@ test('html', function (t) {
       'should not support comments w/ a 4 character indent'
     )
 
+    // Extra.
+    t.equal(
+      m('Foo\n<!--', unsafe),
+      '<p>Foo</p>\n<!--',
+      'should support interrupting paragraphs w/ comments'
+    )
+
     t.end()
   })
 
@@ -211,6 +225,13 @@ test('html', function (t) {
     )
 
     t.equal(m('<??>', unsafe), '<??>', 'should support empty instructions')
+
+    // Extra.
+    t.equal(
+      m('Foo\n<?', unsafe),
+      '<p>Foo</p>\n<?',
+      'should support interrupting paragraphs w/ instructions'
+    )
 
     t.end()
   })
@@ -232,6 +253,13 @@ test('html', function (t) {
       m('<!a>', unsafe),
       '<!a>',
       'should support otherwise empty declarations'
+    )
+
+    // Extra.
+    t.equal(
+      m('Foo\n<!d', unsafe),
+      '<p>Foo</p>\n<!d',
+      'should support interrupting paragraphs w/ declarations'
     )
 
     t.end()
@@ -263,6 +291,13 @@ test('html', function (t) {
       m('<![CDATA[]]]>', unsafe),
       '<![CDATA[]]]>',
       'should support cdata with a single `]`'
+    )
+
+    // Extra.
+    t.equal(
+      m('Foo\n<![CDATA[', unsafe),
+      '<p>Foo</p>\n<![CDATA[',
+      'should support interrupting paragraphs w/ cdata'
     )
 
     t.end()
@@ -528,6 +563,13 @@ test('html', function (t) {
       m('<div>a', unsafe),
       '<div>a',
       'should support another character after a basic opening tag to start html'
+    )
+
+    // Extra.
+    t.equal(
+      m('Foo\n<div/>', unsafe),
+      '<p>Foo</p>\n<div/>',
+      'should support interrupting paragraphs w/ self-closing basic tags'
     )
 
     t.end()
