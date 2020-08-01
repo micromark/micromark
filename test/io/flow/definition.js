@@ -70,12 +70,11 @@ test('definition', function (t) {
     'should support escapes in destinations and titles'
   )
 
-  // // To do: order.
-  // t.equal(
-  //   m('[foo]\n\n[foo]: url'),
-  //   '<p><a href="/url%5Cbar*baz" title="foo&quot;bar\\baz">foo</a></p>',
-  //   'should support escapes in destinations and titles'
-  // )
+  t.equal(
+    m('[foo]\n\n[foo]: url'),
+    '<p><a href="url">foo</a></p>\n',
+    'should support a link before a definition'
+  )
 
   t.equal(
     m('[foo]: first\n[foo]: second\n\n[foo]'),
@@ -138,7 +137,6 @@ test('definition', function (t) {
   )
 
   // // To do: block quote
-  // // To do: order.
   // t.equal(
   //   m('# [Foo]\n[foo]: /url\n> bar'),
   //   '<h1><a href="/url">Foo</a></h1>\n<blockquote>\n<p>bar</p>\n</blockquote>',
