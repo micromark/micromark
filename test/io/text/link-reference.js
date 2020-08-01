@@ -10,12 +10,11 @@ test('link (reference)', function (t) {
     'should support link references'
   )
 
-  // To do: stable/unstable.
-  // t.equal(
-  //   m('[ref]: /uri\n\n[link [foo [bar]]][ref]'),
-  //   '<p><a href="/uri">link [foo [bar]]</a></p>',
-  //   'should support balanced braces in link references'
-  // )
+  t.equal(
+    m('[ref]: /uri\n\n[link [foo [bar]]][ref]'),
+    '<p><a href="/uri">link [foo [bar]]</a></p>',
+    'should support balanced braces in link references'
+  )
 
   t.equal(
     m('[ref]: /uri\n\n[link \\[bar][ref]'),
@@ -263,12 +262,11 @@ test('link (reference)', function (t) {
     'should support shortcut references when followed by nonconforming resources'
   )
 
-  // // To do: stable/unstable.
-  // t.equal(
-  //   m('[baz]: /url\n\n[foo][bar][baz]'),
-  //   '<p>[foo]<a href="/url">bar</a></p>',
-  //   'stable/unstable (1)'
-  // )
+  t.equal(
+    m('[baz]: /url\n\n[foo][bar][baz]'),
+    '<p>[foo]<a href="/url">bar</a></p>',
+    'stable/unstable (1)'
+  )
 
   t.equal(
     m('[baz]: /url1\n[bar]: /url2\n\n[foo][bar][baz]'),
@@ -276,19 +274,18 @@ test('link (reference)', function (t) {
     'stable/unstable (2)'
   )
 
-  // // To do: stable/unstable.
-  // t.equal(
-  //   m('[baz]: /url1\n[foo]: /url2\n\n[foo][bar][baz]'),
-  //   '<p>[foo]<a href="/url1">bar</a></p>',
-  //   'stable/unstable (3)'
-  // )
+  t.equal(
+    m('[baz]: /url1\n[foo]: /url2\n\n[foo][bar][baz]'),
+    '<p>[foo]<a href="/url1">bar</a></p>',
+    'stable/unstable (3)'
+  )
 
   // Extra
-  // This matches spec, but is different from most implementations.
+  // This matches most implimentations, but is not strictly according to spec.
   // See: <https://github.com/commonmark/commonmark-spec/issues/653>
   t.equal(
     m('[x]: /url\n\n[x][ ], [x][\t], [x][\n], [x][]'),
-    '<p><a href="/url">x</a>[ ], <a href="/url">x</a>[\t], <a href="/url">x</a>[\n], <a href="/url">x</a></p>',
+    '<p>[x][ ], [x][\t], [x][\n], <a href="/url">x</a></p>',
     'should not support whitespace-only full references'
   )
 
