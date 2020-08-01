@@ -8,7 +8,9 @@ Shortlist:
   - Lists
 
 Merge setext and paragraph.
-check if `.ensure` would help?
+Remove unneeded enters, exit, `event = ; token =`.
+Check if setting `contentType` in state machines reduces size?
+Check if `.ensure` would help?
 
 MM
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
