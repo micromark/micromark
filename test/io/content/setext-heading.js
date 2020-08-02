@@ -73,6 +73,24 @@ test('setext-heading', function (t) {
   )
 
   t.equal(
+    m('Foo\n   ='),
+    '<h1>Foo</h1>',
+    'should support whitespace before underline'
+  )
+
+  t.equal(
+    m('Foo\n    ='),
+    '<p>Foo\n=</p>',
+    'should not support too much whitespace before underline (1)'
+  )
+
+  t.equal(
+    m('Foo\n\t='),
+    '<p>Foo\n=</p>',
+    'should not support too much whitespace before underline (2)'
+  )
+
+  t.equal(
     m('Foo\n= ='),
     '<p>Foo\n= =</p>',
     'should not support internal whitespace in the underline (1)'
