@@ -9,9 +9,8 @@ Check if `.ensure` would help?
 Check if streaming and definition order works?
 Instead of interrupting, it might be possible to feed a line to `flow`, and
   depending on where it ends up, use it?
-queue -> events
-tokenize first, resolve later?
 constants for content types?
+markdownEnding and such at the end?
 
 MM
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
