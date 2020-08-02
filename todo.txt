@@ -1,8 +1,8 @@
 How about https://spec.commonmark.org/0.29/#example-508 if `[bar]` is defined?
 
 Shortlist:
-- Definition order
-- Unstable definitions (current: stable & orderless, or PR into spec)
+- Setext indent?
+- A couple indented code whitespace bugs?
 - Containers
   - Block quotes
   - Lists
@@ -11,6 +11,7 @@ Merge setext and paragraph.
 Remove unneeded enters, exit, `event = ; token =`.
 Check if setting `contentType` in state machines reduces size?
 Check if `.ensure` would help?
+Check if streaming and definition order works?
 
 MM
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.

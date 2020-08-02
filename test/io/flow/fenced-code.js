@@ -54,7 +54,7 @@ test('fenced-code', function (t) {
 
   t.equal(
     m('`````\n\n```\naaa\n'),
-    '<pre><code>\n```\naaa\n</code></pre>',
+    '<pre><code>\n```\naaa\n</code></pre>\n',
     'should support an EOF in content'
   )
 
@@ -127,7 +127,7 @@ test('fenced-code', function (t) {
 
   t.equal(
     m('~~~~~~\naaa\n~~~ ~~\n'),
-    '<pre><code>aaa\n~~~ ~~\n</code></pre>',
+    '<pre><code>aaa\n~~~ ~~\n</code></pre>\n',
     'should not support spaces in the closing fence'
   )
 
