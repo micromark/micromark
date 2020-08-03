@@ -17,9 +17,8 @@ var pcAll = regenerate()
   .add(unicode('Open_Punctuation'))
   .valueOf()
 
-// To do: support astrals as well.
+// Note: we don’t support astrals.
 var pc = regenerate()
-  // Ignore non-BMP characters.
   .add(
     pcAll.filter(function (d) {
       return d <= 0xffff
