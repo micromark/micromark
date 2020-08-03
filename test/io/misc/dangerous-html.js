@@ -3,7 +3,7 @@
 var test = require('tape')
 var m = require('../../..')
 
-test('tabs', function (t) {
+test('dangerous-html', function (t) {
   t.equal(m('<x>'), '&lt;x&gt;', 'should be safe by default')
 
   t.equal(

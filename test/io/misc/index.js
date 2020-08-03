@@ -1,3 +1,4 @@
+require('./buffer')
 require('./dangerous-html')
 require('./line-ending')
 require('./nul')
