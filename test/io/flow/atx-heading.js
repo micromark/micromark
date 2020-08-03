@@ -4,70 +4,46 @@ var test = require('tape')
 var m = require('../../..')
 
 test('atx-heading', function (t) {
-  t.equal(
-    m('# foo'),
-    '<h1>foo</h1>',
-    'should support a heading with a rank of 1'
-  )
+  t.equal(m('# foo'), '<h1>foo</h1>', 'should support a heading w/ rank 1')
 
-  t.equal(
-    m('## foo'),
-    '<h2>foo</h2>',
-    'should support a heading with a rank of 2'
-  )
+  t.equal(m('## foo'), '<h2>foo</h2>', 'should support a heading w/ rank 2')
 
-  t.equal(
-    m('### foo'),
-    '<h3>foo</h3>',
-    'should support a heading with a rank of 3'
-  )
+  t.equal(m('### foo'), '<h3>foo</h3>', 'should support a heading w/ rank 3')
 
-  t.equal(
-    m('#### foo'),
-    '<h4>foo</h4>',
-    'should support a heading with a rank of 4'
-  )
+  t.equal(m('#### foo'), '<h4>foo</h4>', 'should support a heading w/ rank 4')
 
-  t.equal(
-    m('##### foo'),
-    '<h5>foo</h5>',
-    'should support a heading with a rank of 5'
-  )
+  t.equal(m('##### foo'), '<h5>foo</h5>', 'should support a heading w/ rank 5')
 
-  t.equal(
-    m('###### foo'),
-    '<h6>foo</h6>',
-    'should support a heading with a rank of 6'
-  )
+  t.equal(m('###### foo'), '<h6>foo</h6>', 'should support a heading w/ rank 6')
 
   t.equal(
     m('####### foo'),
     '<p>####### foo</p>',
-    'should not support a heading with a rank of 7'
+    'should not support a heading w/ rank 7'
   )
 
   t.equal(
     m('#5 bolt'),
     '<p>#5 bolt</p>',
-    'should not support a heading with not followed by whitespace (1)'
+    'should not support a heading for a number sign not followed by whitespace (1)'
   )
 
   t.equal(
     m('#hashtag'),
     '<p>#hashtag</p>',
-    'should not support a heading with not followed by whitespace (2)'
+    'should not support a heading for a number sign not followed by whitespace (2)'
   )
 
   t.equal(
     m('\\## foo'),
     '<p>## foo</p>',
-    'should not support a heading that starts with an escape'
+    'should not support a heading for an escaped number sign'
   )
 
   t.equal(
     m('# foo *bar* \\*baz\\*'),
     '<h1>foo <em>bar</em> *baz*</h1>',
-    'should support content'
+    'should support text content in headings'
   )
 
   t.equal(
@@ -85,13 +61,13 @@ test('atx-heading', function (t) {
   t.equal(
     m('    # foo'),
     '<pre><code># foo\n</code></pre>',
-    'should not support four initial spaces (1)'
+    'should not support four initial spaces'
   )
 
   t.equal(
     m('foo\n    # bar'),
     '<p>foo\n# bar</p>',
-    'should not support four initial spaces (2)'
+    'should not support four initial spaces when interrupting'
   )
 
   t.equal(
@@ -109,19 +85,19 @@ test('atx-heading', function (t) {
   t.equal(
     m('# foo ##################################'),
     '<h1>foo</h1>',
-    'should support a closing sequence (3)'
+    'should support a closing sequence w/ an arbitrary number of number signs (1)'
   )
 
   t.equal(
     m('##### foo ##'),
     '<h5>foo</h5>',
-    'should support a closing sequence (4)'
+    'should support a closing sequence w/ an arbitrary number of number signs (2)'
   )
 
   t.equal(
     m('### foo ###     '),
     '<h3>foo</h3>',
-    'should support a trailing whitespace after a closing sequence'
+    'should support trailing whitespace after a closing sequence'
   )
 
   t.equal(
@@ -133,25 +109,25 @@ test('atx-heading', function (t) {
   t.equal(
     m('# foo#'),
     '<h1>foo#</h1>',
-    'should not support a closing sequence without whitespace before it'
+    'should not support a closing sequence w/o whitespace before it'
   )
 
   t.equal(
     m('### foo \\###'),
     '<h3>foo ###</h3>',
-    'should not support a character escaped closing sequence (1)'
+    'should not support an “escaped” closing sequence (1)'
   )
 
   t.equal(
     m('## foo #\\##'),
     '<h2>foo ###</h2>',
-    'should not support a character escaped closing sequence (2)'
+    'should not support an “escaped” closing sequence (2)'
   )
 
   t.equal(
     m('# foo \\#'),
     '<h1>foo #</h1>',
-    'should not support a character escaped closing sequence (3)'
+    'should not support an “escaped” closing sequence (3)'
   )
 
   t.equal(
@@ -163,7 +139,7 @@ test('atx-heading', function (t) {
   t.equal(
     m('Foo bar\n# baz\nBar foo'),
     '<p>Foo bar</p>\n<h1>baz</h1>\n<p>Bar foo</p>',
-    'should support atx headings when interrupting paragraphs'
+    'should support atx headings interrupting paragraphs'
   )
 
   t.equal(

@@ -91,7 +91,7 @@ test('character-reference', function (t) {
   t.equal(
     m('    f&ouml;f&ouml;'),
     '<pre><code>f&amp;ouml;f&amp;ouml;\n</code></pre>',
-    'should not support character references in indented block code'
+    'should not support character references in indented code'
   )
 
   t.equal(

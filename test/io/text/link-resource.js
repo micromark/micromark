@@ -187,7 +187,7 @@ test('link (resource)', function (t) {
   t.equal(
     m('[link] (/uri)'),
     '<p>[link] (/uri)</p>',
-    'should not support whitespace between label and information'
+    'should not support whitespace between label and resource'
   )
 
   t.equal(
@@ -307,25 +307,25 @@ test('link (resource)', function (t) {
   t.equal(
     m('[](\\<)'),
     '<p><a href="%3C"></a></p>',
-    'should support unenclosed link destination starting with escapes'
+    'should support unenclosed link destination starting w/ escapes'
   )
 
   t.equal(
     m('[](<\\<>)'),
     '<p><a href="%3C"></a></p>',
-    'should support enclosed link destination starting with escapes'
+    'should support enclosed link destination starting w/ escapes'
   )
 
   t.equal(
     m('[](\\'),
     '<p>[](\\</p>',
-    'should not support unenclosed link destination starting with an incorrect escape'
+    'should not support unenclosed link destination starting w/ an incorrect escape'
   )
 
   t.equal(
     m('[](<\\'),
     '<p>[](&lt;\\</p>',
-    'should not support enclosed link destination starting with an incorrect escape'
+    'should not support enclosed link destination starting w/ an incorrect escape'
   )
 
   t.equal(

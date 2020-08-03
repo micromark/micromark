@@ -13,7 +13,7 @@ test('definition', function (t) {
   t.equal(
     m("   [foo]: \n      /url  \n           'the title'  \n\n[foo]"),
     '<p><a href="/url" title="the title">foo</a></p>',
-    'should support whitespace around definitions'
+    'should support whitespace and line endings in definitions'
   )
 
   t.equal(
@@ -67,7 +67,7 @@ test('definition', function (t) {
   t.equal(
     m('[foo]: /url\\bar\\*baz "foo\\"bar\\baz"\n\n[foo]'),
     '<p><a href="/url%5Cbar*baz" title="foo&quot;bar\\baz">foo</a></p>',
-    'should support escapes in destinations and titles'
+    'should support character escapes in destinations and titles'
   )
 
   t.equal(
@@ -174,7 +174,7 @@ test('definition', function (t) {
   t.equal(
     m('[\\[\\+\\]]: example.com\n\nLink: [\\[\\+\\]].'),
     '<p>Link: <a href="example.com">[+]</a>.</p>',
-    'should match w/ escapes'
+    'should match w/ character escapes'
   )
 
   t.equal(
@@ -192,43 +192,43 @@ test('definition', function (t) {
   t.equal(
     m('[x]: <\n\n[x]'),
     '<p>[x]: &lt;</p>\n<p>[x]</p>',
-    'should not support EOL at start of enclosed destination'
+    'should not support a line ending at start of enclosed destination'
   )
 
   t.equal(
     m('[x]: <x\n\n[x]'),
     '<p>[x]: &lt;x</p>\n<p>[x]</p>',
-    'should not support EOL in enclosed destination'
+    'should not support a line ending in enclosed destination'
   )
 
   t.equal(
     m('[x]: \va\n\n[x]'),
     '<p>[x]: \va</p>\n<p>[x]</p>',
-    'should not support ASCII control characters at the start of destination'
+    'should not support ascii control characters at the start of destination'
   )
 
   t.equal(
     m('[x]: a\vb\n\n[x]'),
     '<p>[x]: a\vb</p>\n<p>[x]</p>',
-    'should not support ASCII control characters in destination'
+    'should not support ascii control characters in destination'
   )
 
   t.equal(
     m('[x]: <\va>\n\n[x]'),
     '<p><a href="%0Ba">x</a></p>',
-    'should support ASCII control characters at the start of enclosed destination'
+    'should support ascii control characters at the start of enclosed destination'
   )
 
   t.equal(
     m('[x]: <a\vb>\n\n[x]'),
     '<p><a href="a%0Bb">x</a></p>',
-    'should support ASCII control characters in enclosed destinations'
+    'should support ascii control characters in enclosed destinations'
   )
 
   t.equal(
     m('[x]: a "\\""\n\n[x]'),
     '<p><a href="a" title="&quot;">x</a></p>',
-    'should support escapes at the start of a title'
+    'should support character escapes at the start of a title'
   )
 
   t.equal(
@@ -290,7 +290,7 @@ test('definition', function (t) {
   t.equal(
     m('[x]:\nexample.com\n\n[x]'),
     '<p><a href="example.com">x</a></p>',
-    'should support an EOL before a destination'
+    'should support a line ending before a destination'
   )
 
   t.equal(

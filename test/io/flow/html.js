@@ -89,61 +89,61 @@ test('html', function (t) {
     t.equal(
       m('<style>p{color:red;}</style>\n*foo*', unsafe),
       '<style>p{color:red;}</style>\n<p><em>foo</em></p>',
-      'should support raw tags w/ ending on initial line'
+      'should support raw tags w/ start and end on a single line'
     )
 
     t.equal(
       m('<script>\nfoo\n</script>1. *bar*', unsafe),
       '<script>\nfoo\n</script>1. *bar*',
-      'should support raw tags w/ trailing final data'
+      'should support raw tags w/ more data on ending line'
     )
 
     t.equal(
       m('<script', unsafe),
       '<script',
-      'should support an EOF directly after a raw tag name'
+      'should support an eof directly after a raw tag name'
     )
 
     t.equal(
       m('</script\nmore', unsafe),
       '<p>&lt;/script\nmore</p>',
-      'should not support a raw closing tag to start a block of html'
+      'should not support a raw closing tag'
     )
 
     t.equal(
       m('<script/', unsafe),
       '<p>&lt;script/</p>',
-      'should not support an EOF after a self-closing solidus to start html'
+      'should not support an eof after a self-closing slash'
     )
 
     t.equal(
       m('<script/\n*asd*', unsafe),
       '<p>&lt;script/\n<em>asd</em></p>',
-      'should not support an EOL after a self-closing solidus to start html'
+      'should not support a line ending after a self-closing slash'
     )
 
     t.equal(
       m('<script/>', unsafe),
       '<script/>',
-      'should support an EOF after a self-closing tag to start html'
+      'should support an eof after a self-closing tag'
     )
 
     t.equal(
       m('<script/>\na', unsafe),
       '<script/>\na',
-      'should support an EOL after a self-closing tag to start html'
+      'should support a line ending after a self-closing tag'
     )
 
     t.equal(
       m('<script/>a', unsafe),
       '<p><script/>a</p>',
-      'should not support another character after a self-closing tag to start html'
+      'should not support other characters after a self-closing tag'
     )
 
     t.equal(
       m('<script>a', unsafe),
       '<script>a',
-      'should support another character after a raw opening tag to start html'
+      'should support other characters after a raw opening tag'
     )
 
     // Extra.
@@ -166,25 +166,25 @@ test('html', function (t) {
     t.equal(
       m('<!-- foo -->*bar*\n*baz*', unsafe),
       '<!-- foo -->*bar*\n<p><em>baz</em></p>',
-      'should support comments w/ ending on initial line'
+      'should support comments w/ start and end on a single line'
     )
 
     t.equal(
       m('<!-asd-->', unsafe),
       '<p>&lt;!-asd--&gt;</p>',
-      'should not support comment that don’t start with two dashes'
+      'should not support a single dash to start comments'
     )
 
     t.equal(
       m('<!-->', unsafe),
       '<!-->',
-      'should support empty comments where the start dashes are the end dashes (1)'
+      'should support comments where the start dashes are the end dashes (1)'
     )
 
     t.equal(
       m('<!--->', unsafe),
       '<!--->',
-      'should support empty comments where the start dashes are the end dashes (2)'
+      'should support comments where the start dashes are the end dashes (2)'
     )
 
     t.equal(m('<!---->', unsafe), '<!---->', 'should support empty comments')
@@ -246,13 +246,19 @@ test('html', function (t) {
     t.equal(
       m('<!123>', unsafe),
       '<p>&lt;!123&gt;</p>',
-      'should not support declarations that don’t start with a letter'
+      'should not support declarations that start w/o an alpha'
+    )
+
+    t.equal(
+      m('<!>', unsafe),
+      '<p>&lt;!&gt;</p>',
+      'should not support declarations w/o an identifier'
     )
 
     t.equal(
       m('<!a>', unsafe),
       '<!a>',
-      'should support otherwise empty declarations'
+      'should support declarations w/o a single alpha as identifier'
     )
 
     // Extra.
@@ -284,13 +290,13 @@ test('html', function (t) {
     t.equal(
       m('<![CDATA]]>', unsafe),
       '<p>&lt;![CDATA]]&gt;</p>',
-      'should not support cdata with a missing `[`'
+      'should not support cdata w/ a missing `[`'
     )
 
     t.equal(
       m('<![CDATA[]]]>', unsafe),
       '<![CDATA[]]]>',
-      'should support cdata with a single `]`'
+      'should support cdata w/ a single `]` as content'
     )
 
     // Extra.
@@ -298,6 +304,14 @@ test('html', function (t) {
       m('Foo\n<![CDATA[', unsafe),
       '<p>Foo</p>\n<![CDATA[',
       'should support interrupting paragraphs w/ cdata'
+    )
+
+    // Note: cmjs parses this differently.
+    // See: <https://github.com/commonmark/commonmark.js/issues/193>
+    t.equal(
+      m('<![cdata[]]>', unsafe),
+      '<p>&lt;![cdata[]]&gt;</p>',
+      'should not support lowercase cdata'
     )
 
     t.end()
@@ -310,7 +324,7 @@ test('html', function (t) {
         unsafe
       ),
       '<table><tr><td>\n<pre>\n**Hello**,\n<p><em>world</em>.\n</pre></p>\n</td></tr></table>',
-      'should support html (complex)'
+      'should support html (basic)'
     )
 
     t.equal(
@@ -350,31 +364,31 @@ test('html', function (t) {
     t.equal(
       m('</div>\n*foo*', unsafe),
       '</div>\n*foo*',
-      'should support flow HTML starting with a closing tag'
+      'should support html starting w/ a closing tag'
     )
 
     t.equal(
       m('<DIV CLASS="foo">\n\n*Markdown*\n\n</DIV>', unsafe),
       '<DIV CLASS="foo">\n<p><em>Markdown</em></p>\n</DIV>',
-      'should support flow HTML with markdown in between'
+      'should support html w/ markdown in between'
     )
 
     t.equal(
       m('<div id="foo"\n  class="bar">\n</div>', unsafe),
       '<div id="foo"\n  class="bar">\n</div>',
-      'should support flow HTML with line endings (1)'
+      'should support html w/ line endings (1)'
     )
 
     t.equal(
       m('<div id="foo" class="bar\n  baz">\n</div>', unsafe),
       '<div id="foo" class="bar\n  baz">\n</div>',
-      'should support flow HTML with line endings (2)'
+      'should support html w/ line endings (2)'
     )
 
     t.equal(
       m('<div>\n*foo*\n\n*bar*', unsafe),
       '<div>\n*foo*\n<p><em>bar</em></p>',
-      'should support an unclosed flow HTML opening tag'
+      'should support an unclosed html element'
     )
 
     t.equal(
@@ -387,12 +401,6 @@ test('html', function (t) {
       m('<div class\nfoo', unsafe),
       '<div class\nfoo',
       'should support garbage html (2)'
-    )
-
-    t.equal(
-      m('<div *???-&&&-<---\n*foo*', unsafe),
-      '<div *???-&&&-<---\n*foo*',
-      'should support garbage html (3)'
     )
 
     t.equal(
@@ -416,21 +424,21 @@ test('html', function (t) {
     t.equal(
       m('<div></div>\n``` c\nint x = 33;\n```', unsafe),
       '<div></div>\n``` c\nint x = 33;\n```',
-      'should include everything to a blank line'
+      'should include everything ’till a blank line'
     )
 
     // To do: block quote
     // t.equal(
     //   m('> <div>\n> foo\n\nbar', unsafe),
     //   '<blockquote>\n<div>\nfoo\n</blockquote>\n<p>bar</p>',
-    //   'should support basic tags without ending in containers (1)'
+    //   'should support basic tags w/o ending in containers (1)'
     // )
 
     // To do: list
     // t.equal(
     //   m('- <div>\n- foo', unsafe),
     //   '<ul>\n<li>\n<div>\n</li>\n<li>foo</li>\n</ul>',
-    //   'should support basic tags without ending in containers (2)'
+    //   'should support basic tags w/o ending in containers (2)'
     // )
 
     t.equal(
@@ -508,61 +516,61 @@ test('html', function (t) {
     t.equal(
       m('</1>', unsafe),
       '<p>&lt;/1&gt;</p>',
-      'should not support basic tags with an incorrect name start character'
+      'should not support basic tags w/ an incorrect name start character'
     )
 
     t.equal(
       m('<div', unsafe),
       '<div',
-      'should support an EOF directly after a basic tag name'
+      'should support an eof directly after a basic tag name'
     )
 
     t.equal(
       m('<div\n', unsafe),
       '<div\n',
-      'should support an EOL directly after a tag name'
+      'should support a line ending directly after a tag name'
     )
 
     t.equal(
       m('<div ', unsafe),
       '<div ',
-      'should support an EOF after a space directly after a tag name'
+      'should support an eof after a space directly after a tag name'
     )
 
     t.equal(
       m('<div/', unsafe),
       '<p>&lt;div/</p>',
-      'should not support an EOF directly after a closing slash'
+      'should not support an eof directly after a self-closing slash'
     )
 
     t.equal(
       m('<div/\n*asd*', unsafe),
       '<p>&lt;div/\n<em>asd</em></p>',
-      'should not support an EOL after a self-closing solidus to start html'
+      'should not support a line ending after a self-closing slash'
     )
 
     t.equal(
       m('<div/>', unsafe),
       '<div/>',
-      'should support an EOF after a self-closing tag to start html'
+      'should support an eof after a self-closing tag'
     )
 
     t.equal(
       m('<div/>\na', unsafe),
       '<div/>\na',
-      'should support an EOL after a self-closing tag to start html'
+      'should support a line ending after a self-closing tag'
     )
 
     t.equal(
       m('<div/>a', unsafe),
       '<div/>a',
-      'should support another character after a self-closing tag to start html'
+      'should support another character after a self-closing tag'
     )
 
     t.equal(
       m('<div>a', unsafe),
       '<div>a',
-      'should support another character after a basic opening tag to start html'
+      'should support another character after a basic opening tag'
     )
 
     // Extra.
@@ -575,7 +583,7 @@ test('html', function (t) {
     t.end()
   })
 
-  t.test('7', function (t) {
+  t.test('7 (complete)', function (t) {
     t.equal(
       m('<a href="foo">\n*bar*\n</a>', unsafe),
       '<a href="foo">\n*bar*\n</a>',
@@ -585,25 +593,25 @@ test('html', function (t) {
     t.equal(
       m('<Warning>\n*bar*\n</Warning>', unsafe),
       '<Warning>\n*bar*\n</Warning>',
-      'should support non-HTML tag names'
+      'should support non-html tag names'
     )
 
     t.equal(
       m('<i class="foo">\n*bar*\n</i>', unsafe),
       '<i class="foo">\n*bar*\n</i>',
-      'should support non-block HTML tag names (1)'
+      'should support non-“block” html tag names (1)'
     )
 
     t.equal(
       m('<del>\n*foo*\n</del>', unsafe),
       '<del>\n*foo*\n</del>',
-      'should support non-block HTML tag names (2)'
+      'should support non-“block” html tag names (2)'
     )
 
     t.equal(
       m('</ins>\n*bar*', unsafe),
       '</ins>\n*bar*',
-      'should support closing tags to start HTML'
+      'should support closing tags'
     )
 
     t.equal(
@@ -633,61 +641,61 @@ test('html', function (t) {
     t.equal(
       m('<x', unsafe),
       '<p>&lt;x</p>',
-      'should not support an EOF directly after a tag name'
+      'should not support an eof directly after a tag name'
     )
 
     t.equal(
       m('<x/', unsafe),
       '<p>&lt;x/</p>',
-      'should not support an EOF directly after a closing slash'
+      'should not support an eof directly after a self-closing slash'
     )
 
     t.equal(
       m('<x\n', unsafe),
       '<p>&lt;x</p>\n',
-      'should not support an EOL directly after a tag name'
+      'should not support a line ending directly after a tag name'
     )
 
     t.equal(
       m('<x ', unsafe),
       '<p>&lt;x</p>',
-      'should not support an EOF after a space directly after a tag name'
+      'should not support an eof after a space directly after a tag name'
     )
 
     t.equal(
       m('<x/', unsafe),
       '<p>&lt;x/</p>',
-      'should not support an EOF directly after a closing slash'
+      'should not support an eof directly after a self-closing slash'
     )
 
     t.equal(
       m('<x/\n*asd*', unsafe),
       '<p>&lt;x/\n<em>asd</em></p>',
-      'should not support an EOL after a self-closing solidus to start html'
+      'should not support a line ending after a self-closing slash'
     )
 
     t.equal(
       m('<x/>', unsafe),
       '<x/>',
-      'should support an EOF after a self-closing tag to start html'
+      'should support an eof after a self-closing tag'
     )
 
     t.equal(
       m('<x/>\na', unsafe),
       '<x/>\na',
-      'should support an EOL after a self-closing tag to start html'
+      'should support a line ending after a self-closing tag'
     )
 
     t.equal(
       m('<x/>a', unsafe),
       '<p><x/>a</p>',
-      'should not support another character after a self-closing tag to start html'
+      'should not support another character after a self-closing tag'
     )
 
     t.equal(
       m('<x>a', unsafe),
       '<p><x>a</p>',
-      'should not support another character after an opening tag to start html'
+      'should not support another character after an opening tag'
     )
 
     t.equal(
@@ -699,25 +707,25 @@ test('html', function (t) {
     t.equal(
       m('<x\ny>', unsafe),
       '<p><x\ny></p>',
-      'should not support an EOL before an attribute name'
+      'should not support a line ending before an attribute name'
     )
 
     t.equal(
       m('<x\n  y>', unsafe),
       '<p><x\ny></p>',
-      'should not support an EOL w/ whitespace before an attribute name'
+      'should not support a line ending w/ whitespace before an attribute name'
     )
 
     t.equal(
       m('<x\n  \ny>', unsafe),
       '<p>&lt;x</p>\n<p>y&gt;</p>',
-      'should not support an EOL with whitespace and another EOL before an attribute name'
+      'should not support a line ending w/ whitespace and another line ending before an attribute name'
     )
 
     t.equal(
       m('<x y\nz>', unsafe),
       '<p><x y\nz></p>',
-      'should not support an EOL between attribute names'
+      'should not support a line ending between attribute names'
     )
 
     t.equal(
@@ -795,7 +803,7 @@ test('html', function (t) {
     t.equal(
       m('<x y=>', unsafe),
       '<p>&lt;x y=&gt;</p>',
-      'should not upport an initializer without a value'
+      'should not upport an initializer w/o a value'
     )
 
     t.equal(
@@ -825,19 +833,19 @@ test('html', function (t) {
     t.equal(
       m('<x y="\n">', unsafe),
       '<p><x y="\n"></p>',
-      'should not support a line feed in a double quoted attribute value'
+      'should not support a line ending in a double quoted attribute value'
     )
 
     t.equal(
       m("<x y='\n'>", unsafe),
       "<p><x y='\n'></p>",
-      'should not support a line feed in a single quoted attribute value'
+      'should not support a line ending in a single quoted attribute value'
     )
 
     t.equal(
       m('<w x=y\nz>', unsafe),
       '<p><w x=y\nz></p>',
-      'should not support a line feed in/after an unquoted attribute value'
+      'should not support a line ending in/after an unquoted attribute value'
     )
 
     t.equal(

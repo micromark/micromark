@@ -9,13 +9,13 @@ test('character-escape', function (t) {
       '\\!\\"\\#\\$\\%\\&\\\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\?\\@\\[\\\\\\]\\^\\_\\`\\{\\|\\}\\~'
     ),
     "<p>!&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[\\]^_`{|}~</p>",
-    'should support escaped ASCII punctuation'
+    'should support escaped ascii punctuation'
   )
 
   t.equal(
     m('\\→\\A\\a\\ \\3\\φ\\«'),
     '<p>\\→\\A\\a\\ \\3\\φ\\«</p>',
-    'should not support other slashes'
+    'should not support other characters after a backslash'
   )
 
   t.equal(
@@ -61,7 +61,7 @@ test('character-escape', function (t) {
   t.equal(
     m('    \\[\\]'),
     '<pre><code>\\[\\]\n</code></pre>',
-    'should not escape in indented block code'
+    'should not escape in indented code'
   )
 
   t.equal(
@@ -73,7 +73,7 @@ test('character-escape', function (t) {
   t.equal(
     m('<a href="/bar\\/)">', {allowDangerousHtml: true}),
     '<a href="/bar\\/)">',
-    'should not escape in block html'
+    'should not escape in flow html'
   )
 
   t.equal(
@@ -91,7 +91,7 @@ test('character-escape', function (t) {
   t.equal(
     m('``` foo\\+bar\nfoo\n```'),
     '<pre><code class="language-foo+bar">foo\n</code></pre>',
-    'should escape in block code info'
+    'should escape in fenced code info'
   )
 
   t.end()

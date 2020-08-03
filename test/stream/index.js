@@ -43,7 +43,7 @@ test('stream', function (t) {
     }
   })
 
-  t.test('should support carriage returns between blocks', function (t) {
+  t.test('should support carriage returns between flow', function (t) {
     t.plan(1)
 
     slowStream('***\r\r    fn()\r\r### Heading\r\r')
@@ -59,26 +59,23 @@ test('stream', function (t) {
     }
   })
 
-  t.test(
-    'should support carriage return + line feeds between blocks',
-    function (t) {
-      t.plan(1)
+  t.test('should support carriage return + line feeds in flow', function (t) {
+    t.plan(1)
 
-      slowStream('***\r\n\r\n    fn()\r\n\r\n### Heading\r\n\r\n')
-        .pipe(m())
-        .pipe(concat(onconcat))
+    slowStream('***\r\n\r\n    fn()\r\n\r\n### Heading\r\n\r\n')
+      .pipe(m())
+      .pipe(concat(onconcat))
 
-      function onconcat(result) {
-        t.equal(
-          result,
-          '<hr />\r\n<pre><code>fn()\n</code></pre>\r\n<h3>Heading</h3>\r\n',
-          'pass'
-        )
-      }
+    function onconcat(result) {
+      t.equal(
+        result,
+        '<hr />\r\n<pre><code>fn()\n</code></pre>\r\n<h3>Heading</h3>\r\n',
+        'pass'
+      )
     }
-  )
+  })
 
-  t.test('should integrate with `fs.create{Read,Write}Stream`', function (t) {
+  t.test('should integrate w/ `fs.create{Read,Write}Stream`', function (t) {
     t.plan(1)
 
     fs.writeFileSync('integrate-input', '&because;')
@@ -172,7 +169,7 @@ test('stream', function (t) {
     s = m()
     s.pipe(
       concat(function (value) {
-        t.equal(String(value), '', 'should end without ever receiving data')
+        t.equal(String(value), '', 'should end w/o ever receiving data')
       })
     )
     s.end()

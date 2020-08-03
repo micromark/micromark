@@ -3,23 +3,23 @@
 var test = require('tape')
 var m = require('../../..')
 
-test('newline', function (t) {
+test('line-ending', function (t) {
   t.equal(
     m('a\nb'),
     '<p>a\nb</p>',
-    'should support a line feed for a newline inside a paragraph'
+    'should support a line feed for a line ending inside a paragraph'
   )
 
   t.equal(
     m('a\rb'),
     '<p>a\rb</p>',
-    'should support a carriage return for a newline inside a paragraph'
+    'should support a carriage return for a line ending inside a paragraph'
   )
 
   t.equal(
     m('a\r\nb'),
     '<p>a\r\nb</p>',
-    'should support a carriage return + line feed for a newline inside a paragraph'
+    'should support a carriage return + line feed for a line ending inside a paragraph'
   )
 
   t.equal(
@@ -49,37 +49,37 @@ test('newline', function (t) {
   t.equal(
     m('***\n### Heading'),
     '<hr />\n<h3>Heading</h3>',
-    'should support a line feed between blocks'
+    'should support a line feed between flow'
   )
 
   t.equal(
     m('***\r### Heading'),
     '<hr />\r<h3>Heading</h3>',
-    'should support a carriage return between blocks'
+    'should support a carriage return between flow'
   )
 
   t.equal(
     m('***\r\n### Heading'),
     '<hr />\r\n<h3>Heading</h3>',
-    'should support a carriage return + line feed between blocks'
+    'should support a carriage return + line feed between flow'
   )
 
   t.equal(
     m('***\n\n\n### Heading\n'),
     '<hr />\n<h3>Heading</h3>\n',
-    'should support several line feeds between blocks'
+    'should support several line feeds between flow'
   )
 
   t.equal(
     m('***\r\r\r### Heading\r'),
     '<hr />\r<h3>Heading</h3>\r',
-    'should support several carriage returns between blocks'
+    'should support several carriage returns between flow'
   )
 
   t.equal(
     m('***\r\n\r\n\r\n### Heading\r\n'),
     '<hr />\r\n<h3>Heading</h3>\r\n',
-    'should support several carriage return + line feeds between blocks'
+    'should support several carriage return + line feeds between flow'
   )
 
   t.equal(

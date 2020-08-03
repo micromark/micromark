@@ -1,4 +1,4 @@
 require('./dangerous-html')
-require('./newline')
+require('./line-ending')
 require('./nul')
 require('./tab')

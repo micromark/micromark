@@ -7,13 +7,13 @@ test('setext-heading', function (t) {
   t.equal(
     m('Foo *bar*\n========='),
     '<h1>Foo <em>bar</em></h1>',
-    'should support a heading with a rank of 1'
+    'should support a heading w/ an equals to (rank of 1)'
   )
 
   t.equal(
     m('Foo *bar*\n---------'),
     '<h2>Foo <em>bar</em></h2>',
-    'should support a heading with a rank of 2'
+    'should support a heading w/ a dash (rank of 2)'
   )
 
   t.equal(
@@ -37,21 +37,21 @@ test('setext-heading', function (t) {
   t.equal(m('Foo\n='), '<h1>Foo</h1>', 'should support short underlines')
 
   t.equal(
-    m('   Foo\n---'),
-    '<h2>Foo</h2>',
-    'should support indented content (1)'
+    m(' Foo\n  ==='),
+    '<h1>Foo</h1>',
+    'should support indented content w/ 1 space'
   )
 
   t.equal(
     m('  Foo\n---'),
     '<h2>Foo</h2>',
-    'should support indented content (2)'
+    'should support indented content w/ 2 spaces'
   )
 
   t.equal(
-    m('  Foo\n  ==='),
-    '<h1>Foo</h1>',
-    'should support indented content (3)'
+    m('   Foo\n---'),
+    '<h2>Foo</h2>',
+    'should support indented content w/ 3 spaces'
   )
 
   t.equal(
@@ -93,13 +93,13 @@ test('setext-heading', function (t) {
   t.equal(
     m('Foo\n= ='),
     '<p>Foo\n= =</p>',
-    'should not support internal whitespace in the underline (1)'
+    'should not support whitespace in the underline (1)'
   )
 
   t.equal(
     m('Foo\n--- -'),
     '<p>Foo</p>\n<hr />',
-    'should not support internal whitespace in the underline (2)'
+    'should not support whitespace in the underline (2)'
   )
 
   t.equal(
@@ -168,27 +168,27 @@ test('setext-heading', function (t) {
   t.equal(
     m('---\n---'),
     '<hr />\n<hr />',
-    'should see prefer other constructs over headings (1)'
+    'should prefer other constructs over setext headings (1)'
   )
 
   // // To do: list
   // t.equal(
   //   m('- foo\n-----'),
   //   '<ul>\n<li>foo</li>\n</ul>\n<hr />',
-  //   'should see prefer other constructs over headings (2)'
+  //   'should prefer other constructs over setext headings (2)'
   // )
 
   t.equal(
     m('    foo\n---'),
     '<pre><code>foo\n</code></pre>\n<hr />',
-    'should see prefer other constructs over headings (3)'
+    'should prefer other constructs over setext headings (3)'
   )
 
   // // To do: blockquote.
   // t.equal(
   //   m('> foo\n-----'),
   //   '<blockquote>\n<p>foo</p>\n</blockquote>\n<hr />',
-  //   'should see prefer other constructs over headings (4)'
+  //   'should prefer other constructs over setext headings (4)'
   // )
 
   t.equal(

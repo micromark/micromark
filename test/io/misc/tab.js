@@ -134,13 +134,13 @@ test('tabs', function (t) {
     t.equal(
       m('<http:\t>'),
       '<p>&lt;http:\t&gt;</p>',
-      'should not support a tab to start an autolink with protocol’s rest'
+      'should not support a tab to start an autolink w/ protocol’s rest'
     )
 
     t.equal(
       m('<http:x\t>'),
       '<p>&lt;http:x\t&gt;</p>',
-      'should not support a tab in an autolink with protocol’s rest'
+      'should not support a tab in an autolink w/ protocol’s rest'
     )
 
     t.equal(

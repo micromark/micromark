@@ -8,7 +8,7 @@ test('emphasis', function (t) {
   t.equal(
     m('*foo bar*'),
     '<p><em>foo bar</em></p>',
-    'should support emphasis with `*`'
+    'should support emphasis w/ `*`'
   )
 
   t.equal(
@@ -32,20 +32,20 @@ test('emphasis', function (t) {
   t.equal(
     m('foo*bar*'),
     '<p>foo<em>bar</em></p>',
-    'should support intraword emphasis with `*` (1)'
+    'should support intraword emphasis w/ `*` (1)'
   )
 
   t.equal(
     m('5*6*78'),
     '<p>5<em>6</em>78</p>',
-    'should support intraword emphasis with `*` (2)'
+    'should support intraword emphasis w/ `*` (2)'
   )
 
   // Rule 2.
   t.equal(
     m('_foo bar_'),
     '<p><em>foo bar</em></p>',
-    'should support emphasis with `_`'
+    'should support emphasis w/ `_`'
   )
 
   t.equal(
@@ -100,19 +100,19 @@ test('emphasis', function (t) {
   t.equal(
     m('*foo bar *'),
     '<p>*foo bar *</p>',
-    'should not support emphasis with `*` if the closing markers are preceded by whitespace'
+    'should not support emphasis w/ `*` if the closing markers are preceded by whitespace'
   )
 
   t.equal(
     m('*foo bar\n*'),
     '<p>*foo bar\n*</p>',
-    'should not support emphasis with `*` if the closing markers are preceded by a line break (also whitespace)'
+    'should not support emphasis w/ `*` if the closing markers are preceded by a line break (also whitespace)'
   )
 
   t.equal(
     m('*(*foo)'),
     '<p>*(*foo)</p>',
-    'should not support emphasis with `*` if the closing markers are not right flanking'
+    'should not support emphasis w/ `*` if the closing markers are not right flanking'
   )
 
   t.equal(
@@ -132,31 +132,31 @@ test('emphasis', function (t) {
   t.equal(
     m('_(_foo)'),
     '<p>_(_foo)</p>',
-    'should not support emphasis with `_` if the closing markers are not right flanking'
+    'should not support emphasis w/ `_` if the closing markers are not right flanking'
   )
 
   t.equal(
     m('_(_foo_)_'),
     '<p><em>(<em>foo</em>)</em></p>',
-    'should support nested emphasis with `_`'
+    'should support nested emphasis w/ `_`'
   )
 
   t.equal(
     m('_foo_bar'),
     '<p>_foo_bar</p>',
-    'should not support intraword emphasis with `_` (1)'
+    'should not support intraword emphasis w/ `_` (1)'
   )
 
   t.equal(
     m('_пристаням_стремятся'),
     '<p>_пристаням_стремятся</p>',
-    'should not support intraword emphasis with `_` (2)'
+    'should not support intraword emphasis w/ `_` (2)'
   )
 
   t.equal(
     m('_foo_bar_baz_'),
     '<p><em>foo_bar_baz</em></p>',
-    'should not support intraword emphasis with `_` (3)'
+    'should not support intraword emphasis w/ `_` (3)'
   )
 
   t.equal(
@@ -194,7 +194,7 @@ test('emphasis', function (t) {
   t.equal(
     m('__foo bar__'),
     '<p><strong>foo bar</strong></p>',
-    'should support strong emphasis with `_`'
+    'should support strong emphasis w/ `_`'
   )
 
   t.equal(
@@ -206,7 +206,7 @@ test('emphasis', function (t) {
   t.equal(
     m('__\nfoo bar__'),
     '<p>__\nfoo bar__</p>',
-    'should not support strong emphasis if the opening is followed by a line feed (also whitespace)'
+    'should not support strong emphasis if the opening is followed by a line ending (also whitespace)'
   )
 
   t.equal(
@@ -218,19 +218,19 @@ test('emphasis', function (t) {
   t.equal(
     m('foo__bar__'),
     '<p>foo__bar__</p>',
-    'should not support strong intraword emphasis with `_` (1)'
+    'should not support strong intraword emphasis w/ `_` (1)'
   )
 
   t.equal(
     m('5__6__78'),
     '<p>5__6__78</p>',
-    'should not support strong intraword emphasis with `_` (2)'
+    'should not support strong intraword emphasis w/ `_` (2)'
   )
 
   t.equal(
     m('пристаням__стремятся__'),
     '<p>пристаням__стремятся__</p>',
-    'should not support strong intraword emphasis with `_` (3)'
+    'should not support strong intraword emphasis w/ `_` (3)'
   )
 
   t.equal(
@@ -249,13 +249,13 @@ test('emphasis', function (t) {
   t.equal(
     m('**foo bar **'),
     '<p>**foo bar **</p>',
-    'should not support strong emphasis with `*` if the closing is preceded by whitespace'
+    'should not support strong emphasis w/ `*` if the closing is preceded by whitespace'
   )
 
   t.equal(
     m('**(**foo)'),
     '<p>**(**foo)</p>',
-    'should not support strong emphasis with `*` if the closing is preceded by punctuation and followed by something else'
+    'should not support strong emphasis w/ `*` if the closing is preceded by punctuation and followed by something else'
   )
 
   t.equal(
@@ -288,37 +288,37 @@ test('emphasis', function (t) {
   t.equal(
     m('__foo bar __'),
     '<p>__foo bar __</p>',
-    'should not support strong emphasis with `_` if the closing is preceded by whitespace'
+    'should not support strong emphasis w/ `_` if the closing is preceded by whitespace'
   )
 
   t.equal(
     m('__(__foo)'),
     '<p>__(__foo)</p>',
-    'should not support strong emphasis with `_` if the closing is preceded by punctuation and followed by something else'
+    'should not support strong emphasis w/ `_` if the closing is preceded by punctuation and followed by something else'
   )
 
   t.equal(
     m('_(__foo__)_'),
     '<p><em>(<strong>foo</strong>)</em></p>',
-    'should support strong emphasis with `_` in emphasis'
+    'should support strong emphasis w/ `_` in emphasis'
   )
 
   t.equal(
     m('__foo__bar'),
     '<p>__foo__bar</p>',
-    'should not support strong intraword emphasis with `_` (1)'
+    'should not support strong intraword emphasis w/ `_` (1)'
   )
 
   t.equal(
     m('__пристаням__стремятся'),
     '<p>__пристаням__стремятся</p>',
-    'should not support strong intraword emphasis with `_` (2)'
+    'should not support strong intraword emphasis w/ `_` (2)'
   )
 
   t.equal(
     m('__foo__bar__baz__'),
     '<p><strong>foo__bar__baz</strong></p>',
-    'should not support strong intraword emphasis with `_` (3)'
+    'should not support strong intraword emphasis w/ `_` (3)'
   )
 
   t.equal(
@@ -668,7 +668,7 @@ test('emphasis', function (t) {
   t.equal(
     m('**foo**'),
     '<p><strong>foo</strong></p>',
-    'should support strong with `*`'
+    'should support strong w/ `*`'
   )
 
   t.equal(
@@ -680,7 +680,7 @@ test('emphasis', function (t) {
   t.equal(
     m('__foo__'),
     '<p><strong>foo</strong></p>',
-    'should support strong with `_`'
+    'should support strong w/ `_`'
   )
 
   t.equal(
@@ -711,13 +711,13 @@ test('emphasis', function (t) {
   t.equal(
     m('***foo***'),
     '<p><em><strong>foo</strong></em></p>',
-    'should support strong directly in emphasis with `*`'
+    'should support strong directly in emphasis w/ `*`'
   )
 
   t.equal(
     m('___foo___'),
     '<p><em><strong>foo</strong></em></p>',
-    'should support strong directly in emphasis with `_`'
+    'should support strong directly in emphasis w/ `_`'
   )
 
   // Rule 15.

@@ -36,7 +36,7 @@ test('html', function (t) {
   t.equal(
     m('Foo <responsive-image src="foo.jpg" />', unsafe),
     '<p>Foo <responsive-image src="foo.jpg" /></p>',
-    'should support custom tags'
+    'should support non-html tags'
   )
 
   t.equal(
@@ -78,7 +78,7 @@ test('html', function (t) {
   t.equal(
     m('</a href="foo">', unsafe),
     '<p>&lt;/a href=&quot;foo&quot;&gt;</p>',
-    'should not support closing tags with attributes'
+    'should not support closing tags w/ attributes'
   )
 
   t.equal(
@@ -90,7 +90,7 @@ test('html', function (t) {
   t.equal(
     m('foo <!-- not a comment -- two hyphens -->', unsafe),
     '<p>foo &lt;!-- not a comment -- two hyphens --&gt;</p>',
-    'should not support comments with two dashes'
+    'should not support comments w/ two dashes inside'
   )
 
   t.equal(
@@ -120,7 +120,7 @@ test('html', function (t) {
   t.equal(
     m('foo <![CDATA[>&<]]>', unsafe),
     '<p>foo <![CDATA[>&<]]></p>',
-    'should support declarations'
+    'should support cdata'
   )
 
   t.equal(
@@ -151,19 +151,19 @@ test('html', function (t) {
   t.equal(
     m('foo <!-not enough!-->', unsafe),
     '<p>foo &lt;!-not enough!--&gt;</p>',
-    'should support comments with not enough dashes'
+    'should not support comments w/ not enough dashes'
   )
 
   t.equal(
     m('foo <!---ok-->', unsafe),
     '<p>foo <!---ok--></p>',
-    'should support comments that start with a dash, if it’s not followed by a greater than'
+    'should support comments that start w/ a dash, if it’s not followed by a greater than'
   )
 
   t.equal(
     m('foo <!--->', unsafe),
     '<p>foo &lt;!---&gt;</p>',
-    'should not support comments that start with `->`'
+    'should not support comments that start w/ `->`'
   )
 
   t.equal(
@@ -175,27 +175,29 @@ test('html', function (t) {
   t.equal(
     m('foo <!--', unsafe),
     '<p>foo &lt;!--</p>',
-    'should not support EOF in a comment (1)'
+    'should not support eof in a comment (1)'
   )
 
   t.equal(
     m('foo <!--a', unsafe),
     '<p>foo &lt;!--a</p>',
-    'should not support EOF in a comment (2)'
+    'should not support eof in a comment (2)'
   )
 
   t.equal(
     m('foo <!--a-', unsafe),
     '<p>foo &lt;!--a-</p>',
-    'should not support EOF in a comment (3)'
+    'should not support eof in a comment (3)'
   )
 
   t.equal(
     m('foo <!--a--', unsafe),
     '<p>foo &lt;!--a--</p>',
-    'should not support EOF in a comment (4)'
+    'should not support eof in a comment (4)'
   )
 
+  // Note: cmjs parses this differently.
+  // See: <https://github.com/commonmark/commonmark.js/issues/193>
   t.equal(
     m('foo <![cdata[]]>', unsafe),
     '<p>foo &lt;![cdata[]]&gt;</p>',
@@ -205,31 +207,31 @@ test('html', function (t) {
   t.equal(
     m('foo <![CDATA', unsafe),
     '<p>foo &lt;![CDATA</p>',
-    'should not support EOF in a CDATA (1)'
+    'should not support eof in a CDATA (1)'
   )
 
   t.equal(
     m('foo <![CDATA[', unsafe),
     '<p>foo &lt;![CDATA[</p>',
-    'should not support EOF in a CDATA (2)'
+    'should not support eof in a CDATA (2)'
   )
 
   t.equal(
     m('foo <![CDATA[]', unsafe),
     '<p>foo &lt;![CDATA[]</p>',
-    'should not support EOF in a CDATA (3)'
+    'should not support eof in a CDATA (3)'
   )
 
   t.equal(
     m('foo <![CDATA[]]', unsafe),
     '<p>foo &lt;![CDATA[]]</p>',
-    'should not support EOF in a CDATA (4)'
+    'should not support eof in a CDATA (4)'
   )
 
   t.equal(
     m('foo <![CDATA[asd', unsafe),
     '<p>foo &lt;![CDATA[asd</p>',
-    'should not support EOF in a CDATA (5)'
+    'should not support eof in a CDATA (5)'
   )
 
   t.equal(
@@ -241,19 +243,19 @@ test('html', function (t) {
   t.equal(
     m('foo <!doctype', unsafe),
     '<p>foo &lt;!doctype</p>',
-    'should not support EOF in declarations'
+    'should not support eof in declarations'
   )
 
   t.equal(
     m('foo <?php', unsafe),
     '<p>foo &lt;?php</p>',
-    'should not support EOF in instructions (1)'
+    'should not support eof in instructions (1)'
   )
 
   t.equal(
     m('foo <?php?', unsafe),
     '<p>foo &lt;?php?</p>',
-    'should not support EOF in instructions (2)'
+    'should not support eof in instructions (2)'
   )
 
   t.equal(
@@ -265,7 +267,7 @@ test('html', function (t) {
   t.equal(
     m('foo </3>', unsafe),
     '<p>foo &lt;/3&gt;</p>',
-    'should not support closing tags that don’t start with alphas'
+    'should not support closing tags that don’t start w/ alphas'
   )
 
   t.equal(
@@ -319,7 +321,7 @@ test('html', function (t) {
   t.equal(
     m('foo <a b/>', unsafe),
     '<p>foo <a b/></p>',
-    'should support a slash after an attribute name'
+    'should support a self-closing slash after an attribute name'
   )
 
   t.equal(
@@ -337,7 +339,7 @@ test('html', function (t) {
   t.equal(
     m('foo <a b=>>', unsafe),
     '<p>foo &lt;a b=&gt;&gt;</p>',
-    'should not support greater than than to start an unquoted attribute value'
+    'should not support greater than to start an unquoted attribute value'
   )
 
   t.equal(
@@ -355,19 +357,19 @@ test('html', function (t) {
   t.equal(
     m('foo <a b="asd', unsafe),
     '<p>foo &lt;a b=&quot;asd</p>',
-    'should not support EOF in double quoted attribute value'
+    'should not support eof in double quoted attribute value'
   )
 
   t.equal(
     m("foo <a b='asd", unsafe),
     "<p>foo &lt;a b='asd</p>",
-    'should not support EOF in single quoted attribute value'
+    'should not support eof in single quoted attribute value'
   )
 
   t.equal(
     m('foo <a b=asd', unsafe),
     '<p>foo &lt;a b=asd</p>',
-    'should not support EOF in unquoted attribute value'
+    'should not support eof in unquoted attribute value'
   )
 
   t.end()

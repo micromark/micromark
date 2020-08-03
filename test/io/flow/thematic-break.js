@@ -40,26 +40,22 @@ test('thematic-break', function (t) {
     'should not support thematic breaks w/ two underscores'
   )
 
-  t.equal(m(' ***'), '<hr />', 'should support thematic breaks w/ a space')
+  t.equal(m(' ***'), '<hr />', 'should support thematic breaks w/ 1 space')
 
-  t.equal(m('  ***'), '<hr />', 'should support thematic breaks w/ two spaces')
+  t.equal(m('  ***'), '<hr />', 'should support thematic breaks w/ 2 spaces')
 
-  t.equal(
-    m('   ***'),
-    '<hr />',
-    'should support thematic breaks w/ three spaces'
-  )
+  t.equal(m('   ***'), '<hr />', 'should support thematic breaks w/ 3 spaces')
 
   t.equal(
     m('    ***'),
     '<pre><code>***\n</code></pre>',
-    'should not support thematic breaks w/ four spaces'
+    'should not support thematic breaks w/ 4 spaces'
   )
 
   t.equal(
     m('Foo\n    ***'),
     '<p>Foo\n***</p>',
-    'should not support thematic breaks w/ four spaces as paragraph continuation'
+    'should not support thematic breaks w/ 4 spaces as paragraph continuation'
   )
 
   t.equal(

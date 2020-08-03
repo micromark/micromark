@@ -7,25 +7,25 @@ test('image', function (t) {
   t.equal(
     m('![foo](/url "title")'),
     '<p><img src="/url" alt="foo" title="title" /></p>',
-    'should support images'
+    'should support image w/ resource'
   )
 
   t.equal(
     m('[foo *bar*]: train.jpg "train & tracks"\n\n![foo *bar*]'),
     '<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>',
-    'should support image as references'
+    'should support image as shortcut reference'
   )
 
   t.equal(
     m('![foo ![bar](/url)](/url2)'),
     '<p><img src="/url2" alt="foo bar" /></p>',
-    'should support images (2)'
+    'should “support” images in images'
   )
 
   t.equal(
     m('![foo [bar](/url)](/url2)'),
     '<p><img src="/url2" alt="foo bar" /></p>',
-    'should support images (3)'
+    'should “support” links in images'
   )
 
   t.equal(
@@ -61,7 +61,7 @@ test('image', function (t) {
   t.equal(
     m('![](/url)'),
     '<p><img src="/url" alt="" /></p>',
-    'should support images w/ empty titles'
+    'should support images w/ empty labels'
   )
 
   t.equal(
@@ -115,7 +115,7 @@ test('image', function (t) {
   t.equal(
     m('[[foo]]: /url "title"\n\n![[foo]]'),
     '<p>[[foo]]: /url &quot;title&quot;</p>\n<p>![[foo]]</p>',
-    'should not support link labels with unescaped brackets'
+    'should not support link labels w/ unescaped brackets'
   )
 
   t.equal(
@@ -127,7 +127,7 @@ test('image', function (t) {
   t.equal(
     m('[foo]: /url "title"\n\n!\\[foo]'),
     '<p>![foo]</p>',
-    'should support an escaped brace instead of an image'
+    'should “support” an escaped bracket instead of an image'
   )
 
   t.equal(
@@ -140,13 +140,13 @@ test('image', function (t) {
   t.equal(
     m('![foo]()'),
     '<p><img src="" alt="foo" /></p>',
-    'should support images w/o destination (1)'
+    'should support images w/o destination'
   )
 
   t.equal(
     m('![foo](<>)'),
     '<p><img src="" alt="foo" /></p>',
-    'should support images w/o destination (2)'
+    'should support images w/ explicit empty destination'
   )
 
   t.equal(

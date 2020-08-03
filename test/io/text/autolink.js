@@ -19,7 +19,7 @@ test('autolink', function (t) {
   t.equal(
     m('<irc://foo.bar:2233/baz>'),
     '<p><a href="irc://foo.bar:2233/baz">irc://foo.bar:2233/baz</a></p>',
-    'should support URI autolinks with non-HTTP schemes'
+    'should support URI autolinks w/ non-HTTP schemes'
   )
 
   t.equal(
@@ -31,31 +31,31 @@ test('autolink', function (t) {
   t.equal(
     m('<a+b+c:d>'),
     '<p><a href="a+b+c:d">a+b+c:d</a></p>',
-    'should support URI autolinks with incorrect URIs (1)'
+    'should support URI autolinks w/ incorrect URIs (1)'
   )
 
   t.equal(
     m('<made-up-scheme://foo,bar>'),
     '<p><a href="made-up-scheme://foo,bar">made-up-scheme://foo,bar</a></p>',
-    'should support URI autolinks with incorrect URIs (2)'
+    'should support URI autolinks w/ incorrect URIs (2)'
   )
 
   t.equal(
     m('<http://../>'),
     '<p><a href="http://../">http://../</a></p>',
-    'should support URI autolinks with incorrect URIs (3)'
+    'should support URI autolinks w/ incorrect URIs (3)'
   )
 
   t.equal(
     m('<localhost:5001/foo>'),
     '<p><a href="localhost:5001/foo">localhost:5001/foo</a></p>',
-    'should support URI autolinks with incorrect URIs (4)'
+    'should support URI autolinks w/ incorrect URIs (4)'
   )
 
   t.equal(
     m('<http://foo.bar/baz bim>'),
     '<p>&lt;http://foo.bar/baz bim&gt;</p>',
-    'should not support URI autolinks with spaces'
+    'should not support URI autolinks w/ spaces'
   )
 
   t.equal(
@@ -87,19 +87,19 @@ test('autolink', function (t) {
   t.equal(
     m('< http://foo.bar >'),
     '<p>&lt; http://foo.bar &gt;</p>',
-    'should not support autolinks with space'
+    'should not support autolinks w/ space'
   )
 
   t.equal(
     m('<m:abc>'),
     '<p>&lt;m:abc&gt;</p>',
-    'should not support autolinks with a single character for a scheme'
+    'should not support autolinks w/ a single character for a scheme'
   )
 
   t.equal(
     m('<foo.bar.baz>'),
     '<p>&lt;foo.bar.baz&gt;</p>',
-    'should not support autolinks without a colon or at sign'
+    'should not support autolinks w/o a colon or at sign'
   )
 
   t.equal(

@@ -7,7 +7,7 @@ test('text', function (t) {
   t.equal(
     m("hello $.;'there"),
     "<p>hello $.;'there</p>",
-    'should support rest as text'
+    'should support ascii text'
   )
 
   t.equal(m('Foo χρῆν'), '<p>Foo χρῆν</p>', 'should support unicode text')
@@ -15,7 +15,7 @@ test('text', function (t) {
   t.equal(
     m('Multiple     spaces'),
     '<p>Multiple     spaces</p>',
-    'should support internal spaces verbatim'
+    'should preserve internal spaces verbatim'
   )
 
   t.end()

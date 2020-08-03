@@ -13,13 +13,13 @@ test('link (reference)', function (t) {
   t.equal(
     m('[ref]: /uri\n\n[link [foo [bar]]][ref]'),
     '<p><a href="/uri">link [foo [bar]]</a></p>',
-    'should support balanced braces in link references'
+    'should support balanced brackets in link references'
   )
 
   t.equal(
     m('[ref]: /uri\n\n[link \\[bar][ref]'),
     '<p><a href="/uri">link [bar</a></p>',
-    'should support escaped braces in link references'
+    'should support escaped brackets in link references'
   )
 
   t.equal(
@@ -121,19 +121,19 @@ test('link (reference)', function (t) {
   t.equal(
     m('[ref[]: /uri\n\n[foo][ref[]'),
     '<p>[ref[]: /uri</p>\n<p>[foo][ref[]</p>',
-    'should not support references w/ braces (1)'
+    'should not support references w/ brackets (1)'
   )
 
   t.equal(
     m('[ref[bar]]: /uri\n\n[foo][ref[bar]]'),
     '<p>[ref[bar]]: /uri</p>\n<p>[foo][ref[bar]]</p>',
-    'should not support references w/ braces (2)'
+    'should not support references w/ brackets (2)'
   )
 
   t.equal(
     m('[[[foo]]]: /url\n\n[[[foo]]]'),
     '<p>[[[foo]]]: /url</p>\n<p>[[[foo]]]</p>',
-    'should not support references w/ braces (3)'
+    'should not support references w/ brackets (3)'
   )
 
   t.equal(
@@ -151,13 +151,13 @@ test('link (reference)', function (t) {
   t.equal(
     m('[]: /uri\n\n[]'),
     '<p>[]: /uri</p>\n<p>[]</p>',
-    'should not support empty references (1)'
+    'should not support empty references'
   )
 
   t.equal(
     m('[\n ]: /uri\n\n[\n ]'),
     '<p>[\n]: /uri</p>\n<p>[\n]</p>',
-    'should not support empty references (2)'
+    'should not support blank references'
   )
 
   t.equal(
@@ -221,15 +221,9 @@ test('link (reference)', function (t) {
   )
 
   t.equal(
-    m('[foo]: /url\n\n[foo] bar'),
-    '<p><a href="/url">foo</a> bar</p>',
-    'should support whitespace after a shortcut reference'
-  )
-
-  t.equal(
     m('[foo]: /url "title"\n\n\\[foo]'),
     '<p>[foo]</p>',
-    'should support an escaped shortcut reference'
+    'should “support” an escaped shortcut reference'
   )
 
   t.equal(
