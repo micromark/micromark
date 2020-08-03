@@ -5,7 +5,6 @@ Shortlist:
 - Performance
 
 Check if `.ensure` would help?
-Check if streaming and definition order works?
 Instead of interrupting, it might be possible to feed a line to `flow`, and
   depending on where it ends up, use it?
   Related: `isConstruct` in html-flow may just be normal tokenizing, and then

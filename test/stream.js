@@ -4,7 +4,7 @@ var fs = require('fs')
 var stream = require('stream')
 var test = require('tape')
 var concat = require('concat-stream')
-var m = require('../../stream')
+var m = require('../stream')
 
 var PassThrough = stream.PassThrough
 
@@ -40,6 +40,26 @@ test('stream', function (t) {
         '<p><a href="mailto:admin@example.com">admin@example.com</a></p>',
         'pass'
       )
+    }
+  })
+
+  t.test('should support reference-first definition-later', function (t) {
+    t.plan(1)
+
+    slowStream('[x]\n\n[x]: y').pipe(m()).pipe(concat(onconcat))
+
+    function onconcat(result) {
+      t.equal(result, '<p><a href="y">x</a></p>\n', 'pass')
+    }
+  })
+
+  t.test('should support emphasis and strong', function (t) {
+    t.plan(1)
+
+    slowStream('***x**y**').pipe(m()).pipe(concat(onconcat))
+
+    function onconcat(result) {
+      t.equal(result, '<p><em><strong>x</strong>y</em>*</p>', 'pass')
     }
   })
 
