@@ -73,7 +73,7 @@ test('stream', function (t) {
     function onconcat(result) {
       t.equal(
         result,
-        '<hr />\r<pre><code>fn()\n</code></pre>\r<h3>Heading</h3>\r',
+        '<hr />\r<pre><code>fn()\r</code></pre>\r<h3>Heading</h3>\r',
         'pass'
       )
     }
@@ -89,7 +89,7 @@ test('stream', function (t) {
     function onconcat(result) {
       t.equal(
         result,
-        '<hr />\r\n<pre><code>fn()\n</code></pre>\r\n<h3>Heading</h3>\r\n',
+        '<hr />\r\n<pre><code>fn()\r\n</code></pre>\r\n<h3>Heading</h3>\r\n',
         'pass'
       )
     }

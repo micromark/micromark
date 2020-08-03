@@ -25,25 +25,19 @@ test('line-ending', function (t) {
   t.equal(
     m('\ta\n\tb'),
     '<pre><code>a\nb\n</code></pre>',
-    'should support a line feed in indented code'
+    'should support a line feed in indented code (and prefer it)'
   )
 
   t.equal(
     m('\ta\r\tb'),
-    '<pre><code>a\rb\n</code></pre>',
-    'should support a carriage return in indented code'
+    '<pre><code>a\rb\r</code></pre>',
+    'should support a carriage return in indented code (and prefer it)'
   )
 
   t.equal(
     m('\ta\r\n\tb'),
-    '<pre><code>a\r\nb\n</code></pre>',
-    'should support a carriage return + line feed in indented code'
-  )
-
-  t.equal(
-    m('\ta\n\tb'),
-    '<pre><code>a\nb\n</code></pre>',
-    'should support a line feed in indented code'
+    '<pre><code>a\r\nb\r\n</code></pre>',
+    'should support a carriage return + line feed in indented code (and prefer it)'
   )
 
   t.equal(
