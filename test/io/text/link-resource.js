@@ -388,5 +388,29 @@ test('link (resource)', function (t) {
     'should support character references in links'
   )
 
+  t.equal(
+    m('[a](1())'),
+    '<p><a href="1()">a</a></p>',
+    'should support 1 set of parens'
+  )
+
+  t.equal(
+    m('[a](1(2()))'),
+    '<p><a href="1(2())">a</a></p>',
+    'should support 2 sets of parens'
+  )
+
+  t.equal(
+    m('[a](1(2(3())))'),
+    '<p><a href="1(2(3()))">a</a></p>',
+    'should support 3 sets of parens'
+  )
+
+  t.equal(
+    m('[a](1(2(3(4()))))'),
+    '<p>[a](1(2(3(4()))))</p>',
+    'should not support 4 or more sets of parens'
+  )
+
   t.end()
 })

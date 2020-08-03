@@ -1,7 +1,7 @@
 Shortlist:
 - Containers! Block quotes, Lists
-- Extensions (frontmatter, gfm, mdx, directives, footnotes)
 - mdast compiler, mdast-util-to-markdown
+- Extensions (frontmatter, gfm, mdx, directives, footnotes)
 - Performance
 
 Check if `.ensure` would help?
@@ -16,20 +16,3 @@ hard break: should `hardBreakTrailing` exclude the line ending too?
 MM
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
 - https://github.com/commonmark/commonmark.js/issues/129
-
-CM:
-
-- How do other character references work in HTML? E.g., `&copy` -> `&amp;copy`? What about HTMLs other numeric references? (e.g., the western set?)
-- Is there a reason that ```` ```asd``  ```` does not work? Whereas `***asd**` does.
-- What is the reason for `` `a\nb` `` becoming `a b` instead of `a\nb`, whereas line endings in text are preserved?
-- Soft breaks: are only spaces trimmed? (dingus shows tabs too. )
-- Hard breaks: is there a reason tabs, that in block structure act as 4 spaces, cannot be used to create hard breaks?
-- Example 637 has one space too few
-- “numeric character references” at example 502 should be named. However, a better fix would be to drop “numeric”.
-- links with resources should have precedence over link with references.
-- image vs. link differences: https://spec.commonmark.org/dingus/?text=!%5Bfoo%20!%5Bbar%5D(%2Furl)%5D(%2Furl2) vs https://spec.commonmark.org/dingus/?text=%5Bfoo%20%5Bbar%5D(%2Furl)%5D(%2Furl2)
-- Update examples to specify when they’re a recommendation instead of required: https://spec.commonmark.org/0.29/#example-572
-- Flow HTML declaration: “followed by an uppercase ASCII letter” should be any letter probably? (I’ve implemented this) (I remember I did something with a PR here)
-- `<a b="c"d="f">` is valid according to spec, and should be (same w/ HTML), but in dingus.
-- Lift the definition unquoted destination parentheses limitation: not needed in definitions.
-- Example 188 equals Example 176

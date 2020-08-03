@@ -326,5 +326,20 @@ test('link (reference)', function (t) {
     'should not support mismatched character references in fulls'
   )
 
+  // 999 `x` characters.
+  var max = new Array(1000).join('x')
+
+  t.equal(
+    m('[' + max + ']: a\n[y][' + max + ']'),
+    '<p><a href="a">y</a></p>',
+    'should support 999 characters in reference'
+  )
+
+  t.equal(
+    m('[' + max + 'x]: a\n[y][' + max + 'x]'),
+    '<p>[' + max + 'x]: a\n[y][' + max + 'x]</p>',
+    'should not support 1000 characters in reference'
+  )
+
   t.end()
 })
