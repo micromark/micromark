@@ -126,14 +126,14 @@ test('setext-heading', function (t) {
     'should precede over inline constructs (2)'
   )
 
-  // // To do: blockquote
+  // // To do: block quote
   // t.equal(
   //   m('> Foo\n---'),
   //   '<blockquote>\n<p>Foo</p>\n</blockquote>\n<hr />',
   //   'should not allow underline to be lazy (1)'
   // )
 
-  // // To do: blockquote
+  // // To do: block quote
   // t.equal(
   //   m('> foo\nbar\n==='),
   //   '<blockquote>\n<p>foo\nbar\n===</p>\n</blockquote>',
@@ -184,7 +184,7 @@ test('setext-heading', function (t) {
     'should prefer other constructs over setext headings (3)'
   )
 
-  // // To do: blockquote.
+  // // To do: block quote.
   // t.equal(
   //   m('> foo\n-----'),
   //   '<blockquote>\n<p>foo</p>\n</blockquote>\n<hr />',
