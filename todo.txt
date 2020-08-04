@@ -9,7 +9,6 @@ Instead of interrupting, it might be possible to feed a line to `flow`, and
   depending on where it ends up, use it?
   Related: `isConstruct` in html-flow may just be normal tokenizing, and then
   resolving it to outside of the HTML?
-Constants for content types?
 Do we have to consume EOFs? 🤔
 hard break: should `hardBreakTrailing` exclude the line ending too?
 
