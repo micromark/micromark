@@ -5,10 +5,9 @@ Shortlist:
 - Performance
 
 Check if `.ensure` would help?
-Instead of interrupting, it might be possible to feed a line to `flow`, and
-  depending on where it ends up, use it?
-  Related: `isConstruct` in html-flow may just be normal tokenizing, and then
-  resolving it to outside of the HTML?
+Instead of interrupting, we can do two things:
+  1. Separate `content` chunks per line, let normal parsing make blocks and merge adjacent content
+  2. On a successful interrupt, close content and use the events from interrupting
 
 MM
 - Flow HTML: Whitespace is fine in most places, but a blank line shouldn’t be.
