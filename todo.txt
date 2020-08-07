@@ -5,6 +5,9 @@ Shortlist:
 - Performance
 
 Check if `.ensure` would help?
+Flow: content. Feed directly into content tokenizer?
+Assert that `.consume` is called if a token is open (except for eof?)
+Create a generic hook, for any character? Could be useful for lists (instead of `[-*+1-9]`), indented code
 Instead of interrupting, we can do two things:
   1. Separate `content` chunks per line, let normal parsing make blocks and merge adjacent content
   2. On a successful interrupt, close content and use the events from interrupting
