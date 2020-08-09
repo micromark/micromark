@@ -58,12 +58,11 @@ test('fenced-code', function (t) {
     'should support an eof somewhere in content'
   )
 
-  // To do: block quote.
-  // t.equal(
-  //   m('> ```\n> aaa\n\nbbb'),
-  //   '<blockquote>\n<pre><code>aaa\n</code></pre>\n</blockquote>\n<p>bbb</p>',
-  //   'should support no closing sequence in a block quote'
-  // )
+  t.equal(
+    m('> ```\n> aaa\n\nbbb'),
+    '<blockquote>\n<pre><code>aaa\n</code></pre>\n</blockquote>\n<p>bbb</p>',
+    'should support no closing sequence in a block quote'
+  )
 
   t.equal(
     m('```\n\n  \n```'),

@@ -136,12 +136,11 @@ test('definition', function (t) {
     'should not support definitions in paragraphs'
   )
 
-  // // To do: block quote
-  // t.equal(
-  //   m('# [Foo]\n[foo]: /url\n> bar'),
-  //   '<h1><a href="/url">Foo</a></h1>\n<blockquote>\n<p>bar</p>\n</blockquote>',
-  //   'should not support definitions in paragraphs'
-  // )
+  t.equal(
+    m('# [Foo]\n[foo]: /url\n> bar'),
+    '<h1><a href="/url">Foo</a></h1>\n<blockquote>\n<p>bar</p>\n</blockquote>',
+    'should not support definitions in paragraphs'
+  )
 
   t.equal(
     m('[foo]: /url\nbar\n===\n[foo]'),
@@ -163,12 +162,11 @@ test('definition', function (t) {
     'should support definitions after definitions'
   )
 
-  // // To do: block quote
-  // t.equal(
-  //   m('> [foo]: /url\n\n[foo]'),
-  //   '<blockquote>\n</blockquote>\n<p><a href="/url">foo</a></p>',
-  //   'should support definitions in block quotes'
-  // )
+  t.equal(
+    m('> [foo]: /url\n\n[foo]'),
+    '<blockquote>\n</blockquote>\n<p><a href="/url">foo</a></p>',
+    'should support definitions in block quotes'
+  )
 
   // Extra
   t.equal(

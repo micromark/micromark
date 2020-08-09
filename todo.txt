@@ -1,13 +1,21 @@
 Shortlist:
-- Containers! Block quotes, Lists
+- Lists
 - mdast compiler, mdast-util-to-markdown
 - Extensions (frontmatter, gfm, mdx, directives, footnotes)
 - Performance
 
-Check if `.ensure` would help?
-Flow: content. Feed directly into content tokenizer?
-Assert that `.consume` is called if a token is open (except for eof?)
-Create a generic hook, for any character? Could be useful for lists (instead of `[-*+1-9]`), indented code
+Fix: position on flow in containers
+Fix: `bufferIndex` for moving.
+Size: check if `.ensure` would help?
+Size/perf: feed flow content directly into content tokenizer?
+Perf: use `resolveAll` instead of `resolveToLabelEnd` for label end.
+Perf: see if we can remove unneeded checks, interrupts, attempts, or other double parsing.
+Size/fix?: use `_subevents` on attention instead of splicing/moving tokens.
+API: Prettier result for tokenizers, not just a write function, but also context.
+Check: assert that `.consume` is called if a token is open (except for eof?)
+Feature: option for line ending to use when compiling.
+Idea: create a generic hook, for any character? Could be useful for lists (instead of `[-*+1-9]`), indented code
+Idea: allow single tokens in compiler (thus flatmapping), instead of array
 Instead of interrupting, we can do two things:
   1. Separate `content` chunks per line, let normal parsing make blocks and merge adjacent content
   2. On a successful interrupt, close content and use the events from interrupting

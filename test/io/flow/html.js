@@ -427,14 +427,13 @@ test('html', function (t) {
       'should include everything ’till a blank line'
     )
 
-    // To do: block quote
-    // t.equal(
-    //   m('> <div>\n> foo\n\nbar', unsafe),
-    //   '<blockquote>\n<div>\nfoo\n</blockquote>\n<p>bar</p>',
-    //   'should support basic tags w/o ending in containers (1)'
-    // )
+    t.equal(
+      m('> <div>\n> foo\n\nbar', unsafe),
+      '<blockquote>\n<div>\nfoo\n</blockquote>\n<p>bar</p>',
+      'should support basic tags w/o ending in containers (1)'
+    )
 
-    // To do: list
+    // To do: list.
     // t.equal(
     //   m('- <div>\n- foo', unsafe),
     //   '<ul>\n<li>\n<div>\n</li>\n<li>foo</li>\n</ul>',

@@ -1,4 +1,5 @@
-require('./flow')
 require('./content')
-require('./text')
+require('./document')
+require('./flow')
 require('./misc')
+require('./text')
