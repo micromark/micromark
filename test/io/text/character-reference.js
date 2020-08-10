@@ -100,12 +100,12 @@ test('character-reference', function (t) {
     'should not support character references as construct markers (1)'
   )
 
-  // // To do: list.
-  // t.equal(
-  //   m('&#42; foo\n\n* foo'),
-  //   '<p>* foo</p>\n<ul>\n<li>foo</li>\n</ul>',
-  //   'should not support character references as construct markers (2)'
-  // )
+  // To do: tight.
+  t.equal(
+    m('&#42; foo\n\n* foo'),
+    '<p>* foo</p>\n<ul>\n<li>foo</li>\n</ul>',
+    'should not support character references as construct markers (2)'
+  )
 
   t.equal(
     m('[a](url &quot;tit&quot;)'),

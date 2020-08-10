@@ -4,6 +4,16 @@ Shortlist:
 - Extensions (frontmatter, gfm, mdx, directives, footnotes)
 - Performance
 
+Lists:
+- Prefer `<hr>` over list
+- Prevent interruption in some cases.
+- Support multiple items in same list
+- Support multiple flow in items
+- Support blank lines in items, in lists
+- Support empty items
+- Detect loose/tight (either blank lines, or multiple blocks)
+- Detect `start`
+
 Fix: position on flow in containers
 Fix: `bufferIndex` for moving.
 Size: check if `.ensure` would help?
@@ -14,7 +24,7 @@ Size/fix?: use `_subevents` on attention instead of splicing/moving tokens.
 API: Prettier result for tokenizers, not just a write function, but also context.
 Check: assert that `.consume` is called if a token is open (except for eof?)
 Feature: option for line ending to use when compiling.
-Idea: create a generic hook, for any character? Could be useful for lists (instead of `[-*+1-9]`), indented code
+Idea: create a generic hook, for any character? Could be useful for lists (instead of `[-*+1-9]`), indented code, probably needed for tables
 Idea: allow single tokens in compiler (thus flatmapping), instead of array
 Instead of interrupting, we can do two things:
   1. Separate `content` chunks per line, let normal parsing make blocks and merge adjacent content

@@ -52,19 +52,19 @@ test('block-quote', function (t) {
     'should not support lazy setext headings underlines in block quotes'
   )
 
-  // // To do: list.
-  // t.equal(
-  //   m('> - a\n> - b'),
-  //   '<blockquote>\n<ul>\n<li>a</li>\n<li>b</li>\n</ul>\n</blockquote>',
-  //   'should support lists in block quotes'
-  // )
+  // To do: weirdness, tight.
+  t.equal(
+    m('> - a\n> - b'),
+    '<blockquote>\n<ul>\n<li>a</li>\n<li>b</li>\n</ul>\n</blockquote>',
+    'should support lists in block quotes'
+  )
 
-  // // To do: list.
-  // t.equal(
-  //   m('> - a\n- b'),
-  //   '<blockquote>\n<ul>\n<li>a</li>\n</ul>\n</blockquote>\n<ul>\n<li>b</li>\n</ul>',
-  //   'should not support lazy lists in block quotes'
-  // )
+  // To do: weirdness, tight.
+  t.equal(
+    m('> - a\n- b'),
+    '<blockquote>\n<ul>\n<li>a</li>\n</ul>\n</blockquote>\n<ul>\n<li>b</li>\n</ul>',
+    'should not support lazy lists in block quotes'
+  )
 
   t.equal(
     m('>     a\n    b'),
@@ -167,8 +167,6 @@ test('block-quote', function (t) {
     '<blockquote>\n<pre><code>a\n</code></pre>\n</blockquote>\n<blockquote>\n<p>b</p>\n</blockquote>',
     'should support 5 spaces for indented code, not 4'
   )
-
-  // Extra.
 
   t.end()
 })

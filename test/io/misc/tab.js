@@ -119,8 +119,10 @@ test('tabs', function (t) {
       'should support tabs in HTML (if whitespace is allowed)'
     )
 
+    // To do: thematic break vs. lists.
     t.equal(m('*\t*\t*\t'), '<hr />', 'should support tabs in thematic breaks')
 
+    // To do: thematic break vs. lists.
     t.equal(
       m('*\t\t*\t\t*\t\t'),
       '<hr />',

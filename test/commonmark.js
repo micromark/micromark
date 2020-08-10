@@ -22,11 +22,7 @@ test('commonmark', function (t) {
         var expected = example.output
         var actual = m(example.input, {allowDangerousHtml: true})
 
-        if (actual === expected || !/<[ou]l/.test(expected)) {
-          t.equal(actual, expected)
-        } else {
-          t.skip(actual + ' !== ' + expected)
-        }
+        t.equal(actual, expected)
 
         if (actual !== expected) {
           skipped++

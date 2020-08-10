@@ -139,7 +139,7 @@ test('definition', function (t) {
   t.equal(
     m('# [Foo]\n[foo]: /url\n> bar'),
     '<h1><a href="/url">Foo</a></h1>\n<blockquote>\n<p>bar</p>\n</blockquote>',
-    'should not support definitions in paragraphs'
+    'should not support definitions in headings'
   )
 
   t.equal(

@@ -138,12 +138,12 @@ test('setext-heading', function (t) {
     'should not allow underline to be lazy (2)'
   )
 
-  // // To do: list.
-  // t.equal(
-  //   m('- Foo\n---'),
-  //   '<ul>\n<li>Foo</li>\n</ul>\n<hr />',
-  //   'should not allow underline to be lazy (3)'
-  // )
+  // To do: tight lists.
+  t.equal(
+    m('- Foo\n---'),
+    '<ul>\n<li>Foo</li>\n</ul>\n<hr />',
+    'should not allow underline to be lazy (3)'
+  )
 
   t.equal(
     m('Foo\nBar\n---'),
@@ -169,12 +169,12 @@ test('setext-heading', function (t) {
     'should prefer other constructs over setext headings (1)'
   )
 
-  // // To do: list.
-  // t.equal(
-  //   m('- foo\n-----'),
-  //   '<ul>\n<li>foo</li>\n</ul>\n<hr />',
-  //   'should prefer other constructs over setext headings (2)'
-  // )
+  // To do: tight lists.
+  t.equal(
+    m('- foo\n-----'),
+    '<ul>\n<li>foo</li>\n</ul>\n<hr />',
+    'should prefer other constructs over setext headings (2)'
+  )
 
   t.equal(
     m('    foo\n---'),
@@ -212,6 +212,7 @@ test('setext-heading', function (t) {
     'paragraph and heading interplay (3)'
   )
 
+  // To do: thematic break vs. list.
   t.equal(
     m('Foo\nbar\n* * *\nbaz'),
     '<p>Foo\nbar</p>\n<hr />\n<p>baz</p>',
