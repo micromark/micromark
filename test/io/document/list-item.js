@@ -81,7 +81,7 @@ test('list-item', function (t) {
   //   'should support blank lines in indented code in items'
   // )
 
-  // // To do: start, tight.
+  // // To do: tight.
   // t.equal(
   //   m('123456789. ok'),
   //   '<ol start="123456789">\n<li>ok</li>\n</ol>',
@@ -94,14 +94,14 @@ test('list-item', function (t) {
     'should not support ordered item values over 10 digits'
   )
 
-  // // To do: start, tight.
+  // // To do: tight.
   // t.equal(
   //   m('0. ok'),
   //   '<ol start="0">\n<li>ok</li>\n</ol>',
   //   'should support ordered item values of `0`'
   // )
 
-  // // To do: start, tight.
+  // // To do: tight.
   // t.equal(
   //   m('003. ok'),
   //   '<ol start="3">\n<li>ok</li>\n</ol>',
@@ -121,7 +121,7 @@ test('list-item', function (t) {
   //   'should support indented code in list items (1)'
   // )
 
-  // // To do: start, blank lines.
+  // // To do: blank lines.
   // t.equal(
   //   m('  10.  foo\n\n           bar'),
   //   '<ol start="10">\n<li>\n<p>foo</p>\n<pre><code>bar\n</code></pre>\n</li>\n</ol>',
@@ -301,14 +301,14 @@ test('list-item', function (t) {
   //   'should not support sublists w/ too few spaces'
   // )
 
-  // // To do: start, weird things?!
+  // // To do: weird things?!
   // t.equal(
   //   m('10) foo\n    - bar'),
   //   '<ol start="10">\n<li>foo\n<ul>\n<li>bar</li>\n</ul>\n</li>\n</ol>',
   //   'should support sublists w/ enough spaces (2)'
   // )
 
-  // // To do: start, weird things?!
+  // // To do: weird things?!
   // t.equal(
   //   m('10) foo\n   - bar'),
   //   '<ol start="10">\n<li>foo</li>\n</ol>\n<ul>\n<li>bar</li>\n</ul>',
@@ -322,7 +322,7 @@ test('list-item', function (t) {
   //   'should support sublists (1)'
   // )
 
-  // // To do: start, tight
+  // // To do: tight
   // t.equal(
   //   m('1. - 2. foo'),
   //   '<ol>\n<li>\n<ul>\n<li>\n<ol start="2">\n<li>foo</li>\n</ol>\n</li>\n</ul>\n</li>\n</ol>',
@@ -357,17 +357,16 @@ test('list-item', function (t) {
   //   'should support interrupting a paragraph'
   // )
 
-  // // To do: prevent interrupt.
-  // t.equal(
-  //   m('The number of windows in my house is\n14.  The number of doors is 6.'),
-  //   '<p>The number of windows in my house is\n14.  The number of doors is 6.</p>',
-  //   'should not support interrupting a paragraph with a non-1 numbered item'
-  // )
+  t.equal(
+    m('a\n2. b'),
+    '<p>a\n2. b</p>',
+    'should not support interrupting a paragraph with a non-1 numbered item'
+  )
 
   // // To do: tight.
   // t.equal(
-  //   m('The number of windows in my house is\n1.  The number of doors is 6.'),
-  //   '<p>The number of windows in my house is</p>\n<ol>\n<li>The number of doors is 6.</li>\n</ol>',
+  //   m('a\n1. b'),
+  //   '<p>a</p>\n<ol>\n<li>b</li>\n</ol>',
   //   'should support interrupting a paragraph with a 1 numbered item'
   // )
 

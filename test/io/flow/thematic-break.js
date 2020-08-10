@@ -64,7 +64,6 @@ test('thematic-break', function (t) {
     'should support thematic breaks w/ many markers'
   )
 
-  // To do: thematic break vs. lists.
   t.equal(m(' - - -'), '<hr />', 'should support thematic breaks w/ spaces (1)')
 
   t.equal(
@@ -73,14 +72,12 @@ test('thematic-break', function (t) {
     'should support thematic breaks w/ spaces (2)'
   )
 
-  // To do: thematic break vs. lists.
   t.equal(
     m('-     -      -      -'),
     '<hr />',
     'should support thematic breaks w/ spaces (3)'
   )
 
-  // To do: thematic break vs. lists.
   t.equal(
     m('- - - -    '),
     '<hr />',
@@ -111,14 +108,14 @@ test('thematic-break', function (t) {
     'should not support thematic breaks w/ mixed markers'
   )
 
-  // To do: tight, thematic break vs. lists.
+  // To do: multiple items, tight.
   t.equal(
     m('- foo\n***\n- bar'),
     '<ul>\n<li>foo</li>\n</ul>\n<hr />\n<ul>\n<li>bar</li>\n</ul>',
     'should support thematic breaks mixed w/ lists (1)'
   )
 
-  // To do: tight, thematic break vs. lists.
+  // To do: multiple items, tight.
   t.equal(
     m('* Foo\n* * *\n* Bar'),
     '<ul>\n<li>Foo</li>\n</ul>\n<hr />\n<ul>\n<li>Bar</li>\n</ul>',
@@ -137,7 +134,7 @@ test('thematic-break', function (t) {
     'should not support thematic breaks w/ dashes interrupting paragraphs (setext heading)'
   )
 
-  // To do: tight, thematic break vs. lists.
+  // To do: tight, multiple items.
   t.equal(
     m('- Foo\n- * * *'),
     '<ul>\n<li>Foo</li>\n<li>\n<hr />\n</li>\n</ul>',

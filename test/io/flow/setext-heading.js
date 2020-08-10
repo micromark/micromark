@@ -212,7 +212,6 @@ test('setext-heading', function (t) {
     'paragraph and heading interplay (3)'
   )
 
-  // To do: thematic break vs. list.
   t.equal(
     m('Foo\nbar\n* * *\nbaz'),
     '<p>Foo\nbar</p>\n<hr />\n<p>baz</p>',

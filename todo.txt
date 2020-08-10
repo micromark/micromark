@@ -1,18 +1,18 @@
 Shortlist:
 - Lists
 - mdast compiler, mdast-util-to-markdown
-- Extensions (frontmatter, gfm, mdx, directives, footnotes)
+- Extensions (frontmatter, gfm, directives, footnotes, mdx)
 - Performance
 
 Lists:
-- Prefer `<hr>` over list
-- Prevent interruption in some cases.
++ Prefer `<hr>` over list
++ Prevent interruption in some cases.
++ Detect `start`
 - Support multiple items in same list
 - Support multiple flow in items
 - Support blank lines in items, in lists
 - Support empty items
 - Detect loose/tight (either blank lines, or multiple blocks)
-- Detect `start`
 
 Fix: position on flow in containers
 Fix: `bufferIndex` for moving.
