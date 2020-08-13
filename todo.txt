@@ -1,18 +1,14 @@
 Shortlist:
-- Lists
 - mdast compiler, mdast-util-to-markdown
 - Extensions (frontmatter, gfm, directives, footnotes, mdx)
 - Performance
 
-Lists:
-+ Prefer `<hr>` over list
-+ Prevent interruption in some cases.
-+ Detect `start`
-- Support multiple items in same list
-- Support multiple flow in items
-- Support blank lines in items, in lists
-- Support empty items
-- Detect loose/tight (either blank lines, or multiple blocks)
+Lists: Fix loose/tight detection: blank lines between subdocuments
+
+Definition: move following line ending too, instead of slurping?
+To do: content, paragraph is split across lines for block quotes and so
+
+To do: can we move block quote open/continue, and list open/continue to subtokenizers? Blank line tokenizer externalized?
 
 Fix: position on flow in containers
 Fix: `bufferIndex` for moving.

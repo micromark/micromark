@@ -25,6 +25,7 @@ test('commonmark', function (t) {
         t.equal(actual, expected)
 
         if (actual !== expected) {
+          console.log('nok:', [example.input])
           skipped++
         }
       })
@@ -41,6 +42,9 @@ function onexit() {
     '\nCM skipped: %d (of %d; %s done)',
     skipped,
     total,
-    (1 - skipped / total).toLocaleString('en', {style: 'percent'})
+    (1 - skipped / total).toLocaleString('en', {
+      style: 'percent',
+      maximumFractionDigits: 2
+    })
   )
 }

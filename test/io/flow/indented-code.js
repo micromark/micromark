@@ -10,14 +10,12 @@ test('indented-code', function (t) {
     'should support indented code'
   )
 
-  // To do: content in lists.
   t.equal(
     m('  - foo\n\n    bar'),
     '<ul>\n<li>\n<p>foo</p>\n<p>bar</p>\n</li>\n</ul>',
     'should prefer list item content over indented code (1)'
   )
 
-  // To do: content in lists.
   t.equal(
     m('1.  foo\n\n    - bar'),
     '<ol>\n<li>\n<p>foo</p>\n<ul>\n<li>bar</li>\n</ul>\n</li>\n</ol>',

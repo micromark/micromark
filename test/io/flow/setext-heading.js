@@ -138,7 +138,6 @@ test('setext-heading', function (t) {
     'should not allow underline to be lazy (2)'
   )
 
-  // To do: tight lists.
   t.equal(
     m('- Foo\n---'),
     '<ul>\n<li>Foo</li>\n</ul>\n<hr />',
@@ -169,7 +168,6 @@ test('setext-heading', function (t) {
     'should prefer other constructs over setext headings (1)'
   )
 
-  // To do: tight lists.
   t.equal(
     m('- foo\n-----'),
     '<ul>\n<li>foo</li>\n</ul>\n<hr />',

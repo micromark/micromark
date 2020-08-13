@@ -52,14 +52,12 @@ test('block-quote', function (t) {
     'should not support lazy setext headings underlines in block quotes'
   )
 
-  // To do: weirdness, tight.
   t.equal(
     m('> - a\n> - b'),
     '<blockquote>\n<ul>\n<li>a</li>\n<li>b</li>\n</ul>\n</blockquote>',
     'should support lists in block quotes'
   )
 
-  // To do: weirdness, tight.
   t.equal(
     m('> - a\n- b'),
     '<blockquote>\n<ul>\n<li>a</li>\n</ul>\n</blockquote>\n<ul>\n<li>b</li>\n</ul>',
@@ -86,7 +84,7 @@ test('block-quote', function (t) {
 
   t.equal(
     m('>'),
-    '<blockquote>\n</blockquote>\n',
+    '<blockquote>\n</blockquote>',
     'should support empty block quotes (1)'
   )
 

@@ -433,7 +433,6 @@ test('html', function (t) {
       'should support basic tags w/o ending in containers (1)'
     )
 
-    // To do: tight, multiple items.
     t.equal(
       m('- <div>\n- foo', unsafe),
       '<ul>\n<li>\n<div>\n</li>\n<li>foo</li>\n</ul>',
