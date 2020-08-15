@@ -51,9 +51,9 @@
     "remark-preset-wooorm": "^7.0.0",
     "resolve-from": "^5.0.0",
     "tape": "^5.0.0",
-    "tinyify": "^2.0.0",
+    "tinyify": "^3.0.0",
     "unicode-13.0.0": "^0.8.0",
-    "xo": "^0.32.0"
+    "xo": "^0.33.0"
   },
   "scripts": {
     "generate-expressions": "node script/generate-expressions",
