@@ -5,10 +5,6 @@ var test = require('tape')
 var m = require('../buffer')
 
 var sections = {}
-var total = commonmark.length
-var skipped = 0
-
-process.on('exit', onexit)
 
 commonmark.forEach(function (d) {
   var list = sections[d.section] || (sections[d.section] = [])
@@ -19,15 +15,7 @@ test('commonmark', function (t) {
   Object.keys(sections).forEach(function (name) {
     t.test(name, function (t) {
       sections[name].forEach(function (example) {
-        var expected = example.output
-        var actual = m(example.input, {allowDangerousHtml: true})
-
-        t.equal(actual, expected)
-
-        if (actual !== expected) {
-          console.log('nok:', [example.input])
-          skipped++
-        }
+        t.equal(m(example.input, {allowDangerousHtml: true}), example.output)
       })
 
       t.end()
@@ -36,15 +24,3 @@ test('commonmark', function (t) {
 
   t.end()
 })
-
-function onexit() {
-  console.log(
-    '\nCM skipped: %d (of %d; %s done)',
-    skipped,
-    total,
-    (1 - skipped / total).toLocaleString('en', {
-      style: 'percent',
-      maximumFractionDigits: 2
-    })
-  )
-}
