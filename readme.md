@@ -15,18 +15,33 @@ smol markdown parser that’s different (open beta)
 ## Intro
 
 micromark is a long awaited markdown parser.
+It uses a [state machine][cmsm] to parse the entirety of markdown into tokens.
 It’s the smallest [CommonMark][] compliant markdown parser in JavaScript.
 It’ll replace the internals of [`remark-parse`][remark-parse], the most
 [popular][] markdown parser.
 Its interface is optimized to compile to HTML, but its parts can be used
 to generate syntax trees or compile to other output formats too.
 It’s in open beta: up next are extensions (GFM, MDX), integration in remark,
-performance, and CSTs.
+performance, CSTs, and docs.
 
 *   for updates, see [Twitter][]
 *   for more about us, see [`unifiedjs.com`][site]
 *   for questions, see [Discussions][chat]
 *   to help, see [contribute][] or [sponsor][] below
+
+## Checklist
+
+*   [x] CommonMark compliant
+*   [x] Smallest CM parser that exists (and there’s some more to shave off!)
+*   [x] Safe by default
+*   [x] Streaming interface
+*   [x] 1500+ tests and 100% coverage
+*   [ ] Extensions: GFM, directives, MDX
+*   [ ] Abstract syntax tree (integrate into remark)
+*   [ ] Complementary docs on state machine ([CMSM][]) for parsers in other
+    languages
+*   [ ] Performance
+*   [ ] Concrete syntax tree
 
 ## Install
 
@@ -79,8 +94,8 @@ Markdown to parse (`string` or `Buffer`)
 
 ###### `encoding`
 
-Encoding to understand `doc` as when it’s a [`Buffer`][tostring-encoding]
-(`string`, default: `'utf8'`).
+[Character encoding][encoding] to understand `doc` as when it’s a
+[`Buffer`][buffer] (`string`, default: `'utf8'`).
 
 ###### `options.defaultLineEnding`
 
@@ -261,7 +276,9 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [sponsor]: #sponsor
 
-[tostring-encoding]: https://nodejs.org/api/buffer.html#buffer_buf_tostring_encoding_start_end
+[encoding]: https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings
+
+[buffer]: https://nodejs.org/api/buffer.html
 
 [commonmark]: https://commonmark.org/
 
@@ -272,3 +289,5 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [improper]: https://github.com/ChALkeR/notes/blob/master/Improper-markup-sanitization.md
 
 [chalker]: https://github.com/ChALkeR
+
+[cmsm]: https://github.com/micromark/common-markup-state-machine
