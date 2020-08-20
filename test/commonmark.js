@@ -2,7 +2,7 @@
 
 var commonmark = require('commonmark.json')
 var test = require('tape')
-var m = require('../buffer')
+var m = require('..')
 
 var options = {
   allowDangerousHtml: true,

@@ -1,6 +1,5 @@
 .nyc_output/
 coverage/
-micromark-buffer.min.js
-micromark-stream.min.js
 *.md
 *.json
+micromark.min.js

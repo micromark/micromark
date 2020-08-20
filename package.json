@@ -28,6 +28,7 @@
     "Merlijn Vos <merlijn@soverin.net>"
   ],
   "files": [
+    "dist/",
     "lib/",
     "buffer.js",
     "stream.js",
@@ -38,8 +39,9 @@
     "parse-entities": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
     "babel-plugin-unassert": "^3.0.0",
-    "babelify": "^10.0.0",
     "browserify": "^16.0.0",
     "commonmark.json": "^0.29.0",
     "concat-stream": "^2.0.0",
@@ -57,14 +59,13 @@
   },
   "scripts": {
     "generate-expressions": "node script/generate-expressions",
-    "generate": "npm run generate-expressions",
-    "format": "remark . -qfo && prettier --write . && xo --fix",
-    "build-buffer": "browserify lib/buffer -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-undebug.js ./script/babel-transform-constants.js ] ] -p tinyify -s micromark -o micromark-buffer.min.js; gzip-size micromark-buffer.min.js; gzip-size --raw micromark-buffer.min.js",
-    "build-stream": "browserify lib/stream -t [ babelify --plugins [ babel-plugin-unassert ./script/babel-transform-undebug.js ./script/babel-transform-constants.js ] ] -p tinyify -s micromark -o micromark-stream.min.js; gzip-size micromark-stream.min.js; gzip-size --raw micromark-stream.min.js",
-    "build": "npm run build-buffer && npm run build-stream",
+    "generate-dist": "babel lib --out-dir dist --quiet --retain-lines --plugins babel-plugin-unassert,./script/babel-transform-undebug.js,./script/babel-transform-constants.js; prettier dist --loglevel error --write",
+    "generate-size": "browserify . -p tinyify -s micromark -o micromark.min.js; gzip-size micromark.min.js; gzip-size --raw micromark.min.js",
+    "generate": "npm run generate-expressions && npm run generate-dist && npm run generate-size",
+    "format": "remark . -qfo && prettier . --write && xo --fix",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
-    "test": "npm run generate && npm run format && npm run build && npm run test-coverage"
+    "test": "npm run generate && npm run format && npm run test-coverage"
   },
   "nyc": {
     "check-coverage": true,
@@ -81,8 +82,11 @@
     "trailingComma": "none"
   },
   "xo": {
-    "prettier": true,
     "esnext": false,
+    "ignores": [
+      "dist/"
+    ],
+    "prettier": true,
     "rules": {
       "complexity": "off",
       "import/no-unassigned-import": "off",

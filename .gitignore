@@ -1,8 +1,8 @@
 .nyc_output/
 coverage/
+dist/
 node_modules/
 *.log
 .DS_Store
-micromark-buffer.min.js
-micromark-stream.min.js
+micromark.min.js
 yarn.lock

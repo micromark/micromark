@@ -1,3 +1,3 @@
 'use strict'
 
-module.exports = require('./lib/buffer')
+module.exports = require('./dist')
