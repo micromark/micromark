@@ -153,6 +153,12 @@ test('html', function (t) {
       'should support interrupting paragraphs w/ raw tags'
     )
 
+    t.equal(
+      m('<script>\n  \n  \n</script>', unsafe),
+      '<script>\n  \n  \n</script>',
+      'should support blank lines in raw'
+    )
+
     t.end()
   })
 
@@ -208,6 +214,12 @@ test('html', function (t) {
       'should support interrupting paragraphs w/ comments'
     )
 
+    t.equal(
+      m('<!--\n  \n  \n-->', unsafe),
+      '<!--\n  \n  \n-->',
+      'should support blank lines in comments'
+    )
+
     t.end()
   })
 
@@ -231,6 +243,12 @@ test('html', function (t) {
       m('Foo\n<?', unsafe),
       '<p>Foo</p>\n<?',
       'should support interrupting paragraphs w/ instructions'
+    )
+
+    t.equal(
+      m('<?\n  \n  \n?>', unsafe),
+      '<?\n  \n  \n?>',
+      'should support blank lines in instructions'
     )
 
     t.end()
@@ -266,6 +284,14 @@ test('html', function (t) {
       m('Foo\n<!d', unsafe),
       '<p>Foo</p>\n<!d',
       'should support interrupting paragraphs w/ declarations'
+    )
+
+    // Note about the lower letter:
+    // <https://github.com/commonmark/commonmark-spec/pull/621>
+    t.equal(
+      m('<!a\n  \n  \n>', unsafe),
+      '<!a\n  \n  \n>',
+      'should support blank lines in declarations'
     )
 
     t.end()
@@ -312,6 +338,12 @@ test('html', function (t) {
       m('<![cdata[]]>', unsafe),
       '<p>&lt;![cdata[]]&gt;</p>',
       'should not support lowercase cdata'
+    )
+
+    t.equal(
+      m('<![CDATA[\n  \n  \n]]>', unsafe),
+      '<![CDATA[\n  \n  \n]]>',
+      'should support blank lines in cdata'
     )
 
     t.end()
@@ -576,6 +608,12 @@ test('html', function (t) {
       m('Foo\n<div/>', unsafe),
       '<p>Foo</p>\n<div/>',
       'should support interrupting paragraphs w/ self-closing basic tags'
+    )
+
+    t.equal(
+      m('<div\n  \n  \n>', unsafe),
+      '<div\n<blockquote>\n</blockquote>',
+      'should not support blank lines in basic'
     )
 
     t.end()
@@ -862,6 +900,12 @@ test('html', function (t) {
       m('<x y=""z>', unsafe),
       '<p>&lt;x y=&quot;&quot;z&gt;</p>',
       'should not support an attribute after a double quoted attribute value'
+    )
+
+    t.equal(
+      m('<x>\n  \n  \n>', unsafe),
+      '<x>\n<blockquote>\n</blockquote>',
+      'should not support blank lines in complete'
     )
 
     t.end()

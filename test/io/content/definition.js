@@ -11,6 +11,12 @@ test('definition', function (t) {
   )
 
   t.equal(
+    m('[foo]:\n\n/url\n\n[foo]'),
+    '<p>[foo]:</p>\n<p>/url</p>\n<p>[foo]</p>',
+    'should not support blank lines before destination'
+  )
+
+  t.equal(
     m("   [foo]: \n      /url  \n           'the title'  \n\n[foo]"),
     '<p><a href="/url" title="the title">foo</a></p>',
     'should support whitespace and line endings in definitions'
@@ -104,6 +110,18 @@ test('definition', function (t) {
     m('[\nfoo\n]: /url\nbar'),
     '<p>bar</p>',
     'should not contribute anything w/o reference (2)'
+  )
+
+  t.equal(
+    m('[foo]: /url "title"  \n\n[foo]'),
+    '<p><a href="/url" title="title">foo</a></p>',
+    'should support whitespace after title'
+  )
+
+  t.equal(
+    m('[foo]: /url\n"title"  \n\n[foo]'),
+    '<p><a href="/url" title="title">foo</a></p>',
+    'should support whitespace after title on a separate line'
   )
 
   t.equal(

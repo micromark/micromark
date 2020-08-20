@@ -90,13 +90,13 @@ test('block-quote', function (t) {
 
   t.equal(
     m('>\n>  \n> '),
-    '<blockquote>\n</blockquote>\n',
+    '<blockquote>\n</blockquote>',
     'should support empty block quotes (2)'
   )
 
   t.equal(
     m('>\n> a\n>  '),
-    '<blockquote>\n<p>a</p>\n</blockquote>\n',
+    '<blockquote>\n<p>a</p>\n</blockquote>',
     'should support initial or final lazy empty block quote lines'
   )
 

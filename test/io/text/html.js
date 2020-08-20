@@ -372,5 +372,11 @@ test('html', function (t) {
     'should not support eof in unquoted attribute value'
   )
 
+  t.equal(
+    m('foo <a b=\nasd>', unsafe),
+    '<p>foo <a b=\nasd></p>',
+    'should support an eol before an attribute value'
+  )
+
   t.end()
 })

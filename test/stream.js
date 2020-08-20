@@ -253,7 +253,7 @@ test('stream', function (t) {
 
     tr = m()
     s = new stream.PassThrough()
-    s._isStdio = true
+    s._isStdio = true // Act as if we’re stdout.
 
     tr.pipe(s)
 

@@ -29,13 +29,13 @@ test('autolink', function (t) {
   )
 
   t.equal(
-    m('<a+b+c:d>'),
+    m('<a+b+c:d>', {allowDangerousProtocol: true}),
     '<p><a href="a+b+c:d">a+b+c:d</a></p>',
     'should support URI autolinks w/ incorrect URIs (1)'
   )
 
   t.equal(
-    m('<made-up-scheme://foo,bar>'),
+    m('<made-up-scheme://foo,bar>', {allowDangerousProtocol: true}),
     '<p><a href="made-up-scheme://foo,bar">made-up-scheme://foo,bar</a></p>',
     'should support URI autolinks w/ incorrect URIs (2)'
   )
@@ -47,7 +47,7 @@ test('autolink', function (t) {
   )
 
   t.equal(
-    m('<localhost:5001/foo>'),
+    m('<localhost:5001/foo>', {allowDangerousProtocol: true}),
     '<p><a href="localhost:5001/foo">localhost:5001/foo</a></p>',
     'should support URI autolinks w/ incorrect URIs (4)'
   )

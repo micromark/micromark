@@ -95,7 +95,7 @@ test('link (resource)', function (t) {
   )
 
   t.equal(
-    m('[link](foo\\)\\:)'),
+    m('[link](foo\\)\\:)', {allowDangerousProtocol: true}),
     '<p><a href="foo):">link</a></p>',
     'should support links w/ escapes in destinations'
   )
@@ -181,7 +181,19 @@ test('link (resource)', function (t) {
   t.equal(
     m('[link](   /uri\n  "title"  )'),
     '<p><a href="/uri" title="title">link</a></p>',
-    'should support whitespace around destination and title'
+    'should support whitespace around destination and title (1)'
+  )
+
+  t.equal(
+    m('[link](\t\n/uri "title")'),
+    '<p><a href="/uri" title="title">link</a></p>',
+    'should support whitespace around destination and title (2)'
+  )
+
+  t.equal(
+    m('[link](/uri  "title"\t\n)'),
+    '<p><a href="/uri" title="title">link</a></p>',
+    'should support whitespace around destination and title (3)'
   )
 
   t.equal(
@@ -294,6 +306,12 @@ test('link (resource)', function (t) {
     m('[](<> "")'),
     '<p><a href=""></a></p>',
     'should ignore an empty title'
+  )
+
+  t.equal(
+    m('[a](<b>"c")', {allowDangerousHtml: true}),
+    '<p>[a](<b>&quot;c&quot;)</p>',
+    'should require whitespace between enclosed destination and title'
   )
 
   t.equal(
@@ -410,6 +428,12 @@ test('link (resource)', function (t) {
     m('[a](1(2(3(4()))))'),
     '<p>[a](1(2(3(4()))))</p>',
     'should not support 4 or more sets of parens'
+  )
+
+  t.equal(
+    m('[a](b "\n c")'),
+    '<p><a href="b" title="\nc">a</a></p>',
+    'should support an eol at the start of a title'
   )
 
   t.end()
