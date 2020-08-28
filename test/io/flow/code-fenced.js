@@ -3,7 +3,7 @@
 var test = require('tape')
 var m = require('../../..')
 
-test('fenced-code', function (t) {
+test('code-fenced', function (t) {
   t.equal(
     m('```\n<\n >\n```'),
     '<pre><code>&lt;\n &gt;\n</code></pre>',

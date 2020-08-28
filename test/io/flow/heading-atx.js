@@ -3,7 +3,7 @@
 var test = require('tape')
 var m = require('../../..')
 
-test('atx-heading', function (t) {
+test('heading-atx', function (t) {
   t.equal(m('# foo'), '<h1>foo</h1>', 'should support a heading w/ rank 1')
 
   t.equal(m('## foo'), '<h2>foo</h2>', 'should support a heading w/ rank 2')

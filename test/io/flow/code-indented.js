@@ -3,7 +3,7 @@
 var test = require('tape')
 var m = require('../../..')
 
-test('indented-code', function (t) {
+test('code-indented', function (t) {
   t.equal(
     m('    a simple\n      indented code block'),
     '<pre><code>a simple\n  indented code block\n</code></pre>',

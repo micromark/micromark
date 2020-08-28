@@ -3,7 +3,7 @@
 var test = require('tape')
 var m = require('../../..')
 
-test('setext-heading', function (t) {
+test('heading-setext', function (t) {
   t.equal(
     m('Foo *bar*\n========='),
     '<h1>Foo <em>bar</em></h1>',
