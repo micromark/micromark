@@ -47,14 +47,14 @@ test('hard-break', function (t) {
   )
 
   t.equal(
-    m('`code  \nspan`'),
-    '<p><code>code   span</code></p>',
+    m('`code  \ntext`'),
+    '<p><code>code   text</code></p>',
     'should not support trailing hard breaks in code'
   )
 
   t.equal(
-    m('``code\\\nspan``'),
-    '<p><code>code\\ span</code></p>',
+    m('``code\\\ntext``'),
+    '<p><code>code\\ text</code></p>',
     'should not support escape hard breaks in code'
   )
 

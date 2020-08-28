@@ -7,61 +7,61 @@ test('autolink', function (t) {
   t.equal(
     m('<http://foo.bar.baz>'),
     '<p><a href="http://foo.bar.baz">http://foo.bar.baz</a></p>',
-    'should support URI autolinks (1)'
+    'should support protocol autolinks (1)'
   )
 
   t.equal(
     m('<http://foo.bar.baz/test?q=hello&id=22&boolean>'),
     '<p><a href="http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean">http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean</a></p>',
-    'should support URI autolinks (2)'
+    'should support protocol autolinks (2)'
   )
 
   t.equal(
     m('<irc://foo.bar:2233/baz>'),
     '<p><a href="irc://foo.bar:2233/baz">irc://foo.bar:2233/baz</a></p>',
-    'should support URI autolinks w/ non-HTTP schemes'
+    'should support protocol autolinks w/ non-HTTP schemes'
   )
 
   t.equal(
     m('<MAILTO:FOO@BAR.BAZ>'),
     '<p><a href="MAILTO:FOO@BAR.BAZ">MAILTO:FOO@BAR.BAZ</a></p>',
-    'should support URI autolinks in uppercase'
+    'should support protocol autolinks in uppercase'
   )
 
   t.equal(
     m('<a+b+c:d>', {allowDangerousProtocol: true}),
     '<p><a href="a+b+c:d">a+b+c:d</a></p>',
-    'should support URI autolinks w/ incorrect URIs (1)'
+    'should support protocol autolinks w/ incorrect URIs (1)'
   )
 
   t.equal(
     m('<made-up-scheme://foo,bar>', {allowDangerousProtocol: true}),
     '<p><a href="made-up-scheme://foo,bar">made-up-scheme://foo,bar</a></p>',
-    'should support URI autolinks w/ incorrect URIs (2)'
+    'should support protocol autolinks w/ incorrect URIs (2)'
   )
 
   t.equal(
     m('<http://../>'),
     '<p><a href="http://../">http://../</a></p>',
-    'should support URI autolinks w/ incorrect URIs (3)'
+    'should support protocol autolinks w/ incorrect URIs (3)'
   )
 
   t.equal(
     m('<localhost:5001/foo>', {allowDangerousProtocol: true}),
     '<p><a href="localhost:5001/foo">localhost:5001/foo</a></p>',
-    'should support URI autolinks w/ incorrect URIs (4)'
+    'should support protocol autolinks w/ incorrect URIs (4)'
   )
 
   t.equal(
     m('<http://foo.bar/baz bim>'),
     '<p>&lt;http://foo.bar/baz bim&gt;</p>',
-    'should not support URI autolinks w/ spaces'
+    'should not support protocol autolinks w/ spaces'
   )
 
   t.equal(
     m('<http://example.com/\\[\\>'),
     '<p><a href="http://example.com/%5C%5B%5C">http://example.com/\\[\\</a></p>',
-    'should not support character escapes in URI autolinks'
+    'should not support character escapes in protocol autolinks'
   )
 
   t.equal(
@@ -111,7 +111,7 @@ test('autolink', function (t) {
   t.equal(
     m('http://example.com'),
     '<p>http://example.com</p>',
-    'should not support URI autolinks w/o angle brackets'
+    'should not support protocol autolinks w/o angle brackets'
   )
 
   t.equal(
