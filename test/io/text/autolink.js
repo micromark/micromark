@@ -77,6 +77,12 @@ test('autolink', function (t) {
   )
 
   t.equal(
+    m('<a@b.c>'),
+    '<p><a href="mailto:a@b.c">a@b.c</a></p>',
+    'should support email autolinks (3)'
+  )
+
+  t.equal(
     m('<foo\\+@bar.example.com>'),
     '<p>&lt;foo+@bar.example.com&gt;</p>',
     'should not support character escapes in email autolinks'
