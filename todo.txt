@@ -1,6 +1,11 @@
 Shortlist:
 - mdast compiler, mdast-util-to-markdown
-- Extensions (frontmatter, gfm, directives, footnotes, mdx)
+- Extensions
+  - gfm: table / tableRow / tableCell / delete, checked list items
+  - frontmatter: yaml, toml
+  - footnotes: footnoteDefinition, footnote, footnoteReference
+  - directives
+  - mdx
 - Performance
 
 Size: go through code again for a while, could shave off a kb or so
