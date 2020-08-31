@@ -454,5 +454,18 @@ test('list-item', function (t) {
     'should support loose lists w/ tight sublists (2)'
   )
 
+  // Extra.
+  t.equal(
+    m('* a\n*\n\n  \n\t\n* b'),
+    '<ul>\n<li>\n<p>a</p>\n</li>\n<li></li>\n<li>\n<p>b</p>\n</li>\n</ul>',
+    'should support continued list items after an empty list item w/ many blank lines'
+  )
+
+  t.equal(
+    m('*\n  ~~~p\n\n  ~~~'),
+    '<ul>\n<li>\n<pre><code class="language-p">\n</code></pre>\n</li>\n</ul>',
+    'should support blank lines in code after an initial blank line'
+  )
+
   t.end()
 })
