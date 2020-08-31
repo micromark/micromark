@@ -36,8 +36,9 @@ performance, CSTs, and docs.
 *   [x] Safe by default
 *   [x] Streaming interface
 *   [x] 1500+ tests and 100% coverage
+*   [x] [Abstract syntax tree][from-markdown]
 *   [ ] Extensions: GFM, directives, MDX
-*   [ ] Abstract syntax tree (integrate into remark)
+*   [ ] Integrate into remark
 *   [ ] Complementary docs on state machine ([CMSM][]) for parsers in other
     languages
 *   [ ] Performance
@@ -291,3 +292,5 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [chalker]: https://github.com/ChALkeR
 
 [cmsm]: https://github.com/micromark/common-markup-state-machine
+
+[from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
