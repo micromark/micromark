@@ -6,3 +6,5 @@ node_modules/
 .DS_Store
 micromark.min.js
 yarn.lock
+*.d.ts
+*.js

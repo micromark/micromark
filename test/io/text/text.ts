@@ -1,0 +1,22 @@
+'use strict'
+
+import test from 'tape'
+import m from '../../..'
+
+test('text', function (t: any) {
+  t.equal(
+    m("hello $.;'there"),
+    "<p>hello $.;'there</p>",
+    'should support ascii text'
+  )
+
+  t.equal(m('Foo χρῆν'), '<p>Foo χρῆν</p>', 'should support unicode text')
+
+  t.equal(
+    m('Multiple     spaces'),
+    '<p>Multiple     spaces</p>',
+    'should preserve internal spaces verbatim'
+  )
+
+  t.end()
+})

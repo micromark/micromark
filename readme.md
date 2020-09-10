@@ -55,7 +55,7 @@ npm install micromark
 ## Use
 
 ```js
-var micromark = require('micromark')
+import micromark from 'micromark'
 
 console.log(micromark('## Hello, *world*!'))
 ```
@@ -69,8 +69,8 @@ Yields:
 Or:
 
 ```js
-var fs = require('fs')
-var micromark = require('micromark/stream')
+import fs from 'fs'
+import micromark from 'micromark/stream'
 
 fs.createReadStream('example.md').pipe(micromark()).pipe(process.stdout)
 ```
