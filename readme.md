@@ -29,6 +29,20 @@ performance, CSTs, and docs.
 *   for questions, see [Discussions][chat]
 *   to help, see [contribute][] or [sponsor][] below
 
+## Contents
+
+*   [Checklist](#checklist)
+*   [Install](#install)
+*   [Use](#use)
+*   [API](#api)
+    *   [`micromark(doc[, encoding][, options])`](#micromarkdoc-encoding-options)
+    *   [`createSteam(options?)`](#createsteamoptions)
+*   [Version](#version)
+*   [Security](#security)
+*   [Contribute](#contribute)
+*   [Sponsor](#sponsor)
+*   [License](#license)
+
 ## Checklist
 
 *   [x] CommonMark compliant
