@@ -11,7 +11,7 @@ export default function preprocessor() {
 
   return preprocess
 
-  function preprocess(value: any, encoding: any) {
+  function preprocess(value: Buffer | string | null, encoding: string) {
     var chunks = []
     var match
     var next

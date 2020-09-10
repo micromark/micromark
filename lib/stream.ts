@@ -1,3 +1,4 @@
+import type {Writable} from 'stream'
 import {EventEmitter} from 'events'
 import * as codes from './character/codes'
 import compiler from './compile/html'
@@ -12,7 +13,7 @@ export default function stream(options: any) {
   var tokenize = parser().document().write
   var compile = compiler(options)
   var emitter = new EventEmitter()
-  var ended: any
+  var ended: boolean
 
   emitter.readable = true
   emitter.writable = true
@@ -23,7 +24,7 @@ export default function stream(options: any) {
   return emitter
 
   // Write a chunk into memory.
-  function write(chunk: any, encoding: any, callback: any) {
+  function write(chunk: unknown, encoding?: string |( () => void), callback?: () => void) {
     if (typeof encoding === 'function') {
       callback = encoding
       encoding = undefined
@@ -39,13 +40,13 @@ export default function stream(options: any) {
       callback()
     }
 
-    // Signal succesful write.
+    // Signal successful write.
     return true
   }
 
   // End the writing.
   // Passes all arguments to a final `write`.
-  function end(chunk: any, encoding: any, callback: any) {
+  function end(chunk: unknown, encoding: string, callback?: () => void) {
     write(chunk, encoding, callback)
     push(codes.eof)
     emitter.emit('end')
@@ -64,7 +65,7 @@ export default function stream(options: any) {
   // Basically `Stream#pipe`, but inlined and simplified to keep the bundled
   // size down.
   // See: <https://github.com/nodejs/node/blob/43a5170/lib/internal/streams/legacy.js#L13>.
-  function pipe(dest: any, options: any) {
+  function pipe(dest: Writable, options: any) {
     emitter.on('data', ondata)
     emitter.on('error', onerror)
     emitter.on('end', cleanup)
@@ -91,7 +92,7 @@ export default function stream(options: any) {
     }
 
     // Handle data.
-    function ondata(chunk: any) {
+    function ondata(chunk: unknown) {
       if (dest.writable) {
         dest.write(chunk)
       }
