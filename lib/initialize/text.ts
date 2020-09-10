@@ -1,21 +1,18 @@
-exports.text = initializeFactory('text')
-exports.string = initializeFactory('string')
-
-import codes from '../character/codes'
+import type { Effects, Parser } from '../types'
+import * as codes from '../character/codes'
 import own from '../constant/has-own-property'
-import types from '../constant/types'
+import * as types from '../constant/types'
 
 function initializeFactory(field: any) {
   return {tokenize: initializeText}
 
-  function initializeText(effects: any) {
-    // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+  function initializeText(this: {parser: Parser}, effects: Effects) {
     var hooks = this.parser.hooks[field]
     var text = effects.attempt(hooks, after, dataStart)
 
     return text
 
-    function after(code: any) {
+    function after(code: number) {
       // Make sure we eat EOFs.
       if (code === codes.eof) {
         effects.consume(code)
@@ -51,3 +48,6 @@ function initializeFactory(field: any) {
     }
   }
 }
+
+export const text = initializeFactory('text')
+export const string = initializeFactory('string')

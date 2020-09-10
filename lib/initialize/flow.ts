@@ -1,16 +1,11 @@
-exports.tokenize = initializeFlow
-
-import assert from 'assert'
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import type { Effects, Okay, NotOkay, Event, Parser, Token } from '../types'
+import * as assert from 'assert'
+import * as codes from '../character/codes'.
 import markdownLineEnding from '../character/markdown-line-ending'
-import constants from '../constant/constants'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'subtokenize'.
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import subtokenize from '../util/subtokenize'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'prefixSize'.
 import prefixSize from '../util/prefix-size'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createSpaceTokenizer'.
 import createSpaceTokenizer from '../tokenize/partial-space'
 import blank from '../tokenize/partial-blank-line'
 
@@ -21,8 +16,7 @@ var content = {
 }
 var lookaheadConstruct = {tokenize: tokenizeLookaheadConstruct, partial: true}
 
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'initializeFlow'.
-function initializeFlow(effects: any) {
+export default function initializeFlow(effects: Effects) {
   // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
   var self = this
   var prefixed = effects.attempt(
@@ -44,7 +38,7 @@ function initializeFlow(effects: any) {
 
   return initial
 
-  function atBlankEnding(code: any) {
+  function atBlankEnding(code: number) {
     // Make sure we eat EOFs.
     if (code === codes.eof) {
       effects.consume(code)
@@ -59,7 +53,7 @@ function initializeFlow(effects: any) {
     return initial
   }
 
-  function afterConstruct(code: any) {
+  function afterConstruct(code: number) {
     // Make sure we eat EOFs.
     if (code === codes.eof) {
       effects.consume(code)
@@ -77,16 +71,16 @@ function initializeFlow(effects: any) {
 
 // Content is transparent: it’s parsed right now. That way, definitions are also
 // parsed right now: before inlines in paragraphs are parsed.
-function resolveContent(events: any) {
+function resolveContent(events: Event[]) {
   return subtokenize(events).events
 }
 
-function tokenizeContent(effects: any, ok: any) {
-  var previous: any
+function tokenizeContent(effects: Effects, ok: Okay) {
+  var previous: Token
 
   return startContent
 
-  function startContent(code: any) {
+  function startContent(code: number) {
     var token
 
     assert(
@@ -102,7 +96,7 @@ function tokenizeContent(effects: any, ok: any) {
     return data(code)
   }
 
-  function data(code: any) {
+  function data(code: number) {
     if (code === codes.eof) {
       return contentEnd(code)
     }
@@ -120,13 +114,13 @@ function tokenizeContent(effects: any, ok: any) {
     return data
   }
 
-  function contentEnd(code: any) {
+  function contentEnd(code: number) {
     effects.exit(types.chunkContent)
     effects.exit(types.content)
     return ok(code)
   }
 
-  function contentContinue(code: any) {
+  function contentContinue(code: number) {
     var token
 
     assert(markdownLineEnding(code), 'expected eol')
@@ -143,13 +137,12 @@ function tokenizeContent(effects: any, ok: any) {
 
 // Note that `ok` is used to end the content block, and `nok` to instead
 // continue.
-function tokenizeLookaheadConstruct(effects: any, ok: any, nok: any) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+function tokenizeLookaheadConstruct(this: {events: Event[], parser: Parser}, effects: Effects, ok: Okay, nok: NotOkay) {
   var self = this
 
   return startLookahead
 
-  function startLookahead(code: any) {
+  function startLookahead(code: number) {
     assert(markdownLineEnding(code), 'expected a line ending')
     effects.exit(types.chunkContent)
     effects.enter(types.lineEnding)
@@ -158,7 +151,7 @@ function tokenizeLookaheadConstruct(effects: any, ok: any, nok: any) {
     return effects.attempt(createSpaceTokenizer(types.linePrefix), prefixed)
   }
 
-  function prefixed(code: any) {
+  function prefixed(code: number) {
     if (prefixSize(self.events) < constants.tabSize) {
       return code === codes.eof || markdownLineEnding(code)
         ? ok(code)
