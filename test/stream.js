@@ -5,8 +5,7 @@ var stream = require('stream')
 var test = require('tape')
 var concat = require('concat-stream')
 var m = require('../stream')
-
-var PassThrough = stream.PassThrough
+var slowStream = require('./util/slow-stream')
 
 test('stream', function (t) {
   t.test('should support streaming', function (t) {
@@ -304,25 +303,3 @@ test('stream', function (t) {
 
   t.end()
 })
-
-function slowStream(value, encoding) {
-  var stream = new PassThrough()
-  var index = 0
-
-  tick()
-
-  return stream
-
-  function send() {
-    if (index === value.length) {
-      stream.end()
-    } else {
-      stream.write(value.slice(index, ++index), encoding)
-      tick()
-    }
-  }
-
-  function tick() {
-    setTimeout(send, 4)
-  }
-}

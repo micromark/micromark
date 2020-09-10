@@ -121,6 +121,14 @@ For links, the allowed protocols are `http`, `https`, `irc`, `ircs`, `mailto`,
 and `xmpp`.
 For images, the allowed protocols are `http` and `https`.
 
+###### `options.extensions`
+
+Array of syntax extensions (`Array.<SyntaxExtension>`, default: `[]`).
+
+###### `options.htmlExtensions`
+
+Array of HTML extensions (`Array.<HtmlExtension>`, default: `[]`).
+
 ##### Returns
 
 `string` — Compiled HTML.
