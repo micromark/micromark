@@ -1,27 +1,22 @@
-exports.tokenize = tokenizeDefinition
-exports.resolve = resolveDefinition
-
-import assert from 'assert'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiControl'.
+import type {Effects, Event, NotOkay, Okay, Parser} from '../types'
+import * as assert from 'assert'
 import asciiControl from '../character/ascii-control'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
 import markdownLineEnding from '../character/markdown-line-ending'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEndingOrSpace'.
 import markdownLineEndingOrSpace from '../character/markdown-line-ending-or-space'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownSpace'.
 import markdownSpace from '../character/markdown-space'
-import constants from '../constant/constants'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'normalizeIdentifier'.
+import * as constants from '../constant/constants'
 import normalizeIdentifier from '../util/normalize-identifier'
-import codes from '../character/codes'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createSpaceTokenizer'.
+import * as codes from '../character/codes'
+import * as types from '../constant/types'
 import createSpaceTokenizer from './partial-space'
-import spaceOrLineEnding from './partial-space-or-line-ending'
+import * as spaceOrLineEnding from './partial-space-or-line-ending'
 
-var title = {tokenize: tokenizeTitle, partial: true}
+const title = {tokenize: tokenizeTitle, partial: true}
 
-function resolveDefinition(events: any, context: any) {
+export const resolve = function resolveDefinition(
+  events: Event[],
+  context: {parser: Parser}
+) {
   var identifier
   var length = events.length
   var index = -1
@@ -42,7 +37,11 @@ function resolveDefinition(events: any, context: any) {
   return events
 }
 
-function tokenizeDefinition(effects: any, ok: any, nok: any) {
+export const tokenize = function tokenizeDefinition(
+  effects: Effects,
+  ok: Okay,
+  nok: NotOkay
+) {
   var atEnd = effects.attempt(createSpaceTokenizer(types.whitespace), after)
   var destinationAfter = effects.attempt(title, atEnd, atEnd)
   var balance = 0
@@ -65,7 +64,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
   }
 
   // @ts-expect-error ts-migrate(7023) FIXME: 'atBreak' implicitly has return type 'any' because... Remove this comment to see the full error message
-  function atBreak(code: any) {
+  function atBreak(code: number) {
     if (
       code === codes.eof ||
       code === codes.leftSquareBracket ||
@@ -99,8 +98,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
     return label(code)
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'label' implicitly has return type 'any' because i... Remove this comment to see the full error message
-  function label(code: any) {
+  function label(code: number): unknown {
     if (
       code === codes.eof ||
       code === codes.leftSquareBracket ||
@@ -121,8 +119,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
     return code === codes.backslash ? labelEscape : label
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'labelEscape' implicitly has return type 'any' bec... Remove this comment to see the full error message
-  function labelEscape(code: any) {
+  function labelEscape(code: number) {
     if (
       code === codes.backslash ||
       code === codes.leftSquareBracket ||
@@ -136,7 +133,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
     return label(code)
   }
 
-  function labelAfter(code: any) {
+  function labelAfter(code: number) {
     if (code === codes.colon) {
       effects.enter(types.definitionMarker)
       effects.consume(code)
@@ -147,7 +144,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function between(code: any) {
+  function between(code: number) {
     if (code === codes.lessThan) {
       effects.enter(types.definitionDestination)
       effects.enter(types.definitionDestinationLiteral)
@@ -174,8 +171,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
     return code === codes.backslash ? destinationRawEscape : destinationRaw
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'destinationEnclosedBefore' implicitly has return ... Remove this comment to see the full error message
-  function destinationEnclosedBefore(code: any) {
+  function destinationEnclosedBefore(code: number): unknown {
     if (code === codes.greaterThan) {
       effects.enter(types.definitionDestinationMarker)
       effects.consume(code)
@@ -197,8 +193,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
       : destinationEnclosed
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'destinationEnclosed' implicitly has return type '... Remove this comment to see the full error message
-  function destinationEnclosed(code: any) {
+  function destinationEnclosed(code: number): unknown {
     if (code === codes.greaterThan) {
       effects.exit(types.chunkString)
       effects.exit(types.definitionDestinationString)
@@ -215,8 +210,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
       : destinationEnclosed
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'destinationEnclosedEscape' implicitly has return ... Remove this comment to see the full error message
-  function destinationEnclosedEscape(code: any) {
+  function destinationEnclosedEscape(code: number) {
     if (
       code === codes.lessThan ||
       code === codes.greaterThan ||
@@ -266,7 +260,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
     return code === codes.backslash ? destinationRawEscape : destinationRaw
   }
 
-  function destinationRawEscape(code: any) {
+  function destinationRawEscape(code: number) {
     if (
       code === codes.leftParenthesis ||
       code === codes.rightParenthesis ||
@@ -279,7 +273,7 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
     return destinationRaw(code)
   }
 
-  function after(code: any) {
+  function after(code: number) {
     if (code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.definition)
       return ok(code)
@@ -289,19 +283,19 @@ function tokenizeDefinition(effects: any, ok: any, nok: any) {
   }
 }
 
-function tokenizeTitle(effects: any, ok: any, nok: any) {
-  var marker: any
+function tokenizeTitle(effects: Effects, ok: Okay, nok: NotOkay) {
+  var marker: number
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // Note: blank lines can’t exist in content.
     return markdownLineEndingOrSpace(code)
       ? effects.attempt(spaceOrLineEnding, before)(code)
       : nok(code)
   }
 
-  function before(code: any) {
+  function before(code: number) {
     if (
       code === codes.quotationMark ||
       code === codes.apostrophe ||
@@ -318,7 +312,7 @@ function tokenizeTitle(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function atFirstBreak(code: any) {
+  function atFirstBreak(code: number) {
     if (code === marker) {
       return atMarker(code)
     }
@@ -327,8 +321,7 @@ function tokenizeTitle(effects: any, ok: any, nok: any) {
     return atBreak(code)
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'atBreak' implicitly has return type 'any' because... Remove this comment to see the full error message
-  function atBreak(code: any) {
+  function atBreak(code: number) {
     if (code === codes.eof) {
       return nok(code)
     }
@@ -351,8 +344,7 @@ function tokenizeTitle(effects: any, ok: any, nok: any) {
     return code === codes.backslash ? escape : data
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'data' implicitly has return type 'any' because it... Remove this comment to see the full error message
-  function data(code: any) {
+   function data(code: number): unknown {
     if (code === codes.eof || code === marker || markdownLineEnding(code)) {
       effects.exit(types.chunkString)
       return atBreak(code)
@@ -362,8 +354,7 @@ function tokenizeTitle(effects: any, ok: any, nok: any) {
     return code === codes.backslash ? escape : data
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'escape' implicitly has return type 'any' because ... Remove this comment to see the full error message
-  function escape(code: any) {
+  function escape(code: number) {
     if (
       code === marker ||
       code === codes.leftParenthesis ||
@@ -376,7 +367,7 @@ function tokenizeTitle(effects: any, ok: any, nok: any) {
     return data(code)
   }
 
-  function atMarker(code: any) {
+  function atMarker(code: number) {
     assert.equal(code, marker, 'expected marker')
     effects.enter(types.definitionTitleMarker)
     effects.consume(code)

@@ -67,6 +67,7 @@ export interface Parser {
     [key: string]: unknown
   }
   flow: (something: unknown) => unknown
+  defined: unknown[]
 }
 
 export interface TokenizerThis {

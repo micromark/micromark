@@ -1,14 +1,12 @@
-exports.tokenize = tokenizeHardBreakEscape
-
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import type { Effects, NotOkay, Okay } from '../types'
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
-import types from '../constant/types'
+import * as types from '../constant/types'
 
-function tokenizeHardBreakEscape(effects: any, ok: any, nok: any) {
+export const tokenizer = function tokenizeHardBreakEscape(effects: Effects, ok: Okay, nok: NotOkay) {
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // istanbul ignore next - Hooks.
     if (code !== codes.backslash) {
       return nok(code)
@@ -20,7 +18,7 @@ function tokenizeHardBreakEscape(effects: any, ok: any, nok: any) {
     return open
   }
 
-  function open(code: any) {
+  function open(code: number) {
     if (markdownLineEnding(code)) {
       effects.exit(types.escapeMarker)
       effects.exit(types.hardBreakEscape)
