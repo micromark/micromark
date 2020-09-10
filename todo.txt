@@ -1,12 +1,11 @@
 Shortlist:
-- mdast compiler, mdast-util-to-markdown
-- Extensions
-  - gfm: table / tableRow / tableCell / delete, checked list items
-  - frontmatter: yaml, toml
-  - footnotes: footnoteDefinition, footnote, footnoteReference
-  - directives
-  - mdx
-- Performance
+- [x] Extensions
+  - [ ] gfm: table / tableRow / tableCell / delete, checked list items
+  - [ ] frontmatter: yaml, toml
+  - [ ] footnotes: footnoteDefinition, footnote, footnoteReference
+  - [ ] directives
+  - [ ] mdx
+- [ ] Performance
 
 Size: go through code again for a while, could shave off a kb or so
 Size: check if `.ensure` would help?
