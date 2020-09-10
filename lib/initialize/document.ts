@@ -1,22 +1,16 @@
-exports.tokenize = initializeDocument
-
-import assert from 'assert'
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import * as assert from 'assert'
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
-import constants from '../constant/constants'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'flatMap'.
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import flatMap from '../util/flat-map'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createSpaceTokenizer'.
 import createSpaceTokenizer from '../tokenize/partial-space'
 import blank from '../tokenize/partial-blank-line'
 
 var container = {tokenize: tokenizeContainer}
 var flow = {tokenize: tokenizeLazyFlow}
 
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'initializeDocument'.
-function initializeDocument(effects: any) {
+export default function initializeDocument(effects: any) {
   // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
   var self = this
   var stack: any = []

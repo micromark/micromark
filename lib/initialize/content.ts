@@ -1,25 +1,22 @@
-exports.tokenize = initializeContent
-
-import assert from 'assert'
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import type { Effects, Token } from '../types'
+import * as assert from 'assert'
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
-import constants from '../constant/constants'
-import types from '../constant/types'
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'initializeContent'.
-function initializeContent(effects: any) {
+export default function initializeContent(effects: Effects) {
   var contentStart = effects.attempt(
     // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
     this.parser.hooks.contentInitial,
     afterContentStartConstruct,
     paragraphInitial
   )
-  var previous: any
+  var previous: Token
 
   return contentStart
 
-  function afterContentStartConstruct(code: any) {
+  function afterContentStartConstruct(code: number) {
     // Make sure we eat EOFs.
     if (code === codes.eof) {
       effects.consume(code)
@@ -33,7 +30,7 @@ function initializeContent(effects: any) {
     return contentStart
   }
 
-  function paragraphInitial(code: any) {
+  function paragraphInitial(code: number) {
     assert(
       code !== codes.eof && !markdownLineEnding(code),
       'expected anything other than a line ending or EOF'
@@ -42,7 +39,7 @@ function initializeContent(effects: any) {
     return lineStart(code)
   }
 
-  function lineStart(code: any) {
+  function lineStart(code: number) {
     var token = effects.enter(types.chunkParagraph)
 
     token.contentType = constants.contentTypeText
@@ -57,7 +54,7 @@ function initializeContent(effects: any) {
     return data(code)
   }
 
-  function data(code: any) {
+  function data(code: number) {
     if (code === codes.eof) {
       effects.exit(types.chunkParagraph)
       effects.exit(types.paragraph)

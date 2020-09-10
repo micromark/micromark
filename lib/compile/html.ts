@@ -1,5 +1,3 @@
-module.exports = compileHtml
-
 import * as assert from 'assert'
 // @ts-ignore
 import decode from 'parse-entities/decode-entity'
@@ -16,13 +14,13 @@ var characterReferencesExpression = /["&<>]/g
 var protocolHref = /^(https?|ircs?|mailto|xmpp)$/i
 var protocolSrc = /^https?$/i
 
-interface CompileOptions {
+export interface CompileOptions {
   allowDangerousProtocol?: boolean
   defaultLineEnding?: '\n' | '\r\n'
   allowDangerousHtml?: boolean
 }
 
-function compileHtml(options: CompileOptions) {
+export default function compileHtml(options: CompileOptions) {
   var settings = options || {}
   var tags = true
   var definitions = {}

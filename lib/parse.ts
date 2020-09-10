@@ -1,11 +1,6 @@
-module.exports = createParser
-
-import codes from './character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'initializeContent'.
+import * as codes from './character/codes'
 import initializeContent from './initialize/content'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'initializeDocument'.
 import initializeDocument from './initialize/document'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'initializeFlow'.
 import initializeFlow from './initialize/flow'
 import initializeText from './initialize/text'
 import attention from './tokenize/attention'
@@ -27,13 +22,11 @@ import labelImage from './tokenize/label-start-image'
 import labelLink from './tokenize/label-start-link'
 import setextUnderline from './tokenize/setext-underline'
 import thematicBreak from './tokenize/thematic-break'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'whitespace'.
 import whitespace from './tokenize/whitespace'
 
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createTokenizer'.
 import createTokenizer from './util/create-tokenizer'
 
-function createParser() {
+export default function createParser() {
   var document = {}
   var contentInitial = {}
   var flowInitial = {}

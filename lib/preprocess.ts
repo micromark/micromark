@@ -1,13 +1,10 @@
-module.exports = preprocessor
-
-import codes from './character/codes'
+import * as codes from './character/codes'
 import ceil from './constant/ceil'
-import constants from './constant/constants'
+import * as constants from './constant/constants'
 
 var search = /[\0\t\n\r]/g
 
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'preprocessor'.
-function preprocessor() {
+export default function preprocessor() {
   var column = 1
   var buffer = ''
   var atCarriageReturn: any

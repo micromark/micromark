@@ -1,10 +1,11 @@
+import type { Event } from './types'
 import subtokenize from './util/subtokenize'
 
 export default function postprocessor() {
   return postprocess
 }
 
-function postprocess(events: any) {
+function postprocess(events: Event[]) {
   var done
   var result
 

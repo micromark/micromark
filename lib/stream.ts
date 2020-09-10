@@ -1,15 +1,12 @@
-module.exports = stream
-
-import EventEmitter from 'events'.EventEmitter
-import codes from './character/codes'
+import {EventEmitter} from 'events'
+import * as codes from './character/codes'
 import compiler from './compile/html'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'flatMap'.
 import flatMap from './util/flat-map'
 import parser from './parse'
 import preprocessor from './preprocess'
 import postprocessor from './postprocess'
 
-function stream(options: any) {
+export default function stream(options: any) {
   var preprocess = preprocessor()
   var postprocess = postprocessor()
   var tokenize = parser().document().write
@@ -50,14 +47,13 @@ function stream(options: any) {
   // Passes all arguments to a final `write`.
   function end(chunk: any, encoding: any, callback: any) {
     write(chunk, encoding, callback)
-    // @ts-expect-error ts-migrate(2554) FIXME: Expected 2 arguments, but got 1.
     push(codes.eof)
     emitter.emit('end')
     ended = true
     return true
   }
 
-  function push(data: any, encoding: any) {
+  function push(data: any, encoding?: string) {
     emitter.emit(
       'data',
       compile(postprocess(flatMap(preprocess(data, encoding), tokenize)))
@@ -114,7 +110,7 @@ function stream(options: any) {
     }
 
     // Close dangling pipes and handle unheard errors.
-    function onerror(err: any) {
+    function onerror(err: Error) {
       cleanup()
 
       if (!emitter.listenerCount('error')) {

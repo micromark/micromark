@@ -1,19 +1,14 @@
-exports.tokenize = tokenizeAutolink
-
-import assert from 'assert'
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiAlpha'.
+import * as assert from 'assert'
+import * as codes from '../character/codes'
 import asciiAlpha from '../character/ascii-alpha'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiAlphanumeric'.
 import asciiAlphanumeric from '../character/ascii-alphanumeric'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiAtext'.
+import type { Effects, Okay, NotOkay } from '../types'
 import asciiAtext from '../character/ascii-atext'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiControl'.
 import asciiControl from '../character/ascii-control'
-import constants from '../constant/constants'
-import types from '../constant/types'
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 
-function tokenizeAutolink(effects: any, ok: any, nok: any) {
+export const tokenize = function tokenizeAutolink(effects: Effects, ok: Okay, nok: NotOkay) {
   var token: any
   var size: any
 
@@ -43,7 +38,7 @@ function tokenizeAutolink(effects: any, ok: any, nok: any) {
     return asciiAtext(code) ? emailAtext(code) : nok(code)
   }
 
-  function schemeOrEmailAtext(code: any) {
+  function schemeOrEmailAtext(code: number) {
     if (
       code === codes.plusSign ||
       code === codes.dash ||
@@ -58,7 +53,7 @@ function tokenizeAutolink(effects: any, ok: any, nok: any) {
       : nok(code)
   }
 
-  function schemeInsideOrEmailAtext(code: any) {
+  function schemeInsideOrEmailAtext(code: number) {
     if (code === codes.colon) {
       effects.consume(code)
       return urlInside
@@ -80,7 +75,7 @@ function tokenizeAutolink(effects: any, ok: any, nok: any) {
       : nok(code)
   }
 
-  function urlInside(code: any) {
+  function urlInside(code: number) {
     if (code === codes.greaterThan) {
       effects.exit(types.autolinkProtocol)
       return end(code)
@@ -94,7 +89,7 @@ function tokenizeAutolink(effects: any, ok: any, nok: any) {
     return urlInside
   }
 
-  function emailAtext(code: any) {
+  function emailAtext(code: number) {
     if (code === codes.atSign) {
       effects.consume(code)
       size = 0
@@ -109,11 +104,11 @@ function tokenizeAutolink(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function emailAtSignOrDot(code: any) {
+  function emailAtSignOrDot(code: number) {
     return asciiAlphanumeric(code) ? emailLabel(code) : nok(code)
   }
 
-  function emailLabel(code: any) {
+  function emailLabel(code: number) {
     if (code === codes.dot) {
       effects.consume(code)
       size = 0
@@ -129,7 +124,7 @@ function tokenizeAutolink(effects: any, ok: any, nok: any) {
     return emailDashState(code)
   }
 
-  function emailDashState(code: any) {
+  function emailDashState(code: number) {
     if (size < constants.autolinkDomainSizeMax && code === codes.dash) {
       effects.consume(code)
       size++
@@ -145,7 +140,7 @@ function tokenizeAutolink(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function end(code: any) {
+  function end(code: number) {
     assert.equal(code, codes.greaterThan, 'expected `>`')
     effects.enter(types.autolinkMarker)
     effects.consume(code)

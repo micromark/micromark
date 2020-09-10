@@ -1,21 +1,16 @@
-module.exports = createTokenizer
-
-import assert from 'assert'
-import debug from 'debug')('micromark'
+import * as assert from 'assert'
+import * as debugInitializer from 'debug'
 import assign from '../constant/assign'
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
 import own from '../constant/has-own-property'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'shallow'.
 import shallow from '../util/shallow'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'serializeChunks'.
 import serializeChunks from '../util/serialize-chunks'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'sliceChunks'.
 import sliceChunks from '../util/slice-chunks'
 
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createTokenizer'.
-function createTokenizer(parser: any, initialize: any, from: any) {
+const debug = debugInitializer('micromark')
+
+export default function createTokenizer(parser: any, initialize: any, from: any) {
   var point = from ? assign({}, from) : {line: 1, column: 1, offset: 0}
   var columnStart: any = []
   var attachedResolveAlls: any = []

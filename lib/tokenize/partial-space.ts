@@ -1,18 +1,17 @@
-module.exports = createSpaceTokenizer
-
+import type { types, Effects, Token } from '../types'
 import markdownSpace from '../character/markdown-space'
 
-function createSpaceTokenizer(type: any, max: number) {
+export default function createSpaceTokenizer(type: types, max?: number) {
   var limit = (max || Infinity) - 1
 
   return {tokenize: tokenizeSpace, partial: true}
 
-  function tokenizeSpace(effects: any, ok: any) {
-    var token: any
+  function tokenizeSpace(effects: Effects, ok: any) {
+    var token: Token
 
     return start
 
-    function start(code: any) {
+    function start(code: number) {
       if (markdownSpace(code)) {
         token = effects.enter(type)
         token._size = 0
@@ -22,7 +21,7 @@ function createSpaceTokenizer(type: any, max: number) {
       return ok(code)
     }
 
-    function prefix(code: any) {
+    function prefix(code: number) {
       if (token._size < limit && markdownSpace(code)) {
         token._size++
         effects.consume(code)

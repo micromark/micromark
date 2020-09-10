@@ -1,15 +1,12 @@
-exports.tokenize = tokenizeThematicBreak
-
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import type { Effects } from '../types'
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownSpace'.
 import markdownSpace from '../character/markdown-space'
-import constants from '../constant/constants'
-import types from '../constant/types'
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import createSpaceTokenizer from './partial-space'
 
-function tokenizeThematicBreak(effects: any, ok: any, nok: any) {
+export default function tokenizeThematicBreak(effects: Effects, ok: any, nok: any) {
   var size = 0
   var marker: any
 
