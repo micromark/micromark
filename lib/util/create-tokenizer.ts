@@ -1,4 +1,4 @@
-import type { Parser, Point } from '../types'
+import type { Effects, Parser, Point, Token } from '../types'
 import * as assert from 'assert'
 import * as debugInitializer from 'debug'
 import assign from '../constant/assign'
@@ -11,7 +11,7 @@ import sliceChunks from '../util/slice-chunks'
 
 const debug = debugInitializer('micromark')
 
-export default function createTokenizer(parser: Parser, initialize: unknown, from: Point) {
+export default function createTokenizer(parser: Parser, initialize: {tokenize: () => void}, from: Point) {
   var point = from ? assign({}, from) : {line: 1, column: 1, offset: 0}
   var columnStart: any[] = []
   var attachedResolveAlls: any[] = []
@@ -24,7 +24,7 @@ export default function createTokenizer(parser: Parser, initialize: unknown, fro
   var stack: any = []
 
   // Tools used for tokenizing.
-  var effects = {
+  var effects: Effects = {
     consume: consume,
     enter: enter,
     exit: exit,
@@ -150,7 +150,7 @@ export default function createTokenizer(parser: Parser, initialize: unknown, fro
   }
 
   // Move a character forward.
-  function consume(code: any) {
+  function consume(code: number) {
     assert.equal(
       code,
       expectedCode,
@@ -207,7 +207,7 @@ export default function createTokenizer(parser: Parser, initialize: unknown, fro
   }
 
   // Start a token.
-  function enter(type: any) {
+  function enter(type: number): Token {
     var token = {type: type, start: now()}
 
     assert.equal(typeof type, 'string', 'expected string type')

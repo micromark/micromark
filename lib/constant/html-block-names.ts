@@ -62,4 +62,4 @@ export default [
   'tr',
   'track',
   'ul'
-]
+] as const

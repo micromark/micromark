@@ -344,7 +344,7 @@ function tokenizeTitle(effects: Effects, ok: Okay, nok: NotOkay) {
     return code === codes.backslash ? escape : data
   }
 
-   function data(code: number): unknown {
+  function data(code: number): unknown {
     if (code === codes.eof || code === marker || markdownLineEnding(code)) {
       effects.exit(types.chunkString)
       return atBreak(code)

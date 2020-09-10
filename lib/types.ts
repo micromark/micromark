@@ -5,9 +5,10 @@ export interface Point {
   line: number
   column: number
   offset: number
-  _index: number
-  _bufferIndex: number
+  _index?: number
+  _bufferIndex?: number
 }
+
 export interface Token {
   start: Point
   end: Point
@@ -34,7 +35,7 @@ export type Event = [name: string, token: Token, context: unknown]
 
 export interface Effects {
   enter: (type: Type) => Token
-  consume: (code: number) => Token
+  consume: (code: number) => void
   exit: (type: Type) => Token
   attempt: (
     one: unknown,
