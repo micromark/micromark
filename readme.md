@@ -37,6 +37,7 @@ performance, CSTs, and docs.
 *   [API](#api)
     *   [`micromark(doc[, encoding][, options])`](#micromarkdoc-encoding-options)
     *   [`createSteam(options?)`](#createsteamoptions)
+*   [List of extensions](#list-of-extensions)
 *   [Version](#version)
 *   [Security](#security)
 *   [Contribute](#contribute)
@@ -154,6 +155,11 @@ Streaming version of micromark.
 Compiles markdown to HTML.
 `options` are the same as the buffering API above.
 Available at `require('micromark/stream')`.
+
+## List of extensions
+
+*   [`micromark/micromark-extension-frontmatter`](https://github.com/micromark/micromark-extension-frontmatter)
+    — support frontmatter (YAML, TOML, etc)
 
 ## Version
 
