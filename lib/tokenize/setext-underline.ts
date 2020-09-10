@@ -1,15 +1,14 @@
-exports.tokenize = tokenizeSetextUnderline
-exports.resolveTo = resolveToSetextUnderline
-
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import type {Effects, Event, NotOkay, Okay, TokenizerThis} from '../types'
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'shallow'.
+import * as types from '../constant/types'
 import shallow from '../util/shallow'
 import createSpaceTokenizer from './partial-space'
 
-function resolveToSetextUnderline(events: any, context: any) {
+export const resolveTo = function resolveToSetextUnderline(
+  events: Event[],
+  context: unknown
+) {
   var index = events.length
   var contentEnter
   var paragraphEnter
@@ -73,14 +72,18 @@ function resolveToSetextUnderline(events: any, context: any) {
   return events
 }
 
-function tokenizeSetextUnderline(effects: any, ok: any, nok: any) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+export const tokenize = function tokenizeSetextUnderline(
+  this: TokenizerThis,
+  effects: Effects,
+  ok: Okay,
+  nok: NotOkay
+) {
   var self = this
-  var marker: any
+  var marker: number
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     var index = self.events.length
     var paragraph
     var token
@@ -115,7 +118,7 @@ function tokenizeSetextUnderline(effects: any, ok: any, nok: any) {
     return closingSequence(code)
   }
 
-  function closingSequence(code: any) {
+  function closingSequence(code: number) {
     if (code === marker) {
       effects.consume(code)
       return closingSequence
@@ -128,7 +131,7 @@ function tokenizeSetextUnderline(effects: any, ok: any, nok: any) {
     )(code)
   }
 
-  function closingSequenceEnd(code: any) {
+  function closingSequenceEnd(code: number) {
     if (code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.setextHeadingLine)
       return ok(code)

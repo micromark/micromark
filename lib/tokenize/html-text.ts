@@ -1,31 +1,24 @@
-exports.tokenize = tokenizeHtml
-
-import assert from 'assert'
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import type { Effects, NotOkay, Okay } from '../types'
+import * as  assert from 'assert'
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEndingOrSpace'.
 import markdownLineEndingOrSpace from '../character/markdown-line-ending-or-space'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownSpace'.
 import markdownSpace from '../character/markdown-space'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiAlpha'.
 import asciiAlpha from '../character/ascii-alpha'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiAlphanumeric'.
 import asciiAlphanumeric from '../character/ascii-alphanumeric'
-import constants from '../constant/constants'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createSpaceTokenizer'.
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import createSpaceTokenizer from './partial-space'
 
-function tokenizeHtml(effects: any, ok: any, nok: any) {
-  var marker: any
-  var buffer: any
-  var index: any
-  var returnState: any
+const tokenize = function tokenizeHtml(effects: Effects, ok: Okay, nok: NotOkay) {
+  var marker: number | undefined
+  var buffer: string
+  var index: number
+  var returnState: unknown
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // istanbul ignore next - Hooks.
     if (code !== codes.lessThan) return nok(code)
 
@@ -35,7 +28,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return open
   }
 
-  function open(code: any) {
+  function open(code: number) {
     if (code === codes.exclamationMark) {
       effects.consume(code)
       return declarationOpen
@@ -59,7 +52,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function declarationOpen(code: any) {
+  function declarationOpen(code: number) {
     if (code === codes.dash) {
       effects.consume(code)
       return commentOpen
@@ -80,7 +73,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function commentOpen(code: any) {
+  function commentOpen(code: number) {
     if (code === codes.dash) {
       effects.consume(code)
       return commentStart
@@ -89,7 +82,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function commentStart(code: any) {
+  function commentStart(code: number) {
     if (code === codes.eof || code === codes.greaterThan) {
       return nok(code)
     }
@@ -102,7 +95,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return comment(code)
   }
 
-  function commentStartDash(code: any) {
+  function commentStartDash(code: number) {
     if (code === codes.eof || code === codes.greaterThan) {
       return nok(code)
     }
@@ -110,7 +103,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return comment(code)
   }
 
-  function comment(code: any) {
+  function comment(code: number): unknown {
     if (code === codes.eof) {
       return nok(code)
     }
@@ -129,7 +122,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return comment
   }
 
-  function commentClose(code: any) {
+  function commentClose(code: number) {
     if (code === codes.dash) {
       effects.consume(code)
       return end
@@ -138,7 +131,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return comment(code)
   }
 
-  function cdataOpen(code: any) {
+  function cdataOpen(code: number) {
     if (code === buffer.charCodeAt(index++)) {
       effects.consume(code)
       return index === buffer.length ? cdata : cdataOpen
@@ -147,7 +140,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function cdata(code: any) {
+  function cdata(code: number): unknown {
     if (code === codes.eof) {
       return nok(code)
     }
@@ -161,7 +154,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return cdata
   }
 
-  function cdataClose(code: any) {
+  function cdataClose(code: number) {
     if (code === codes.rightSquareBracket) {
       effects.consume(code)
       return cdataEnd
@@ -170,7 +163,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return cdata(code)
   }
 
-  function cdataEnd(code: any) {
+  function cdataEnd(code: number) {
     if (code === codes.greaterThan) {
       return end(code)
     }
@@ -183,7 +176,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return cdata(code)
   }
 
-  function declaration(code: any) {
+  function declaration(code: number) {
     if (code === codes.eof || code === codes.greaterThan) {
       return end(code)
     }
@@ -192,7 +185,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return declaration
   }
 
-  function instruction(code: any) {
+  function instruction(code: number): unknown {
     if (code === codes.eof) {
       return nok(code)
     }
@@ -206,7 +199,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return instruction
   }
 
-  function instructionClose(code: any) {
+  function instructionClose(code: number) {
     if (code === codes.greaterThan) {
       return end(code)
     }
@@ -214,7 +207,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return instruction(code)
   }
 
-  function tagCloseStart(code: any) {
+  function tagCloseStart(code: number) {
     if (asciiAlpha(code)) {
       effects.consume(code)
       return tagClose
@@ -223,7 +216,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function tagClose(code: any) {
+  function tagClose(code: number) {
     if (code === codes.dash || asciiAlphanumeric(code)) {
       effects.consume(code)
       return tagClose
@@ -232,7 +225,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return tagCloseBetween(code)
   }
 
-  function tagCloseBetween(code: any) {
+  function tagCloseBetween(code: number) {
     if (markdownLineEnding(code)) {
       returnState = tagCloseBetween
       return atLineEnding(code)
@@ -246,7 +239,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return end(code)
   }
 
-  function tagOpen(code: any) {
+  function tagOpen(code: number) {
     if (
       code === codes.slash ||
       code === codes.greaterThan ||
@@ -263,7 +256,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function tagOpenBetween(code: any) {
+  function tagOpenBetween(code: number) {
     if (code === codes.slash) {
       effects.consume(code)
       return end
@@ -287,7 +280,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return end(code)
   }
 
-  function tagOpenAttributeName(code: any) {
+  function tagOpenAttributeName(code: number) {
     if (
       code === codes.dash ||
       code === codes.dot ||
@@ -302,7 +295,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return tagOpenAttributeNameAfter(code)
   }
 
-  function tagOpenAttributeNameAfter(code: any) {
+  function tagOpenAttributeNameAfter(code: number) {
     if (code === codes.equalsTo) {
       effects.consume(code)
       return tagOpenAttributeValueBefore
@@ -321,7 +314,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return tagOpenBetween(code)
   }
 
-  function tagOpenAttributeValueBefore(code: any) {
+  function tagOpenAttributeValueBefore(code: number) {
     if (code === codes.quotationMark || code === codes.apostrophe) {
       effects.consume(code)
       marker = code
@@ -352,7 +345,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return tagOpenAttributeValueUnquoted
   }
 
-  function tagOpenAttributeValueQuoted(code: any) {
+  function tagOpenAttributeValueQuoted(code: number) {
     if (code === codes.eof) {
       return nok(code)
     }
@@ -371,7 +364,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return tagOpenAttributeValueQuoted
   }
 
-  function tagOpenAttributeValueQuotedAfter(code: any) {
+  function tagOpenAttributeValueQuotedAfter(code: number) {
     if (
       code === codes.greaterThan ||
       code === codes.slash ||
@@ -383,7 +376,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function tagOpenAttributeValueUnquoted(code: any) {
+  function tagOpenAttributeValueUnquoted(code: number) {
     if (
       code === codes.eof ||
       code === codes.quotationMark ||
@@ -405,7 +398,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
 
   // We can’t have blank lines in content, so no need to worry about empty
   // tokens.
-  function atLineEnding(code: any) {
+  function atLineEnding(code: number) {
     assert(returnState, 'expected return state')
     assert(markdownLineEnding(code), 'expected eol')
     effects.exit(types.data)
@@ -417,7 +410,7 @@ function tokenizeHtml(effects: any, ok: any, nok: any) {
       afterPrefix
     )
 
-    function afterPrefix(code: any) {
+    function afterPrefix(code: number) {
       effects.enter(types.data)
       return returnState(code)
     }

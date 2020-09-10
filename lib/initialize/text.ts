@@ -3,7 +3,7 @@ import * as codes from '../character/codes'
 import own from '../constant/has-own-property'
 import * as types from '../constant/types'
 
-function initializeFactory(field: any) {
+function initializeFactory(field: string) {
   return {tokenize: initializeText}
 
   function initializeText(this: {parser: Parser}, effects: Effects) {

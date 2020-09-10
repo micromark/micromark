@@ -1,3 +1,4 @@
+import type { Parser, Point } from '../types'
 import * as assert from 'assert'
 import * as debugInitializer from 'debug'
 import assign from '../constant/assign'
@@ -10,11 +11,11 @@ import sliceChunks from '../util/slice-chunks'
 
 const debug = debugInitializer('micromark')
 
-export default function createTokenizer(parser: any, initialize: any, from: any) {
+export default function createTokenizer(parser: Parser, initialize: unknown, from: Point) {
   var point = from ? assign({}, from) : {line: 1, column: 1, offset: 0}
-  var columnStart: any = []
-  var attachedResolveAlls: any = []
-  var chunks: any = []
+  var columnStart: any[] = []
+  var attachedResolveAlls: any[] = []
+  var chunks: any[] = []
   var index = 0
   var bufferIndex = -1
   var consumed = true

@@ -1,40 +1,37 @@
-exports.tokenize = tokenizeListStart
-exports.continuation = {tokenize: tokenizeListContinuation}
-exports.exit = tokenizeListEnd
-
-import assert from 'assert'
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownSpace'.
+import type {Effects, NotOkay, Okay, Token, TokenizerThis} from '../types'
+import * as assert from 'assert'
+import * as codes from '../character/codes'
 import markdownSpace from '../character/markdown-space'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiDigit'.
 import asciiDigit from '../character/ascii-digit'
-import constants from '../constant/constants'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'prefixSize'.
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import prefixSize from '../util/prefix-size'
 import thematicBreak from './thematic-break'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createSpaceTokenizer'.
 import createSpaceTokenizer from './partial-space'
-import blank from './partial-blank-line'
+import * as blank from './partial-blank-line'
 
-var listItemPrefixWhitespace = {
+const listItemPrefixWhitespace = {
   tokenize: tokenizeListItemPrefixWhitespace,
   partial: true
 }
-var indent = {tokenize: tokenizeIndent, partial: true}
-var nextItem = {tokenize: tokenizeNextItem, partial: true}
+const indent = {tokenize: tokenizeIndent, partial: true}
+const nextItem = {tokenize: tokenizeNextItem, partial: true}
 
-var listItemValueSizelimit = constants.listItemValueSizeMax - 1
+const listItemValueSizelimit = constants.listItemValueSizeMax - 1
 
-function tokenizeListStart(effects: any, ok: any, nok: any) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+export const tokenize = function tokenizeListStart(
+  this: TokenizerThis,
+  effects: Effects,
+  ok: Okay,
+  nok: NotOkay
+) {
   var self = this
-  var token: any
-  var initialSize: any
+  var token: Token
+  var initialSize: number
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     initialSize = prefixSize(self.events)
 
     if (
@@ -58,7 +55,7 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function unordered(code: any) {
+  function unordered(code: number) {
     if (!self.containerState.marker) {
       self.containerState.type = types.listUnordered
       effects.enter(self.containerState.type)
@@ -69,7 +66,7 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
     return atMarker(code)
   }
 
-  function ordered(code: any) {
+  function ordered(code: number) {
     if (
       !self.containerState.marker &&
       self.interrupt &&
@@ -90,7 +87,7 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
     return self.interrupt ? afterValue : inside
   }
 
-  function inside(code: any) {
+  function inside(code: number) {
     if (token._size < listItemValueSizelimit && asciiDigit(code)) {
       effects.consume(code)
       token._size++
@@ -100,7 +97,7 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
     return afterValue(code)
   }
 
-  function afterValue(code: any) {
+  function afterValue(code: number) {
     effects.exit(types.listItemValue)
 
     return code === codes.rightParenthesis || code === codes.dot
@@ -108,7 +105,7 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
       : nok(code)
   }
 
-  function atMarker(code: any) {
+  function atMarker(code: number) {
     assert(
       code === codes.asterisk ||
         code === codes.plusSign ||
@@ -135,7 +132,7 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function onBlank(code: any) {
+  function onBlank(code: number) {
     // Can’t be empty when interrupting.
     if (self.interrupt) {
       return nok(code)
@@ -146,7 +143,7 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
     return endOfPrefix(code)
   }
 
-  function otherPrefix(code: any) {
+  function otherPrefix(code: number) {
     if (markdownSpace(code)) {
       effects.enter(types.listItemPrefixWhitespace)._size = 1
       effects.consume(code)
@@ -157,7 +154,7 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function endOfPrefix(code: any) {
+  function endOfPrefix(code: number) {
     token._size += prefixSize(self.events, types.listItemPrefixWhitespace)
     self.containerState.size = initialSize + token._size
     effects.exit(types.listItemPrefix)
@@ -165,23 +162,21 @@ function tokenizeListStart(effects: any, ok: any, nok: any) {
   }
 }
 
-function tokenizeNextItem(effects: any, ok: any, nok: any) {
+function tokenizeNextItem(effects: Effects, ok: Okay, nok: NotOkay) {
   return effects.attempt(
     createSpaceTokenizer(types.linePrefix, constants.tabSize),
     effects.attempt(exports, ok, nok)
   )
 }
 
-function tokenizeListContinuation(effects: any, ok: any, nok: any) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+function tokenizeListContinuation(this: TokenizerThis,effects: Effects, ok: Okay, nok: NotOkay) {
   var self = this
 
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
   this.containerState._closeFlow = undefined
 
   return effects.check(blank, onBlank, notBlank)
 
-  function onBlank(code: any) {
+  function onBlank(code: number) {
     if (self.containerState.initialBlankLine) {
       self.containerState.furtherBlankLines = true
     }
@@ -189,7 +184,7 @@ function tokenizeListContinuation(effects: any, ok: any, nok: any) {
     return ok(code)
   }
 
-  function notBlank(code: any) {
+  function notBlank(code: number) {
     if (self.containerState.furtherBlankLines || !markdownSpace(code)) {
       self.containerState.initialBlankLine = undefined
       self.containerState.furtherBlankLines = undefined
@@ -205,20 +200,20 @@ function tokenizeListContinuation(effects: any, ok: any, nok: any) {
     )(code)
   }
 
-  function onItem(code: any) {
+  function onItem(code: number) {
     // While we do continue, we signal that the flow should be closed.
     self.containerState._closeFlow = true
     return ok(code)
   }
 }
 
-function tokenizeListEnd(effects: any) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+export const continuation = {tokenize: tokenizeListContinuation}
+
+export const exit = function tokenizeListEnd(this: TokenizerThis, effects: Effects) {
   effects.exit(this.containerState.type)
 }
 
-function tokenizeIndent(effects: any, ok: any, nok: any) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+function tokenizeIndent(this: TokenizerThis, effects: Effects, ok: Okay, nok: NotOkay) {
   var self = this
 
   return effects.attempt(
@@ -226,7 +221,7 @@ function tokenizeIndent(effects: any, ok: any, nok: any) {
     afterPrefix
   )
 
-  function afterPrefix(code: any) {
+  function afterPrefix(code: number) {
     return prefixSize(self.events, types.listItemIndent) ===
       self.containerState.size
       ? ok(code)
@@ -234,8 +229,7 @@ function tokenizeIndent(effects: any, ok: any, nok: any) {
   }
 }
 
-function tokenizeListItemPrefixWhitespace(effects: any, ok: any, nok: any) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+function tokenizeListItemPrefixWhitespace(this: TokenizerThis, effects: Effects, ok: Okay, nok: NotOkay) {
   var self = this
 
   return effects.attempt(
@@ -243,7 +237,7 @@ function tokenizeListItemPrefixWhitespace(effects: any, ok: any, nok: any) {
     afterPrefix
   )
 
-  function afterPrefix(code: any) {
+  function afterPrefix(code: number) {
     return markdownSpace(code) ||
       !prefixSize(self.events, types.listItemPrefixWhitespace)
       ? nok(code)

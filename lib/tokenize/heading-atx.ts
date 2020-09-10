@@ -1,19 +1,13 @@
-exports.tokenize = tokenizeAtxHeading
-exports.resolve = resolveAtxHeading
-
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import type { Event } from '../types'
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEndingOrSpace'.
 import markdownLineEndingOrSpace from '../character/markdown-line-ending-or-space'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownSpace'.
 import markdownSpace from '../character/markdown-space'
-import constants from '../constant/constants'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createSpaceTokenizer'.
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import createSpaceTokenizer from './partial-space'
 
-function resolveAtxHeading(events: any, context: any) {
+export function resolveAtxHeading(events: Event[], context: unknown) {
   var contentEnd = events.length - 2
   var contentStart = 3
   var content
@@ -68,7 +62,7 @@ function resolveAtxHeading(events: any, context: any) {
   return result.concat(events.slice(contentEnd + 1))
 }
 
-function tokenizeAtxHeading(effects: any, ok: any, nok: any) {
+export function tokenizeAtxHeading(effects: any, ok: any, nok: any) {
   // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
   var self = this
   var size = 0

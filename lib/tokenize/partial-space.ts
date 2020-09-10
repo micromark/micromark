@@ -1,4 +1,4 @@
-import type { types, Effects, Token } from '../types'
+import type { types, Effects, Token, Okay } from '../types'
 import markdownSpace from '../character/markdown-space'
 
 export default function createSpaceTokenizer(type: types, max?: number) {
@@ -6,7 +6,7 @@ export default function createSpaceTokenizer(type: types, max?: number) {
 
   return {tokenize: tokenizeSpace, partial: true}
 
-  function tokenizeSpace(effects: Effects, ok: any) {
+  function tokenizeSpace(effects: Effects, ok: Okay) {
     var token: Token
 
     return start

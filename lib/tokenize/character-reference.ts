@@ -1,25 +1,22 @@
-exports.tokenize = tokenizeCharacterReference
-
-import assert from 'assert'
+import type { Effects, NotOkay, Okay } from '../types'
+import * as assert from 'assert'
+// @ts-ignore
 import decode from 'parse-entities/decode-entity'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiAlphanumeric'.
 import asciiAlphanumeric from '../character/ascii-alphanumeric'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiDigit'.
 import asciiDigit from '../character/ascii-digit'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiHexDigit'.
 import asciiHexDigit from '../character/ascii-hex-digit'
-import codes from '../character/codes'
-import constants from '../constant/constants'
+import * as codes from '../character/codes'
+import * as constants from '../constant/constants'
 import fromCharCode from '../constant/from-char-code'
-import types from '../constant/types'
+import * as types from '../constant/types'
 
-function tokenizeCharacterReference(effects: any, ok: any, nok: any) {
+export const tokenize = function tokenizeCharacterReference(effects: Effects, ok: Okay, nok: NotOkay) {
   var buffer = ''
   var size = 0
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // istanbul ignore next - Hooks.
     if (code !== codes.ampersand) {
       return nok(code)
@@ -32,7 +29,7 @@ function tokenizeCharacterReference(effects: any, ok: any, nok: any) {
     return open
   }
 
-  function open(code: any) {
+  function open(code: number) {
     if (code === codes.numberSign) {
       effects.enter(types.characterReferenceMarkerNumeric)
       effects.consume(code)
@@ -48,7 +45,7 @@ function tokenizeCharacterReference(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function numericStart(code: any) {
+  function numericStart(code: number) {
     if (code === codes.uppercaseX || code === codes.lowercaseX) {
       effects.enter(types.characterReferenceMarkerHexadecimal)
       effects.consume(code)
@@ -64,7 +61,7 @@ function tokenizeCharacterReference(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function hexadecimalStart(code: any) {
+  function hexadecimalStart(code: number) {
     if (asciiHexDigit(code)) {
       effects.enter(types.characterReferenceValue)
       return hexadecimal(code)
@@ -73,7 +70,7 @@ function tokenizeCharacterReference(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function named(code: any) {
+  function named(code: number) {
     if (code === codes.semicolon && decode(buffer)) {
       return end(code)
     }
@@ -90,7 +87,7 @@ function tokenizeCharacterReference(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function hexadecimal(code: any) {
+  function hexadecimal(code: number) {
     if (code === codes.semicolon) {
       return end(code)
     }
@@ -106,7 +103,7 @@ function tokenizeCharacterReference(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function decimal(code: any) {
+  function decimal(code: number) {
     if (code === codes.semicolon) {
       return end(code)
     }
@@ -122,7 +119,7 @@ function tokenizeCharacterReference(effects: any, ok: any, nok: any) {
     return nok(code)
   }
 
-  function end(code: any) {
+  function end(code: number) {
     assert.equal(code, codes.semicolon, 'expected semicolon')
     effects.exit(types.characterReferenceValue)
     effects.enter(types.characterReferenceMarker)

@@ -1,4 +1,4 @@
-import type { Effects } from '../types'
+import type { Effects, NotOkay, Okay } from '../types'
 import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
 import markdownSpace from '../character/markdown-space'
@@ -6,13 +6,13 @@ import * as constants from '../constant/constants'
 import * as types from '../constant/types'
 import createSpaceTokenizer from './partial-space'
 
-export default function tokenizeThematicBreak(effects: Effects, ok: any, nok: any) {
+export default function tokenizeThematicBreak(effects: Effects, ok: Okay, nok: NotOkay) {
   var size = 0
-  var marker: any
+  var marker: number
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // istanbul ignore next - Hooks.
     if (
       code !== codes.asterisk &&
@@ -27,8 +27,7 @@ export default function tokenizeThematicBreak(effects: Effects, ok: any, nok: an
     return atBreak(code)
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'atBreak' implicitly has return type 'any' because... Remove this comment to see the full error message
-  function atBreak(code: any) {
+  function atBreak(code: number): unknown {
     if (code === marker) {
       effects.enter(types.thematicBreakSequence)
       return sequence(code)
@@ -52,8 +51,7 @@ export default function tokenizeThematicBreak(effects: Effects, ok: any, nok: an
     return ok(code)
   }
 
-  // @ts-expect-error ts-migrate(7023) FIXME: 'sequence' implicitly has return type 'any' becaus... Remove this comment to see the full error message
-  function sequence(code: any) {
+  function sequence(code: number) {
     if (code === marker) {
       effects.consume(code)
       size++

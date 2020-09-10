@@ -1,7 +1,7 @@
 import type { Token } from '../types'
 import * as assert from 'assert'
 
-export default function sliceChunks(chunks: any[], token: Token) {
+export default function sliceChunks(chunks: unknown[], token: Token) {
   var startIndex = token.start._index
   var startBufferIndex = token.start._bufferIndex
   var endIndex = token.end._index

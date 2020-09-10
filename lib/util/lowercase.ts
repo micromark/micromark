@@ -1,10 +1,7 @@
-module.exports = lowercase
+import * as codes from '../character/codes'
+import * as constants from '../constant/constants'
 
-import codes from '../character/codes'
-import constants from '../constant/constants'
-
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'lowercase'.
-function lowercase(code: any) {
+export default function lowercase(code: number) {
   return code > codes.atSign && code < codes.leftSquareBracket
     ? code + constants.asciiAlphaCaseDifference
     : code

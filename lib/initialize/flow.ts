@@ -7,20 +7,18 @@ import * as types from '../constant/types'
 import subtokenize from '../util/subtokenize'
 import prefixSize from '../util/prefix-size'
 import createSpaceTokenizer from '../tokenize/partial-space'
-import blank from '../tokenize/partial-blank-line'
+import * as blank from '../tokenize/partial-blank-line'
 
-var content = {
+const content = {
   tokenize: tokenizeContent,
   resolve: resolveContent,
   name: 'content'
 }
-var lookaheadConstruct = {tokenize: tokenizeLookaheadConstruct, partial: true}
+const lookaheadConstruct = {tokenize: tokenizeLookaheadConstruct, partial: true}
 
-export default function initializeFlow(effects: Effects) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+export default function initializeFlow(this: {parser: Parser, currentConstruct: unknown}, effects: Effects) {
   var self = this
   var prefixed = effects.attempt(
-    // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
     this.parser.hooks.flow,
     afterConstruct,
     effects.attempt(
@@ -30,7 +28,6 @@ export default function initializeFlow(effects: Effects) {
     )
   )
   var initial = effects.attempt(
-    // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
     this.parser.hooks.flowInitial,
     afterConstruct,
     effects.attempt(createSpaceTokenizer(types.linePrefix), prefixed)

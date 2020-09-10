@@ -1,13 +1,15 @@
-exports.tokenize = tokenizelabelLink
-exports.resolveAll = require('./label-end').resolveAll
+import type {Effects, NotOkay, Okay} from '../types'
+import * as codes from '../character/codes'
+import * as types from '../constant/types'
 
-import codes from '../character/codes'
-import types from '../constant/types'
-
-function tokenizelabelLink(effects: any, ok: any, nok: any) {
+export const tokenize = function tokenizelabelLink(
+  effects: Effects,
+  ok: Okay,
+  nok: NotOkay
+) {
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // istanbul ignore next - Hooks.
     if (code !== codes.leftSquareBracket) {
       return nok(code)
@@ -21,3 +23,5 @@ function tokenizelabelLink(effects: any, ok: any, nok: any) {
     return ok
   }
 }
+
+export {resolveAll} from './label-end'

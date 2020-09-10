@@ -1,23 +1,19 @@
-
-
-import codes from '../character/codes'
-import constants from '../constant/constants'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'shallow'.
+import type {Event, Token} from '../types'
+import * as codes from '../character/codes'
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import shallow from '../util/shallow'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'classifyCharacter'.
 import classifyCharacter from '../util/classify-character'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'movePoint'.
 import movePoint from '../util/move-point'
 
 // Internal type for markers that could turn into emphasis or strong sequences.
 var attentionSequence = 'attentionSequence'
 
 // Take all events and resolve attention to emphasis or strong.
-export function resolveAllAttention(events: any, context: any) {
+export default function resolveAllAttention(events: Event[], context: unknown) {
   var length = events.length
   var index = -1
-  var token
+  var token: Token
   var lastSequence
   var previous
   var subevents

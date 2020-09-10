@@ -1,18 +1,13 @@
-exports.tokenize = tokenizeWhitespace
-exports.resolve = resolveWhitespace
-
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownLineEnding'.
+import type { Effects, Event, NotOkay, Okay, Token } from '../types'
+import * as codes from '../character/codes'
 import markdownLineEnding from '../character/markdown-line-ending'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownSpace'.
 import markdownSpace from '../character/markdown-space'
-import constants from '../constant/constants'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'shallow'.
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import shallow from '../util/shallow'
 import createSpaceTokenizer from './partial-space'
 
-function resolveWhitespace(events: any, context: any) {
+export function resolveWhitespace(events: Event[], context: unknown) {
   var head = events[0][1]
   var lineEnding = events.length > 2 && events[2][1]
   var result = events
@@ -46,12 +41,13 @@ function resolveWhitespace(events: any, context: any) {
   return result
 }
 
-function tokenizeWhitespace(effects: any, ok: any, nok: any) {
-  var token: any
+
+export const tokenize = function tokenizeWhitespace(effects: Effects, ok: Okay, nok: NotOkay) {
+  var token: Token
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     if (markdownSpace(code)) {
       token = effects.enter(types.whitespace)
       token._size = 0
@@ -67,7 +63,7 @@ function tokenizeWhitespace(effects: any, ok: any, nok: any) {
     return effects.attempt(createSpaceTokenizer(types.linePrefix), ok)
   }
 
-  function whitespace(code: any) {
+  function whitespace(code: number) {
     if (code === codes.eof) {
       effects.exit(types.whitespace)
       return ok(code)

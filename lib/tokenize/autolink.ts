@@ -2,19 +2,23 @@ import * as assert from 'assert'
 import * as codes from '../character/codes'
 import asciiAlpha from '../character/ascii-alpha'
 import asciiAlphanumeric from '../character/ascii-alphanumeric'
-import type { Effects, Okay, NotOkay } from '../types'
+import type {Effects, Okay, NotOkay, Token} from '../types'
 import asciiAtext from '../character/ascii-atext'
 import asciiControl from '../character/ascii-control'
 import * as constants from '../constant/constants'
 import * as types from '../constant/types'
 
-export const tokenize = function tokenizeAutolink(effects: Effects, ok: Okay, nok: NotOkay) {
-  var token: any
-  var size: any
+export const tokenize = function tokenizeAutolink(
+  effects: Effects,
+  ok: Okay,
+  nok: NotOkay
+) {
+  var token: Token
+  var size: number
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // istanbul ignore next - Hooks.
     if (code !== codes.lessThan) {
       return nok(code)

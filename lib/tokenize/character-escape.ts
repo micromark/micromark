@@ -1,14 +1,12 @@
-exports.tokenize = tokenizeCharacterEscape
-
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiPunctuation'.
+import type { Effects, NotOkay, Okay } from '../types'
+import * as codes from '../character/codes'
 import asciiPunctuation from '../character/ascii-punctuation'
-import types from '../constant/types'
+import * as types from '../constant/types'
 
-function tokenizeCharacterEscape(effects: any, ok: any, nok: any) {
+export const tokenize = function tokenizeCharacterEscape(effects: Effects, ok: Okay, nok: NotOkay) {
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // istanbul ignore next - Hooks.
     if (code !== codes.backslash) {
       return nok(code)
@@ -21,7 +19,7 @@ function tokenizeCharacterEscape(effects: any, ok: any, nok: any) {
     return open
   }
 
-  function open(code: any) {
+  function open(code: number) {
     if (asciiPunctuation(code)) {
       effects.enter(types.characterEscapeValue)
       effects.consume(code)

@@ -6,14 +6,14 @@ import * as constants from '../constant/constants'
 import * as types from '../constant/types'
 import flatMap from '../util/flat-map'
 import createSpaceTokenizer from '../tokenize/partial-space'
-import blank from '../tokenize/partial-blank-line'
+import * as blank from '../tokenize/partial-blank-line'
 
 var container = {tokenize: tokenizeContainer}
 var flow = {tokenize: tokenizeLazyFlow}
 
 export default function initializeDocument(this: {containerState: unknown, interrupt: unknown, parser: Parser, now: () => unknown, sliceStream: unknown}, effects: Effects) {
   var self = this
-  var stack: any[] = []
+  var stack: unknown[] = []
   var continued = 0
   var inspectResult = {}
   var inspect = {tokenize: tokenizeInspect, partial: true}

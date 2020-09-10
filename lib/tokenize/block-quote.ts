@@ -1,22 +1,21 @@
-exports.tokenize = tokenizeBlockQuoteStart
-exports.continuation = {tokenize: tokenizeBlockQuoteContinuation}
-exports.exit = exit
-
-import codes from '../character/codes'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'markdownSpace'.
+import type {Effects, NotOkay, Okay} from '../types'
+import * as codes from '../character/codes'
 import markdownSpace from '../character/markdown-space'
-import constants from '../constant/constants'
-import types from '../constant/types'
-// @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'createSpaceTokenizer'.
+import * as constants from '../constant/constants'
+import * as types from '../constant/types'
 import createSpaceTokenizer from './partial-space'
 
-function tokenizeBlockQuoteStart(effects: any, ok: any, nok: any) {
-  // @ts-expect-error ts-migrate(2683) FIXME: 'this' implicitly has type 'any' because it does n... Remove this comment to see the full error message
+export const tokenize = function tokenizeBlockQuoteStart(
+  this: {containerState: {started: boolean}},
+  effects: Effects,
+  ok: Okay,
+  nok: NotOkay
+) {
   var self = this
 
   return start
 
-  function start(code: any) {
+  function start(code: number) {
     // istanbul ignore next - Hooks.
     if (code !== codes.greaterThan) {
       return nok(code)
@@ -34,7 +33,7 @@ function tokenizeBlockQuoteStart(effects: any, ok: any, nok: any) {
     return after
   }
 
-  function after(code: any) {
+  function after(code: number) {
     if (markdownSpace(code)) {
       effects.enter(types.blockQuotePrefixWhitespace)
       effects.consume(code)
@@ -48,13 +47,15 @@ function tokenizeBlockQuoteStart(effects: any, ok: any, nok: any) {
   }
 }
 
-function tokenizeBlockQuoteContinuation(effects: any, ok: any, nok: any) {
+function tokenizeBlockQuoteContinuation(effects: Effects, ok: Okay, nok: any) {
   return effects.attempt(
     createSpaceTokenizer(types.linePrefix, constants.tabSize),
     effects.attempt(exports, ok, nok)
   )
 }
 
-function exit(effects: any) {
+export const continuation = {tokenize: tokenizeBlockQuoteContinuation}
+
+export function exit(effects: Effects) {
   effects.exit(types.blockQuote)
 }

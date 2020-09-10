@@ -7,11 +7,11 @@ var search = /[\0\t\n\r]/g
 export default function preprocessor() {
   var column = 1
   var buffer = ''
-  var atCarriageReturn: any
+  var atCarriageReturn: boolean | undefined
 
   return preprocess
 
-  function preprocess(value: Buffer | string | null, encoding: string) {
+  function preprocess(value: Buffer | string | null, encoding?: string) {
     var chunks = []
     var match
     var next

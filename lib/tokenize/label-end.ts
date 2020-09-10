@@ -1,6 +1,5 @@
 exports.tokenize = tokenizeLabelEnd
 exports.resolveTo = resolveToLabelEnd
-exports.resolveAll = resolveAllLabelEnd
 
 import assert from 'assert'
 // @ts-expect-error ts-migrate(2300) FIXME: Duplicate identifier 'asciiControl'.
@@ -26,7 +25,7 @@ var resource = {tokenize: tokenizeResource}
 var fullReference = {tokenize: tokenizeFullReference}
 var collapsedReference = {tokenize: tokenizeCollapsedReference}
 
-function resolveAllLabelEnd(events: any) {
+export const resolveAll = function resolveAllLabelEnd(events: any) {
   var length = events.length
   var index = -1
   var token
