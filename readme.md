@@ -53,7 +53,7 @@ performance, CSTs, and docs.
 *   [x] 1500+ tests and 100% coverage
 *   [x] Abstract syntax tree ([`mdast-util-from-markdown`][from-markdown],
     [`mdast-util-to-markdown`][to-markdown])
-*   [ ] Extensions: GFM, directives, MDX
+*   [ ] [Extensions][]: GFM, directives, MDX
 *   [ ] Integrate into remark
 *   [ ] Complementary docs on state machine ([CMSM][]) for parsers in other
     languages
@@ -325,3 +325,5 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
 
 [to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
+
+[extensions]: #list-of-extensions
