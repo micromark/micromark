@@ -109,6 +109,7 @@
     "prettier": true,
     "rules": {
       "complexity": "off",
+      "max-depth": "off",
       "guard-for-in": "off",
       "import/no-unassigned-import": "off",
       "no-lonely-if": "off",
