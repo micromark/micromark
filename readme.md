@@ -160,6 +160,12 @@ Available at `require('micromark/stream')`.
 
 *   [`micromark/micromark-extension-frontmatter`](https://github.com/micromark/micromark-extension-frontmatter)
     — support frontmatter (YAML, TOML, etc)
+*   [`micromark/micromark-extension-gfm-autolink-literal`](https://github.com/micromark/micromark-extension-gfm-autolink-literal)
+    — support GFM autolink literals
+*   [`micromark/micromark-extension-gfm-strikethrough`](https://github.com/micromark/micromark-extension-gfm-strikethrough)
+    — support GFM strikethrough
+*   [`micromark/micromark-extension-gfm-tagfilter`](https://github.com/micromark/micromark-extension-gfm-tagfilter)
+    — support GFM tagfilter
 
 ## Version
 
