@@ -467,5 +467,11 @@ test('list-item', function (t) {
     'should support blank lines in code after an initial blank line'
   )
 
+  t.equal(
+    m('* a tight item that ends with an html element: `x`\n\nParagraph'),
+    '<ul>\n<li>a tight item that ends with an html element: <code>x</code></li>\n</ul>\n<p>Paragraph</p>',
+    'should ignore line endings after tight items ending in tags'
+  )
+
   t.end()
 })
