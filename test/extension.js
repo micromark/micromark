@@ -176,14 +176,14 @@ function tokenizeCommentLine(effects, ok, nok) {
     }
 
     // Anything else: allow character references and escapes.
-    effects.enter('data').contentType = 'string'
+    effects.enter('chunkString').contentType = 'string'
     return insideValue(code)
   }
 
   function insideValue(code) {
     // Eol or eof.
     if (code === null || code === -5 || code === -4 || code === -3) {
-      effects.exit('data')
+      effects.exit('chunkString')
       effects.exit('commentLine')
       return ok(code)
     }
