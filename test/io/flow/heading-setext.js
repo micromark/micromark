@@ -222,7 +222,7 @@ test('heading-setext', function (t) {
     'paragraph and heading interplay (5)'
   )
 
-  // Our own:
+  // Extra:
   t.equal(
     m('Foo  \nbar\n-----'),
     '<h2>Foo<br />\nbar</h2>',
@@ -233,6 +233,12 @@ test('heading-setext', function (t) {
     m('Foo\\\nbar\n-----'),
     '<h2>Foo<br />\nbar</h2>',
     'should support a hard break w/ backslash in between'
+  )
+
+  t.equal(
+    m('a\n-\nb'),
+    '<h2>a</h2>\n<p>b</p>',
+    'should prefer a setext heading over an interrupting list'
   )
 
   t.end()
