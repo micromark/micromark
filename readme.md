@@ -142,11 +142,13 @@ For images, the allowed protocols are `http` and `https`.
 
 ###### `options.extensions`
 
-Array of syntax extensions (`Array.<SyntaxExtension>`, default: `[]`).
+Array of syntax extensions ([`Array.<SyntaxExtension>`][syntax-extension],
+default: `[]`).
 
 ###### `options.htmlExtensions`
 
-Array of HTML extensions (`Array.<HtmlExtension>`, default: `[]`).
+Array of HTML extensions ([`Array.<HtmlExtension>`][html-extension], default:
+`[]`).
 
 ##### Returns
 
@@ -169,10 +171,12 @@ They can be passed in [`extensions`][option-extensions] or
 ### `SyntaxExtension`
 
 A syntax extension is an object whose fields are the names of tokenizers:
-`content` (definitions and paragraphs), `document` (containers such as block
-quotes and lists), `flow` (ATX and setext headings, HTML, indented and fenced
-code, thematic breaks), `string` (character escapes and -references), or `text`
-(autolinks, character escapes and -references, code, hard breaks, html, images,
+`content` (a block of, well, content: definitions and paragraphs), `document`
+(containers such as block quotes and lists), `flow` (block constructs such as
+ATX and setext headings, HTML, indented and fenced code, thematic breaks),
+`string` (things that work in a few places such as destinations, fenced code
+info, etc: character escapes and -references), or `text` (rich inline text:
+autolinks, character escapes and -references, code, hard breaks, HTML, images,
 links, emphasis, strong).
 
 The values at such objects are character codes, mapping to constructs.
@@ -184,7 +188,7 @@ See it and the [existing extensions][extensions] for inspiration.
 An HTML extension is an object whose fields are either `enter` or `exit`
 (reflecting whether a token is entered or exited).
 The values at such objects are names of tokens mapping to handlers.
-See it and the [existing extensions][extensions] for inspiration.
+See the [existing extensions][extensions] for inspiration.
 
 ### List of extensions
 
