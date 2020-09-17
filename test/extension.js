@@ -200,5 +200,5 @@ function enterComment() {
 
 function exitComment() {
   this.resume()
-  this.setSlurpOneLineEnding(true)
+  this.setData('slurpOneLineEnding', true)
 }
