@@ -53,7 +53,7 @@ performance, CSTs, and docs.
 *   [x] 1500+ tests and 100% coverage
 *   [x] Abstract syntax tree ([`mdast-util-from-markdown`][from-markdown],
     [`mdast-util-to-markdown`][to-markdown])
-*   [ ] [Extensions][]: GFM, directives, MDX
+*   [ ] [Extensions][]: [GFM][], directives, MDX
 *   [ ] Integrate into remark
 *   [ ] Complementary docs on state machine ([CMSM][]) for parsers in other
     languages
@@ -160,12 +160,18 @@ Available at `require('micromark/stream')`.
 
 *   [`micromark/micromark-extension-frontmatter`](https://github.com/micromark/micromark-extension-frontmatter)
     — support frontmatter (YAML, TOML, etc)
+*   [`micromark/micromark-extension-gfm`](https://github.com/micromark/micromark-extension-gfm)
+    — support GFM (GitHub Flavored Markdown)
 *   [`micromark/micromark-extension-gfm-autolink-literal`](https://github.com/micromark/micromark-extension-gfm-autolink-literal)
     — support GFM autolink literals
 *   [`micromark/micromark-extension-gfm-strikethrough`](https://github.com/micromark/micromark-extension-gfm-strikethrough)
     — support GFM strikethrough
+*   [`micromark/micromark-extension-gfm-table`](https://github.com/micromark/micromark-extension-gfm-table)
+    — support GFM tables
 *   [`micromark/micromark-extension-gfm-tagfilter`](https://github.com/micromark/micromark-extension-gfm-tagfilter)
     — support GFM tagfilter
+*   [`micromark/micromark-extension-gfm-task-list-item`](https://github.com/micromark/micromark-extension-gfm-task-list-item)
+    — support GFM tasklists
 
 ## Version
 
@@ -333,3 +339,5 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
 [extensions]: #list-of-extensions
+
+[gfm]: https://github.com/micromark/micromark-extension-gfm
