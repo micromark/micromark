@@ -37,7 +37,10 @@ performance, CSTs, and docs.
 *   [API](#api)
     *   [`micromark(doc[, encoding][, options])`](#micromarkdoc-encoding-options)
     *   [`createSteam(options?)`](#createsteamoptions)
-*   [List of extensions](#list-of-extensions)
+*   [Extensions](#extensions)
+    *   [`SyntaxExtension`](#syntaxextension)
+    *   [`HtmlExtension`](#htmlextension)
+    *   [List of extensions](#list-of-extensions)
 *   [Version](#version)
 *   [Security](#security)
 *   [Contribute](#contribute)
@@ -156,7 +159,34 @@ Compiles markdown to HTML.
 `options` are the same as the buffering API above.
 Available at `require('micromark/stream')`.
 
-## List of extensions
+## Extensions
+
+There are two types of extensions for micromark:
+[`SyntaxExtension`][syntax-extension] and [`HtmlExtension`][html-extension].
+They can be passed in [`extensions`][option-extensions] or
+[`htmlExtensions`][option-htmlextensions], respectively.
+
+### `SyntaxExtension`
+
+A syntax extension is an object whose fields are the names of tokenizers:
+`content` (definitions and paragraphs), `document` (containers such as block
+quotes and lists), `flow` (ATX and setext headings, HTML, indented and fenced
+code, thematic breaks), `string` (character escapes and -references), or `text`
+(autolinks, character escapes and -references, code, hard breaks, html, images,
+links, emphasis, strong).
+
+The values at such objects are character codes, mapping to constructs.
+The built in [constructs][] are an extension.
+See it and the [existing extensions][extensions] for inspiration.
+
+### `HtmlExtension`
+
+An HTML extension is an object whose fields are either `enter` or `exit`
+(reflecting whether a token is entered or exited).
+The values at such objects are names of tokens mapping to handlers.
+See it and the [existing extensions][extensions] for inspiration.
+
+### List of extensions
 
 *   [`micromark/micromark-extension-frontmatter`](https://github.com/micromark/micromark-extension-frontmatter)
     — support frontmatter (YAML, TOML, etc)
@@ -338,6 +368,16 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
+[gfm]: https://github.com/micromark/micromark-extension-gfm
+
+[constructs]: lib/constructs.js
+
 [extensions]: #list-of-extensions
 
-[gfm]: https://github.com/micromark/micromark-extension-gfm
+[syntax-extension]: #syntaxextension
+
+[html-extension]: #htmlextension
+
+[option-extensions]: #optionsextensions
+
+[option-htmlextensions]: #optionshtmlextensions
