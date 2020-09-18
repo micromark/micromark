@@ -69,6 +69,8 @@
     "eslint-plugin-sonarjs": "^0.5.0",
     "gzip-size-cli": "^3.0.0",
     "jsfuzz": "^1.0.14",
+    "micromark-extension-frontmatter": "^0.2.0",
+    "micromark-extension-gfm": "^0.1.0",
     "ms": "^2.0.0",
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
