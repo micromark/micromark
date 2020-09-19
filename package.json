@@ -91,7 +91,7 @@
     "format": "remark . -qfo && prettier . --write && xo --fix",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
-    "test-fuzz": "jsfuzz fuzzer.js corpus",
+    "test-fuzz": "timeout 3600 jsfuzz test/fuzzer.js test/fixtures",
     "test": "npm run generate && npm run format && npm run test-coverage"
   },
   "nyc": {

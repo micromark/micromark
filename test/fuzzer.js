@@ -1,12 +1,23 @@
-const micromark = require('./index')
+const fs = require('fs')
+const micromark = require('../index')
 const frontmatter = require('micromark-extension-frontmatter')
 const gfmSyntax = require('micromark-extension-gfm')
 const gfmHtml = require('micromark-extension-gfm/html')
 
 function fuzz(buf) {
   try {
-    // // commonmark buffer without html
+    // focus on issues in files less than 100Kb
+    if (buf.length > 100000) return
+
+    // write result in temp file in case unrecoverable exception is thrown
+    fs.writeFileSync('temp.txt', buf)
+
+    // commonmark buffer without html
     micromark(buf)
+
+    // commonmark with different encodings, without html
+    micromark(buf, 'base64')
+    micromark(buf, 'ascii')
 
     // // commonmark buffer with html
     micromark(buf, 'utf-8', {
@@ -39,10 +50,9 @@ function fuzz(buf) {
       htmlExtensions: [gfmHtml]
     })
   } catch (e) {
-    // if (e.message.indexOf('URI malformed') !== -1) {
-    // } else {
-    //   throw e
-    // }
+    if (e.message.indexOf('Maximum call stack size exceeded') !== -1) {
+      return
+    }
     throw e
   }
 }

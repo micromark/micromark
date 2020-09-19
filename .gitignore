@@ -6,3 +6,6 @@ node_modules/
 .DS_Store
 micromark.min.js
 yarn.lock
+test/fixtures/*
+!test/fixtures/*.*
+crash-*

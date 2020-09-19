@@ -1,0 +1,7 @@
+---
+yaml:
+  input: true
+list:
+  - a
+  - b
+---
