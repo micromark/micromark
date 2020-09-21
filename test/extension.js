@@ -62,6 +62,26 @@ test('html extension', function (t) {
 
   t.deepEqual(m('// a\n//\rb'), '<p>// a\n//\rb</p>', 'should not taint')
 
+  t.deepEqual(
+    m('!', {
+      htmlExtensions: [
+        {enter: {null: enterDocument}, exit: {null: exitDocument}}
+      ]
+    }),
+    '+\n<p>!</p>-',
+    'should support html extensions for documents'
+  )
+
+  t.deepEqual(
+    m('', {
+      htmlExtensions: [
+        {enter: {null: enterDocument}, exit: {null: exitDocument}}
+      ]
+    }),
+    '+-',
+    'should support html extensions for empty documents'
+  )
+
   t.test('stream', function (t) {
     t.plan(1)
 
@@ -201,4 +221,12 @@ function enterComment() {
 function exitComment() {
   this.resume()
   this.setData('slurpOneLineEnding', true)
+}
+
+function enterDocument() {
+  this.raw('+')
+}
+
+function exitDocument() {
+  this.raw('-')
 }
