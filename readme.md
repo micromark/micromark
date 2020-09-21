@@ -85,7 +85,7 @@ Yields:
 <h2>Hello, <em>world</em>!</h2>
 ```
 
-Or:
+Or (streaming interface):
 
 ```js
 var fs = require('fs')
@@ -94,7 +94,31 @@ var micromark = require('micromark/stream')
 fs.createReadStream('example.md').pipe(micromark()).pipe(process.stdout)
 ```
 
-Or use [**remark**][remark], which will soon include micromark, has ASTs, and is
+Or (extensions, in this case [`micromark-extension-gfm`][gfm]):
+
+```js
+var micromark = require('micromark')
+var gfmSyntax = require('micromark-extension-gfm')
+var gfmHtml = require('micromark-extension-gfm/html')
+
+var doc = '* [x] contact@example.com ~~strikethrough~~'
+
+var result = micromark(doc, {
+  allowDangerousHtml: true,
+  extensions: [gfmSyntax()],
+  htmlExtensions: [gfmHtml]
+})
+
+console.log(result)
+```
+
+```html
+<ul>
+<li><input checked="" disabled="" type="checkbox"> <a href="mailto:contact@example.com">contact@example.com</a> <del>strikethrough</del></li>
+</ul>
+```
+
+Or use [**remark**][remark], which will soon include micromark and is pretty
 stable.
 
 ## API
