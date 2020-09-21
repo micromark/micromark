@@ -104,7 +104,6 @@ var gfmHtml = require('micromark-extension-gfm/html')
 var doc = '* [x] contact@example.com ~~strikethrough~~'
 
 var result = micromark(doc, {
-  allowDangerousHtml: true,
   extensions: [gfmSyntax()],
   htmlExtensions: [gfmHtml]
 })
