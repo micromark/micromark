@@ -39,6 +39,26 @@ test('syntax extension', function (t) {
   t.deepEqual(m('///'), '<p>///</p>', 'should not taint (slash)')
   t.deepEqual(m('<<<'), '<p>&lt;&lt;&lt;</p>', 'should not taint (less than)')
 
+  t.deepEqual(
+    m('a <i> b, 1 < 3', {
+      allowDangerousHtml: true,
+      extensions: [{text: {60: {tokenize: tokenizeJustALessThan}}}]
+    }),
+    '<p>a i&gt; b, 1  3</p>',
+    'should precede over previously attached constructs by default'
+  )
+
+  t.deepEqual(
+    m('a <i> b, 1 < 3', {
+      allowDangerousHtml: true,
+      extensions: [
+        {text: {60: {tokenize: tokenizeJustALessThan, add: 'after'}}}
+      ]
+    }),
+    '<p>a <i> b, 1  3</p>',
+    'should go after previously attached constructs w/ `add: after`'
+  )
+
   t.end()
 })
 
@@ -211,6 +231,22 @@ function tokenizeCommentLine(effects, ok, nok) {
     // Anything else.
     effects.consume(code)
     return insideValue
+  }
+}
+
+function tokenizeJustALessThan(effects, ok, nok) {
+  return start
+
+  function start(code) {
+    // istanbul ignore next - Hooks.
+    if (code !== 60) {
+      return nok(code)
+    }
+
+    effects.enter('lessThan')
+    effects.consume(code)
+    effects.exit('lessThan')
+    return ok
   }
 }
 
