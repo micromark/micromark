@@ -216,6 +216,8 @@ See the [existing extensions][extensions] for inspiration.
 
 ### List of extensions
 
+*   [`micromark/micromark-extension-footnote`](https://github.com/micromark/micromark-extension-footnote)
+    — support footnotes
 *   [`micromark/micromark-extension-frontmatter`](https://github.com/micromark/micromark-extension-frontmatter)
     — support frontmatter (YAML, TOML, etc)
 *   [`micromark/micromark-extension-gfm`](https://github.com/micromark/micromark-extension-gfm)
