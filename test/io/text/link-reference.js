@@ -341,5 +341,11 @@ test('link (reference)', function (t) {
     'should not support 1000 characters in reference'
   )
 
+  t.equal(
+    m('[x] missing-colon\n\nWill it link? [x]'),
+    '<p>[x] missing-colon</p>\n<p>Will it link? [x]</p>',
+    'should not fail on a missing colon in a definition'
+  )
+
   t.end()
 })
