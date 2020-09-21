@@ -237,7 +237,7 @@ See the [existing extensions][extensions] for inspiration.
 The open beta of micromark starts at version `2.0.0` (there was a different
 package published on npm as `micromark` before).
 micromark will adhere to semver at `3.0.0`.
-Use tilde ranges for now: `"micromark": "~2.7.0"`.
+Use tilde ranges for now: `"micromark": "~2.8.0"`.
 
 ## Security
 
