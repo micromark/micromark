@@ -64,6 +64,9 @@
     "browserify": "^16.0.0",
     "commonmark.json": "^0.29.0",
     "concat-stream": "^2.0.0",
+    "eslint-plugin-es": "^3.0.0",
+    "eslint-plugin-security": "^1.0.0",
+    "eslint-plugin-sonarjs": "^0.5.0",
     "gzip-size-cli": "^3.0.0",
     "ms": "^2.0.0",
     "nyc": "^15.0.0",
@@ -103,22 +106,48 @@
   },
   "xo": {
     "esnext": false,
+    "prettier": true,
+    "envs": [
+      "shared-node-browser"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "lib/**/*.js"
+        ],
+        "plugin": [
+          "es"
+        ],
+        "extends": [
+          "plugin:es/no-2015",
+          "plugin:security/recommended",
+          "plugin:sonarjs/recommended"
+        ],
+        "rules": {
+          "complexity": "off",
+          "es/no-object-assign": "off",
+          "guard-for-in": "off",
+          "max-depth": "off",
+          "no-unmodified-loop-condition": "off",
+          "security/detect-object-injection": "off",
+          "sonarjs/cognitive-complexity": "off",
+          "unicorn/explicit-length-check": "off",
+          "unicorn/prefer-includes": "off",
+          "unicorn/prefer-number-properties": "off"
+        }
+      },
+      {
+        "files": [
+          "test/**/*.js"
+        ],
+        "rules": {
+          "import/no-unassigned-import": "off"
+        }
+      }
+    ],
     "ignores": [
       "dist/"
-    ],
-    "prettier": true,
-    "rules": {
-      "complexity": "off",
-      "max-depth": "off",
-      "guard-for-in": "off",
-      "import/no-unassigned-import": "off",
-      "no-lonely-if": "off",
-      "no-unmodified-loop-condition": "off",
-      "unicorn/explicit-length-check": "off",
-      "unicorn/prefer-includes": "off",
-      "unicorn/prefer-number-properties": "off",
-      "unicorn/prefer-type-error": "off"
-    }
+    ]
   },
   "remarkConfig": {
     "plugins": [
