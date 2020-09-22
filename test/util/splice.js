@@ -74,11 +74,12 @@ test('splice', function (t) {
       'regular Array#splice cannot handle large items to insert'
     )
 
-    var array = [42, 43]
+    var array = [42, 10, 11, 12, 13, 43]
     var itemsToInsert = [...new Array(140000).keys()]
 
-    t.doesNotThrow(
-      () => splice(array, 1, 0, itemsToInsert),
+    t.deepEqual(
+      splice(array, 1, 4, itemsToInsert),
+      [10, 11, 12, 13],
       'can handle large items to insert just fine'
     )
 
