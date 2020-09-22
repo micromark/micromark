@@ -1,14 +1,18 @@
 'use strict'
 
 var test = require('tape')
-var splice = require('../../dist/util/splice')
+var chunkedSplice = require('../../dist/util/chunked-splice')
 
-test('splice', function (t) {
+test('chunkedSplice', function (t) {
   t.test('Zero delete zero insert', function (t) {
     t.plan(2)
 
     var array = [5, 4, 3, 2, 1]
-    t.deepEqual(splice(array, 0, 0, []), [], 'should keep the array as it is')
+    t.deepEqual(
+      chunkedSplice(array, 0, 0, []),
+      [],
+      'should keep the array as it is'
+    )
     t.deepEqual(array, [5, 4, 3, 2, 1], 'should not mutate the array')
 
     t.end()
@@ -20,7 +24,7 @@ test('splice', function (t) {
     var array = [5, 4, 3, 2, 1]
 
     t.deepEqual(
-      splice(array, 1, 2, [9, 99, 999]),
+      chunkedSplice(array, 1, 2, [9, 99, 999]),
       [4, 3],
       'should return deleted items'
     )
@@ -36,7 +40,7 @@ test('splice', function (t) {
     var array = [5, 4, 3, 2, 1]
 
     t.deepEqual(
-      splice(array, -3, 2, [9, 99, 999]),
+      chunkedSplice(array, -3, 2, [9, 99, 999]),
       [3, 2],
       'should return deleted items'
     )
@@ -44,7 +48,7 @@ test('splice', function (t) {
     t.deepEqual(array, [5, 4, 9, 99, 999, 1], 'should mutate the array')
 
     t.deepEqual(
-      splice(array, 100, 3, [10, 11, 12]),
+      chunkedSplice(array, 100, 3, [10, 11, 12]),
       [],
       'should not delete any item'
     )
@@ -56,7 +60,7 @@ test('splice', function (t) {
     )
 
     t.deepEqual(
-      splice(array, -100, 3, [6]),
+      chunkedSplice(array, -100, 3, [6]),
       [5, 4, 9],
       'should delete items at the begining'
     )
@@ -71,14 +75,14 @@ test('splice', function (t) {
 
     t.throws(
       () => [].splice(0, 0, ...new Array(140000).fill('_')),
-      'regular Array#splice cannot handle large items to insert'
+      'regular Array#chunkedSplice cannot handle large items to insert'
     )
 
     var array = [42, 10, 11, 12, 13, 43]
     var itemsToInsert = [...new Array(140000).keys()]
 
     t.deepEqual(
-      splice(array, 1, 4, itemsToInsert),
+      chunkedSplice(array, 1, 4, itemsToInsert),
       [10, 11, 12, 13],
       'can handle large items to insert just fine'
     )
