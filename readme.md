@@ -16,13 +16,12 @@ smol markdown parser that’s different (open beta)
 
 micromark is a long awaited markdown parser.
 It uses a [state machine][cmsm] to parse the entirety of markdown into tokens.
-It’s the smallest [CommonMark][] compliant markdown parser in JavaScript.
+It’s the smallest 100% [CommonMark][] compliant markdown parser in JavaScript.
 It’ll replace the internals of [`remark-parse`][remark-parse], the most
 [popular][] markdown parser.
 Its interface is optimized to compile to HTML, but its parts can be used
 to generate syntax trees or compile to other output formats too.
-It’s in open beta: up next are extensions (GFM, MDX), integration in remark,
-performance, CSTs, and docs.
+It’s in open beta: integration in remark, performance, CSTs, and docs.
 
 *   for updates, see [Twitter][]
 *   for more about us, see [`unifiedjs.com`][site]
@@ -56,7 +55,7 @@ performance, CSTs, and docs.
 *   [x] 1500+ tests and 100% coverage
 *   [x] Abstract syntax tree ([`mdast-util-from-markdown`][from-markdown],
     [`mdast-util-to-markdown`][to-markdown])
-*   [ ] [Extensions][]: [GFM][], directives, MDX
+*   [x] [Extensions][]: [GFM][], [footnotes][], [frontmatter][]
 *   [ ] Integrate into remark
 *   [ ] Complementary docs on state machine ([CMSM][]) for parsers in other
     languages
@@ -215,11 +214,11 @@ See the [existing extensions][extensions] for inspiration.
 
 ### List of extensions
 
-*   [`micromark/micromark-extension-footnote`](https://github.com/micromark/micromark-extension-footnote)
+*   [`micromark/micromark-extension-footnote`][footnotes]
     — support footnotes
-*   [`micromark/micromark-extension-frontmatter`](https://github.com/micromark/micromark-extension-frontmatter)
+*   [`micromark/micromark-extension-frontmatter`][frontmatter]
     — support frontmatter (YAML, TOML, etc)
-*   [`micromark/micromark-extension-gfm`](https://github.com/micromark/micromark-extension-gfm)
+*   [`micromark/micromark-extension-gfm`][gfm]
     — support GFM (GitHub Flavored Markdown)
 *   [`micromark/micromark-extension-gfm-autolink-literal`](https://github.com/micromark/micromark-extension-gfm-autolink-literal)
     — support GFM autolink literals
@@ -398,6 +397,10 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
 [gfm]: https://github.com/micromark/micromark-extension-gfm
+
+[footnotes]: https://github.com/micromark/micromark-extension-footnotes
+
+[frontmatter]: https://github.com/micromark/micromark-extension-frontmatter
 
 [constructs]: lib/constructs.js
 
