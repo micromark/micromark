@@ -1,4 +1,3 @@
-const fs = require('fs')
 const micromark = require('../index')
 const frontmatter = require('micromark-extension-frontmatter')
 const gfmSyntax = require('micromark-extension-gfm')
@@ -6,12 +5,6 @@ const gfmHtml = require('micromark-extension-gfm/html')
 
 function fuzz(buf) {
   try {
-    // focus on issues in files less than 100Kb
-    if (buf.length > 100000) return
-
-    // write result in temp file in case unrecoverable exception is thrown
-    fs.writeFileSync('temp.txt', buf)
-
     // commonmark buffer without html
     micromark(buf)
 
@@ -24,7 +17,6 @@ function fuzz(buf) {
       allowDangerousHtml: true,
       allowDangerousProtocol: true
     })
-
 
     micromark(buf, 'utf-8', {
       extensions: [frontmatter()]
