@@ -216,7 +216,7 @@ function tokenizeCommentLine(effects, ok, nok) {
     }
 
     // Anything else: allow character references and escapes.
-    effects.enter('chunkString').contentType = 'string'
+    effects.enter('chunkString', {contentType: 'string'})
     return insideValue(code)
   }
 
