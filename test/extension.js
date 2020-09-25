@@ -126,7 +126,6 @@ function createFunkyThematicBreak(marker) {
     return start
 
     function start(code) {
-      // istanbul ignore next - Hooks.
       if (code !== marker) {
         return nok(code)
       }
@@ -187,7 +186,6 @@ function tokenizeCommentLine(effects, ok, nok) {
   return start
 
   function start(code) {
-    // istanbul ignore next - Hooks.
     if (code !== 47) {
       return nok(code)
     }
@@ -238,7 +236,6 @@ function tokenizeJustALessThan(effects, ok, nok) {
   return start
 
   function start(code) {
-    // istanbul ignore next - Hooks.
     if (code !== 60) {
       return nok(code)
     }

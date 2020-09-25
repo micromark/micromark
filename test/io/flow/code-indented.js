@@ -66,7 +66,7 @@ test('code-indented', function (t) {
 
   t.equal(
     m('\n    \n    foo\n    '),
-    '<pre><code>foo\n</code></pre>\n',
+    '<pre><code>foo\n</code></pre>',
     'should not support initial blank lines'
   )
 

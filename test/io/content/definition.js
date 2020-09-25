@@ -315,12 +315,53 @@ test('definition', function (t) {
     'should support whitespace before a destination'
   )
 
-  // Extra.
   // See: <https://github.com/commonmark/commonmark.js/issues/192>
   t.equal(
     m('[x]: <> ""\n[][x]'),
     '<p><a href=""></a></p>',
     'should ignore an empty title'
+  )
+
+  t.equal(
+    m('[a]\n\n[a]: <b<c>', {allowDangerousHtml: true}),
+    '<p>[a]</p>\n<p>[a]: &lt;b<c></p>',
+    'should not support a less than in an enclosed destination'
+  )
+
+  t.equal(
+    m('[a]\n\n[a]: b(c'),
+    '<p>[a]</p>\n<p>[a]: b(c</p>',
+    'should not support an extra left paren (`(`) in a raw destination'
+  )
+
+  t.equal(
+    m('[a]\n\n[a]: b)c'),
+    '<p>[a]</p>\n<p>[a]: b)c</p>',
+    'should not support an extra right paren (`)`) in a raw destination'
+  )
+
+  t.equal(
+    m('[a]\n\n[a]: b)c'),
+    '<p>[a]</p>\n<p>[a]: b)c</p>',
+    'should not support an extra right paren (`)`) in a raw destination'
+  )
+
+  t.equal(
+    m('[a]\n\n[a]: a(1(2(3(4()))))b'),
+    '<p><a href="a(1(2(3(4()))))b">a</a></p>\n',
+    'should support 4 or more sets of parens in a raw destination (link resources don’t)'
+  )
+
+  t.equal(
+    m('[a]\n\n[a]: aaa)'),
+    '<p>[a]</p>\n<p>[a]: aaa)</p>',
+    'should not support a final (unbalanced) right paren in a raw destination'
+  )
+
+  t.equal(
+    m('[a]\n\n[a]: aaa) "a"'),
+    '<p>[a]</p>\n<p>[a]: aaa) &quot;a&quot;</p>',
+    'should not support a final (unbalanced) right paren in a raw destination “before” a title'
   )
 
   t.end()

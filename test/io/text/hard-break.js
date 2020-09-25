@@ -82,5 +82,65 @@ test('hard-break', function (t) {
     'should not support trailing hard breaks at the end of a heading'
   )
 
+  t.equal(
+    m('aaa  \t\nbb'),
+    '<p>aaa\nbb</p>',
+    'should support a mixed line suffix (1)'
+  )
+
+  t.equal(
+    m('aaa\t  \nbb'),
+    '<p>aaa\nbb</p>',
+    'should support a mixed line suffix (2)'
+  )
+
+  t.equal(
+    m('aaa  \t  \nbb'),
+    '<p>aaa\nbb</p>',
+    'should support a mixed line suffix (3)'
+  )
+
+  t.equal(
+    m('aaa\0  \nbb'),
+    '<p>aaa�<br />\nbb</p>',
+    'should support a hard break after a replacement character'
+  )
+
+  t.equal(
+    m('aaa\0\t\nbb'),
+    '<p>aaa�\nbb</p>',
+    'should support a line suffix after a replacement character'
+  )
+
+  t.equal(
+    m('*a*  \nbb'),
+    '<p><em>a</em><br />\nbb</p>',
+    'should support a hard break after a span'
+  )
+
+  t.equal(
+    m('*a*\t\nbb'),
+    '<p><em>a</em>\nbb</p>',
+    'should support a line suffix after a span'
+  )
+
+  t.equal(
+    m('*a*  \t\nbb'),
+    '<p><em>a</em>\nbb</p>',
+    'should support a mixed line suffix after a span (1)'
+  )
+
+  t.equal(
+    m('*a*\t  \nbb'),
+    '<p><em>a</em>\nbb</p>',
+    'should support a mixed line suffix after a span (2)'
+  )
+
+  t.equal(
+    m('*a*  \t  \nbb'),
+    '<p><em>a</em>\nbb</p>',
+    'should support a mixed line suffix after a span (3)'
+  )
+
   t.end()
 })

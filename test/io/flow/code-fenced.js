@@ -48,7 +48,7 @@ test('code-fenced', function (t) {
 
   t.equal(
     m('```'),
-    '<pre><code></code></pre>',
+    '<pre><code></code></pre>\n',
     'should support an eof right after an opening sequence'
   )
 
@@ -113,8 +113,8 @@ test('code-fenced', function (t) {
   )
 
   t.equal(
-    m('```\naaa\n    ```'),
-    '<pre><code>aaa\n    ```\n</code></pre>',
+    m('```\naaa\n    ```\n'),
+    '<pre><code>aaa\n    ```\n</code></pre>\n',
     'should not support an indented closing sequence w/ 4 spaces'
   )
 
@@ -181,7 +181,7 @@ test('code-fenced', function (t) {
   // Our own:
   t.equal(
     m('```  '),
-    '<pre><code></code></pre>',
+    '<pre><code></code></pre>\n',
     'should support an eof after whitespace, after the start fence sequence'
   )
 
@@ -193,7 +193,7 @@ test('code-fenced', function (t) {
 
   t.equal(
     m('```js'),
-    '<pre><code class="language-js"></code></pre>',
+    '<pre><code class="language-js"></code></pre>\n',
     'should support an eof after the info string'
   )
 
@@ -205,25 +205,31 @@ test('code-fenced', function (t) {
 
   t.equal(
     m('```\n  '),
-    '<pre><code>  \n</code></pre>',
+    '<pre><code>  \n</code></pre>\n',
     'should support an eof after whitespace in content'
   )
 
   t.equal(
     m('  ```\n '),
-    '<pre><code></code></pre>',
+    '<pre><code></code></pre>\n',
     'should support an eof in the prefix, in content'
   )
 
   t.equal(
     m('```j\\+s&copy;'),
-    '<pre><code class="language-j+s©"></code></pre>',
+    '<pre><code class="language-j+s©"></code></pre>\n',
     'should support character escapes and character references in info strings'
   )
 
   t.equal(
     m('   ```\naaa\n    ```'),
-    '<pre><code>aaa\n ```\n</code></pre>',
+    '<pre><code>aaa\n ```\n</code></pre>\n',
+    'should not support a closing sequence w/ too much indent, regardless of opening sequence'
+  )
+
+  t.equal(
+    m('> ```\n>\n>\n>\n\na'),
+    '<blockquote>\n<pre><code>\n\n\n</code></pre>\n</blockquote>\n<p>a</p>',
     'should not support a closing sequence w/ too much indent, regardless of opening sequence'
   )
 

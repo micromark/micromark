@@ -109,7 +109,7 @@ test('tabs', function (t) {
 
     t.equal(
       m('```x\n\t```'),
-      '<pre><code class="language-x">\t```\n</code></pre>',
+      '<pre><code class="language-x">\t```\n</code></pre>\n',
       'should not support tabs before fenced code closing fences'
     )
 
@@ -255,26 +255,26 @@ test('tabs', function (t) {
   t.test('virtual spaces', function (t) {
     t.equal(
       m('```\n\tx'),
-      '<pre><code>\tx\n</code></pre>',
+      '<pre><code>\tx\n</code></pre>\n',
       'should support a tab in fenced code'
     )
 
     t.equal(
       m(' ```\n\tx'),
-      '<pre><code>   x\n</code></pre>',
-      'should support strip 1 space from an initial tab in fenced code if the opening fence is indented as such'
+      '<pre><code>   x\n</code></pre>\n',
+      'should strip 1 space from an initial tab in fenced code if the opening fence is indented as such'
     )
 
     t.equal(
       m('  ```\n\tx'),
-      '<pre><code>  x\n</code></pre>',
-      'should support strip 2 spaces from an initial tab in fenced code if the opening fence is indented as such'
+      '<pre><code>  x\n</code></pre>\n',
+      'should strip 2 spaces from an initial tab in fenced code if the opening fence is indented as such'
     )
 
     t.equal(
       m('   ```\n\tx'),
-      '<pre><code> x\n</code></pre>',
-      'should support strip 3 spaces from an initial tab in fenced code if the opening fence is indented as such'
+      '<pre><code> x\n</code></pre>\n',
+      'should strip 3 spaces from an initial tab in fenced code if the opening fence is indented as such'
     )
 
     t.end()

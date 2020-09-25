@@ -72,7 +72,7 @@ test('block-quote', function (t) {
 
   t.equal(
     m('> ```\na\n```'),
-    '<blockquote>\n<pre><code></code></pre>\n</blockquote>\n<p>a</p>\n<pre><code></code></pre>',
+    '<blockquote>\n<pre><code></code></pre>\n</blockquote>\n<p>a</p>\n<pre><code></code></pre>\n',
     'should not support lazy fenced code in block quotes'
   )
 

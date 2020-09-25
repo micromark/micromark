@@ -436,5 +436,11 @@ test('link (resource)', function (t) {
     'should support an eol at the start of a title'
   )
 
+  t.equal(
+    m('[a](b( "c")'),
+    '<p>[a](b( &quot;c&quot;)</p>',
+    'should not support whitespace when unbalanced in a raw destination'
+  )
+
   t.end()
 })

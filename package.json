@@ -125,6 +125,7 @@
         ],
         "rules": {
           "complexity": "off",
+          "es/no-array-from": "off",
           "es/no-object-assign": "off",
           "guard-for-in": "off",
           "max-depth": "off",
