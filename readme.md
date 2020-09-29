@@ -398,7 +398,7 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [gfm]: https://github.com/micromark/micromark-extension-gfm
 
-[footnotes]: https://github.com/micromark/micromark-extension-footnotes
+[footnotes]: https://github.com/micromark/micromark-extension-footnote
 
 [frontmatter]: https://github.com/micromark/micromark-extension-frontmatter
 
