@@ -384,5 +384,11 @@ test('html', function (t) {
     'should support starting a line w/ a tag if followed by anything other than an eol (after optional space/tabs)'
   )
 
+  t.equal(
+    m('<span foo=', unsafe),
+    '<p>&lt;span foo=</p>',
+    'should support an EOF before an attribute value'
+  )
+
   t.end()
 })
