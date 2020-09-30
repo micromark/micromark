@@ -1,4 +1,5 @@
 require('./buffer')
+require('./constants')
 require('./dangerous-html')
 require('./dangerous-protocols')
 require('./default-line-ending')
