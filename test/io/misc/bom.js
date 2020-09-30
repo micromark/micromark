@@ -1,0 +1,47 @@
+'use strict'
+
+var test = require('tape')
+var concat = require('concat-stream')
+var m = require('../../..')
+var s = require('../../../stream')
+var slowStream = require('../../util/slow-stream')
+
+test('bom (byte order marker)', function (t) {
+  t.equal(m('\uFEFF'), '', 'should ignore just a bom')
+
+  t.equal(
+    m('\uFEFF# hea\uFEFFding'),
+    '<h1>hea\uFEFFding</h1>',
+    'should ignore a bom'
+  )
+
+  t.equal(m(Buffer.from('\uFEFF')), '', 'should ignore just a bom (buffer)')
+
+  t.equal(
+    m(Buffer.from('\uFEFF# hea\uFEFFding')),
+    '<h1>hea\uFEFFding</h1>',
+    'should ignore a bom (buffer)'
+  )
+
+  t.test('should ignore a bom (stream)', function (t) {
+    t.plan(1)
+
+    slowStream('\uFEFF# hea\uFEFFding').pipe(s()).pipe(concat(onconcat))
+
+    function onconcat(result) {
+      t.equal(result, '<h1>hea\uFEFFding</h1>', 'pass')
+    }
+  })
+
+  t.test('should ignore just a bom (stream)', function (t) {
+    t.plan(1)
+
+    slowStream('\uFEFF').pipe(s()).pipe(concat(onconcat))
+
+    function onconcat(result) {
+      t.equal(result, '', 'pass')
+    }
+  })
+
+  t.end()
+})

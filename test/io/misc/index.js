@@ -1,3 +1,4 @@
+require('./bom')
 require('./buffer')
 require('./constants')
 require('./dangerous-html')
