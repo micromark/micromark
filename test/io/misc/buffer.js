@@ -4,6 +4,8 @@ var test = require('tape')
 var m = require('../../..')
 
 test('buffer', function (t) {
+  t.equal(m(Buffer.from('')), '', 'should support empty buffers')
+
   t.equal(
     m(Buffer.from('<admin@example.com>')),
     '<p><a href="mailto:admin@example.com">admin@example.com</a></p>',
