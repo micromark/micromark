@@ -364,5 +364,19 @@ test('definition', function (t) {
     'should not support a final (unbalanced) right paren in a raw destination “before” a title'
   )
 
+  t.equal(
+    m(
+      ' [a]: b "c"\n  [d]: e\n   [f]: g "h"\n    [i]: j\n\t[k]: l (m)\n\t n [k] o'
+    ),
+    '<p>n <a href="l" title="m">k</a> o</p>',
+    'should support subsequent indented definitions'
+  )
+
+  t.equal(
+    m('[a\n  b]: c\n\n[a\n  b]'),
+    '<p><a href="c">a\nb</a></p>',
+    'should support line prefixes in definition labels'
+  )
+
   t.end()
 })
