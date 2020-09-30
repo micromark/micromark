@@ -10,7 +10,8 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-smol markdown parser that’s different (open beta)
+Small CommonMark compliant markdown parser with positional info and concrete
+tokens.
 
 ## Intro
 
@@ -56,10 +57,10 @@ It’s in open beta: integration in remark, performance, CSTs, and docs.
 *   [x] Abstract syntax tree ([`mdast-util-from-markdown`][from-markdown],
     [`mdast-util-to-markdown`][to-markdown])
 *   [x] [Extensions][]: [GFM][], [footnotes][], [frontmatter][]
+*   [x] Performance (good enough for now)
 *   [ ] Integrate into remark
 *   [ ] Complementary docs on state machine ([CMSM][]) for parsers in other
     languages
-*   [ ] Performance
 *   [ ] Concrete syntax tree
 
 ## Install
@@ -236,7 +237,7 @@ See the [existing extensions][extensions] for inspiration.
 The open beta of micromark starts at version `2.0.0` (there was a different
 package published on npm as `micromark` before).
 micromark will adhere to semver at `3.0.0`.
-Use tilde ranges for now: `"micromark": "~2.8.0"`.
+Use tilde ranges for now: `"micromark": "~2.9.0"`.
 
 ## Security
 
