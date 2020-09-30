@@ -53,7 +53,7 @@ It’s in open beta: integration in remark, performance, CSTs, and docs.
 *   [x] Smallest CM parser that exists (and there’s some more to shave off!)
 *   [x] Safe by default
 *   [x] Streaming interface
-*   [x] 1500+ tests and 100% coverage
+*   [x] 1750+ tests and 100% coverage
 *   [x] Abstract syntax tree ([`mdast-util-from-markdown`][from-markdown],
     [`mdast-util-to-markdown`][to-markdown])
 *   [x] [Extensions][]: [GFM][], [footnotes][], [frontmatter][]
