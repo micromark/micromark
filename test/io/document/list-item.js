@@ -473,5 +473,17 @@ test('list-item', function (t) {
     'should ignore line endings after tight items ending in tags'
   )
 
+  t.equal(
+    m('*   foo\n\n*\n\n*   bar'),
+    '<ul>\n<li>\n<p>foo</p>\n</li>\n<li></li>\n<li>\n<p>bar</p>\n</li>\n</ul>',
+    'should support empty items in a spread list'
+  )
+
+  t.equal(
+    m('* a\n\n<!---->\n\n* b', {allowDangerousHtml: true}),
+    '<ul>\n<li>a</li>\n</ul>\n<!---->\n<ul>\n<li>b</li>\n</ul>',
+    'should support the common list breaking comment method'
+  )
+
   t.end()
 })
