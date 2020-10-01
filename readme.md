@@ -58,7 +58,7 @@ It’s in open beta: integration in remark, performance, CSTs, and docs.
     [`mdast-util-to-markdown`][to-markdown])
 *   [x] [Extensions][]: [GFM][], [footnotes][], [frontmatter][]
 *   [x] Performance (good enough for now)
-*   [ ] Integrate into remark
+*   [x] Integrate into remark ([remarkjs/remark#536][remark-next])
 *   [ ] Complementary docs on state machine ([CMSM][]) for parsers in other
     languages
 *   [ ] Concrete syntax tree
@@ -414,3 +414,5 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [option-extensions]: #optionsextensions
 
 [option-htmlextensions]: #optionshtmlextensions
+
+[remark-next]: https://github.com/remarkjs/remark/pull/536
