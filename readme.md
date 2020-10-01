@@ -41,6 +41,7 @@ It’s in open beta: integration in remark, performance, CSTs, and docs.
     *   [`SyntaxExtension`](#syntaxextension)
     *   [`HtmlExtension`](#htmlextension)
     *   [List of extensions](#list-of-extensions)
+*   [Comparison](#comparison)
 *   [Version](#version)
 *   [Security](#security)
 *   [Contribute](#contribute)
@@ -232,6 +233,69 @@ See the [existing extensions][extensions] for inspiration.
 *   [`micromark/micromark-extension-gfm-task-list-item`](https://github.com/micromark/micromark-extension-gfm-task-list-item)
     — support GFM tasklists
 
+## Comparison
+
+There are many other Markdown parsers out there, and maybe they’re better suited
+to your use case!
+Here is a short comparison of a couple of ’em in JavaScript.
+Note that this list is made by the folks who make `micromark` and `remark`, so
+there is some bias.
+
+###### micromark
+
+micromark is the lowest you can go: it gives tremendous power, such as access to
+all tokens with positional info, at the cost of being hard to get into.
+It’s super small though, pretty fast, and has 100% CommonMark compliance.
+It has syntax extensions, such as supporting 100% GFM compliance (with
+`micromark-extension-gfm`), but they’re rather complex to write.
+It’s the newest parser on the block.
+
+If you’re looking for fine grained control, use micromark.
+
+###### remark
+
+[remark][] is the most popular markdown parser.
+It’s built on top of `micromark` and boasts syntax trees.
+For an analogy, it’s like if Babel, ESLint, and more, were on project.
+It supports the syntax extensions that micromark has (so it’s 100% CM compliant
+and can be 100% GFM compliant), but most of the work is done in plugins that
+transform or inspect the tree.
+Transforming the tree is relatively easy: it’s a JSON object that can be
+manipulated directly.
+remark is stable, widely used, and extremely powerful for handling complex data.
+
+If you’re looking to inspect or transform lots of content, use [remark][].
+
+###### marked
+
+[marked][] is the oldest markdown parser on the block.
+It’s been around for ages, is battle tested, small, popular, and has a bunch of
+extensions, but doesn’t match CommonMark or GFM, and is unsafe by default.
+
+If you have markdown you trust and want to turn it into HTML without a fuss, use
+[marked][].
+
+###### markdown-it
+
+[markdown-it][] is a good, stable, and essentially CommonMark compliant markdown
+parser, with (optional) support for some GFM features as well.
+It’s used a lot as a direct dependency in packages, but is a bit big.
+It shines at syntax extensions, where you want to support not just markdown, but
+*your* (company’s) version of markdown.
+
+If you’re in Node and have CommonMark-compliant, or funky, markdown and want to
+turn it into HTML, use [markdown-it][].
+
+###### Others
+
+There are lots of other markdown parsers!
+Some say they’re small, some say they’re CommonMark compliant — but that’s not
+always true.
+This list is not supposed to be exhaustive.
+This list of markdown parsers is a snapshot in time of why (not) to use
+(alternatives) to `micromark`: they’re all good choices, depending on what your
+goal is.
+
 ## Version
 
 The open beta of micromark starts at version `2.0.0` (there was a different
@@ -416,3 +480,7 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [option-htmlextensions]: #optionshtmlextensions
 
 [remark-next]: https://github.com/remarkjs/remark/pull/536
+
+[marked]: https://github.com/markedjs/marked
+
+[markdown-it]: https://github.com/markdown-it/markdown-it
