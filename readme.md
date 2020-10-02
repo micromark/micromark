@@ -5,13 +5,18 @@
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
 [![Downloads][downloads-badge]][downloads]
-[![Size][size-badge]][size]
+[![Size][bundle-size-badge]][bundle-size]
 [![Sponsors][sponsors-badge]][opencollective]
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-Small CommonMark compliant markdown parser with positional info and concrete
-tokens.
+The smallest CommonMark compliant markdown parser with positional info and
+concrete tokens.
+
+*   [x] **[compliant][commonmark]** (100% to CommonMark)
+*   [x] **[extensions][]** ([GFM][], [footnotes][], [frontmatter][])
+*   [x] **[safe][security]** (by default)
+*   [x] **[small][size]** (smallest CM parser that exists)
 
 ## Intro
 
@@ -19,10 +24,11 @@ micromark is a long awaited markdown parser.
 It uses a [state machine][cmsm] to parse the entirety of markdown into tokens.
 It’s the smallest 100% [CommonMark][] compliant markdown parser in JavaScript.
 It’ll replace the internals of [`remark-parse`][remark-parse], the most
-[popular][] markdown parser.
+[popular][] markdown parser ([`remarkjs/remark#536`][remark-next]).
 Its interface is optimized to compile to HTML, but its parts can be used
-to generate syntax trees or compile to other output formats too.
-It’s in open beta: integration in remark, performance, CSTs, and docs.
+to generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or
+compile to other output formats too.
+It’s in open beta: up next are integration in remark, CMSM, and CSTs.
 
 *   for updates, see [Twitter][]
 *   for more about us, see [`unifiedjs.com`][site]
@@ -31,7 +37,6 @@ It’s in open beta: integration in remark, performance, CSTs, and docs.
 
 ## Contents
 
-*   [Checklist](#checklist)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
@@ -41,28 +46,14 @@ It’s in open beta: integration in remark, performance, CSTs, and docs.
     *   [`SyntaxExtension`](#syntaxextension)
     *   [`HtmlExtension`](#htmlextension)
     *   [List of extensions](#list-of-extensions)
+*   [Size & debug](#size--debug)
+*   [CommonMark](#commonmark)
 *   [Comparison](#comparison)
 *   [Version](#version)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [Sponsor](#sponsor)
 *   [License](#license)
-
-## Checklist
-
-*   [x] CommonMark compliant
-*   [x] Smallest CM parser that exists (and there’s some more to shave off!)
-*   [x] Safe by default
-*   [x] Streaming interface
-*   [x] 1750+ tests and 100% coverage
-*   [x] Abstract syntax tree ([`mdast-util-from-markdown`][from-markdown],
-    [`mdast-util-to-markdown`][to-markdown])
-*   [x] [Extensions][]: [GFM][], [footnotes][], [frontmatter][]
-*   [x] Performance (good enough for now)
-*   [x] Integrate into remark ([remarkjs/remark#536][remark-next])
-*   [ ] Complementary docs on state machine ([CMSM][]) for parsers in other
-    languages
-*   [ ] Concrete syntax tree
 
 ## Install
 
@@ -73,6 +64,8 @@ npm install micromark
 ```
 
 ## Use
+
+Typical use (buffering):
 
 ```js
 var micromark = require('micromark')
@@ -86,16 +79,7 @@ Yields:
 <h2>Hello, <em>world</em>!</h2>
 ```
 
-Or (streaming interface):
-
-```js
-var fs = require('fs')
-var micromark = require('micromark/stream')
-
-fs.createReadStream('example.md').pipe(micromark()).pipe(process.stdout)
-```
-
-Or (extensions, in this case [`micromark-extension-gfm`][gfm]):
+Extensions (in this case [`micromark-extension-gfm`][gfm]):
 
 ```js
 var micromark = require('micromark')
@@ -112,19 +96,59 @@ var result = micromark(doc, {
 console.log(result)
 ```
 
+Yields:
+
 ```html
 <ul>
 <li><input checked="" disabled="" type="checkbox"> <a href="mailto:contact@example.com">contact@example.com</a> <del>strikethrough</del></li>
 </ul>
 ```
 
-Or use [**remark**][remark], which will soon include micromark and is pretty
-stable.
+Streaming interface:
+
+```js
+var fs = require('fs')
+var micromark = require('micromark/stream')
+
+fs.createReadStream('example.md').pipe(micromark()).pipe(process.stdout)
+```
+
+Alternatively, to get a syntax tree
+([`mdast-util-from-markdown`][from-markdown]):
+
+```js
+var fromMarkdown = require('mdast-util-from-markdown')
+
+var result = fromMarkdown('## Hello, *world*!')
+
+console.log(result.children[0])
+```
+
+Yields:
+
+```js
+{
+  type: 'heading',
+  depth: 2,
+  children: [
+    {type: 'text', value: 'Hello, ', position: [Object]},
+    {type: 'emphasis', children: [Array], position: [Object]},
+    {type: 'text', value: '!', position: [Object]}
+  ],
+  position: {
+    start: {line: 1, column: 1, offset: 0},
+    end: {line: 1, column: 19, offset: 18}
+  }
+}
+```
+
+Alternatively, for a nice interface and hundreds of plugins, use
+[**remark**][remark], which will soon include micromark.
 
 ## API
 
-Note that there are more APIs than listed here currently.
-Those are considered to be in progress.
+Note that there are also as of yet undocumented APIs to use the individual parts
+of micromark and to make extensions.
 
 ### `micromark(doc[, encoding][, options])`
 
@@ -180,10 +204,12 @@ Array of HTML extensions ([`Array.<HtmlExtension>`][html-extension], default:
 
 ### `createSteam(options?)`
 
-Streaming version of micromark.
+Streaming interface of micromark.
 Compiles markdown to HTML.
 `options` are the same as the buffering API above.
 Available at `require('micromark/stream')`.
+Note that some of the work to parse markdown can be done streaming, but in the
+end it requires buffering.
 
 ## Extensions
 
@@ -233,9 +259,47 @@ See the [existing extensions][extensions] for inspiration.
 *   [`micromark/micromark-extension-gfm-task-list-item`](https://github.com/micromark/micromark-extension-gfm-task-list-item)
     — support GFM tasklists
 
+## Size & debug
+
+micromark is really small.
+A ton of time went into making sure it minifies well, by the way code is written
+but also through custom build scripts to pre-evaluate certain expressions.
+Furthermore, care went into making it compress well with GZip and Brotli.
+
+Normally, you’ll use the pre-evaluated version of micromark, which is published
+in the `dist/` folder and has entries in the root.
+While developing or debugging, you can switch to use the source, which is
+published in the `lib/` folder, and comes instrumented with assertions and debug
+messages.
+To see debug messages, run your script with a `DEBUG` env variable, such as with
+`DEBUG="micromark" node script.js`.
+
+## CommonMark
+
+The first definition of “Markdown” gave several examples of how it worked,
+showing input Markdown and output HTML, and came with a reference implementation
+(known as `Markdown.pl`).
+When new implementations followed, they mostly followed the first definition,
+but deviated from the first implementation, and added extensions, thus making
+the format a family of formats.
+
+Some years later, an attempt was made to standardize the differences between
+implementations, by specifying how several edge cases should be handled, through
+more input and output examples.
+This attempt is known as [CommonMark][commonmark-spec], and many implementations
+now work towards some degree of CommonMark compliancy.
+Still, CommonMark describes what the output in HTML should be given some
+input, which leaves many edge cases up for debate, and does not answer what
+should happen for other output formats.
+
+micromark passes all tests from CommonMark and has many more tests to match the
+CommonMark reference parsers.
+Finally, it comes with [CMSM][], which describes how to parse markup, instead
+of documenting input and output examples.
+
 ## Comparison
 
-There are many other Markdown parsers out there, and maybe they’re better suited
+There are many other markdown parsers out there, and maybe they’re better suited
 to your use case!
 Here is a short comparison of a couple of ’em in JavaScript.
 Note that this list is made by the folks who make `micromark` and `remark`, so
@@ -245,7 +309,7 @@ there is some bias.
 
 micromark is the lowest you can go: it gives tremendous power, such as access to
 all tokens with positional info, at the cost of being hard to get into.
-It’s super small though, pretty fast, and has 100% CommonMark compliance.
+It’s super small, pretty fast, and has 100% CommonMark compliance.
 It has syntax extensions, such as supporting 100% GFM compliance (with
 `micromark-extension-gfm`), but they’re rather complex to write.
 It’s the newest parser on the block.
@@ -256,7 +320,7 @@ If you’re looking for fine grained control, use micromark.
 
 [remark][] is the most popular markdown parser.
 It’s built on top of `micromark` and boasts syntax trees.
-For an analogy, it’s like if Babel, ESLint, and more, were on project.
+For an analogy, it’s like if Babel, ESLint, and more, were one project.
 It supports the syntax extensions that micromark has (so it’s 100% CM compliant
 and can be 100% GFM compliant), but most of the work is done in plugins that
 transform or inspect the tree.
@@ -279,22 +343,22 @@ If you have markdown you trust and want to turn it into HTML without a fuss, use
 
 [markdown-it][] is a good, stable, and essentially CommonMark compliant markdown
 parser, with (optional) support for some GFM features as well.
-It’s used a lot as a direct dependency in packages, but is a bit big.
+It’s used a lot as a direct dependency in packages, but is rather big.
 It shines at syntax extensions, where you want to support not just markdown, but
 *your* (company’s) version of markdown.
 
-If you’re in Node and have CommonMark-compliant, or funky, markdown and want to
+If you’re in Node and have CommonMark-compliant (or funky) markdown and want to
 turn it into HTML, use [markdown-it][].
 
 ###### Others
 
 There are lots of other markdown parsers!
-Some say they’re small, some say they’re CommonMark compliant — but that’s not
-always true.
+Some say they’re small, or fast, or that they’re CommonMark compliant — but
+that’s not always true.
 This list is not supposed to be exhaustive.
 This list of markdown parsers is a snapshot in time of why (not) to use
-(alternatives) to `micromark`: they’re all good choices, depending on what your
-goal is.
+(alternatives to) `micromark`: they’re all good choices, depending on what your
+goals are.
 
 ## Version
 
@@ -316,8 +380,8 @@ attacks.
 For more information on markdown sanitation, see
 [`improper-markup-sanitization.md`][improper] by [**@chalker**][chalker].
 
-See [`security.md`][security] in [`micromark/.github`][health] for how to submit
-a security report.
+See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
+submit a security report.
 
 ## Contribute
 
@@ -399,9 +463,9 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [downloads]: https://www.npmjs.com/package/micromark
 
-[size-badge]: https://img.shields.io/bundlephobia/minzip/micromark.svg
+[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark.svg
 
-[size]: https://bundlephobia.com/result?p=micromark
+[bundle-size]: https://bundlephobia.com/result?p=micromark
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
@@ -423,7 +487,7 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
 
-[security]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
 
 [contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
 
@@ -439,13 +503,11 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [contribute]: #contribute
 
-[sponsor]: #sponsor
-
 [encoding]: https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings
 
 [buffer]: https://nodejs.org/api/buffer.html
 
-[commonmark]: https://commonmark.org/
+[commonmark-spec]: https://commonmark.org
 
 [popular]: https://www.npmtrends.com/remark-parse-vs-marked-vs-markdown-it
 
@@ -458,8 +520,6 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [cmsm]: https://github.com/micromark/common-markup-state-machine
 
 [from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
-
-[to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
 [gfm]: https://github.com/micromark/micromark-extension-gfm
 
@@ -484,3 +544,11 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [marked]: https://github.com/markedjs/marked
 
 [markdown-it]: https://github.com/markdown-it/markdown-it
+
+[commonmark]: #commonmark
+
+[size]: #size--debug
+
+[security]: #security
+
+[sponsor]: #sponsor
