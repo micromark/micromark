@@ -1,3 +1,3 @@
-declare function safeFromInt(value: string, base?: number): string
+declare function safeFromInt(value: string, base: number): string
 
-export = safeFromInt
+export default safeFromInt

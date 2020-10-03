@@ -1,5 +1,5 @@
-import {Event} from '../../shared-types'
+import {Event} from '../shared-types'
 
-declare function subtokenize(events: Event[]): {done: boolean; events: Event[]}
+declare function subtokenize(events: Event[]): boolean
 
-export = subtokenize
+export default subtokenize

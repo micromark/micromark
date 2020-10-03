@@ -1,4 +1,4 @@
-import {Parser, Point, Tokenizer} from '../../shared-types'
+import {Parser, Point, Tokenizer} from '../shared-types'
 
 declare function createTokenizer(
   parser: Parser,
@@ -6,4 +6,4 @@ declare function createTokenizer(
   from: Point
 ): Tokenizer
 
-export = createTokenizer
+export default createTokenizer

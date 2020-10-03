@@ -1,3 +1,5 @@
-declare function compileHTML(): void
+import {Compile, CompileOptions} from '../shared-types'
 
-export = compileHTML
+declare function compileHtml(options?: CompileOptions): Compile
+
+export default compileHtml

@@ -1,5 +1,5 @@
-// TypeScript Version: 3.0
+// Minimum TypeScript Version: 3.0
 
-import buffer = require('./lib')
+import buffer from './dist'
 
-export = buffer
+export default buffer

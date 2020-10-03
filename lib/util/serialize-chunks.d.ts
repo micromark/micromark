@@ -1,3 +1,5 @@
-declare function serializeChunks(chunks: Array<string | number>): string
+import {Chunk} from '../shared-types'
 
-export = serializeChunks
+declare function serializeChunks(chunks: Chunk[]): string
+
+export default serializeChunks

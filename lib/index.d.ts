@@ -1,5 +1,11 @@
-import {ParserOptions} from './parse'
+import {Buffer, BufferEncoding, Options} from './shared-types'
 
-declare function buffer(options?: ParserOptions): void
+declare function buffer(value: string | Buffer, options?: Options): string
 
-export = buffer
+declare function buffer(
+  value: string | Buffer,
+  encoding?: BufferEncoding,
+  options?: Options
+): string
+
+export default buffer

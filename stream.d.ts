@@ -1,5 +1,5 @@
-// TypeScript Version: 3.0
+// Minimum TypeScript Version: 3.0
 
-import stream = require('./lib/steam')
+import stream from './dist/steam'
 
-export = stream
+export default stream

@@ -1,3 +1,5 @@
-declare function postprocess(): void
+import {Event} from './shared-types'
 
-export = postprocess
+declare function postprocess(events: Event[]): Event[]
+
+export default postprocess

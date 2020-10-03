@@ -1,5 +1,5 @@
-import {Token} from '../../shared-types'
+import {Chunk, Token} from '../shared-types'
 
-declare function sliceChunks(chunks: string[], token: Token): string[]
+declare function sliceChunks(chunks: Chunk[], token: Token): string[]
 
-export = sliceChunks
+export default sliceChunks

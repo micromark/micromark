@@ -1,3 +1,3 @@
 declare function normalizeUri(url: string): string
 
-export = normalizeUri
+export default normalizeUri

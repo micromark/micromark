@@ -1,5 +1,6 @@
-import {Event, Type} from '../../shared-types'
+import {Type} from 'lib/constant/types'
+import {Event} from '../shared-types'
 
 declare function prefixSize(events: Event[], type: Type): number
 
-export = prefixSize
+export default prefixSize

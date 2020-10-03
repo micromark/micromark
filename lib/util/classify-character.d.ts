@@ -1,3 +1,5 @@
-declare function classifyCharacter(code: number): number
+import {Code} from '../character/codes'
 
-export = classifyCharacter
+declare function classifyCharacter(code: Code): number
+
+export default classifyCharacter

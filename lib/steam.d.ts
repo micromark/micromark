@@ -1,5 +1,6 @@
-import {ParserOptions} from './parse'
+import {EventEmitter} from 'events'
+import {Options} from './shared-types'
 
-declare function stream(options?: ParserOptions): void
+declare function stream(options?: Options): EventEmitter
 
-export = stream
+export default stream

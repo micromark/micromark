@@ -1,3 +1,11 @@
-declare function preprocess(): void
+import {BufferEncoding} from 'lib/shared-types'
 
-export = preprocess
+type PreprocessReturn = (
+  value: string,
+  encoding: BufferEncoding,
+  end?: boolean
+) => string[]
+
+declare function preprocess(): PreprocessReturn
+
+export default preprocess
