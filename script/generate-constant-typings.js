@@ -16,7 +16,7 @@ function generateTyping(name, paths) {
     literalType = 'string'
   }
 
-  // Special logic for "Code" since some reasons.
+  // Special logic for "Code" since a `Code` value can be any unicode character.
   if (name === 'Code') {
     literalType = 'null | number'
   }
