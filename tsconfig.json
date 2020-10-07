@@ -14,5 +14,8 @@
                 "stream.d.ts"
             ]
         }
-    }
+    },
+    "exclude": [
+        "micromark.test.ts"
+    ]
 }
