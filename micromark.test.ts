@@ -12,7 +12,7 @@ function testBuffer() {
 
   // $ExpectType string
   micromarkBuffer(raw, {
-    defaultLineEnding: 'utf-8',
+    defaultLineEnding: '\r\n',
     allowDangerousHtml: true,
     allowDangerousProtocol: true,
     extensions: [],
@@ -25,13 +25,8 @@ function testBuffer() {
   // $ExpectType string
   micromarkBuffer(Buffer.alloc(8), {allowDangerousHtml: true})
 
-  // $ExpectType string
-  micromarkBuffer(Buffer.alloc(8), 'utf-8', {allowDangerousHtml: true})
-
   // $ExpectError
-  micromarkBuffer(Buffer.alloc(8), 'this_encoding_does_not_exist', {
-    allowDangerousHtml: true
-  })
+  micromarkBuffer(Buffer.alloc(8), 'utf-8888', {allowDangerousHtml: true})
 
   // $ExpectError
   micromarkBuffer(1234, {allowDangerousHtml: true})
@@ -40,13 +35,16 @@ function testBuffer() {
   micromarkBuffer(raw, 'utf8', {this_is_not_a_valid_option: 0})
 
   // $ExpectError
-  micromarkBuffer(raw, 'utf8', {defaultLineEnding: '????'})
+  micromarkBuffer(raw, 'utf8', 'this_is_not_a_valid_option')
+
+  // $ExpectError
+  micromarkBuffer(Buffer.alloc(8), 'utf-8', {}, 'too_many_arguments')
 }
 
 function testStream() {
   // $ExpectType EventEmitter
   micromarkStream({
-    defaultLineEnding: 'utf-8',
+    defaultLineEnding: '\n',
     allowDangerousHtml: true,
     allowDangerousProtocol: true,
     extensions: [],
