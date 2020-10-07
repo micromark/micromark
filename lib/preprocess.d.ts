@@ -1,4 +1,4 @@
-import {BufferEncoding} from 'lib/shared-types'
+import {BufferEncoding} from './shared-types'
 
 type PreprocessReturn = (
   value: string,
