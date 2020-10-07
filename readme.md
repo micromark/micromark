@@ -14,7 +14,7 @@ The smallest CommonMark compliant markdown parser with positional info and
 concrete tokens.
 
 *   [x] **[compliant][commonmark]** (100% to CommonMark)
-*   [x] **[extensions][]** ([GFM][], [footnotes][], [frontmatter][])
+*   [x] **[extensions][]** ([GFM][], [footnotes][], [frontmatter][], [math][])
 *   [x] **[safe][security]** (by default)
 *   [x] **[small][size]** (smallest CM parser that exists)
 
@@ -258,6 +258,8 @@ See the [existing extensions][extensions] for inspiration.
     — support GFM tagfilter
 *   [`micromark/micromark-extension-gfm-task-list-item`](https://github.com/micromark/micromark-extension-gfm-task-list-item)
     — support GFM tasklists
+*   [`micromark/micromark-extension-math`][math]
+    — support math
 
 ## Size & debug
 
@@ -521,11 +523,13 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
 
-[gfm]: https://github.com/micromark/micromark-extension-gfm
-
 [footnotes]: https://github.com/micromark/micromark-extension-footnote
 
 [frontmatter]: https://github.com/micromark/micromark-extension-frontmatter
+
+[gfm]: https://github.com/micromark/micromark-extension-gfm
+
+[math]: https://github.com/micromark/micromark-extension-math
 
 [constructs]: lib/constructs.js
 
