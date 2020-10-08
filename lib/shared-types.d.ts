@@ -87,10 +87,10 @@ export interface Effects {
     constructInfo:
       | Construct
       | Construct[]
-      | {[code: number]: Construct | Construct[]},
+      | Record<CodeAsKey, Construct | Construct[]>,
     returnState: State,
     bogusState?: State
-  ) => (code: number) => void
+  ) => (code: Code) => void
 
   /**
    * Interrupt is used for stuff right after a line of content.
@@ -99,19 +99,19 @@ export interface Effects {
     constructInfo:
       | Construct
       | Construct[]
-      | {[code: number]: Construct | Construct[]},
+      | Record<CodeAsKey, Construct | Construct[]>,
     ok: Okay,
     nok?: NotOkay
-  ) => (code: number) => void
+  ) => (code: Code) => void
 
   check: (
     constructInfo:
       | Construct
       | Construct[]
-      | {[code: number]: Construct | Construct[]},
+      | Record<CodeAsKey, Construct | Construct[]>,
     ok: Okay,
     nok?: NotOkay
-  ) => (code: number) => void
+  ) => (code: Code) => void
 
   /**
    * Lazy is used for lines that were not properly preceded by the container.
@@ -120,7 +120,7 @@ export interface Effects {
     constructInfo:
       | Construct
       | Construct[]
-      | {[code: number]: Construct | Construct[]},
+      | Record<CodeAsKey, Construct | Construct[]>,
     ok: Okay,
     nok?: NotOkay
   ) => void
@@ -179,7 +179,7 @@ export interface Construct {
  *
  */
 export interface Parser {
-  constructs: Record<NonNullable<Code> | 'null', Construct | Construct[]>
+  constructs: Record<CodeAsKey, Construct | Construct[]>
   content: (from: Point) => Tokenizer
   document: (from: Point) => Tokenizer
   flow: (from: Point) => Tokenizer
@@ -214,23 +214,19 @@ export type Compile = (slice: Event[]) => string
  * https://github.com/micromark/micromark#syntaxextension
  */
 export interface SyntaxExtension {
-  content: string
-  document: unknown
-  flow: unknown
-  string: unknown
-  text: unknown
+  content: Record<CodeAsKey, Construct | Construct[]>
+  document: Record<CodeAsKey, Construct | Construct[]>
+  flow: Record<CodeAsKey, Construct | Construct[]>
+  string: Record<CodeAsKey, Construct | Construct[]>
+  text: Record<CodeAsKey, Construct | Construct[]>
 }
 
 /**
  * https://github.com/micromark/micromark#htmlextension
  */
 export type HtmlExtension =
-  | {
-      enter: unknown
-    }
-  | {
-      exit: unknown
-    }
+  | {enter: {[hook: string]: () => void}}
+  | {exit: {[hook: string]: () => void}}
 
 export type Options = ParseOptions & CompileOptions
 
@@ -267,6 +263,9 @@ export interface CompileOptions {
 }
 
 export type Chunk = NonNullable<Code> | string
+
+// TypeScript will complain that `null` can't be the key of an object. So when a `Code` value is a key of an object, use CodeAsKey instead.
+export type CodeAsKey = NonNullable<Code> | 'null'
 
 /**
  * Encodings supported by the buffer class
