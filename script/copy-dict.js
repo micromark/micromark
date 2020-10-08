@@ -18,8 +18,20 @@ function* walk(dir) {
 
 function copy(libFilePath) {
   var distFilePath = path.join(distDir, path.relative(libDir, libFilePath))
-  fs.mkdirSync(path.dirname(distFilePath), {recursive: true}) // Need Node.js 10.12.0+
-  fs.copyFileSync(libFilePath, distFilePath)
+  var dir = path.dirname(distFilePath)
+  fs.mkdirSync(dir, {recursive: true}) // Need Node.js 10.12.0+
+
+  var inputLines = fs.readFileSync(libFilePath, 'utf-8').split('\n')
+  var outputLines = []
+  for (var line of inputLines) {
+    if (line === '// @for-script: REMOVE_ALL_THING_BELOW') {
+      break
+    }
+
+    outputLines.push(line)
+  }
+
+  fs.writeFileSync(distFilePath, outputLines.join('\n'))
 }
 
 function main() {

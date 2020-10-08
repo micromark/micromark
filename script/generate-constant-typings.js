@@ -28,6 +28,8 @@ function generateTyping(name, paths) {
       '',
       `export type ${name} = ${literalType}`,
       '',
+      '// @for-script: REMOVE_ALL_THING_BELOW',
+      '',
       `export interface ${name}s ${interfaceType}`,
       '',
       `declare const value: ${name}s`,

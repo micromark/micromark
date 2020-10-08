@@ -2,6 +2,8 @@
 
 export type Code = null | number
 
+// @for-script: REMOVE_ALL_THING_BELOW
+
 export interface Codes {
   carriageReturn: -5
   lineFeed: -4

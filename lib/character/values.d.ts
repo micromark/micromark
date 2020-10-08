@@ -101,6 +101,8 @@ export type Value =
   | '~'
   | '�'
 
+// @for-script: REMOVE_ALL_THING_BELOW
+
 export interface Values {
   ht: '\t'
   lf: '\n'
