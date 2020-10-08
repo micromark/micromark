@@ -206,7 +206,7 @@ export interface TokenizerThis {
 }
 
 /**
- *
+ * `Compile` is the return value of `lib/compile/html.js`
  */
 export type Compile = (slice: Event[]) => string
 
