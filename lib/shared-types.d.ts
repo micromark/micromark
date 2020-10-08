@@ -293,3 +293,5 @@ export type BufferEncoding =
 export interface Buffer {
   toString: (encoding?: BufferEncoding) => string
 }
+
+export type CodeCheck = (code: Code) => boolean

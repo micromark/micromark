@@ -1,5 +1,5 @@
-import {Code} from 'dist/character/codes'
+import {CodeCheck} from '../shared-types'
 
-declare function regexCheck(regex: RegExp): (code: Code) => boolean
+declare function regexCheck(regex: RegExp): CodeCheck
 
 export default regexCheck
