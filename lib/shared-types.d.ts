@@ -64,12 +64,12 @@ export interface Effects {
   /**
    * Enter and exit define where tokens start and end
    */
-  enter: (type: Type) => void
+  enter: (type: Type) => Token
 
   /**
    * Enter and exit define where tokens start and end
    */
-  exit: (type: Type) => void
+  exit: (type: Type) => Token
 
   /**
    * Consume deals with a character, and moves to the next
