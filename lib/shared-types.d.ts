@@ -215,10 +215,10 @@ export type Compile = (slice: Event[]) => string
  */
 export interface SyntaxExtension {
   content: Record<CodeAsKey, Construct | Construct[]>
-  document: Record<CodeAsKey, Construct | Construct[]>
-  flow: Record<CodeAsKey, Construct | Construct[]>
-  string: Record<CodeAsKey, Construct | Construct[]>
-  text: Record<CodeAsKey, Construct | Construct[]>
+  document?: Record<CodeAsKey, Construct | Construct[]>
+  flow?: Record<CodeAsKey, Construct | Construct[]>
+  string?: Record<CodeAsKey, Construct | Construct[]>
+  text?: Record<CodeAsKey, Construct | Construct[]>
 }
 
 /**
