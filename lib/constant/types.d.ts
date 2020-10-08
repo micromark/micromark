@@ -2,8 +2,6 @@
 
 export type Type = string
 
-// @for-script: REMOVE_ALL_THING_BELOW
-
 export interface Types {
   data: 'data'
   whitespace: 'whitespace'

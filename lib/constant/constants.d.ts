@@ -36,8 +36,6 @@ export type Constant =
   | 3
   | 10000
 
-// @for-script: REMOVE_ALL_THING_BELOW
-
 export interface Constants {
   asciiAlphaCaseDifference: 32
   attentionSideBefore: 1
