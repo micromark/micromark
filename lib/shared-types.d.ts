@@ -225,8 +225,8 @@ export interface SyntaxExtension {
  * https://github.com/micromark/micromark#htmlextension
  */
 export type HtmlExtension =
-  | {enter: {[hook: string]: () => void}}
-  | {exit: {[hook: string]: () => void}}
+  | {enter: Record<Type, () => void>}
+  | {exit: Record<Type, () => void>}
 
 export type Options = ParseOptions & CompileOptions
 
