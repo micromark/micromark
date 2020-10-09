@@ -193,8 +193,8 @@ export interface Parser {
  */
 export interface TokenizerThis {
   events: Event[]
-  interrupt: unknown
-  lazy: unknown
+  interrupt?: boolean
+  lazy?: boolean
   containerState: {
     marker: number
     type: Type
