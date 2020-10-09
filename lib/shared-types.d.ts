@@ -195,7 +195,7 @@ export interface TokenizerThis {
   events: Event[]
   interrupt?: boolean
   lazy?: boolean
-  containerState?: Record<string, any>
+  containerState?: Record<string, unknown>
 }
 
 /**
