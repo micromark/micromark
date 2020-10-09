@@ -195,14 +195,7 @@ export interface TokenizerThis {
   events: Event[]
   interrupt?: boolean
   lazy?: boolean
-  containerState: {
-    marker: number
-    type: Type
-    initialBlankLine: unknown
-    size: number
-    _closeFlow: unknown
-    furtherBlankLines: unknown
-  }
+  containerState?: Record<string, any>
 }
 
 /**
