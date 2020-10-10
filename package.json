@@ -51,8 +51,12 @@
     "lib/",
     "buffer.js",
     "stream.js",
-    "index.js"
+    "index.js",
+    "buffer.d.ts",
+    "stream.d.ts",
+    "index.d.ts"
   ],
+  "types": "index.d.ts",
   "dependencies": {
     "debug": "^4.0.0",
     "parse-entities": "^2.0.0"
@@ -60,11 +64,13 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
+    "@types/events": "^3.0.0",
     "babel-plugin-unassert": "^3.0.0",
     "browserify": "^16.0.0",
     "character-entities": "^1.0.0",
     "commonmark.json": "^0.29.0",
     "concat-stream": "^2.0.0",
+    "dtslint": "^4.0.0",
     "eslint-plugin-es": "^3.0.0",
     "eslint-plugin-security": "^1.0.0",
     "eslint-plugin-sonarjs": "^0.5.0",
@@ -82,14 +88,16 @@
     "xo": "^0.33.0"
   },
   "scripts": {
+    "generate-constant-typings": "node script/generate-constant-typings",
     "generate-expressions": "node script/generate-expressions",
-    "generate-dist": "babel lib --out-dir dist --quiet --retain-lines --plugins babel-plugin-unassert,./script/babel-transform-undebug.js,./script/babel-transform-constants.js; prettier dist --loglevel error --write",
+    "generate-dist": "babel lib --out-dir dist --quiet --retain-lines --plugins babel-plugin-unassert,./script/babel-transform-undebug.js,./script/babel-transform-constants.js; node script/copy-dict.js; prettier dist --loglevel error --write",
     "generate-size": "browserify . -p tinyify -s micromark -o micromark.min.js; gzip-size micromark.min.js; gzip-size --raw micromark.min.js",
-    "generate": "npm run generate-expressions && npm run generate-dist && npm run generate-size",
+    "generate": "npm run generate-constant-typings && npm run generate-expressions && npm run generate-dist && npm run generate-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
-    "test": "npm run generate && npm run format && npm run test-coverage"
+    "test-types": "dtslint .",
+    "test": "npm run generate && npm run format && npm run test-coverage && npm run test-types"
   },
   "nyc": {
     "check-coverage": true,

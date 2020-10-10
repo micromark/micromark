@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "lib": [
+            "ES5"
+        ],
+        "strict": true,
+        "baseUrl": ".",
+        "paths": {
+            "micromark": [
+                "index.d.ts"
+            ],
+            "micromark/stream": [
+                "stream.d.ts"
+            ]
+        }
+    }
+}
