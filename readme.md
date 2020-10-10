@@ -41,11 +41,12 @@ It’s in open beta: up next are integration in remark, CMSM, and CSTs.
 *   [Use](#use)
 *   [API](#api)
     *   [`micromark(doc[, encoding][, options])`](#micromarkdoc-encoding-options)
-    *   [`createSteam(options?)`](#createsteamoptions)
+    *   [`micromarkStream(options?)`](#micromarkstreamoptions)
 *   [Extensions](#extensions)
     *   [`SyntaxExtension`](#syntaxextension)
     *   [`HtmlExtension`](#htmlextension)
     *   [List of extensions](#list-of-extensions)
+*   [Syntax tree](#syntax-tree)
 *   [Size & debug](#size--debug)
 *   [CommonMark](#commonmark)
 *   [Comparison](#comparison)
@@ -108,42 +109,18 @@ Streaming interface:
 
 ```js
 var fs = require('fs')
-var micromark = require('micromark/stream')
+var micromarkStream = require('micromark/stream')
 
-fs.createReadStream('example.md').pipe(micromark()).pipe(process.stdout)
-```
+fs.createReadStream('example.md')
+  .on('error', handleError)
+  .pipe(micromarkStream())
+  .pipe(process.stdout)
 
-Alternatively, to get a syntax tree
-([`mdast-util-from-markdown`][from-markdown]):
-
-```js
-var fromMarkdown = require('mdast-util-from-markdown')
-
-var result = fromMarkdown('## Hello, *world*!')
-
-console.log(result.children[0])
-```
-
-Yields:
-
-```js
-{
-  type: 'heading',
-  depth: 2,
-  children: [
-    {type: 'text', value: 'Hello, ', position: [Object]},
-    {type: 'emphasis', children: [Array], position: [Object]},
-    {type: 'text', value: '!', position: [Object]}
-  ],
-  position: {
-    start: {line: 1, column: 1, offset: 0},
-    end: {line: 1, column: 19, offset: 18}
-  }
+function handleError(err) {
+  // Handle your error here!
+  throw err
 }
 ```
-
-Alternatively, for a nice interface and hundreds of plugins, use
-[**remark**][remark], which will soon include micromark.
 
 ## API
 
@@ -202,7 +179,7 @@ Array of HTML extensions ([`Array.<HtmlExtension>`][html-extension], default:
 
 `string` — Compiled HTML.
 
-### `createSteam(options?)`
+### `micromarkStream(options?)`
 
 Streaming interface of micromark.
 Compiles markdown to HTML.
@@ -210,6 +187,10 @@ Compiles markdown to HTML.
 Available at `require('micromark/stream')`.
 Note that some of the work to parse markdown can be done streaming, but in the
 end it requires buffering.
+
+micromark does not handle errors for you, so you must handle errors on whatever
+streams you pipe into it.
+As markdown does not know errors, `micromark` itself does not emit errors.
 
 ## Extensions
 
@@ -260,6 +241,40 @@ See the [existing extensions][extensions] for inspiration.
     — support GFM tasklists
 *   [`micromark/micromark-extension-math`][math]
     — support math
+
+## Syntax tree
+
+A higher level project, [`mdast-util-from-markdown`][from-markdown], can give
+you an AST.
+
+```js
+var fromMarkdown = require('mdast-util-from-markdown')
+
+var result = fromMarkdown('## Hello, *world*!')
+
+console.log(result.children[0])
+```
+
+Yields:
+
+```js
+{
+  type: 'heading',
+  depth: 2,
+  children: [
+    {type: 'text', value: 'Hello, ', position: [Object]},
+    {type: 'emphasis', children: [Array], position: [Object]},
+    {type: 'text', value: '!', position: [Object]}
+  ],
+  position: {
+    start: {line: 1, column: 1, offset: 0},
+    end: {line: 1, column: 19, offset: 18}
+  }
+}
+```
+
+Another level up is [**remark**][remark], which provides a nice interface and
+hundreds of plugins.
 
 ## Size & debug
 
