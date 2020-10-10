@@ -157,6 +157,7 @@
       }
     ],
     "ignores": [
+      "micromark.test.ts",
       "dist/"
     ]
   },
