@@ -1,10 +1,10 @@
-require('./bom')
-require('./buffer')
-require('./constants')
-require('./dangerous-html')
-require('./dangerous-protocols')
-require('./default-line-ending')
-require('./line-ending')
-require('./nul')
-require('./tab')
-require('./url')
+import './bom'
+import './buffer'
+import './constants'
+import './dangerous-html'
+import './dangerous-protocols'
+import './default-line-ending'
+import './line-ending'
+import './nul'
+import './tab'
+import './url'

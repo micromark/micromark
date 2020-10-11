@@ -1,2 +1,2 @@
-require('./block-quote')
-require('./list-item')
+import './block-quote'
+import './list-item'

@@ -1,7 +1,5 @@
-'use strict'
-
-var ms = require('ms')
-var m = require('..')
+import ms from 'ms'
+import m from '..'
 
 console.log('base')
 var then = Date.now()

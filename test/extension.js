@@ -1,10 +1,8 @@
-'use strict'
-
-var test = require('tape')
-var concat = require('concat-stream')
-var slowStream = require('./util/slow-stream')
-var m = require('..')
-var createStream = require('../stream')
+import test from 'tape'
+import concat from 'concat-stream'
+import slowStream from './util/slow-stream'
+import m from '..'
+import createStream from '../stream'
 
 test('syntax extension', function (t) {
   var syntax = {

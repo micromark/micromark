@@ -1,10 +1,8 @@
-module.exports = slowStream
-
-var stream = require('stream')
+import stream from 'stream'
 
 var PassThrough = stream.PassThrough
 
-function slowStream(value, encoding) {
+export default function slowStream(value, encoding) {
   var stream = new PassThrough()
   var index = 0
 

@@ -1,7 +1,5 @@
-'use strict'
-
-var test = require('tape')
-var chunkedSplice = require('../../dist/util/chunked-splice')
+import test from 'tape'
+import chunkedSplice from '../../dist/util/chunked-splice'
 
 test('chunkedSplice', function (t) {
   t.test('Zero delete zero insert', function (t) {

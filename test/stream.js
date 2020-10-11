@@ -1,11 +1,9 @@
-'use strict'
-
-var fs = require('fs')
-var stream = require('stream')
-var test = require('tape')
-var concat = require('concat-stream')
-var m = require('../stream')
-var slowStream = require('./util/slow-stream')
+import fs from 'fs'
+import stream from 'stream'
+import test from 'tape'
+import concat from 'concat-stream'
+import m from '../stream'
+import slowStream from './util/slow-stream'
 
 test('stream', function (t) {
   t.test('should support streaming', function (t) {

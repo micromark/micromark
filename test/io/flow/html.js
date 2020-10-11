@@ -1,7 +1,5 @@
-'use strict'
-
-var test = require('tape')
-var m = require('../../..')
+import test from 'tape'
+import m from '../../..'
 
 var unsafe = {allowDangerousHtml: true}
 

@@ -1,12 +1,12 @@
-require('./autolink')
-require('./character-escape')
-require('./character-reference')
-require('./code')
-require('./emphasis')
-require('./hard-break')
-require('./html')
-require('./soft-break')
-require('./text')
-require('./image')
-require('./link-resource')
-require('./link-reference')
+import './autolink'
+import './character-escape'
+import './character-reference'
+import './code'
+import './emphasis'
+import './hard-break'
+import './html'
+import './soft-break'
+import './text'
+import './image'
+import './link-resource'
+import './link-reference'

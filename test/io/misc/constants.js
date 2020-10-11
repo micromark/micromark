@@ -1,9 +1,7 @@
-'use strict'
-
-var test = require('tape')
-var constants = require('../../../dist/constant/constants')
-var htmlRawNames = require('../../../dist/constant/html-raw-names')
-var characterReferences = require('character-entities')
+import test from 'tape'
+import constants from '../../../dist/constant/constants'
+import htmlRawNames from '../../../dist/constant/html-raw-names'
+import characterReferences from 'character-entities'
 
 test('constants', function (t) {
   t.equal(

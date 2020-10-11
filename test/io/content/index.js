@@ -1,1 +1,1 @@
-require('./definition')
+import './definition'

@@ -1,5 +1,5 @@
-require('./content')
-require('./document')
-require('./flow')
-require('./misc')
-require('./text')
+import './content'
+import './document'
+import './flow'
+import './misc'
+import './text'

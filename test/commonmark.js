@@ -1,8 +1,6 @@
-'use strict'
-
-var commonmark = require('commonmark.json')
-var test = require('tape')
-var m = require('..')
+import commonmark from 'commonmark.json'
+import test from 'tape'
+import m from '..'
 
 var options = {
   allowDangerousHtml: true,

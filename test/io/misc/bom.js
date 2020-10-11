@@ -1,10 +1,8 @@
-'use strict'
-
-var test = require('tape')
-var concat = require('concat-stream')
-var m = require('../../..')
-var s = require('../../../stream')
-var slowStream = require('../../util/slow-stream')
+import test from 'tape'
+import concat from 'concat-stream'
+import m from '../../..'
+import s from '../../../stream'
+import slowStream from '../../util/slow-stream'
 
 test('bom (byte order marker)', function (t) {
   t.equal(m('\uFEFF'), '', 'should ignore just a bom')

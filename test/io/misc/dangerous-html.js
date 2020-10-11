@@ -1,7 +1,5 @@
-'use strict'
-
-var test = require('tape')
-var m = require('../../..')
+import test from 'tape'
+import m from '../../..'
 
 test('dangerous-html', function (t) {
   t.equal(m('<x>'), '&lt;x&gt;', 'should be safe by default for flow')

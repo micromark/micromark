@@ -1,6 +1,6 @@
-require('./code-fenced')
-require('./code-indented')
-require('./heading-atx')
-require('./heading-setext')
-require('./html')
-require('./thematic-break')
+import './code-fenced'
+import './code-indented'
+import './heading-atx'
+import './heading-setext'
+import './html'
+import './thematic-break'
