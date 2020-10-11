@@ -442,5 +442,11 @@ test('link (resource)', function (t) {
     'should not support whitespace when unbalanced in a raw destination'
   )
 
+  t.equal(
+    m('[a](\0)'),
+    '<p><a href="%EF%BF%BD">a</a></p>',
+    'should support a single NUL character as a link resource'
+  )
+
   t.end()
 })
