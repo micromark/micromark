@@ -393,7 +393,15 @@ test('html', function (t) {
   t.equal(
     m('a <!b\nc>', unsafe),
     '<p>a <!b\nc></p>',
-    'should support an EOL in a doctype'
+    'should support an EOL in a declaration'
+  )
+
+  // Note: cmjs parses this differently.
+  // See: <https://github.com/commonmark/commonmark.js/issues/196>
+  t.equal(
+    m('a <?\n?>', unsafe),
+    '<p>a <?\n?></p>',
+    'should support an EOL in an instruction'
   )
 
   t.end()
