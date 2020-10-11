@@ -98,8 +98,8 @@
     "generate": "npm run generate-constant-typings && npm run generate-expressions && npm run generate-dist && npm run generate-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "pretest-fuzz": "patch-package --patch-dir script/patches; node script/generate-fixtures",
-    "test-fuzz": "timeout 15m jsfuzz test/fuzz.js test/fixtures --rss-limit-mb 300 --timeout 300",
-    "test-api": "tape test -r esm",
+    "test-fuzz": "timeout 15m NODE_OPTIONS='-r esm' jsfuzz test/fuzz.js test/fixtures --rss-limit-mb 300 --timeout 300",
+    "test-api": "node test -r esm",
     "test-coverage": "nyc --reporter lcov tape test/index.js -r esm",
     "test-types": "dtslint .",
     "test": "npm run generate && npm run format && npm run test-coverage && npm run test-types"

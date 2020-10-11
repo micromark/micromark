@@ -9,7 +9,7 @@ var fs = require('fs')
 var cp = require('child_process')
 
 var script = [
-  'module.exports = capture',
+  'export default capture',
   'var fs = require("fs")',
   'var path = require("path")',
   'var m = require("./dist")',
@@ -34,7 +34,7 @@ var script = [
 
 fs.renameSync('index.js', 'index.bak.js')
 fs.writeFileSync('index.js', script)
-cp.execSync('node test')
+cp.execSync('node -r esm test')
 
 process.on('exit', onexit)
 
