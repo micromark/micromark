@@ -17,6 +17,7 @@ concrete tokens.
 *   [x] **[extensions][]** ([GFM][], [footnotes][], [frontmatter][], [math][])
 *   [x] **[safe][security]** (by default)
 *   [x] **[small][size]** (smallest CM parser that exists)
+*   [x] **[robust][test]** (1700+ tests, 100% coverage, fuzz testing)
 
 ## Intro
 
@@ -47,8 +48,9 @@ It’s in open beta: up next are integration in remark, CMSM, and CSTs.
     *   [`HtmlExtension`](#htmlextension)
     *   [List of extensions](#list-of-extensions)
 *   [Syntax tree](#syntax-tree)
-*   [Size & debug](#size--debug)
 *   [CommonMark](#commonmark)
+*   [Test](#test)
+*   [Size & debug](#size--debug)
 *   [Comparison](#comparison)
 *   [Version](#version)
 *   [Security](#security)
@@ -276,21 +278,6 @@ Yields:
 Another level up is [**remark**][remark], which provides a nice interface and
 hundreds of plugins.
 
-## Size & debug
-
-micromark is really small.
-A ton of time went into making sure it minifies well, by the way code is written
-but also through custom build scripts to pre-evaluate certain expressions.
-Furthermore, care went into making it compress well with GZip and Brotli.
-
-Normally, you’ll use the pre-evaluated version of micromark, which is published
-in the `dist/` folder and has entries in the root.
-While developing or debugging, you can switch to use the source, which is
-published in the `lib/` folder, and comes instrumented with assertions and debug
-messages.
-To see debug messages, run your script with a `DEBUG` env variable, such as with
-`DEBUG="micromark" node script.js`.
-
 ## CommonMark
 
 The first definition of “Markdown” gave several examples of how it worked,
@@ -313,6 +300,29 @@ micromark passes all tests from CommonMark and has many more tests to match the
 CommonMark reference parsers.
 Finally, it comes with [CMSM][], which describes how to parse markup, instead
 of documenting input and output examples.
+
+## Test
+
+micromark is tested with the ~650 CommonMark tests and more than 1000 extra
+tests confirmed with other markdown parsers.
+These tests reach all branches in the code, thus this project has 100% coverage.
+Finally, we use fuzz testing to ensure micromark is stable, reliable, and
+secure.
+
+## Size & debug
+
+micromark is really small.
+A ton of time went into making sure it minifies well, by the way code is written
+but also through custom build scripts to pre-evaluate certain expressions.
+Furthermore, care went into making it compress well with GZip and Brotli.
+
+Normally, you’ll use the pre-evaluated version of micromark, which is published
+in the `dist/` folder and has entries in the root.
+While developing or debugging, you can switch to use the source, which is
+published in the `lib/` folder, and comes instrumented with assertions and debug
+messages.
+To see debug messages, run your script with a `DEBUG` env variable, such as with
+`DEBUG="micromark" node script.js`.
 
 ## Comparison
 
@@ -567,6 +577,8 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [commonmark]: #commonmark
 
 [size]: #size--debug
+
+[test]: #test
 
 [security]: #security
 
