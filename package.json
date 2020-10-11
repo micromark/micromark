@@ -1,6 +1,6 @@
 {
   "name": "micromark",
-  "version": "2.9.2",
+  "version": "2.10.0",
   "description": "small commonmark compliant markdown parser with positional info and concrete tokens",
   "license": "MIT",
   "keywords": [
