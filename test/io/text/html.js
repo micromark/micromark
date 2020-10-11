@@ -390,5 +390,11 @@ test('html', function (t) {
     'should support an EOF before an attribute value'
   )
 
+  t.equal(
+    m('a <!b\nc>', unsafe),
+    '<p>a <!b\nc></p>',
+    'should support an EOL in a doctype'
+  )
+
   t.end()
 })
