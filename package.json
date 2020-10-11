@@ -90,14 +90,13 @@
     "xo": "^0.33.0"
   },
   "scripts": {
-    "postinstall": "patch-package --patch-dir script/patches",
     "generate-constant-typings": "node script/generate-constant-typings",
     "generate-expressions": "node script/generate-expressions",
     "generate-dist": "babel lib --out-dir dist --quiet --retain-lines --plugins babel-plugin-unassert,./script/babel-transform-undebug.js,./script/babel-transform-constants.js; node script/copy-dict.js; prettier dist --loglevel error --write",
     "generate-size": "browserify . -p tinyify -s micromark -o micromark.min.js; gzip-size micromark.min.js; gzip-size --raw micromark.min.js",
     "generate": "npm run generate-constant-typings && npm run generate-expressions && npm run generate-dist && npm run generate-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
-    "pretest-fuzz": "node script/generate-fixtures",
+    "pretest-fuzz": "patch-package --patch-dir script/patches; node script/generate-fixtures",
     "test-fuzz": "timeout 15m jsfuzz test/fuzz.js test/fixtures --rss-limit-mb 300 --timeout 300",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test/index.js",
