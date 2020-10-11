@@ -26,7 +26,7 @@ export type Constant =
   | 5
   | 6
   | 7
-  | 6
+  | 8
   | 3
   | 999
   | 10
@@ -64,7 +64,7 @@ export interface Constants {
   htmlCdata: 5
   htmlBasic: 6
   htmlComplete: 7
-  htmlRawSizeMax: 6
+  htmlRawSizeMax: 8
   linkResourceDestinationBalanceMax: 3
   linkReferenceSizeMax: 999
   listItemValueSizeMax: 10
