@@ -1,4 +1,4 @@
-import m from '..'
+import m from '../index.js'
 
 export function fuzz(buf) {
   // Buffer.
