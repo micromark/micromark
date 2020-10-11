@@ -392,7 +392,7 @@ goals are.
 The open beta of micromark starts at version `2.0.0` (there was a different
 package published on npm as `micromark` before).
 micromark will adhere to semver at `3.0.0`.
-Use tilde ranges for now: `"micromark": "~2.9.2"`.
+Use tilde ranges for now: `"micromark": "~2.10.1"`.
 
 ## Security
 
