@@ -127,7 +127,7 @@
     "overrides": [
       {
         "files": [
-          "lib/**/*.{js,cjs}"
+          "lib/**/*.{js,mjs,cjs}"
         ],
         "plugin": [
           "es"
