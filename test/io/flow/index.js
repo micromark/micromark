@@ -1,6 +1,0 @@
-require('./code-fenced')
-require('./code-indented')
-require('./heading-atx')
-require('./heading-setext')
-require('./html')
-require('./thematic-break')
