@@ -99,7 +99,7 @@
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "pretest-fuzz": "patch-package --patch-dir script/patches; node script/generate-fixtures.mjs",
     "test-fuzz": "NODE_OPTIONS='-r esm' timeout 15m jsfuzz test/fuzz.js test/fixtures --rss-limit-mb 300 --timeout 300",
-    "test-api": "node test/index.mjs",
+    "test-api": "node --experimental-modules test/index.mjs",
     "test-coverage": "nyc --reporter lcov node test/index.mjs",
     "test-types": "dtslint .",
     "test": "npm run generate && npm run format && npm run test-coverage && npm run test-types"

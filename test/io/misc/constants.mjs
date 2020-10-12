@@ -1,7 +1,7 @@
 import test from 'tape'
 import constants from '../../../dist/constant/constants.js'
 import htmlRawNames from '../../../dist/constant/html-raw-names.js'
-import characterReferences from './character-entities.cjs'
+import characterReferences from './character-entities.js'
 
 test('constants', function (t) {
   t.equal(
