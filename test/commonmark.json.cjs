@@ -1,1 +1,1 @@
-module.exports = require('commonmark.json');;
+module.exports = require('commonmark.json')
