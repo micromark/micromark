@@ -3,7 +3,7 @@ import {nodeResolve} from '@rollup/plugin-node-resolve'
 import {babel} from '@rollup/plugin-babel'
 import {terser} from 'rollup-plugin-terser'
 
-export default {
+var config = {
   input: './lib/index.js',
   output: {
     file: './micromark.min.js',
@@ -14,11 +14,13 @@ export default {
         // No need to mangle here, will do that at the end.
         mangle: false,
         output: {
+          // eslint-disable-next-line camelcase
           ascii_only: true
         }
       }),
       terser({
         output: {
+          // eslint-disable-next-line camelcase
           ascii_only: true
         },
         mangle: {
@@ -40,3 +42,5 @@ export default {
     commonjs()
   ]
 }
+
+export default config
