@@ -41,5 +41,7 @@ fs.writeFileSync(
 )
 
 function unicode(d) {
-  return require('unicode-13.0.0/General_Category/' + d + '/code-points')
+  return require('@unicode/unicode-13.0.0/General_Category/' +
+    d +
+    '/code-points')
 }

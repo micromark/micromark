@@ -65,6 +65,7 @@
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@types/events": "^3.0.0",
+    "@unicode/unicode-13.0.0": "^1.0.0",
     "babel-plugin-unassert": "^3.0.0",
     "browserify": "^17.0.0",
     "character-entities": "^1.0.0",
@@ -82,13 +83,12 @@
     "patch-package": "^6.0.0",
     "prettier": "^2.0.0",
     "regenerate": "^1.0.0",
-    "remark-cli": "^8.0.0",
-    "remark-preset-wooorm": "^7.0.0",
+    "remark-cli": "^9.0.0",
+    "remark-preset-wooorm": "^8.0.0",
     "resolve-from": "^5.0.0",
     "tape": "^5.0.0",
     "tinyify": "^3.0.0",
-    "unicode-13.0.0": "^0.8.0",
-    "xo": "^0.33.0"
+    "xo": "^0.34.0"
   },
   "scripts": {
     "generate-constant-typings": "node script/generate-constant-typings",

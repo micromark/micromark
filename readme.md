@@ -303,7 +303,7 @@ of documenting input and output examples.
 
 ## Test
 
-micromark is tested with the ~650 CommonMark tests and more than 1000 extra
+micromark is tested with the \~650 CommonMark tests and more than 1000 extra
 tests confirmed with other markdown parsers.
 These tests reach all branches in the code, thus this project has 100% coverage.
 Finally, we use fuzz testing to ensure micromark is stable, reliable, and
