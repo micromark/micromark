@@ -43,7 +43,10 @@ function transform() {
     ) {
       id = declaration.id.name
       actual = resolveFrom(dirname, declaration.init.arguments[0].value)
-      position = supported.indexOf(actual)
+      actual = actual.slice(actual.lastIndexOf('micromark/'))
+      position = supported
+        .map((s) => s.slice(s.lastIndexOf('micromark/')))
+        .indexOf(actual)
 
       if (position > -1) {
         // Save identifier.
