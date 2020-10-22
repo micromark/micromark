@@ -14,7 +14,8 @@ The smallest CommonMark compliant markdown parser with positional info and
 concrete tokens.
 
 *   [x] **[compliant][commonmark]** (100% to CommonMark)
-*   [x] **[extensions][]** ([GFM][], [footnotes][], [frontmatter][], [math][])
+*   [x] **[extensions][]** ([GFM][], [directives][], [footnotes][],
+    [frontmatter][], [math][])
 *   [x] **[safe][security]** (by default)
 *   [x] **[small][size]** (smallest CM parser that exists)
 *   [x] **[robust][test]** (1700+ tests, 100% coverage, fuzz testing)
@@ -225,6 +226,8 @@ See the [existing extensions][extensions] for inspiration.
 
 ### List of extensions
 
+*   [`micromark/micromark-extension-directive`][directives]
+    — support directives (generic extensions)
 *   [`micromark/micromark-extension-footnote`][footnotes]
     — support footnotes
 *   [`micromark/micromark-extension-frontmatter`][frontmatter]
@@ -547,6 +550,8 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [cmsm]: https://github.com/micromark/common-markup-state-machine
 
 [from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
+
+[directives]: https://github.com/micromark/micromark-extension-directive
 
 [footnotes]: https://github.com/micromark/micromark-extension-footnote
 
