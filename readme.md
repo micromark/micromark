@@ -24,8 +24,8 @@ concrete tokens.
 micromark is a long awaited markdown parser.
 It uses a [state machine][cmsm] to parse the entirety of markdown into tokens.
 It’s the smallest 100% [CommonMark][] compliant markdown parser in JavaScript.
-It’ll replace the internals of [`remark-parse`][remark-parse], the most
-[popular][] markdown parser ([`remarkjs/remark#536`][remark-next]).
+It was made to replace the internals of [`remark-parse`][remark-parse], the most
+[popular][] markdown parser.
 Its interface is optimized to compile to HTML, but its parts can be used
 to generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or
 compile to other output formats too.
@@ -567,8 +567,6 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [option-extensions]: #optionsextensions
 
 [option-htmlextensions]: #optionshtmlextensions
-
-[remark-next]: https://github.com/remarkjs/remark/pull/536
 
 [marked]: https://github.com/markedjs/marked
 
