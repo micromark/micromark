@@ -2,93 +2,73 @@ import test from 'tape'
 import chunkedSplice from '../../dist/util/chunked-splice.js'
 
 test('chunkedSplice', function (t) {
-  t.test('Zero delete zero insert', function (t) {
-    t.plan(2)
+  var list = [5, 4, 3, 2, 1]
+  var lots = [...new Array(140000).keys()]
 
-    var array = [5, 4, 3, 2, 1]
-    t.deepEqual(
-      chunkedSplice(array, 0, 0, []),
-      [],
-      'should keep the array as it is'
-    )
-    t.deepEqual(array, [5, 4, 3, 2, 1], 'should not mutate the array')
+  t.throws(
+    () => [].splice(0, 0, ...lots),
+    'baseline: `[].slice` should crash on lots of items'
+  )
 
-    t.end()
-  })
+  chunkedSplice(list, 0, 0, [])
 
-  t.test('Delete and insert', function (t) {
-    t.plan(2)
+  t.deepEqual(
+    list,
+    [5, 4, 3, 2, 1],
+    'should not mutate the array for no deletes, no inserts'
+  )
 
-    var array = [5, 4, 3, 2, 1]
+  list = [5, 4, 3, 2, 1]
 
-    t.deepEqual(
-      chunkedSplice(array, 1, 2, [9, 99, 999]),
-      [4, 3],
-      'should return deleted items'
-    )
+  chunkedSplice(list, 1, 2, [9, 99, 999])
 
-    t.deepEqual(array, [5, 9, 99, 999, 2, 1], 'should mutate the array')
+  t.deepEqual(list, [5, 9, 99, 999, 2, 1], 'should mutatefor deletes, inserts')
 
-    t.end()
-  })
+  list = [5, 4, 3, 2, 1]
 
-  t.test('Edge cases', function (t) {
-    t.plan(6)
+  chunkedSplice(list, -3, 2, [9, 99, 999])
 
-    var array = [5, 4, 3, 2, 1]
+  t.deepEqual(
+    list,
+    [5, 4, 9, 99, 999, 1],
+    'should mutate the list w/ a negative start'
+  )
 
-    t.deepEqual(
-      chunkedSplice(array, -3, 2, [9, 99, 999]),
-      [3, 2],
-      'should return deleted items'
-    )
+  chunkedSplice(list, 100, 3, [10, 11, 12])
 
-    t.deepEqual(array, [5, 4, 9, 99, 999, 1], 'should mutate the array')
+  t.deepEqual(
+    list,
+    [5, 4, 9, 99, 999, 1, 10, 11, 12],
+    'should delete items for a too big start'
+  )
 
-    t.deepEqual(
-      chunkedSplice(array, 100, 3, [10, 11, 12]),
-      [],
-      'should not delete any item'
-    )
+  chunkedSplice(list, -100, 3, [6])
 
-    t.deepEqual(
-      array,
-      [5, 4, 9, 99, 999, 1, 10, 11, 12],
-      'should mutate the array'
-    )
+  t.deepEqual(
+    list,
+    [6, 99, 999, 1, 10, 11, 12],
+    'should delete items w/ a negative start'
+  )
 
-    t.deepEqual(
-      chunkedSplice(array, -100, 3, [6]),
-      [5, 4, 9],
-      'should delete items at the begining'
-    )
+  list = [42, 10, 11, 12, 13, 43]
 
-    t.deepEqual(array, [6, 99, 999, 1, 10, 11, 12], 'should mutate the array')
+  chunkedSplice(list, 1, 0, lots)
 
-    t.end()
-  })
+  t.deepEqual(
+    list,
+    [42, ...lots, 10, 11, 12, 13, 43],
+    'should handle lots of inserts just fine'
+  )
 
-  t.test('Handle large items to insert', function (t) {
-    t.plan(3)
+  list = [42, 10, 11, 12, 13, 43]
 
-    t.throws(
-      () => [].splice(0, 0, ...new Array(140000).fill('_')),
-      'regular Array#chunkedSplice cannot handle large items to insert'
-    )
+  chunkedSplice(list, 1, 4, lots)
 
-    var array = [42, 10, 11, 12, 13, 43]
-    var itemsToInsert = [...new Array(140000).keys()]
-
-    t.deepEqual(
-      chunkedSplice(array, 1, 4, itemsToInsert),
-      [10, 11, 12, 13],
-      'can handle large items to insert just fine'
-    )
-
-    t.deepEqual(array, [42, ...itemsToInsert, 43])
-
-    t.end()
-  })
+  t.deepEqual(
+    list,
+    [42, ...lots, 43],
+    'should remove and still handle lots of inserts just fine'
+  )
 
   t.end()
 })
