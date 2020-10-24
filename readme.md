@@ -353,6 +353,13 @@ Here is a short comparison of a couple of ’em in JavaScript.
 Note that this list is made by the folks who make `micromark` and `remark`, so
 there is some bias.
 
+**Note**: these are, in fact, not really comparable: micromark (and remark)
+focus on completely different things than other markdown parsers do.
+Sure, you can generate HTML from markdown with them, but micromark (and remark)
+are created for (abstract or concrete) syntax trees—to inspect, transform, and
+generate content, so that you can make things like [MDX][], [Prettier][], or
+[Gatsby][].
+
 ###### micromark
 
 micromark is the lowest you can go: it gives tremendous power, such as access to
@@ -609,6 +616,10 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [markdown-it]: https://github.com/markdown-it/markdown-it
 
 [mdx]: https://github.com/mdx-js/mdx
+
+[prettier]: https://github.com/prettier/prettier
+
+[gatsby]: https://github.com/gatsbyjs/gatsby
 
 [commonmark]: #commonmark
 
