@@ -393,6 +393,11 @@ test('html', function (t) {
     '<p>a <!b\nc></p>',
     'should support an EOL in a declaration'
   )
+  t.equal(
+    m('a <![CDATA[\n]]>', unsafe),
+    '<p>a <![CDATA[\n]]></p>',
+    'should support an EOL in cdata'
+  )
 
   // Note: cmjs parses this differently.
   // See: <https://github.com/commonmark/commonmark.js/issues/196>
