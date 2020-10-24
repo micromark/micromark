@@ -23,14 +23,15 @@ concrete tokens.
 ## Intro
 
 micromark is a long awaited markdown parser.
-It uses a [state machine][cmsm] to parse the entirety of markdown into tokens.
+It uses a [state machine][cmsm] to parse the entirety of markdown into concrete
+tokens.
 It’s the smallest 100% [CommonMark][] compliant markdown parser in JavaScript.
 It was made to replace the internals of [`remark-parse`][remark-parse], the most
 [popular][] markdown parser.
-Its interface is optimized to compile to HTML, but its parts can be used
-to generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or
-compile to other output formats too.
-It’s in open beta: up next are integration in remark, CMSM, and CSTs.
+Its API compiles to HTML, but its parts are made to be used separately, so as to
+generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or compile
+to other output formats.
+It’s in open beta: up next are [MDX][], [CMSM][], and CSTs.
 
 *   for updates, see [Twitter][]
 *   for more about us, see [`unifiedjs.com`][site]
@@ -127,8 +128,8 @@ function handleError(err) {
 
 ## API
 
-Note that there are also as of yet undocumented APIs to use the individual parts
-of micromark and to make extensions.
+This section documents the API.
+The parts can be used separately, but this isn’t documented yet.
 
 ### `micromark(doc[, encoding][, options])`
 
@@ -189,7 +190,7 @@ Compiles markdown to HTML.
 `options` are the same as the buffering API above.
 Available at `require('micromark/stream')`.
 Note that some of the work to parse markdown can be done streaming, but in the
-end it requires buffering.
+end buffering is required.
 
 micromark does not handle errors for you, so you must handle errors on whatever
 streams you pipe into it.
@@ -204,7 +205,8 @@ They can be passed in [`extensions`][option-extensions] or
 
 ### `SyntaxExtension`
 
-A syntax extension is an object whose fields are the names of tokenizers:
+A syntax extension is an object whose fields are the names of hooks, referring
+to where constructs “hook” into.
 `content` (a block of, well, content: definitions and paragraphs), `document`
 (containers such as block quotes and lists), `flow` (block constructs such as
 ATX and setext headings, HTML, indented and fenced code, thematic breaks),
@@ -213,7 +215,7 @@ info, etc: character escapes and -references), or `text` (rich inline text:
 autolinks, character escapes and -references, code, hard breaks, HTML, images,
 links, emphasis, strong).
 
-The values at such objects are character codes, mapping to constructs.
+The fields at such objects are character codes, mapping to constructs as values.
 The built in [constructs][] are an extension.
 See it and the [existing extensions][extensions] for inspiration.
 
@@ -285,7 +287,7 @@ hundreds of plugins.
 
 The first definition of “Markdown” gave several examples of how it worked,
 showing input Markdown and output HTML, and came with a reference implementation
-(known as `Markdown.pl`).
+(`Markdown.pl`).
 When new implementations followed, they mostly followed the first definition,
 but deviated from the first implementation, and added extensions, thus making
 the format a family of formats.
@@ -293,8 +295,8 @@ the format a family of formats.
 Some years later, an attempt was made to standardize the differences between
 implementations, by specifying how several edge cases should be handled, through
 more input and output examples.
-This attempt is known as [CommonMark][commonmark-spec], and many implementations
-now work towards some degree of CommonMark compliancy.
+This is known as [CommonMark][commonmark-spec], and many implementations now
+work towards some degree of CommonMark compliancy.
 Still, CommonMark describes what the output in HTML should be given some
 input, which leaves many edge cases up for debate, and does not answer what
 should happen for other output formats.
@@ -307,10 +309,21 @@ of documenting input and output examples.
 ## Test
 
 micromark is tested with the \~650 CommonMark tests and more than 1000 extra
-tests confirmed with other markdown parsers.
+tests confirmed with CM reference parsers.
 These tests reach all branches in the code, thus this project has 100% coverage.
 Finally, we use fuzz testing to ensure micromark is stable, reliable, and
 secure.
+
+To build, format, and test the codebase, use `$ npm test` after clone and
+install.
+The `$ npm run test-api` and `$ npm run test-coverage` scripts check the unit
+tests and their coverage, respectively.
+The `$ npm run test-types` script checks TypeScript definitions.
+
+The `$ npm run test-fuzz` script does fuzz testing for 15 minutes.
+The timeout is provided by GNU coreutils **timeout(1)**, which might not be
+available on your system.
+Either install it or remove it from the script.
 
 ## Size & debug
 
@@ -326,6 +339,11 @@ published in the `lib/` folder, and comes instrumented with assertions and debug
 messages.
 To see debug messages, run your script with a `DEBUG` env variable, such as with
 `DEBUG="micromark" node script.js`.
+
+To generate the codebase, use `$ npm run generate` after clone and install.
+The `$ npm run generate-dist` script specifically takes `lib/` and generates
+`dist/`.
+The `$ npm run generate-size` script checks the bundle size of `dist/`.
 
 ## Comparison
 
@@ -399,13 +417,26 @@ Use tilde ranges for now: `"micromark": "~2.10.1"`.
 
 ## Security
 
+The typical security aspect discussed for markdown is [cross-site scripting
+(XSS)][xss] attacks.
 It’s safe to compile markdown to HTML if it does not include embedded HTML nor
 uses dangerous protocols in links (such as `javascript:` or `data:`).
-micromark is safe by default if embedded HTML or dangerous protocols are used
+micromark is safe by default when embedded HTML or dangerous protocols are used
 too, as it encodes or drops them.
 Turning on the `allowDangerousHtml` or `allowDangerousProtocol` options for
-user-provided markdown opens you up to [cross-site scripting (XSS)][xss]
-attacks.
+user-provided markdown opens you up to XSS attacks.
+
+Another aspect is DDoS attacks.
+For example, an attacker could throw a 100mb file at micromark, in which case
+the JavaScript engine will run out of memory and crash.
+It is also possible to crash micromark with smaller payloads, notably when
+thousands of links, images, emphasis, or strong are opened but not closed.
+It is wise to cap the accepted size of input (500kb can hold a big book) and to
+process content in a different thread or worker so that it can be stopped when
+needed.
+
+Using extensions might also be unsafe, refer to their documentation for more
+information.
 
 For more information on markdown sanitation, see
 [`improper-markup-sanitization.md`][improper] by [**@chalker**][chalker].
@@ -576,6 +607,8 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [marked]: https://github.com/markedjs/marked
 
 [markdown-it]: https://github.com/markdown-it/markdown-it
+
+[mdx]: https://github.com/mdx-js/mdx
 
 [commonmark]: #commonmark
 
