@@ -58,6 +58,7 @@ It’s in open beta: up next are [MDX][], [CMSM][], and CSTs.
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [Sponsor](#sponsor)
+*   [Origin story](#origin-story)
 *   [License](#license)
 
 ## Install
@@ -513,6 +514,64 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 </tr>
 </table>
 
+## Origin story
+
+Over the summer of 2018, micromark was planned, and the idea shared in August
+with a couple of friends and potential sponsors.
+The problem I (**[@wooorm][]**) had was that issues were piling up in remark and
+other repos, but my day job (teaching) was fun, fulfilling, and deserved time
+too.
+It was getting hard to combine the two.
+The thought was to feed two birds with one scone: fix the issues in remark with
+a new markdown parser (codename marydown) while being financially supported by
+sponsors building fancy stuff on top, such as Gatsby, Contentful, and Vercel
+(ZEIT at the time).
+**[@johno][]** was making MDX on top of remark at the time (important historical
+note: several other folks were working on JSX + markdown too).
+We bundled our strengths: MDX was getting some traction and we thought together
+we could perhaps make something sustainable.
+
+In November 2018, we launched with the idea for micromark to solve all existing
+bugs, sustaining the existing hundreds of projects, and furthering the exciting
+high-level project MDX.
+We pushed a single name: unified (which back then was a small but essential
+part of the chain).
+Gatsby and Vercel were immediate sponsors.
+We didn’t know whether it would work, and it worked.
+But now you have a new problem: you are getting some financial support (much
+more than other open source projects) but it’s not enough money for rent, and
+too much money to print stickers with.
+You still have your job and issues are still piling up.
+
+At the start of summer 2019, after a couple months of saving up donations, I
+quit my job and worked on unified through fall.
+That got the number of open issues down significantly and set up a strong
+governance and maintenance system for the collective.
+But when the time came to work on micromark, the money was gone again, so I
+contracted through winter 2019, and in spring 2020 I could do about half open
+source, half contracting.
+One of the contracting gigs was to write a new MDX parser, for which I also
+documented how to do that with a state machine [in prose][mdx-cmsm].
+That gave me the insight into how the same could be done for markdown: I drafted
+[CMSM][], which was some of the core ideas for micromark, but in prose.
+
+In May 2020, Salesforce reached out: they saw the bugs in remark, how micromark
+could help, and the initial work on CMSM.
+And they had thousands of Markdown files.
+In a for open source uncharacteristic move, they decided to fund my work on
+micromark.
+A large part of what maintaining open source means, is putting out fires,
+triaging issues, and making sure users and sponsors are happy, so it was
+amazing to get several months to just focus and make something new.
+I remember feeling that this project would probably be the hardest thing I’d
+work on: yeah, parsers are pretty difficult, but markdown is on another level.
+Markdown is such a giant stack of edge cases on edge cases on even more
+weirdness, what a mess.
+On August 20, 2020, I released [2.0.0][200], the first working version of
+micromark.
+And it’s hard to describe how that moment felt.
+It was great.
+
 ## License
 
 [MIT][license] © [Titus Wormer][author]
@@ -587,6 +646,8 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [cmsm]: https://github.com/micromark/common-markup-state-machine
 
+[mdx-cmsm]: https://github.com/micromark/mdx-state-machine
+
 [from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
 
 [directives]: https://github.com/micromark/micromark-extension-directive
@@ -630,3 +691,9 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [security]: #security
 
 [sponsor]: #sponsor
+
+[@wooorm]: https://github.com/wooorm
+
+[@johno]: https://github.com/johno
+
+[200]: https://github.com/micromark/micromark/releases/tag/2.0.0
