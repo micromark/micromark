@@ -7,7 +7,8 @@ const config = {
   input: './lib/index.js',
   output: {
     file: './micromark.min.js',
-    format: 'esm',
+    format: 'umd',
+    name: 'Micromark',
     plugins: [
       // took from here https://github.com/browserify/tinyify/blob/default/index.js
       terser({
