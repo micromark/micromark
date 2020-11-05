@@ -74,7 +74,6 @@
     "dtslint": "^4.0.0",
     "eslint-plugin-es": "^3.0.0",
     "eslint-plugin-security": "^1.0.0",
-    "eslint-plugin-sonarjs": "^0.5.0",
     "esm": "^3.0.0",
     "gzip-size-cli": "^3.0.0",
     "jsfuzz": "1.0.14",
@@ -134,8 +133,7 @@
         ],
         "extends": [
           "plugin:es/no-2015",
-          "plugin:security/recommended",
-          "plugin:sonarjs/recommended"
+          "plugin:security/recommended"
         ],
         "rules": {
           "complexity": "off",
@@ -146,7 +144,6 @@
           "no-multi-assign": "off",
           "no-unmodified-loop-condition": "off",
           "security/detect-object-injection": "off",
-          "sonarjs/cognitive-complexity": "off",
           "unicorn/explicit-length-check": "off",
           "unicorn/prefer-includes": "off",
           "unicorn/prefer-number-properties": "off"
