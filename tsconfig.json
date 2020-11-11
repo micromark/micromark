@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
+        "skipLibCheck": true,
         "lib": [
             "ES5"
         ],
