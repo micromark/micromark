@@ -10,7 +10,7 @@ const config = {
     format: 'umd',
     name: 'Micromark',
     plugins: [
-      // took from here https://github.com/browserify/tinyify/blob/default/index.js
+      // Took from here https://github.com/browserify/tinyify/blob/default/index.js
       terser({
         // No need to mangle here, will do that at the end.
         mangle: false,
