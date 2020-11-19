@@ -44,7 +44,7 @@ function transform() {
         id = specifier.local.name
       } else {
         throw Error(
-          'Unknown specifier "' + specifier.type + '" in "' + p.toString() + '"'
+          'Unknown specifier "' + specifier.type + '" in "' + String(p) + '"'
         )
       }
     })
