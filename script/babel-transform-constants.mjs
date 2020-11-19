@@ -1,24 +1,59 @@
-module.exports = transform
+export default transform
 
-var path = require('path')
-var resolveFrom = require('resolve-from')
+import path from 'path'
+import resolveFrom from 'resolve-from'
+import codes from '../lib/character/codes.js'
+import values from '../lib/character/values.js'
+import constants from '../lib/constant/constants.js'
+import types from '../lib/constant/types.js'
 
 var supported = [
-  require.resolve('../lib/character/codes'),
-  require.resolve('../lib/character/values'),
-  require.resolve('../lib/constant/constants'),
-  require.resolve('../lib/constant/types')
+  'micromark/lib/character/codes.js',
+  'micromark/lib/character/values.js',
+  'micromark/lib/constant/constants.js',
+  'micromark/lib/constant/types.js'
 ]
 
-var evaluated = supported.map(function (filePath) {
-  return require(filePath)
-})
+var evaluated = [codes, values, constants, types]
 
 function transform() {
   return {
     visitor: {
+      ImportDeclaration: ImportDeclaration,
       VariableDeclaration: VariableDeclaration,
       MemberExpression: MemberExpression
+    }
+  }
+
+  function ImportDeclaration(p, state) {
+    var dirname = path.dirname(state.filename)
+    var id
+    var actual
+    var local
+    var position
+
+    actual = resolveFrom(dirname, p.node.source.value)
+    p.node.specifiers.forEach((specifier) => {
+      if (specifier.type === 'ImportDefaultSpecifier') {
+        id = specifier.local.name
+      } else {
+        throw Error(
+          'Unknown specifier "' + specifier.type + '" in "' + p.toString() + '"'
+        )
+      }
+    })
+    actual = actual.slice(actual.lastIndexOf('micromark/'))
+    position = supported
+      .map((s) => s.slice(s.lastIndexOf('micromark/')))
+      .indexOf(actual)
+
+    if (position > -1) {
+      // Save identifier.
+      local = state.constantLocalIds || (state.constantLocalIds = {})
+      local[id] = position
+
+      // Remove the whole thing.
+      p.remove()
     }
   }
 

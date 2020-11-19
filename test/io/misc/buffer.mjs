@@ -1,5 +1,5 @@
 import test from 'tape'
-import m from '../../../index.js'
+import m from '../../../index.mjs'
 
 test('buffer', function (t) {
   t.equal(m(Buffer.from('')), '', 'should support empty buffers')

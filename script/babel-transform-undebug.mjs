@@ -1,15 +1,20 @@
 // Mini script for us to remove `debug` calls, based on `unassert`.
-'use strict'
-
-module.exports = undebug
+export default undebug
 
 function undebug() {
   return {
     visitor: {
+      ImportDeclaration: ImportDeclaration,
       AssignmentExpression: assignmentExpression,
       CallExpression: callExpression,
       VariableDeclarator: variableDeclarator
     }
+  }
+}
+
+function ImportDeclaration(p, state) {
+  if (p.node.source.value === 'debug') {
+    p.remove()
   }
 }
 

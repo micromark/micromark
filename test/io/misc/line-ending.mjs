@@ -1,5 +1,5 @@
 import test from 'tape'
-import m from '../../../index.js'
+import m from '../../../index.mjs'
 
 test('line-ending', function (t) {
   t.equal(
