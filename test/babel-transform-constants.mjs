@@ -5,6 +5,7 @@ import transformConstants from '../script/babel-transform-constants.mjs'
 
 function transformCode(code) {
   const result = babel.transformSync(code, {
+    configFile: false,
     plugins: [transformConstants],
     filename: path.resolve('test/babel-transform-constants.mjs')
   })
