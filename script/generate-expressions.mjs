@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import regenerate from 'regenerate'
-import codes from '../lib/character/codes.js'
 import Connector_Punctuation from '@unicode/unicode-13.0.0/General_Category/Connector_Punctuation/code-points.js'
 import Dash_Punctuation from '@unicode/unicode-13.0.0/General_Category/Dash_Punctuation/code-points.js'
 import Close_Punctuation from '@unicode/unicode-13.0.0/General_Category/Close_Punctuation/code-points.js'
@@ -9,6 +8,7 @@ import Final_Punctuation from '@unicode/unicode-13.0.0/General_Category/Final_Pu
 import Initial_Punctuation from '@unicode/unicode-13.0.0/General_Category/Initial_Punctuation/code-points.js'
 import Other_Punctuation from '@unicode/unicode-13.0.0/General_Category/Other_Punctuation/code-points.js'
 import Open_Punctuation from '@unicode/unicode-13.0.0/General_Category/Open_Punctuation/code-points.js'
+import codes from '../lib/character/codes.js'
 
 var pcAll = regenerate()
   .addRange(codes.exclamationMark, codes.slash)
