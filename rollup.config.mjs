@@ -53,7 +53,7 @@ if (process.env.BUILD === 'size') {
     output: {
       file: './micromark.min.js',
       format: 'umd',
-      name: 'Micromark',
+      name: 'micromark',
       plugins: [
         // Took from here https://github.com/browserify/tinyify/blob/default/index.js
         terser({
