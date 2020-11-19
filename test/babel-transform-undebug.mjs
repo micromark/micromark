@@ -20,7 +20,7 @@ test('babel-transform-undebug', function (t) {
       debug('log')
       console.log('log')
       `
-      var output = 'console.log(\'log\');'
+      var output = "console.log('log');"
       var result = transformCode(input)
       t.equal(result, output)
     })
@@ -36,7 +36,7 @@ test('babel-transform-undebug', function (t) {
       debug('log')
       console.log(\'log\')
       `
-      var output = 'console.log(\'log\');'
+      var output = "console.log('log');"
       var result = transformCode(input)
       t.equal(result, output)
     })

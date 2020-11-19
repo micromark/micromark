@@ -1,10 +1,16 @@
+import module from 'module'
 import path from 'path'
 import commonjs from '@rollup/plugin-commonjs'
 import {nodeResolve} from '@rollup/plugin-node-resolve'
-import babel from '@rollup/plugin-babel'
 import {terser} from 'rollup-plugin-terser'
 import transformConstants from './script/babel-transform-constants.mjs'
 import transformUndebug from './script/babel-transform-undebug.mjs'
+
+// TODO remove when @rollup/plugin-babel will support es modules
+var requireUtil = module.createRequireFromPath(
+  path.join(process.cwd(), './rollup.config.mjs')
+)
+var babel = requireUtil('@rollup/plugin-babel').babel
 
 const configs = []
 
@@ -32,7 +38,7 @@ if (process.env.BUILD === 'dist') {
     external: (id) => !id.startsWith('.') && !path.isAbsolute(id),
     plugins: [
       nodeResolve({browser: true}),
-      babel.babel({
+      babel({
         babelHelpers: 'bundled',
         plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
       }),
@@ -71,7 +77,7 @@ if (process.env.BUILD === 'size') {
     },
     plugins: [
       nodeResolve({browser: true}),
-      babel.babel({
+      babel({
         babelHelpers: 'bundled',
         plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
       }),

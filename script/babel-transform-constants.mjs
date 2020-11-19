@@ -1,11 +1,17 @@
 export default transform
 
+import module from 'module'
 import path from 'path'
 import resolveFrom from 'resolve-from'
-import codes from '../lib/character/codes.js'
-import values from '../lib/character/values.js'
-import constants from '../lib/constant/constants.js'
-import types from '../lib/constant/types.js'
+
+// TODO replace with regular imports after migrating lib to es modules
+var requireUtil = module.createRequireFromPath(
+  path.join(process.cwd(), './script/babel-transform-constants.mjs')
+)
+var codes = requireUtil('../lib/character/codes.js')
+var values = requireUtil('../lib/character/values.js')
+var constants = requireUtil('../lib/constant/constants.js')
+var types = requireUtil('../lib/constant/types.js')
 
 var supported = [
   'micromark/lib/character/codes.js',

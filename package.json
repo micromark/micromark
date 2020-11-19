@@ -117,8 +117,8 @@
     "xo": "^0.34.0"
   },
   "scripts": {
-    "generate-constant-typings": "node script/generate-constant-typings.mjs",
-    "generate-expressions": "node script/generate-expressions.mjs",
+    "generate-constant-typings": "node --experimental-modules script/generate-constant-typings.mjs",
+    "generate-expressions": "node --experimental-modules script/generate-expressions.mjs",
     "generate-dist": "BUILD=dist rollup -c --silent; node script/copy-dict.js; prettier dist --loglevel error --w",
     "generate-size": "BUILD=size rollup -c --silent; gzip-size micromark.min.js; gzip-size --raw micromark.min.js",
     "generate": "npm run generate-constant-typings && npm run generate-expressions && npm run generate-dist && npm run generate-size",
