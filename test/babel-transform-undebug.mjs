@@ -21,9 +21,9 @@ test('babel-transform-undebug', function (t) {
       debug('log')
       console.log('log')
       `
-      var output = "console.log('log');"
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = "console.log('log');"
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
     t.end()
   })
@@ -37,9 +37,9 @@ test('babel-transform-undebug', function (t) {
       debug('log')
       console.log(\'log\')
       `
-      var output = "console.log('log');"
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = "console.log('log');"
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
     t.end()
   })

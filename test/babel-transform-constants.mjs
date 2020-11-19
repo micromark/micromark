@@ -20,9 +20,9 @@ test('babel-transform-constants', function (t) {
       var codes = require('../lib/character/codes.js')
       console.log(codes.carriageReturn)
       `
-      var output = 'console.log(-5);'
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = 'console.log(-5);'
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
 
     t.test('values', function (t) {
@@ -31,9 +31,9 @@ test('babel-transform-constants', function (t) {
       var values = require('../lib/character/values.js')
       console.log(values.ht)
       `
-      var output = 'console.log("\\t");'
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = 'console.log("\\t");'
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
 
     t.test('constants', function (t) {
@@ -42,9 +42,9 @@ test('babel-transform-constants', function (t) {
       var constants = require('../lib/constant/constants.js')
       console.log(constants.attentionSideBefore)
       `
-      var output = 'console.log(1);'
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = 'console.log(1);'
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
 
     t.test('types', function (t) {
@@ -53,9 +53,9 @@ test('babel-transform-constants', function (t) {
       var types = require('../lib/constant/types.js')
       console.log(types.data)
       `
-      var output = 'console.log("data");'
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = 'console.log("data");'
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
 
     t.test('codes', function (t) {
@@ -64,7 +64,7 @@ test('babel-transform-constants', function (t) {
       var codes = require('../lib/character/codes.js')
       console.log(codes.missing_field)
       `
-      var output = ''
+      var expected = ''
       t.throws(function () {
         transformCode(input)
       }, /Unknown field/)
@@ -79,9 +79,9 @@ test('babel-transform-constants', function (t) {
       import codes from '../lib/character/codes.js'
       console.log(codes.carriageReturn)
       `
-      var output = 'console.log(-5);'
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = 'console.log(-5);'
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
 
     t.test('values', function (t) {
@@ -90,9 +90,9 @@ test('babel-transform-constants', function (t) {
       import values from '../lib/character/values.js'
       console.log(values.ht)
       `
-      var output = 'console.log("\\t");'
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = 'console.log("\\t");'
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
 
     t.test('constants', function (t) {
@@ -101,9 +101,9 @@ test('babel-transform-constants', function (t) {
       import constants from '../lib/constant/constants.js'
       console.log(constants.attentionSideBefore)
       `
-      var output = 'console.log(1);'
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = 'console.log(1);'
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
 
     t.test('types', function (t) {
@@ -112,9 +112,9 @@ test('babel-transform-constants', function (t) {
       import types from '../lib/constant/types.js'
       console.log(types.data)
       `
-      var output = 'console.log("data");'
-      var result = transformCode(input)
-      t.equal(result, output)
+      var expected = 'console.log("data");'
+      var actual = transformCode(input)
+      t.equal(expected, actual)
     })
 
     t.test('codes', function (t) {
@@ -123,7 +123,7 @@ test('babel-transform-constants', function (t) {
       import codes from '../lib/character/codes.js'
       console.log(codes.missing_field)
       `
-      var output = ''
+      var expected = ''
       t.throws(function () {
         transformCode(input)
       }, /Unknown field/)
@@ -135,7 +135,7 @@ test('babel-transform-constants', function (t) {
       import {carriageReturn} from '../lib/character/codes.js'
       console.log(codes.carriageReturn)
       `
-      var output = ''
+      var expected = ''
       t.throws(function () {
         transformCode(input)
       }, /Unknown specifier/)
