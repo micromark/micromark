@@ -128,7 +128,7 @@
     "test-api": "node --experimental-modules test/index.mjs",
     "test-coverage": "nyc --reporter lcov node --experimental-modules test/index.mjs",
     "test-types": "dtslint .",
-    "test": "npm run generate && ls -la dist && npm run format && npm run test-coverage && npm run test-types"
+    "test": "npm run generate && ls -la dist/constant && npm run format && npm run test-coverage && npm run test-types"
   },
   "nyc": {
     "check-coverage": true,
