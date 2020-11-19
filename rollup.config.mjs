@@ -16,7 +16,15 @@ const configs = []
 
 if (process.env.BUILD === 'dist') {
   configs.push({
-    input: ['./lib/index.js', './lib/stream.js'],
+    input: [
+      './lib/index.js',
+      './lib/stream.js',
+      // preserve compiled away constants for ecosystem packages
+      './lib/character/codes.js',
+      './lib/character/values.js',
+      './lib/constant/constants.js',
+      './lib/constant/types.js'
+    ],
     output: [
       {
         dir: 'dist',
