@@ -45,12 +45,10 @@ if (process.env.BUILD === 'dist') {
     },
     external: (id) => !id.startsWith('.') && !path.isAbsolute(id),
     plugins: [
-      nodeResolve({browser: true}),
       babel({
         babelHelpers: 'bundled',
         plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
-      }),
-      commonjs()
+      })
     ]
   })
 }
