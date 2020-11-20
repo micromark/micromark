@@ -35,7 +35,7 @@ test('babel-transform-undebug', function (t) {
       import createDebug from 'debug'
       var debug = createDebug('micromark')
       debug('log')
-      console.log(\'log\')
+      console.log('log')
       `
       var expected = "console.log('log');"
       var actual = transformCode(input)

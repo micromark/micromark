@@ -6,7 +6,7 @@ import {terser} from 'rollup-plugin-terser'
 import transformConstants from './script/babel-transform-constants.mjs'
 import transformUndebug from './script/babel-transform-undebug.mjs'
 
-// To do: remove when `@rollup/plugin-babel` will support es modules
+// eslint-disable-next-line node/no-deprecated-api -- Remove when `@rollup/plugin-babel` supports ESM.
 var requireUtil = module.createRequireFromPath(
   path.join(process.cwd(), './rollup.config.mjs')
 )

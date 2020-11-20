@@ -64,7 +64,7 @@ test('babel-transform-constants', function (t) {
       var codes = require('../lib/character/codes.js')
       console.log(codes.missing_field)
       `
-      var expected = ''
+
       t.throws(function () {
         transformCode(input)
       }, /Unknown field/)
@@ -123,7 +123,7 @@ test('babel-transform-constants', function (t) {
       import codes from '../lib/character/codes.js'
       console.log(codes.missing_field)
       `
-      var expected = ''
+
       t.throws(function () {
         transformCode(input)
       }, /Unknown field/)
@@ -135,7 +135,7 @@ test('babel-transform-constants', function (t) {
       import {carriageReturn} from '../lib/character/codes.js'
       console.log(codes.carriageReturn)
       `
-      var expected = ''
+
       t.throws(function () {
         transformCode(input)
       }, /Unknown specifier/)

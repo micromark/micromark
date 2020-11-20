@@ -4,7 +4,7 @@ import module from 'module'
 import path from 'path'
 import resolveFrom from 'resolve-from'
 
-// TODO replace with regular imports after migrating lib to es modules
+// eslint-disable-next-line node/no-deprecated-api -- Replace with regular imports after migrating lib to es modules
 var requireUtil = module.createRequireFromPath(
   path.join(process.cwd(), './script/babel-transform-constants.mjs')
 )
@@ -43,7 +43,7 @@ function transform() {
       if (specifier.type === 'ImportDefaultSpecifier') {
         id = specifier.local.name
       } else {
-        throw Error(
+        throw new Error(
           'Unknown specifier "' + specifier.type + '" in "' + String(p) + '"'
         )
       }

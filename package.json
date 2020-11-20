@@ -147,14 +147,21 @@
   },
   "xo": {
     "esnext": false,
+    "extensions": ["cjs", "mjs"],
     "prettier": true,
     "envs": [
       "shared-node-browser"
     ],
+    "rules": {
+      "import/extensions": [
+        "error",
+        "always"
+      ]
+    },
     "overrides": [
       {
         "files": [
-          "lib/**/*.{js,mjs,cjs}"
+          "lib/**/*.{js,cjs,mjs}"
         ],
         "plugin": [
           "es"
@@ -179,7 +186,18 @@
       },
       {
         "files": [
-          "test/**/*.js"
+          "**/*.d.ts"
+        ],
+        "rules": {
+          "import/extensions": [
+            "error",
+            "never"
+          ]
+        }
+      },
+      {
+        "files": [
+          "test/**/*.{js,cjs,mjs}"
         ],
         "rules": {
           "import/no-unassigned-import": "off"

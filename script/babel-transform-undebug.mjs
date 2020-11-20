@@ -12,9 +12,9 @@ function undebug() {
   }
 }
 
-function ImportDeclaration(p, state) {
-  if (p.node.source.value === 'debug') {
-    p.remove()
+function ImportDeclaration(nodePath) {
+  if (nodePath.node.source.value === 'debug') {
+    nodePath.remove()
   }
 }
 
