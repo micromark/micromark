@@ -14,10 +14,10 @@ var constants = requireUtil('../lib/constant/constants.js')
 var types = requireUtil('../lib/constant/types.js')
 
 var supported = [
-  'micromark/lib/character/codes.js',
-  'micromark/lib/character/values.js',
-  'micromark/lib/constant/constants.js',
-  'micromark/lib/constant/types.js'
+  path.join('micromark', 'lib', 'character', 'codes.js'),
+  path.join('micromark', 'lib', 'character', 'values.js'),
+  path.join('micromark', 'lib', 'constant', 'constants.js'),
+  path.join('micromark', 'lib', 'constant', 'types.js')
 ]
 
 var evaluated = [codes, values, constants, types]
@@ -48,9 +48,11 @@ function transform() {
         )
       }
     })
-    actual = actual.slice(actual.lastIndexOf('micromark/'))
+
+    actual = actual.slice(actual.lastIndexOf('micromark' + path.sep))
+
     position = supported
-      .map((s) => s.slice(s.lastIndexOf('micromark/')))
+      .map((s) => s.slice(s.lastIndexOf('micromark' + path.sep)))
       .indexOf(actual)
 
     if (position > -1) {
@@ -84,9 +86,9 @@ function transform() {
     ) {
       id = declaration.id.name
       actual = resolveFrom(dirname, declaration.init.arguments[0].value)
-      actual = actual.slice(actual.lastIndexOf('micromark/'))
+      actual = actual.slice(actual.lastIndexOf('micromark' + path.sep))
       position = supported
-        .map((s) => s.slice(s.lastIndexOf('micromark/')))
+        .map((s) => s.slice(s.lastIndexOf('micromark' + path.sep)))
         .indexOf(actual)
 
       if (position > -1) {

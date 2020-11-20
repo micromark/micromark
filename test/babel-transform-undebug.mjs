@@ -3,45 +3,30 @@ import test from 'tape'
 import babel from '@babel/core'
 import transformConstants from '../script/babel-transform-undebug.mjs'
 
-function transformCode(code) {
-  const result = babel.transformSync(code, {
+function transform(code) {
+  return babel.transformSync(code, {
     configFile: false,
     plugins: [transformConstants],
-    filename: path.resolve('test/babel-transform-undebug.mjs')
-  })
-  return result.code
+    filename: path.resolve(path.join('test', 'babel-transform-undebug.mjs'))
+  }).code
 }
 
 test('babel-transform-undebug', function (t) {
-  t.test('commonjs', function (t) {
-    t.test('codes', function (t) {
-      t.plan(1)
-      var input = `
-      var debug = require('debug')('micromark')
-      debug('log')
-      console.log('log')
-      `
-      var expected = "console.log('log');"
-      var actual = transformCode(input)
-      t.equal(expected, actual)
-    })
-    t.end()
-  })
+  t.equal(
+    transform(
+      'var debug = require("debug")("micromark")\ndebug("log")\nconsole.log("log")'
+    ),
+    'console.log("log");',
+    'should compile require and debug calls away'
+  )
 
-  t.test('es modules', function (t) {
-    t.test('codes', function (t) {
-      t.plan(1)
-      var input = `
-      import createDebug from 'debug'
-      var debug = createDebug('micromark')
-      debug('log')
-      console.log('log')
-      `
-      var expected = "console.log('log');"
-      var actual = transformCode(input)
-      t.equal(expected, actual)
-    })
-    t.end()
-  })
+  t.equal(
+    transform(
+      'import createDebug from "debug"\nvar debug = createDebug("micromark")\ndebug("log")\nconsole.log("log")'
+    ),
+    'console.log("log");',
+    'should compile import and debug calls away'
+  )
+
   t.end()
 })
