@@ -1,8 +1,8 @@
 import test from 'tape'
 import concat from 'concat-stream'
 import slowStream from './util/slow-stream.mjs'
-import m from '../index.js'
-import createStream from '../stream.js'
+import m from '../index.mjs'
+import createStream from '../stream.mjs'
 
 test('syntax extension', function (t) {
   var syntax = {

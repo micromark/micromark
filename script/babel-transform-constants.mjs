@@ -1,24 +1,65 @@
-module.exports = transform
+export default transform
 
-var path = require('path')
-var resolveFrom = require('resolve-from')
+import module from 'module'
+import path from 'path'
+import resolveFrom from 'resolve-from'
+
+// TODO replace with regular imports after migrating lib to es modules
+var requireUtil = module.createRequireFromPath(
+  path.join(process.cwd(), './script/babel-transform-constants.mjs')
+)
+var codes = requireUtil('../lib/character/codes.js')
+var values = requireUtil('../lib/character/values.js')
+var constants = requireUtil('../lib/constant/constants.js')
+var types = requireUtil('../lib/constant/types.js')
 
 var supported = [
-  require.resolve('../lib/character/codes'),
-  require.resolve('../lib/character/values'),
-  require.resolve('../lib/constant/constants'),
-  require.resolve('../lib/constant/types')
+  'micromark/lib/character/codes.js',
+  'micromark/lib/character/values.js',
+  'micromark/lib/constant/constants.js',
+  'micromark/lib/constant/types.js'
 ]
 
-var evaluated = supported.map(function (filePath) {
-  return require(filePath)
-})
+var evaluated = [codes, values, constants, types]
 
 function transform() {
   return {
     visitor: {
+      ImportDeclaration: ImportDeclaration,
       VariableDeclaration: VariableDeclaration,
       MemberExpression: MemberExpression
+    }
+  }
+
+  function ImportDeclaration(p, state) {
+    var dirname = path.dirname(state.filename)
+    var id
+    var actual
+    var local
+    var position
+
+    actual = resolveFrom(dirname, p.node.source.value)
+    p.node.specifiers.forEach((specifier) => {
+      if (specifier.type === 'ImportDefaultSpecifier') {
+        id = specifier.local.name
+      } else {
+        throw Error(
+          'Unknown specifier "' + specifier.type + '" in "' + String(p) + '"'
+        )
+      }
+    })
+    actual = actual.slice(actual.lastIndexOf('micromark/'))
+    position = supported
+      .map((s) => s.slice(s.lastIndexOf('micromark/')))
+      .indexOf(actual)
+
+    if (position > -1) {
+      // Save identifier.
+      local = state.constantLocalIds || (state.constantLocalIds = {})
+      local[id] = position
+
+      // Remove the whole thing.
+      p.remove()
     }
   }
 

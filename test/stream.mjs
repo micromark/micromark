@@ -2,7 +2,7 @@ import fs from 'fs'
 import stream from 'stream'
 import test from 'tape'
 import concat from 'concat-stream'
-import m from '../stream.js'
+import m from '../stream.mjs'
 import slowStream from './util/slow-stream.mjs'
 
 test('stream', function (t) {

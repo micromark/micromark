@@ -1,5 +1,5 @@
 import test from 'tape'
-import m from '../../../index.js'
+import m from '../../../index.mjs'
 
 test('heading-atx', function (t) {
   t.equal(m('# foo'), '<h1>foo</h1>', 'should support a heading w/ rank 1')

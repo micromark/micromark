@@ -44,25 +44,49 @@
     "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)",
     "Christian Murphy <christian.murphy.42@gmail.com>",
     "Marouane Fazouane <fazouanem3@gmail.com>",
-    "Merlijn Vos <merlijn@soverin.net>"
+    "Merlijn Vos <merlijn@soverin.net>",
+    "Bogdan Chadkin <trysound@yandex.ru>"
   ],
   "files": [
     "dist/",
     "lib/",
     "buffer.js",
+    "buffer.mjs",
     "stream.js",
+    "stream.mjs",
     "index.js",
+    "index.mjs",
     "buffer.d.ts",
     "stream.d.ts",
     "index.d.ts"
   ],
+  "main": "./index.js",
+  "module": "./index.mjs",
   "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.mjs"
+    },
+    "./buffer": {
+      "require": "./buffer.js",
+      "import": "./buffer.mjs"
+    },
+    "./stream": {
+      "require": "./stream.js",
+      "import": "./stream.mjs"
+    },
+    "./index.d.ts": "./index.d.ts",
+    "./buffer.d.ts": "./buffer.d.ts",
+    "./stream.d.ts": "./stream.d.ts",
+    "./package.json": "./package.json",
+    "./": "./"
+  },
   "dependencies": {
     "debug": "^4.0.0",
     "parse-entities": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^16.0.0",
@@ -93,10 +117,10 @@
     "xo": "^0.34.0"
   },
   "scripts": {
-    "generate-constant-typings": "node script/generate-constant-typings",
-    "generate-expressions": "node script/generate-expressions",
-    "generate-dist": "babel lib --out-dir dist --quiet --retain-lines --plugins babel-plugin-unassert,./script/babel-transform-undebug.js,./script/babel-transform-constants.js; node script/copy-dict.js; prettier dist --loglevel error --w",
-    "generate-size": "rollup -c --silent; gzip-size micromark.min.js; gzip-size --raw micromark.min.js",
+    "generate-constant-typings": "node --experimental-modules script/generate-constant-typings.mjs",
+    "generate-expressions": "node --experimental-modules script/generate-expressions.mjs",
+    "generate-dist": "BUILD=dist rollup -c --silent; node script/copy-dict.js; prettier dist --loglevel error --w",
+    "generate-size": "BUILD=size rollup -c --silent; gzip-size micromark.min.js; gzip-size --raw micromark.min.js",
     "generate": "npm run generate-constant-typings && npm run generate-expressions && npm run generate-dist && npm run generate-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "pretest-fuzz": "patch-package --patch-dir script/patches; node script/generate-fixtures.mjs",

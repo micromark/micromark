@@ -1,15 +1,9 @@
 import test from 'tape'
-import constants from '../../../dist/constant/constants.js'
-import htmlRawNames from '../../../dist/constant/html-raw-names.js'
+import * as constants from '../../../dist/constant/constants.mjs'
+import htmlRawNames from '../../../dist/constant/html-raw-names.mjs'
 import characterReferences from './character-entities.js'
 
 test('constants', function (t) {
-  t.equal(
-    constants.asciiAlphaCaseDifference,
-    'a'.charCodeAt(0) - 'A'.charCodeAt(0),
-    '`asciiAlphaCaseDifference`'
-  )
-
   t.equal(
     constants.characterReferenceDecimalSizeMax,
     (0x10ffff).toString(10).length,
