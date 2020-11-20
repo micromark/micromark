@@ -2,10 +2,10 @@ export default transform
 
 import path from 'path'
 import resolveFrom from 'resolve-from'
-import * as codes from '../lib/character/codes.mjs'
-import * as values from '../lib/character/values.mjs'
-import * as constants from '../lib/constant/constants.mjs'
-import * as types from '../lib/constant/types.mjs'
+import codes from '../lib/character/codes.mjs'
+import values from '../lib/character/values.mjs'
+import constants from '../lib/constant/constants.mjs'
+import types from '../lib/constant/types.mjs'
 
 var supported = [
   path.join('micromark', 'lib', 'character', 'codes.mjs'),
@@ -41,7 +41,7 @@ function transform() {
 
     if (position > -1) {
       p.node.specifiers.forEach((specifier) => {
-        if (specifier.type === 'ImportNamespaceSpecifier') {
+        if (specifier.type === 'ImportDefaultSpecifier') {
           id = specifier.local.name
         } else {
           throw new Error(

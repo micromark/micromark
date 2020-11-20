@@ -1,5 +1,5 @@
 import test from 'tape'
-import * as constants from '../../../dist/constant/constants.mjs'
+import constants from '../../../dist/constant/constants.mjs'
 import htmlRawNames from '../../../dist/constant/html-raw-names.mjs'
 import characterReferences from './character-entities.js'
 

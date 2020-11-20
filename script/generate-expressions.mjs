@@ -8,7 +8,7 @@ import FinalPunctuation from '@unicode/unicode-13.0.0/General_Category/Final_Pun
 import InitialPunctuation from '@unicode/unicode-13.0.0/General_Category/Initial_Punctuation/code-points.js'
 import OtherPunctuation from '@unicode/unicode-13.0.0/General_Category/Other_Punctuation/code-points.js'
 import OpenPunctuation from '@unicode/unicode-13.0.0/General_Category/Open_Punctuation/code-points.js'
-import * as codes from '../lib/character/codes.mjs'
+import codes from '../lib/character/codes.mjs'
 
 var pcAll = regenerate()
   .addRange(codes.exclamationMark, codes.slash)

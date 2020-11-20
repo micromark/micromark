@@ -5,28 +5,60 @@ export type Code = null | number
 // @for-script: REMOVE_ALL_THING_BELOW
 
 export interface Codes {
+  carriageReturn: -5
+  lineFeed: -4
+  carriageReturnLineFeed: -3
+  horizontalTab: -2
+  virtualSpace: -1
+  eof: null
+  nul: 0
+  soh: 1
+  stx: 2
+  etx: 3
+  eot: 4
+  enq: 5
   ack: 6
-  ampersand: 38
-  apostrophe: 39
-  asterisk: 42
-  atSign: 64
-  backslash: 92
   bel: 7
   bs: 8
-  byteOrderMarker: 65279
-  can: 24
-  caret: 94
-  carriageReturn: -5
-  carriageReturnLineFeed: -3
-  colon: 58
-  comma: 44
+  ht: 9
+  lf: 10
+  vt: 11
+  ff: 12
   cr: 13
-  dash: 45
+  so: 14
+  si: 15
+  dle: 16
   dc1: 17
   dc2: 18
   dc3: 19
   dc4: 20
-  del: 127
+  nak: 21
+  syn: 22
+  etb: 23
+  can: 24
+  em: 25
+  sub: 26
+  esc: 27
+  fs: 28
+  gs: 29
+  rs: 30
+  us: 31
+  space: 32
+  exclamationMark: 33
+  quotationMark: 34
+  numberSign: 35
+  dollarSign: 36
+  percentSign: 37
+  ampersand: 38
+  apostrophe: 39
+  leftParenthesis: 40
+  rightParenthesis: 41
+  asterisk: 42
+  plusSign: 43
+  comma: 44
+  dash: 45
+  dot: 46
+  slash: 47
   digit0: 48
   digit1: 49
   digit2: 50
@@ -37,80 +69,13 @@ export interface Codes {
   digit7: 55
   digit8: 56
   digit9: 57
-  dle: 16
-  dollarSign: 36
-  dot: 46
-  em: 25
-  enq: 5
-  eof: null
-  eot: 4
-  equalsTo: 61
-  esc: 27
-  etb: 23
-  etx: 3
-  exclamationMark: 33
-  ff: 12
-  fs: 28
-  graveAccent: 96
-  greaterThan: 62
-  gs: 29
-  horizontalTab: -2
-  ht: 9
-  leftCurlyBrace: 123
-  leftParenthesis: 40
-  leftSquareBracket: 91
-  lessThan: 60
-  lf: 10
-  lineFeed: -4
-  lowercaseA: 97
-  lowercaseB: 98
-  lowercaseC: 99
-  lowercaseD: 100
-  lowercaseE: 101
-  lowercaseF: 102
-  lowercaseG: 103
-  lowercaseH: 104
-  lowercaseI: 105
-  lowercaseJ: 106
-  lowercaseK: 107
-  lowercaseL: 108
-  lowercaseM: 109
-  lowercaseN: 110
-  lowercaseO: 111
-  lowercaseP: 112
-  lowercaseQ: 113
-  lowercaseR: 114
-  lowercaseS: 115
-  lowercaseT: 116
-  lowercaseU: 117
-  lowercaseV: 118
-  lowercaseW: 119
-  lowercaseX: 120
-  lowercaseY: 121
-  lowercaseZ: 122
-  nak: 21
-  nul: 0
-  numberSign: 35
-  percentSign: 37
-  plusSign: 43
-  questionMark: 63
-  quotationMark: 34
-  replacementCharacter: 65533
-  rightCurlyBrace: 125
-  rightParenthesis: 41
-  rightSquareBracket: 93
-  rs: 30
+  colon: 58
   semicolon: 59
-  si: 15
-  slash: 47
-  so: 14
-  soh: 1
-  space: 32
-  stx: 2
-  sub: 26
-  syn: 22
-  tilde: 126
-  underscore: 95
+  lessThan: 60
+  equalsTo: 61
+  greaterThan: 62
+  questionMark: 63
+  atSign: 64
   uppercaseA: 65
   uppercaseB: 66
   uppercaseC: 67
@@ -137,10 +102,45 @@ export interface Codes {
   uppercaseX: 88
   uppercaseY: 89
   uppercaseZ: 90
-  us: 31
+  leftSquareBracket: 91
+  backslash: 92
+  rightSquareBracket: 93
+  caret: 94
+  underscore: 95
+  graveAccent: 96
+  lowercaseA: 97
+  lowercaseB: 98
+  lowercaseC: 99
+  lowercaseD: 100
+  lowercaseE: 101
+  lowercaseF: 102
+  lowercaseG: 103
+  lowercaseH: 104
+  lowercaseI: 105
+  lowercaseJ: 106
+  lowercaseK: 107
+  lowercaseL: 108
+  lowercaseM: 109
+  lowercaseN: 110
+  lowercaseO: 111
+  lowercaseP: 112
+  lowercaseQ: 113
+  lowercaseR: 114
+  lowercaseS: 115
+  lowercaseT: 116
+  lowercaseU: 117
+  lowercaseV: 118
+  lowercaseW: 119
+  lowercaseX: 120
+  lowercaseY: 121
+  lowercaseZ: 122
+  leftCurlyBrace: 123
   verticalBar: 124
-  virtualSpace: -1
-  vt: 11
+  rightCurlyBrace: 125
+  tilde: 126
+  del: 127
+  byteOrderMarker: 65279
+  replacementCharacter: 65533
 }
 
 declare const value: Codes

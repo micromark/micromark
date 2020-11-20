@@ -61,7 +61,7 @@ test('babel-transform-constants', function (t) {
   t.test('esm', function (t) {
     t.equal(
       transform(
-        'import * as codes from "../lib/character/codes.mjs"\nconsole.log(codes.carriageReturn)'
+        'import codes from "../lib/character/codes.mjs"\nconsole.log(codes.carriageReturn)'
       ),
       'console.log(-5);',
       'should support codes'
@@ -69,7 +69,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'import * as values from "../lib/character/values.mjs"\nconsole.log(values.ht)'
+        'import values from "../lib/character/values.mjs"\nconsole.log(values.ht)'
       ),
       'console.log("\\t");',
       'should support values'
@@ -77,7 +77,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'import * as constants from "../lib/constant/constants.mjs"\nconsole.log(constants.attentionSideBefore)'
+        'import constants from "../lib/constant/constants.mjs"\nconsole.log(constants.attentionSideBefore)'
       ),
       'console.log(1);',
       'should support constants'
@@ -85,7 +85,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'import * as types from "../lib/constant/types.mjs"\nconsole.log(types.data)'
+        'import types from "../lib/constant/types.mjs"\nconsole.log(types.data)'
       ),
       'console.log("data");',
       'should support types'
@@ -94,7 +94,7 @@ test('babel-transform-constants', function (t) {
     t.throws(
       function () {
         transform(
-          'import * as codes from "../lib/character/codes.mjs"\nconsole.log(codes.missing_field)'
+          'import codes from "../lib/character/codes.mjs"\nconsole.log(codes.missing_field)'
         )
       },
       /Unknown field/,
@@ -104,7 +104,7 @@ test('babel-transform-constants', function (t) {
     t.throws(
       function () {
         transform(
-          'import codes from "../lib/character/codes.mjs"\nconsole.log(codes.carriageReturn)'
+          'import * as codes from "../lib/character/codes.mjs"\nconsole.log(codes.carriageReturn)'
         )
       },
       /Unknown specifier/,

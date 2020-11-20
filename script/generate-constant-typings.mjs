@@ -2,10 +2,10 @@
 
 import fs from 'fs'
 import path from 'path'
-import * as codes from '../lib/character/codes.mjs'
-import * as values from '../lib/character/values.mjs'
-import * as types from '../lib/constant/types.mjs'
-import * as constants from '../lib/constant/constants.mjs'
+import codes from '../lib/character/codes.mjs'
+import values from '../lib/character/values.mjs'
+import types from '../lib/constant/types.mjs'
+import constants from '../lib/constant/constants.mjs'
 
 function generateTyping(name, object, basePath) {
   var literalType = Object.values(object)
