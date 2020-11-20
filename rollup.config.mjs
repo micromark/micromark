@@ -6,7 +6,7 @@ import {terser} from 'rollup-plugin-terser'
 import transformConstants from './script/babel-transform-constants.mjs'
 import transformUndebug from './script/babel-transform-undebug.mjs'
 
-// TODO remove when @rollup/plugin-babel will support es modules
+// To do: remove when `@rollup/plugin-babel` will support es modules
 var requireUtil = module.createRequireFromPath(
   path.join(process.cwd(), './rollup.config.mjs')
 )
@@ -19,7 +19,7 @@ if (process.env.BUILD === 'dist') {
     input: [
       './lib/index.js',
       './lib/stream.js',
-      // preserve compiled away constants for ecosystem packages
+      // Preserve compiled away constants for ecosystem packages
       './lib/character/codes.js',
       './lib/character/values.js',
       './lib/constant/constants.js',
@@ -41,7 +41,7 @@ if (process.env.BUILD === 'dist') {
       }
     ],
     onwarn: (warning) => {
-      throw Error(warning.toString())
+      throw new Error(String(warning))
     },
     external: (id) => !id.startsWith('.') && !path.isAbsolute(id),
     plugins: [

@@ -1,6 +1,7 @@
 import test from 'tape'
 import m from '../../../index.mjs'
 
+// Note: `nul` doesn’t work on Windows as a file name 🤷‍♂️
 test('nul', function (t) {
   t.equal(
     m('asd\0asd'),
