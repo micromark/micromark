@@ -114,7 +114,7 @@ test('babel-transform-constants', function (t) {
     t.equal(
       transform('import { EventEmitter } from "events"\nconsole.log(0)'),
       'import { EventEmitter } from "events";\nconsole.log(0);',
-      'should support types'
+      'should not strip non-constants'
     )
 
     t.end()
