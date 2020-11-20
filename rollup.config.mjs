@@ -48,7 +48,8 @@ if (process.env.BUILD === 'dist') {
     external: (id) => !id.startsWith('.') && !path.isAbsolute(id),
     plugins: [
       babel({
-        babelHelpers: 'bundled',
+        babelHelpers: 'external',
+        skipPreflightCheck: true,
         plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
       })
     ]
@@ -87,7 +88,8 @@ if (process.env.BUILD === 'size') {
     plugins: [
       nodeResolve({browser: true}),
       babel({
-        babelHelpers: 'bundled',
+        babelHelpers: 'external',
+        skipPreflightCheck: true,
         plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
       }),
       commonjs({includes: /node_modules/})
