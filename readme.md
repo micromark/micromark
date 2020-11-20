@@ -660,7 +660,7 @@ It was great.
 
 [math]: https://github.com/micromark/micromark-extension-math
 
-[constructs]: lib/constructs.js
+[constructs]: lib/constructs.mjs
 
 [extensions]: #list-of-extensions
 

@@ -15,7 +15,7 @@ test('babel-transform-constants', function (t) {
   t.test('cjs', function (t) {
     t.equal(
       transform(
-        'var codes = require("../lib/character/codes.js")\nconsole.log(codes.carriageReturn)'
+        'var codes = require("../lib/character/codes.mjs")\nconsole.log(codes.carriageReturn)'
       ),
       'console.log(-5);',
       'should support codes'
@@ -23,7 +23,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'var values = require("../lib/character/values.js")\nconsole.log(values.ht)'
+        'var values = require("../lib/character/values.mjs")\nconsole.log(values.ht)'
       ),
       'console.log("\\t");',
       'should support values'
@@ -31,7 +31,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'var constants = require("../lib/constant/constants.js")\nconsole.log(constants.attentionSideBefore)'
+        'var constants = require("../lib/constant/constants.mjs")\nconsole.log(constants.attentionSideBefore)'
       ),
       'console.log(1);',
       'should support constants'
@@ -39,7 +39,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'var types = require("../lib/constant/types.js")\nconsole.log(types.data)'
+        'var types = require("../lib/constant/types.mjs")\nconsole.log(types.data)'
       ),
       'console.log("data");',
       'should support types'
@@ -48,7 +48,7 @@ test('babel-transform-constants', function (t) {
     t.throws(
       function () {
         transform(
-          'var codes = require("../lib/character/codes.js")\nconsole.log(codes.missing_field)'
+          'var codes = require("../lib/character/codes.mjs")\nconsole.log(codes.missing_field)'
         )
       },
       /Unknown field/,
@@ -61,7 +61,7 @@ test('babel-transform-constants', function (t) {
   t.test('esm', function (t) {
     t.equal(
       transform(
-        'import codes from "../lib/character/codes.js"\nconsole.log(codes.carriageReturn)'
+        'import * as codes from "../lib/character/codes.mjs"\nconsole.log(codes.carriageReturn)'
       ),
       'console.log(-5);',
       'should support codes'
@@ -69,7 +69,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'import values from "../lib/character/values.js"\nconsole.log(values.ht)'
+        'import * as values from "../lib/character/values.mjs"\nconsole.log(values.ht)'
       ),
       'console.log("\\t");',
       'should support values'
@@ -77,7 +77,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'import constants from "../lib/constant/constants.js"\nconsole.log(constants.attentionSideBefore)'
+        'import * as constants from "../lib/constant/constants.mjs"\nconsole.log(constants.attentionSideBefore)'
       ),
       'console.log(1);',
       'should support constants'
@@ -85,7 +85,7 @@ test('babel-transform-constants', function (t) {
 
     t.equal(
       transform(
-        'import types from "../lib/constant/types.js"\nconsole.log(types.data)'
+        'import * as types from "../lib/constant/types.mjs"\nconsole.log(types.data)'
       ),
       'console.log("data");',
       'should support types'
@@ -94,7 +94,7 @@ test('babel-transform-constants', function (t) {
     t.throws(
       function () {
         transform(
-          'import codes from "../lib/character/codes.js"\nconsole.log(codes.missing_field)'
+          'import * as codes from "../lib/character/codes.mjs"\nconsole.log(codes.missing_field)'
         )
       },
       /Unknown field/,
@@ -104,12 +104,21 @@ test('babel-transform-constants', function (t) {
     t.throws(
       function () {
         transform(
-          'import {carriageReturn} from "../lib/character/codes.js"\nconsole.log(carriageReturn)'
+          'import codes from "../lib/character/codes.mjs"\nconsole.log(codes.carriageReturn)'
         )
       },
       /Unknown specifier/,
       'should throw on missing fields (specifier)'
     )
+
+    t.equal(
+      transform(
+        'import { EventEmitter } from "events"\nconsole.log(0)'
+      ),
+      'import { EventEmitter } from "events";\nconsole.log(0);',
+      'should support types'
+    )
+
 
     t.end()
   })

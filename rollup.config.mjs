@@ -17,13 +17,13 @@ const configs = []
 if (process.env.BUILD === 'dist') {
   configs.push({
     input: [
-      './lib/index.js',
-      './lib/stream.js',
+      './lib/index.mjs',
+      './lib/stream.mjs',
       // Preserve compiled away constants for ecosystem packages
-      './lib/character/codes.js',
-      './lib/character/values.js',
-      './lib/constant/constants.js',
-      './lib/constant/types.js'
+      './lib/character/codes.mjs',
+      './lib/character/values.mjs',
+      './lib/constant/constants.mjs',
+      './lib/constant/types.mjs'
     ],
     output: [
       {
@@ -57,7 +57,7 @@ if (process.env.BUILD === 'dist') {
 
 if (process.env.BUILD === 'size') {
   configs.push({
-    input: './lib/index.js',
+    input: './lib/index.mjs',
     output: {
       file: './micromark.min.js',
       format: 'umd',
