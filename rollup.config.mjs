@@ -29,6 +29,7 @@ if (process.env.BUILD === 'dist') {
       {
         dir: 'dist',
         format: 'esm',
+        freeze: false,
         preserveModules: true,
         entryFileNames: '[name].mjs'
       },
@@ -36,6 +37,7 @@ if (process.env.BUILD === 'dist') {
         dir: 'dist',
         format: 'cjs',
         exports: 'named',
+        freeze: false,
         preserveModules: true,
         entryFileNames: '[name].js'
       }
@@ -60,6 +62,7 @@ if (process.env.BUILD === 'size') {
       file: './micromark.min.js',
       format: 'umd',
       name: 'micromark',
+      freeze: false,
       plugins: [
         // Took from here https://github.com/browserify/tinyify/blob/default/index.js
         terser({
@@ -87,7 +90,7 @@ if (process.env.BUILD === 'size') {
         babelHelpers: 'bundled',
         plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
       }),
-      commonjs()
+      commonjs({includes: /node_modules/})
     ]
   })
 }
