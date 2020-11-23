@@ -83,7 +83,6 @@
     "./": "./"
   },
   "dependencies": {
-    "debug": "^4.0.0",
     "parse-entities": "^2.0.0"
   },
   "devDependencies": {
@@ -98,6 +97,7 @@
     "commonmark.json": "^0.29.0",
     "concat-stream": "^2.0.0",
     "cross-env": "^7.0.0",
+    "debug": "^4.0.0",
     "dtslint": "^4.0.0",
     "eslint-plugin-es": "^4.0.0",
     "eslint-plugin-security": "^1.0.0",
@@ -147,7 +147,10 @@
   },
   "xo": {
     "esnext": false,
-    "extensions": ["cjs", "mjs"],
+    "extensions": [
+      "cjs",
+      "mjs"
+    ],
     "prettier": true,
     "envs": [
       "shared-node-browser"
