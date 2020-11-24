@@ -1,6 +1,8 @@
-import m from '../index.mjs'
+exports.fuzz = fuzz
 
-export function fuzz(buf) {
+var m = require('..')
+
+function fuzz(buf) {
   // Buffer.
   m(buf)
 }
