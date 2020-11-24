@@ -102,6 +102,7 @@
     "eslint-plugin-es": "^4.0.0",
     "eslint-plugin-security": "^1.0.0",
     "esm": "^3.0.0",
+    "glob": "^7.0.0",
     "gzip-size-cli": "^4.0.0",
     "jsfuzz": "1.0.14",
     "ms": "^2.0.0",
@@ -120,7 +121,7 @@
   "scripts": {
     "generate-constant-typings": "node --experimental-modules script/generate-constant-typings.mjs",
     "generate-expressions": "node --experimental-modules script/generate-expressions.mjs",
-    "generate-dist": "cross-env BUILD=dist rollup -c --silent && node script/copy-dict.js && prettier dist --loglevel error --w",
+    "generate-dist": "cross-env BUILD=dist rollup -c --silent && node script/copy-dict.mjs && prettier dist --loglevel error --w",
     "generate-size": "cross-env BUILD=size rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "generate": "npm run generate-constant-typings && npm run generate-expressions && npm run generate-dist && npm run generate-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
