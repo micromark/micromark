@@ -8,13 +8,40 @@ import transformUndebug from './script/babel-transform-undebug.mjs'
 
 // eslint-disable-next-line node/no-deprecated-api -- Remove when `@rollup/plugin-babel` supports ESM.
 var requireUtil = module.createRequireFromPath(
-  path.join(process.cwd(), './rollup.config.mjs')
+  path.join(process.cwd(), 'rollup.config.mjs')
 )
 var babel = requireUtil('@rollup/plugin-babel').babel
 
-const configs = []
+// eslint-disable-next-line import/no-mutable-exports
+var configs = []
 
-if (process.env.BUILD === 'dist') {
+if (process.env.BUILD === 'size') {
+  configs.push({
+    input: './lib/index.mjs',
+    output: {
+      file: './micromark.min.js',
+      format: 'umd',
+      name: 'micromark',
+      freeze: false,
+      plugins: [
+        // Running terser twice shaves a couple of bytes off.
+        /* eslint-disable camelcase */
+        terser({output: {ascii_only: true}, mangle: {safari10: true}}),
+        terser({output: {ascii_only: true}, mangle: {safari10: true}})
+        /* eslint-enable camelcase */
+      ]
+    },
+    plugins: [
+      nodeResolve({browser: true}),
+      babel({
+        babelHelpers: 'external',
+        skipPreflightCheck: true,
+        plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
+      }),
+      commonjs({includes: /node_modules/})
+    ]
+  })
+} else {
   configs.push({
     input: [
       './lib/index.mjs',
@@ -42,10 +69,8 @@ if (process.env.BUILD === 'dist') {
         entryFileNames: '[name].js'
       }
     ],
-    onwarn: (warning) => {
-      throw new Error(String(warning))
-    },
-    external: (id) => !id.startsWith('.') && !path.isAbsolute(id),
+    onwarn: warn,
+    external: external,
     plugins: [
       babel({
         babelHelpers: 'external',
@@ -56,45 +81,12 @@ if (process.env.BUILD === 'dist') {
   })
 }
 
-if (process.env.BUILD === 'size') {
-  configs.push({
-    input: './lib/index.mjs',
-    output: {
-      file: './micromark.min.js',
-      format: 'umd',
-      name: 'micromark',
-      freeze: false,
-      plugins: [
-        // Took from here https://github.com/browserify/tinyify/blob/default/index.js
-        terser({
-          // No need to mangle here, will do that at the end.
-          mangle: false,
-          output: {
-            // eslint-disable-next-line camelcase
-            ascii_only: true
-          }
-        }),
-        terser({
-          output: {
-            // eslint-disable-next-line camelcase
-            ascii_only: true
-          },
-          mangle: {
-            safari10: true
-          }
-        })
-      ]
-    },
-    plugins: [
-      nodeResolve({browser: true}),
-      babel({
-        babelHelpers: 'external',
-        skipPreflightCheck: true,
-        plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
-      }),
-      commonjs({includes: /node_modules/})
-    ]
-  })
+export default configs
+
+function external(id) {
+  return !id.startsWith('.') && !path.isAbsolute(id)
 }
 
-export default configs
+function warn(warning) {
+  throw new Error(String(warning))
+}

@@ -7,7 +7,7 @@ function transform(code) {
   return babel.transformSync(code, {
     configFile: false,
     plugins: [transformConstants],
-    filename: path.resolve(path.join('test', 'babel-transform-undebug.mjs'))
+    filename: path.join('test', 'babel-transform-undebug.mjs')
   }).code
 }
 
