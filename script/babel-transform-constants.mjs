@@ -1,23 +1,17 @@
 export default transform
 
-import module from 'module'
 import path from 'path'
 import resolveFrom from 'resolve-from'
-
-// eslint-disable-next-line node/no-deprecated-api -- Replace with regular imports after migrating lib to es modules
-var requireUtil = module.createRequireFromPath(
-  path.join(process.cwd(), './script/babel-transform-constants.mjs')
-)
-var codes = requireUtil('../lib/character/codes.js')
-var values = requireUtil('../lib/character/values.js')
-var constants = requireUtil('../lib/constant/constants.js')
-var types = requireUtil('../lib/constant/types.js')
+import codes from '../lib/character/codes.mjs'
+import values from '../lib/character/values.mjs'
+import constants from '../lib/constant/constants.mjs'
+import types from '../lib/constant/types.mjs'
 
 var supported = [
-  path.join('micromark', 'lib', 'character', 'codes.js'),
-  path.join('micromark', 'lib', 'character', 'values.js'),
-  path.join('micromark', 'lib', 'constant', 'constants.js'),
-  path.join('micromark', 'lib', 'constant', 'types.js')
+  path.join('micromark', 'lib', 'character', 'codes.mjs'),
+  path.join('micromark', 'lib', 'character', 'values.mjs'),
+  path.join('micromark', 'lib', 'constant', 'constants.mjs'),
+  path.join('micromark', 'lib', 'constant', 'types.mjs')
 ]
 
 var evaluated = [codes, values, constants, types]
@@ -39,16 +33,6 @@ function transform() {
     var position
 
     actual = resolveFrom(dirname, p.node.source.value)
-    p.node.specifiers.forEach((specifier) => {
-      if (specifier.type === 'ImportDefaultSpecifier') {
-        id = specifier.local.name
-      } else {
-        throw new Error(
-          'Unknown specifier "' + specifier.type + '" in "' + String(p) + '"'
-        )
-      }
-    })
-
     actual = actual.slice(actual.lastIndexOf('micromark' + path.sep))
 
     position = supported
@@ -56,6 +40,16 @@ function transform() {
       .indexOf(actual)
 
     if (position > -1) {
+      p.node.specifiers.forEach((specifier) => {
+        if (specifier.type === 'ImportDefaultSpecifier') {
+          id = specifier.local.name
+        } else {
+          throw new Error(
+            'Unknown specifier "' + specifier.type + '" in "' + String(p) + '"'
+          )
+        }
+      })
+
       // Save identifier.
       local = state.constantLocalIds || (state.constantLocalIds = {})
       local[id] = position

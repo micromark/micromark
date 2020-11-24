@@ -9,10 +9,10 @@ import fs from 'fs'
 import cp from 'child_process'
 
 var script = [
-  'module.exports = capture',
-  'var fs = require("fs")',
-  'var path = require("path")',
-  'var m = require("./dist")',
+  'export default capture',
+  'import fs from "fs"',
+  'import path from "path"',
+  'import m from "./dist/index.mjs"',
   'var captured = []',
   'var base = path.join("test", "fixtures")',
   'process.on("exit", onexit)',
@@ -32,12 +32,12 @@ var script = [
   '}'
 ].join('\n')
 
-fs.renameSync('index.js', 'index.bak.js')
-fs.writeFileSync('index.js', script)
+fs.renameSync('index.mjs', 'index.bak.mjs')
+fs.writeFileSync('index.mjs', script)
 cp.execSync('node test/index.mjs')
 
 process.on('exit', onexit)
 
 function onexit() {
-  fs.renameSync('index.bak.js', 'index.js')
+  fs.renameSync('index.bak.mjs', 'index.mjs')
 }

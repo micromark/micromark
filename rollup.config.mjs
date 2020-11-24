@@ -17,18 +17,19 @@ const configs = []
 if (process.env.BUILD === 'dist') {
   configs.push({
     input: [
-      './lib/index.js',
-      './lib/stream.js',
+      './lib/index.mjs',
+      './lib/stream.mjs',
       // Preserve compiled away constants for ecosystem packages
-      './lib/character/codes.js',
-      './lib/character/values.js',
-      './lib/constant/constants.js',
-      './lib/constant/types.js'
+      './lib/character/codes.mjs',
+      './lib/character/values.mjs',
+      './lib/constant/constants.mjs',
+      './lib/constant/types.mjs'
     ],
     output: [
       {
         dir: 'dist',
         format: 'esm',
+        freeze: false,
         preserveModules: true,
         entryFileNames: '[name].mjs'
       },
@@ -36,6 +37,7 @@ if (process.env.BUILD === 'dist') {
         dir: 'dist',
         format: 'cjs',
         exports: 'named',
+        freeze: false,
         preserveModules: true,
         entryFileNames: '[name].js'
       }
@@ -45,23 +47,23 @@ if (process.env.BUILD === 'dist') {
     },
     external: (id) => !id.startsWith('.') && !path.isAbsolute(id),
     plugins: [
-      nodeResolve({browser: true}),
       babel({
-        babelHelpers: 'bundled',
+        babelHelpers: 'external',
+        skipPreflightCheck: true,
         plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
-      }),
-      commonjs()
+      })
     ]
   })
 }
 
 if (process.env.BUILD === 'size') {
   configs.push({
-    input: './lib/index.js',
+    input: './lib/index.mjs',
     output: {
       file: './micromark.min.js',
       format: 'umd',
       name: 'micromark',
+      freeze: false,
       plugins: [
         // Took from here https://github.com/browserify/tinyify/blob/default/index.js
         terser({
@@ -86,10 +88,11 @@ if (process.env.BUILD === 'size') {
     plugins: [
       nodeResolve({browser: true}),
       babel({
-        babelHelpers: 'bundled',
+        babelHelpers: 'external',
+        skipPreflightCheck: true,
         plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
       }),
-      commonjs()
+      commonjs({includes: /node_modules/})
     ]
   })
 }
