@@ -85,7 +85,16 @@ Yields:
 <h2>Hello, <em>world</em>!</h2>
 ```
 
-Extensions (in this case [`micromark-extension-gfm`][gfm]):
+The same can be done with ESM (in Node 10+, browsers that support it, or with a
+bundler), in an `example.mjs` file, like so:
+
+```js
+import micromark from 'micromark'
+
+console.log(micromark('## Hello, *world*!'))
+```
+
+You can pass extensions (in this case [`micromark-extension-gfm`][gfm]):
 
 ```js
 var micromark = require('micromark')
