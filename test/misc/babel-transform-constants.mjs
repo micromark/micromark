@@ -1,7 +1,7 @@
 import path from 'path'
 import test from 'tape'
 import babel from '@babel/core'
-import transformConstants from '../script/babel-transform-constants.mjs'
+import transformConstants from '../../script/babel-transform-constants.mjs'
 
 function transform(code) {
   return babel.transformSync(code, {
