@@ -121,7 +121,7 @@
   "scripts": {
     "generate-constant-typings": "node --experimental-modules script/generate-constant-typings.mjs",
     "generate-expressions": "node --experimental-modules script/generate-expressions.mjs",
-    "generate-dist": "rollup -c --silent && node script/copy-dict.mjs && prettier dist --loglevel error --w",
+    "generate-dist": "rollup -c --silent && node --experimental-modules script/copy-dict.mjs && prettier dist --loglevel error --w",
     "generate-size": "cross-env BUILD=size rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "generate": "npm run generate-constant-typings && npm run generate-expressions && npm run generate-dist && npm run generate-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
