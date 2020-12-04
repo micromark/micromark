@@ -89,8 +89,8 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@rollup/plugin-babel": "^5.0.0",
-    "@rollup/plugin-commonjs": "^16.0.0",
-    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
     "@types/events": "^3.0.0",
     "@unicode/unicode-13.0.0": "^1.0.0",
     "babel-plugin-unassert": "^3.0.0",
