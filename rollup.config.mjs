@@ -4,7 +4,6 @@ import commonjs from '@rollup/plugin-commonjs'
 import {nodeResolve} from '@rollup/plugin-node-resolve'
 import {terser} from 'rollup-plugin-terser'
 import transformConstants from './script/babel-transform-constants.mjs'
-import transformUndebug from './script/babel-transform-undebug.mjs'
 
 // eslint-disable-next-line node/no-deprecated-api -- Remove when `@rollup/plugin-babel` supports ESM.
 var requireUtil = module.createRequireFromPath(
@@ -36,7 +35,11 @@ if (process.env.BUILD === 'size') {
       babel({
         babelHelpers: 'external',
         skipPreflightCheck: true,
-        plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
+        plugins: [
+          'babel-plugin-unassert',
+          'babel-plugin-undebug',
+          transformConstants
+        ]
       }),
       commonjs({includes: /node_modules/})
     ]
@@ -75,7 +78,11 @@ if (process.env.BUILD === 'size') {
       babel({
         babelHelpers: 'external',
         skipPreflightCheck: true,
-        plugins: ['babel-plugin-unassert', transformUndebug, transformConstants]
+        plugins: [
+          'babel-plugin-unassert',
+          'babel-plugin-undebug',
+          transformConstants
+        ]
       })
     ]
   })
