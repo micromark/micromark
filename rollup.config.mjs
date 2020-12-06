@@ -3,7 +3,6 @@ import path from 'path'
 import commonjs from '@rollup/plugin-commonjs'
 import {nodeResolve} from '@rollup/plugin-node-resolve'
 import {terser} from 'rollup-plugin-terser'
-import transformConstants from './script/babel-transform-constants.mjs'
 
 // eslint-disable-next-line node/no-deprecated-api -- Remove when `@rollup/plugin-babel` supports ESM.
 var requireUtil = module.createRequireFromPath(
@@ -13,6 +12,14 @@ var babel = requireUtil('@rollup/plugin-babel').babel
 
 // eslint-disable-next-line import/no-mutable-exports
 var configs = []
+
+var nodeVersion = Number.parseInt(process.versions.node, 10)
+
+if (nodeVersion < 12) {
+  console.warn(
+    'Not inlining constants from `dist/`, use Node 12+ to strip them'
+  )
+}
 
 if (process.env.BUILD === 'size') {
   configs.push({
@@ -35,11 +42,23 @@ if (process.env.BUILD === 'size') {
       babel({
         babelHelpers: 'external',
         skipPreflightCheck: true,
-        plugins: [
-          'babel-plugin-unassert',
-          'babel-plugin-undebug',
-          transformConstants
-        ]
+        plugins: ['babel-plugin-unassert', 'babel-plugin-undebug'].concat(
+          nodeVersion > 12
+            ? [
+                [
+                  'babel-plugin-inline-constants',
+                  {
+                    modules: [
+                      './lib/character/codes.mjs',
+                      './lib/character/values.mjs',
+                      './lib/constant/constants.mjs',
+                      './lib/constant/types.mjs'
+                    ]
+                  }
+                ]
+              ]
+            : []
+        )
       }),
       commonjs({includes: /node_modules/})
     ]
@@ -78,11 +97,23 @@ if (process.env.BUILD === 'size') {
       babel({
         babelHelpers: 'external',
         skipPreflightCheck: true,
-        plugins: [
-          'babel-plugin-unassert',
-          'babel-plugin-undebug',
-          transformConstants
-        ]
+        plugins: ['babel-plugin-unassert', 'babel-plugin-undebug'].concat(
+          nodeVersion > 12
+            ? [
+                [
+                  'babel-plugin-inline-constants',
+                  {
+                    modules: [
+                      './lib/character/codes.mjs',
+                      './lib/character/values.mjs',
+                      './lib/constant/constants.mjs',
+                      './lib/constant/types.mjs'
+                    ]
+                  }
+                ]
+              ]
+            : []
+        )
       })
     ]
   })

@@ -93,6 +93,7 @@
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@types/events": "^3.0.0",
     "@unicode/unicode-13.0.0": "^1.0.0",
+    "babel-plugin-inline-constants": "^1.0.0",
     "babel-plugin-unassert": "^3.0.0",
     "babel-plugin-undebug": "^1.0.0",
     "character-entities": "^1.0.0",
