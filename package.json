@@ -96,6 +96,7 @@
     "babel-plugin-inline-constants": "^1.0.0",
     "babel-plugin-unassert": "^3.0.0",
     "babel-plugin-undebug": "^1.0.0",
+    "c8": "^7.0.0",
     "character-entities": "^1.0.0",
     "commonmark.json": "^0.29.0",
     "concat-stream": "^2.0.0",
@@ -108,7 +109,6 @@
     "gzip-size-cli": "^4.0.0",
     "jsfuzz": "1.0.14",
     "ms": "^2.0.0",
-    "nyc": "^15.0.0",
     "patch-package": "^6.0.0",
     "prettier": "^2.0.0",
     "regenerate": "^1.0.0",
@@ -130,15 +130,9 @@
     "pretest-fuzz": "patch-package --patch-dir script/patches && node script/generate-fixtures.mjs",
     "test-fuzz": "cross-env NODE_OPTIONS=\"-r esm\" timeout 15m jsfuzz test/fuzz.js test/fixtures",
     "test-api": "node --experimental-modules test/index.mjs",
-    "test-coverage": "nyc --reporter lcov node --experimental-modules test/index.mjs",
+    "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node test/index.mjs",
     "test-types": "dtslint .",
     "test": "npm run generate && npm run format && npm run test-coverage && npm run test-types"
-  },
-  "nyc": {
-    "check-coverage": true,
-    "lines": 100,
-    "functions": 100,
-    "branches": 100
   },
   "prettier": {
     "tabWidth": 2,
