@@ -376,5 +376,11 @@ test('definition', function (t) {
     'should support line prefixes in definition labels'
   )
 
+  t.equal(
+    m('[foo]: /url "title"', {extensions: [{disable: {null: ['definition']}}]}),
+    '<p>[foo]: /url &quot;title&quot;</p>',
+    'should support turning off definitions'
+  )
+
   t.end()
 })

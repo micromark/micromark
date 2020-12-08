@@ -805,5 +805,11 @@ test('emphasis', function (t) {
     'should not end strong emphasis inside autolinks (2)'
   )
 
+  t.equal(
+    m('*a*', {extensions: [{disable: {null: ['attention']}}]}),
+    '<p>*a*</p>',
+    'should support turning off attention'
+  )
+
   t.end()
 })

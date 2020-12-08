@@ -140,5 +140,11 @@ test('hard-break', function (t) {
     'should support a mixed line suffix after a span (3)'
   )
 
+  t.equal(
+    m('a\\\nb', {extensions: [{disable: {null: ['hardBreakEscape']}}]}),
+    '<p>a\\\nb</p>',
+    'should support turning off hard break (escape)'
+  )
+
   t.end()
 })

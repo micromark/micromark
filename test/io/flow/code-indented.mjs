@@ -74,5 +74,62 @@ test('code-indented', function (t) {
     'should support trailing whitespace'
   )
 
+  t.equal(
+    m('   a', {extensions: [{disable: {null: ['codeIndented']}}]}),
+    '<p>a</p>',
+    'should support turning off code (indented, 1)'
+  )
+
+  t.equal(
+    m('> a\n    b', {extensions: [{disable: {null: ['codeIndented']}}]}),
+    '<blockquote>\n<p>a\nb</p>\n</blockquote>',
+    'should support turning off code (indented, 2)'
+  )
+
+  t.equal(
+    m('- a\n    b', {extensions: [{disable: {null: ['codeIndented']}}]}),
+    '<ul>\n<li>a\nb</li>\n</ul>',
+    'should support turning off code (indented, 3)'
+  )
+
+  t.equal(
+    m('- a\n    - b', {extensions: [{disable: {null: ['codeIndented']}}]}),
+    '<ul>\n<li>a\n<ul>\n<li>b</li>\n</ul>\n</li>\n</ul>',
+    'should support turning off code (indented, 4)'
+  )
+
+  t.equal(
+    m('- a\n    - b', {extensions: [{disable: {null: ['codeIndented']}}]}),
+    '<ul>\n<li>a\n<ul>\n<li>b</li>\n</ul>\n</li>\n</ul>',
+    'should support turning off code (indented, 5)'
+  )
+
+  t.equal(
+    m('```\na\n    ```', {extensions: [{disable: {null: ['codeIndented']}}]}),
+    '<pre><code>a\n</code></pre>',
+    'should support turning off code (indented, 6)'
+  )
+
+  t.equal(
+    m('a <?\n    ?>', {
+      allowDangerousHtml: true,
+      extensions: [{disable: {null: ['codeIndented']}}]
+    }),
+    '<p>a <?\n?></p>',
+    'should support turning off code (indented, 7)'
+  )
+
+  t.equal(
+    m('- Foo\n---', {extensions: [{disable: {null: ['codeIndented']}}]}),
+    '<ul>\n<li>Foo</li>\n</ul>\n<hr />',
+    'should support turning off code (indented, 8)'
+  )
+
+  t.equal(
+    m('- Foo\n     ---', {extensions: [{disable: {null: ['codeIndented']}}]}),
+    '<ul>\n<li>\n<h2>Foo</h2>\n</li>\n</ul>',
+    'should support turning off code (indented, 9)'
+  )
+
   t.end()
 })

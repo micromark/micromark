@@ -225,5 +225,11 @@ test('autolink', function (t) {
     'should not support a dash before a dot in email autolinks'
   )
 
+  t.equal(
+    m('<a@b.co>', {extensions: [{disable: {null: ['autolink']}}]}),
+    '<p>&lt;a@b.co&gt;</p>',
+    'should support turning off autolinks'
+  )
+
   t.end()
 })

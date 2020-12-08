@@ -239,5 +239,11 @@ test('heading-setext', function (t) {
     'should prefer a setext heading over an interrupting list'
   )
 
+  t.equal(
+    m('a\n-', {extensions: [{disable: {null: ['setextUnderline']}}]}),
+    '<p>a\n-</p>',
+    'should support turning off setext underlines'
+  )
+
   t.end()
 })

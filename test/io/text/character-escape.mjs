@@ -92,5 +92,11 @@ test('character-escape', function (t) {
     'should escape in fenced code info'
   )
 
+  t.equal(
+    m('\\> a', {extensions: [{disable: {null: ['characterEscape']}}]}),
+    '<p>\\&gt; a</p>',
+    'should support turning off character escapes'
+  )
+
   t.end()
 })

@@ -185,5 +185,11 @@ test('image', function (t) {
     'should ignore an empty title'
   )
 
+  t.equal(
+    m('![x]()', {extensions: [{disable: {null: ['labelStartImage']}}]}),
+    '<p>!<a href="">x</a></p>',
+    'should support turning off label start (image)'
+  )
+
   t.end()
 })

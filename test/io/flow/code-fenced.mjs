@@ -231,5 +231,11 @@ test('code-fenced', function (t) {
     'should not support a closing sequence w/ too much indent, regardless of opening sequence'
   )
 
+  t.equal(
+    m('```', {extensions: [{disable: {null: ['codeFenced']}}]}),
+    '<p>```</p>',
+    'should support turning off code (fenced)'
+  )
+
   t.end()
 })

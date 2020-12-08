@@ -195,5 +195,11 @@ test('character-reference', function (t) {
     'should not support the other characters inside a hexademical'
   )
 
+  t.equal(
+    m('&amp;', {extensions: [{disable: {null: ['characterReferences']}}]}),
+    '<p>&amp;</p>',
+    'should support turning off character references'
+  )
+
   t.end()
 })

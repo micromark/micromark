@@ -139,5 +139,11 @@ test('code', function (t) {
     'should support an escaped initial grave accent'
   )
 
+  t.equal(
+    m('`a`', {extensions: [{disable: {null: ['codeText']}}]}),
+    '<p>`a`</p>',
+    'should support turning off code (text)'
+  )
+
   t.end()
 })

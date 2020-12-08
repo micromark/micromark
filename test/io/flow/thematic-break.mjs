@@ -136,5 +136,11 @@ test('thematic-break', function (t) {
     'should support thematic breaks in lists'
   )
 
+  t.equal(
+    m('***', {extensions: [{disable: {null: ['thematicBreak']}}]}),
+    '<p>***</p>',
+    'should support turning off thematic breaks'
+  )
+
   t.end()
 })

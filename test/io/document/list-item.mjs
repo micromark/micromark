@@ -483,5 +483,11 @@ test('list-item', function (t) {
     'should support the common list breaking comment method'
   )
 
+  t.equal(
+    m('- one\n\n two', {extensions: [{disable: {null: ['list']}}]}),
+    '<p>- one</p>\n<p>two</p>',
+    'should support turning off lists'
+  )
+
   t.end()
 })

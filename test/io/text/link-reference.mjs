@@ -345,5 +345,17 @@ test('link (reference)', function (t) {
     'should not fail on a missing colon in a definition'
   )
 
+  t.equal(
+    m('[x]()', {extensions: [{disable: {null: ['labelStartLink']}}]}),
+    '<p>[x]()</p>',
+    'should support turning off label start (link)'
+  )
+
+  t.equal(
+    m('[x]()', {extensions: [{disable: {null: ['labelEnd']}}]}),
+    '<p>[x]()</p>',
+    'should support turning off label end'
+  )
+
   t.end()
 })

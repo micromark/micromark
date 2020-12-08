@@ -909,5 +909,11 @@ test('html', function (t) {
     t.end()
   })
 
+  t.equal(
+    m('<x>', {extensions: [{disable: {null: ['htmlFlow']}}]}),
+    '<p>&lt;x&gt;</p>',
+    'should support turning off html (flow)'
+  )
+
   t.end()
 })

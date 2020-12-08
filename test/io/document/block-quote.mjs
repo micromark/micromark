@@ -164,5 +164,11 @@ test('block-quote', function (t) {
     'should support 5 spaces for indented code, not 4'
   )
 
+  t.equal(
+    m('> # a\n> b\n> c', {extensions: [{disable: {null: ['blockQuote']}}]}),
+    '<p>&gt; # a\n&gt; b\n&gt; c</p>',
+    'should support turning off block quotes'
+  )
+
   t.end()
 })

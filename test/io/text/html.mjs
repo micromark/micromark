@@ -407,5 +407,11 @@ test('html', function (t) {
     'should support an EOL in an instruction'
   )
 
+  t.equal(
+    m('a <x>', {extensions: [{disable: {null: ['htmlText']}}]}),
+    '<p>a &lt;x&gt;</p>',
+    'should support turning off html (text)'
+  )
+
   t.end()
 })

@@ -146,5 +146,11 @@ test('heading-atx', function (t) {
     'should support empty atx headings'
   )
 
+  t.equal(
+    m('# a', {extensions: [{disable: {null: ['headingAtx']}}]}),
+    '<p># a</p>',
+    'should support turning off heading (atx)'
+  )
+
   t.end()
 })
