@@ -63,7 +63,7 @@ if (process.env.BUILD === 'size') {
       commonjs({includes: /node_modules/})
     ]
   })
-} else {
+} else if (process.env.BUILD === 'dist') {
   configs.push({
     input: [
       './lib/index.mjs',
@@ -85,13 +85,12 @@ if (process.env.BUILD === 'size') {
       {
         dir: 'dist',
         format: 'cjs',
-        exports: 'named',
+        exports: 'auto',
         freeze: false,
         preserveModules: true,
         entryFileNames: '[name].js'
       }
     ],
-    onwarn: warn,
     external: external,
     plugins: [
       babel({
@@ -117,14 +116,25 @@ if (process.env.BUILD === 'size') {
       })
     ]
   })
+} else {
+  configs.push({
+    input: ['./lib/index.mjs', './lib/stream.mjs'],
+    output: [
+      {
+        dir: 'lib',
+        format: 'cjs',
+        exports: 'auto',
+        freeze: false,
+        preserveModules: true,
+        entryFileNames: '[name].js'
+      }
+    ],
+    external: external
+  })
 }
 
 export default configs
 
 function external(id) {
   return !id.startsWith('.') && !path.isAbsolute(id)
-}
-
-function warn(warning) {
-  throw new Error(String(warning))
 }

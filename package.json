@@ -121,16 +121,20 @@
     "xo": "^0.35.0"
   },
   "scripts": {
-    "generate-constant-typings": "node --experimental-modules script/generate-constant-typings.mjs",
-    "generate-expressions": "node --experimental-modules script/generate-expressions.mjs",
-    "generate-dist": "rollup -c --silent && node --experimental-modules script/copy-dict.mjs && prettier dist --loglevel error --w",
+    "generate-lib-types": "node --experimental-modules script/generate-constant-typings.mjs",
+    "generate-lib-expressions": "node --experimental-modules script/generate-expressions.mjs",
+    "generate-lib-cjs": "rollup -c --silent",
+    "generate-lib": "npm run generate-lib-types && npm run generate-lib-expressions && npm run generate-lib-cjs",
+    "generate-dist-types": "node --experimental-modules script/copy-dict.mjs",
+    "generate-dist-js": "cross-env BUILD=dist rollup -c --silent",
+    "generate-dist": "npm run generate-dist-types && npm run generate-dist-js",
     "generate-size": "cross-env BUILD=size rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
-    "generate": "npm run generate-constant-typings && npm run generate-expressions && npm run generate-dist && npm run generate-size",
+    "generate": "npm run generate-lib && npm run generate-dist && npm run generate-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "pretest-fuzz": "patch-package --patch-dir script/patches && node script/generate-fixtures.mjs",
     "test-fuzz": "cross-env NODE_OPTIONS=\"-r esm\" timeout 15m jsfuzz test/fuzz.js test/fixtures",
     "test-api": "node --experimental-modules test/index.mjs",
-    "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node test/index.mjs",
+    "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node --experimental-modules test/index.mjs",
     "test-types": "dtslint .",
     "test": "npm run generate && npm run format && npm run test-coverage && npm run test-types"
   },
@@ -145,7 +149,6 @@
   "xo": {
     "esnext": false,
     "extensions": [
-      "cjs",
       "mjs"
     ],
     "prettier": true,
@@ -161,7 +164,7 @@
     "overrides": [
       {
         "files": [
-          "lib/**/*.{js,cjs,mjs}"
+          "lib/**/*.{js,mjs}"
         ],
         "plugin": [
           "es"
@@ -200,7 +203,7 @@
       },
       {
         "files": [
-          "test/**/*.{js,cjs,mjs}"
+          "test/**/*.{js,mjs}"
         ],
         "rules": {
           "import/no-unassigned-import": "off"
@@ -208,8 +211,9 @@
       }
     ],
     "ignores": [
-      "micromark.test.ts",
-      "dist/"
+      "dist/",
+      "lib/**/*.js",
+      "micromark.test.ts"
     ]
   },
   "remarkConfig": {

@@ -1,5 +1,6 @@
 coverage/
 dist/
+lib/**/*.js
 node_modules/
 test/fixtures/
 *.log
