@@ -38,14 +38,14 @@
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+    "Bogdan Chadkin <trysound@yandex.ru>",
+    "Christian Murphy <christian.murphy.42@gmail.com>",
+    "Marouane Fazouane <fazouanem3@gmail.com>",
     "John Otander <johnotander@gmail.com> (https://johno.com)",
     "Stephan Schneider <stephanschndr@gmail.com>",
     "Victor Felder <victor@draft.li> (https://draft.li)",
     "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)",
-    "Christian Murphy <christian.murphy.42@gmail.com>",
-    "Marouane Fazouane <fazouanem3@gmail.com>",
-    "Merlijn Vos <merlijn@soverin.net>",
-    "Bogdan Chadkin <trysound@yandex.ru>"
+    "Merlijn Vos <merlijn@soverin.net>"
   ],
   "files": [
     "dist/",
