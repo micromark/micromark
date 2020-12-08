@@ -50,15 +50,15 @@
   "files": [
     "dist/",
     "lib/",
+    "buffer.d.ts",
     "buffer.js",
     "buffer.mjs",
-    "stream.js",
-    "stream.mjs",
     "index.js",
     "index.mjs",
-    "buffer.d.ts",
+    "index.d.ts",
     "stream.d.ts",
-    "index.d.ts"
+    "stream.js",
+    "stream.mjs"
   ],
   "main": "./index.js",
   "module": "./index.mjs",
