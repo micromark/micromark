@@ -1,4 +1,4 @@
 coverage/
-*.md
 *.json
+*.md
 micromark.min.js
