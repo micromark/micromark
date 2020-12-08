@@ -1,5 +1,4 @@
 Things to check:
-- [ ] Size: check if `.ensure` would help?
 - [ ] Size/perf: feed more subtokenizers directly?
 - [ ] Perf: use `resolveAll` instead of `resolveToLabelEnd` for label end.
 - [ ] Perf: see if we can remove unneeded checks, interrupts, attempts, or other double parsing.
