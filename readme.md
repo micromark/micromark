@@ -372,8 +372,11 @@ generate content, so that you can make things like [MDX][], [Prettier][], or
 
 ###### micromark
 
-micromark is the lowest you can go: it gives tremendous power, such as access to
-all tokens with positional info, at the cost of being hard to get into.
+micromark can be used in two different ways.
+It can either be used, optionally with existing extensions, to get HTML pretty
+easily.
+Or, it can give tremendous power, such as access to all tokens with positional
+info, at the cost of being hard to get into.
 It’s super small, pretty fast, and has 100% CommonMark compliance.
 It has syntax extensions, such as supporting 100% GFM compliance (with
 `micromark-extension-gfm`), but they’re rather complex to write.
