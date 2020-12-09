@@ -1,5 +1,5 @@
 import test from 'tape'
-import m from '../../../index.mjs'
+import m from '../../../lib/index.mjs'
 
 test('hard-break', function (t) {
   t.equal(

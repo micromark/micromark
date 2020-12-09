@@ -1,5 +1,5 @@
 import test from 'tape'
-import chunkedSplice from '../../dist/util/chunked-splice.mjs'
+import chunkedSplice from '../../lib/util/chunked-splice.mjs'
 
 test('chunkedSplice', function (t) {
   var list = [5, 4, 3, 2, 1]

@@ -1,7 +1,7 @@
 import test from 'tape'
 import concat from 'concat-stream'
-import m from '../../../index.mjs'
-import s from '../../../stream.mjs'
+import m from '../../../lib/index.mjs'
+import s from '../../../lib/stream.mjs'
 import slowStream from '../../util/slow-stream.mjs'
 
 test('bom (byte order marker)', function (t) {

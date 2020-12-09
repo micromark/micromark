@@ -1,1 +1,1 @@
-export {default} from './dist/stream.mjs'
+export {default} from './dist/stream.js'

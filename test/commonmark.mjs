@@ -1,6 +1,6 @@
-import commonmark from './commonmark.json.js'
 import test from 'tape'
-import m from '../index.mjs'
+import commonmark from './commonmark.json.js'
+import m from '../lib/index.mjs'
 
 var options = {
   allowDangerousHtml: true,

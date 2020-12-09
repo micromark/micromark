@@ -1,5 +1,5 @@
 import ms from 'ms'
-import m from '../index.mjs'
+import m from '../lib/index.mjs'
 
 console.log('base')
 var then = Date.now()

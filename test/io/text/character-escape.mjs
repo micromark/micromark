@@ -1,5 +1,5 @@
 import test from 'tape'
-import m from '../../../index.mjs'
+import m from '../../../lib/index.mjs'
 
 test('character-escape', function (t) {
   t.equal(

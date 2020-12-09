@@ -1,5 +1,5 @@
 import test from 'tape'
-import m from '../../../index.mjs'
+import m from '../../../lib/index.mjs'
 
 test('soft-break', function (t) {
   t.equal(m('foo\nbaz'), '<p>foo\nbaz</p>', 'should support line endings')

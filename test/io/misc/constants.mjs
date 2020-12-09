@@ -1,6 +1,6 @@
 import test from 'tape'
-import constants from '../../../dist/constant/constants.mjs'
-import htmlRawNames from '../../../dist/constant/html-raw-names.mjs'
+import constants from '../../../lib/constant/constants.mjs'
+import htmlRawNames from '../../../lib/constant/html-raw-names.mjs'
 import characterReferences from './character-entities.js'
 
 test('constants', function (t) {

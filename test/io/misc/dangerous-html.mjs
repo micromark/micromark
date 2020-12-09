@@ -1,5 +1,5 @@
 import test from 'tape'
-import m from '../../../index.mjs'
+import m from '../../../lib/index.mjs'
 
 test('dangerous-html', function (t) {
   t.equal(m('<x>'), '&lt;x&gt;', 'should be safe by default for flow')

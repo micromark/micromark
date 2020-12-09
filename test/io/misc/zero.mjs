@@ -1,5 +1,5 @@
 import test from 'tape'
-import m from '../../../index.mjs'
+import m from '../../../lib/index.mjs'
 
 // Note: `nul` doesn’t work on Windows as a file name 🤷‍♂️
 test('nul', function (t) {

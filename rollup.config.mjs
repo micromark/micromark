@@ -77,13 +77,6 @@ if (process.env.BUILD === 'size') {
     output: [
       {
         dir: 'dist',
-        format: 'esm',
-        freeze: false,
-        preserveModules: true,
-        entryFileNames: '[name].mjs'
-      },
-      {
-        dir: 'dist',
         format: 'cjs',
         exports: 'auto',
         freeze: false,
