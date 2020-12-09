@@ -15,7 +15,7 @@ concrete tokens.
 
 *   [x] **[compliant][commonmark]** (100% to CommonMark)
 *   [x] **[extensions][]** ([GFM][], [directives][], [footnotes][],
-    [frontmatter][], [math][])
+    [frontmatter][], [math][], [MDX.js][mdxjs])
 *   [x] **[safe][security]** (by default)
 *   [x] **[small][size]** (smallest CM parser that exists)
 *   [x] **[robust][test]** (1700+ tests, 100% coverage, fuzz testing)
@@ -31,7 +31,7 @@ It was made to replace the internals of [`remark-parse`][remark-parse], the most
 Its API compiles to HTML, but its parts are made to be used separately, so as to
 generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or compile
 to other output formats.
-It’s in open beta: up next are [MDX][], [CMSM][], and CSTs.
+It’s in open beta: up next are [CMSM][] and CSTs.
 
 *   for updates, see [Twitter][]
 *   for more about us, see [`unifiedjs.com`][site]
@@ -258,6 +258,18 @@ See the [existing extensions][extensions] for inspiration.
     — support GFM tasklists
 *   [`micromark/micromark-extension-math`][math]
     — support math
+*   [`micromark/micromark-extension-mdx`](https://github.com/micromark/micromark-extension-mdx)
+    — support MDX
+*   [`micromark/micromark-extension-mdxjs`][mdxjs]
+    — support MDX.js
+*   [`micromark/micromark-extension-mdx-expression`](https://github.com/micromark/micromark-extension-mdx-expression)
+    — support MDX (or MDX.js) expressions
+*   [`micromark/micromark-extension-mdx-jsx`](https://github.com/micromark/micromark-extension-mdx-jsx)
+    — support MDX (or MDX.js) JSX
+*   [`micromark/micromark-extension-mdx-md`](https://github.com/micromark/micromark-extension-mdx-md)
+    — support misc MDX changes
+*   [`micromark/micromark-extension-mdxjs-esm`](https://github.com/micromark/micromark-extension-mdxjs-esm)
+    — support MDX.js import/exports
 
 ## Syntax tree
 
@@ -671,6 +683,8 @@ It was great.
 [gfm]: https://github.com/micromark/micromark-extension-gfm
 
 [math]: https://github.com/micromark/micromark-extension-math
+
+[mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
 
 [constructs]: lib/constructs.mjs
 
