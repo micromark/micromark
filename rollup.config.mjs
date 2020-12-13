@@ -1,14 +1,9 @@
-import module from 'module'
 import path from 'path'
 import commonjs from '@rollup/plugin-commonjs'
 import {nodeResolve} from '@rollup/plugin-node-resolve'
 import {terser} from 'rollup-plugin-terser'
 
-// eslint-disable-next-line node/no-deprecated-api -- Remove when `@rollup/plugin-babel` supports ESM.
-var requireUtil = module.createRequireFromPath(
-  path.join(process.cwd(), 'rollup.config.mjs')
-)
-var babel = requireUtil('@rollup/plugin-babel').babel
+import {babel} from '@rollup/plugin-babel'
 
 // eslint-disable-next-line import/no-mutable-exports
 var configs = []

@@ -8,7 +8,8 @@ import types from '../lib/constant/types.mjs'
 import constants from '../lib/constant/constants.mjs'
 
 function generateTyping(name, object, basePath) {
-  var literalType = Object.values(object)
+  var uniqueValues = Array.from(new Set(Object.values(object)))
+  var literalType = uniqueValues
     .map((value) => JSON.stringify(value))
     .join(' | ')
   var interfaceType = JSON.stringify(object)
