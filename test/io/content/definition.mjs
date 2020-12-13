@@ -377,6 +377,24 @@ test('definition', function (t) {
   )
 
   t.equal(
+    m('[a]: )\n\n[a]'),
+    '<p>[a]: )</p>\n<p>[a]</p>',
+    'should not support definitions w/ only a closing paren as a raw destination'
+  )
+
+  t.equal(
+    m('[a]: )b\n\n[a]'),
+    '<p>[a]: )b</p>\n<p>[a]</p>',
+    'should not support definitions w/ closing paren + more text as a raw destination'
+  )
+
+  t.equal(
+    m('[a]: b)\n\n[a]'),
+    '<p>[a]: b)</p>\n<p>[a]</p>',
+    'should not support definitions w/ text + a closing paren as a raw destination'
+  )
+
+  t.equal(
     m('[foo]: /url "title"', {extensions: [{disable: {null: ['definition']}}]}),
     '<p>[foo]: /url &quot;title&quot;</p>',
     'should support turning off definitions'
