@@ -7,32 +7,19 @@ export type Constant =
   | 63
   | 32
   | 'CDATA['
-  | 1
-  | 2
   | 7
-  | 6
   | 31
   | 3
   | 'flow'
   | 'content'
   | 'string'
   | 'text'
-  | 2
-  | 1
-  | 2
-  | 3
   | 4
   | 5
-  | 6
-  | 7
   | 8
-  | 3
   | 999
   | 10
-  | 10
   | 16
-  | 4
-  | 3
   | 10000
 
 // @for-script: REMOVE_ALL_THING_BELOW
