@@ -51,6 +51,7 @@ It’s in open beta: up next are [CMSM][] and CSTs.
     *   [List of extensions](#list-of-extensions)
 *   [Syntax tree](#syntax-tree)
 *   [CommonMark](#commonmark)
+*   [Grammar](#grammar)
 *   [Test](#test)
 *   [Size & debug](#size--debug)
 *   [Comparison](#comparison)
@@ -327,6 +328,16 @@ micromark passes all tests from CommonMark and has many more tests to match the
 CommonMark reference parsers.
 Finally, it comes with [CMSM][], which describes how to parse markup, instead
 of documenting input and output examples.
+
+## Grammar
+
+The syntax of markdown can be
+[described](http://trevorjim.com/a-specification-for-markdown/)
+in Backus–Naur form (BNF) as:
+
+```bnf
+markdown = .*
+```
 
 ## Test
 
