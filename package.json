@@ -98,7 +98,7 @@
     "rollup": "^2.0.0",
     "rollup-plugin-terser": "^7.0.0",
     "tape": "^5.0.0",
-    "xo": "^0.35.0"
+    "xo": "^0.37.0"
   },
   "scripts": {
     "generate-lib-types": "node --experimental-modules script/generate-constant-typings.mjs",

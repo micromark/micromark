@@ -262,8 +262,8 @@ test('stream', function (t) {
       s.write('delta')
     }, 'should not `end` stdio streams')
 
-    tr = m().on('error', function (err) {
-      st.equal(err.message, 'Whoops!', 'should pass errors')
+    tr = m().on('error', function (error) {
+      st.equal(error.message, 'Whoops!', 'should pass errors')
     })
 
     tr.pipe(new stream.PassThrough())
