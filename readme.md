@@ -331,13 +331,14 @@ of documenting input and output examples.
 
 ## Grammar
 
-The syntax of markdown can be
-[described](http://trevorjim.com/a-specification-for-markdown/)
-in Backus–Naur form (BNF) as:
+The syntax of markdown can be described in Backus–Naur form (BNF) as:
 
 ```bnf
 markdown = .*
 ```
+
+No, that’s not a [typo](http://trevorjim.com/a-specification-for-markdown/):
+markdown has no syntax errors; anything thrown at it renders *something*.
 
 ## Test
 
