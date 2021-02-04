@@ -18,7 +18,7 @@ concrete tokens.
     [frontmatter][], [math][], [MDX.js][mdxjs])
 *   [x] **[safe][security]** (by default)
 *   [x] **[small][size]** (smallest CM parser that exists)
-*   [x] **[robust][test]** (1700+ tests, 100% coverage, fuzz testing)
+*   [x] **[robust][test]** (1800+ tests, 100% coverage, fuzz testing)
 
 ## Intro
 
@@ -342,7 +342,7 @@ markdown has no syntax errors; anything thrown at it renders *something*.
 
 ## Test
 
-micromark is tested with the \~650 CommonMark tests and more than 1000 extra
+micromark is tested with the \~650 CommonMark tests and more than 1.2k extra
 tests confirmed with CM reference parsers.
 These tests reach all branches in the code, thus this project has 100% coverage.
 Finally, we use fuzz testing to ensure micromark is stable, reliable, and
