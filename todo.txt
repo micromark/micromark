@@ -6,3 +6,4 @@ Things to check:
   1. Separate `content` chunks per line, let normal parsing make blocks and merge adjacent content
   2. On a successful interrupt, close content and use the events from interrupting
 - [ ] Perf: more tests: <https://github.com/commonmark/commonmark.js/issues/129>
+- [ ] Tests: https://github.com/commonmark/commonmark.js/blob/master/test/regression.txt

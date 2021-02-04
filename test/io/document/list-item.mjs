@@ -478,6 +478,42 @@ test('list-item', function (t) {
   )
 
   t.equal(
+    m('- ```\n\n  ```'),
+    '<ul>\n<li>\n<pre><code>\n</code></pre>\n</li>\n</ul>',
+    'should remove indent of code (fenced) in list (0 space)'
+  )
+
+  t.equal(
+    m('- ```\n \n  ```'),
+    '<ul>\n<li>\n<pre><code>\n</code></pre>\n</li>\n</ul>',
+    'should remove indent of code (fenced) in list (1 space)'
+  )
+
+  t.equal(
+    m('- ```\n  \n  ```'),
+    '<ul>\n<li>\n<pre><code>\n</code></pre>\n</li>\n</ul>',
+    'should remove indent of code (fenced) in list (2 spaces)'
+  )
+
+  t.equal(
+    m('- ```\n   \n  ```'),
+    '<ul>\n<li>\n<pre><code> \n</code></pre>\n</li>\n</ul>',
+    'should remove indent of code (fenced) in list (3 spaces)'
+  )
+
+  t.equal(
+    m('- ```\n    \n  ```'),
+    '<ul>\n<li>\n<pre><code>  \n</code></pre>\n</li>\n</ul>',
+    'should remove indent of code (fenced) in list (4 spaces)'
+  )
+
+  t.equal(
+    m('- ```\n\t\n  ```'),
+    '<ul>\n<li>\n<pre><code>  \n</code></pre>\n</li>\n</ul>',
+    'should remove indent of code (fenced) in list (1 tab)'
+  )
+
+  t.equal(
     m('* a\n\n<!---->\n\n* b', {allowDangerousHtml: true}),
     '<ul>\n<li>a</li>\n</ul>\n<!---->\n<ul>\n<li>b</li>\n</ul>',
     'should support the common list breaking comment method'
