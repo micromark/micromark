@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/micromark/micromark/9c34547/logo.svg?sanitize=true" alt="micromark" width="400" />
+  <img src="https://raw.githubusercontent.com/micromark/micromark/2e476c9/logo.svg?sanitize=true" alt="micromark" />
 </h1>
 
 [![Build][build-badge]][build]
