@@ -1,5 +1,0 @@
-import './commonmark.mjs'
-import './io/index.mjs'
-import './misc/index.mjs'
-import './extension.mjs'
-import './stream.mjs'

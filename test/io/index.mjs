@@ -1,5 +1,0 @@
-import './content/index.mjs'
-import './document/index.mjs'
-import './flow/index.mjs'
-import './misc/index.mjs'
-import './text/index.mjs'

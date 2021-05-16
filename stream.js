@@ -1,3 +1,1 @@
-'use strict'
-
-module.exports = require('./dist/stream.js')
+export {stream} from './dist/stream.js'

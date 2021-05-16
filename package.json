@@ -47,38 +47,36 @@
     "Mudit Ameta <zeusdeux@gmail.com> (https://mudit.xyz)",
     "Merlijn Vos <merlijn@soverin.net>"
   ],
+  "type": "module",
   "files": [
     "dist/",
     "lib/",
     "buffer.d.ts",
     "buffer.js",
-    "buffer.mjs",
     "index.js",
-    "index.mjs",
     "index.d.ts",
     "stream.d.ts",
-    "stream.js",
-    "stream.mjs"
+    "stream.js"
   ],
   "main": "./index.js",
   "types": "index.d.ts",
   "dependencies": {
     "debug": "^4.0.0",
-    "parse-entities": "^2.0.0"
+    "parse-entities": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@rollup/plugin-babel": "^5.0.0",
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/events": "^3.0.0",
     "@unicode/unicode-13.0.0": "^1.0.0",
-    "babel-plugin-inline-constants": "^1.0.0",
+    "babel-plugin-inline-constants": "^3.0.0",
     "babel-plugin-unassert": "^3.0.0",
-    "babel-plugin-undebug": "^1.0.0",
+    "babel-plugin-undebug": "^2.0.0",
     "c8": "^7.0.0",
-    "character-entities": "^1.0.0",
-    "commonmark.json": "^0.29.0",
+    "character-entities": "^2.0.0",
+    "commonmark.json": "^0.30.0",
     "concat-stream": "^2.0.0",
     "cross-env": "^7.0.0",
     "dtslint": "^4.0.0",
@@ -86,7 +84,7 @@
     "eslint-plugin-security": "^1.0.0",
     "esm": "^3.0.0",
     "glob": "^7.0.0",
-    "gzip-size-cli": "^4.0.0",
+    "gzip-size-cli": "^5.0.0",
     "jsfuzz": "1.0.14",
     "ms": "^2.0.0",
     "patch-package": "^6.0.0",
@@ -98,23 +96,22 @@
     "rollup": "^2.0.0",
     "rollup-plugin-terser": "^7.0.0",
     "tape": "^5.0.0",
-    "xo": "^0.37.0"
+    "xo": "^0.39.0"
   },
   "scripts": {
-    "generate-lib-types": "node --experimental-modules script/generate-constant-typings.mjs",
-    "generate-lib-expressions": "node --experimental-modules script/generate-expressions.mjs",
-    "generate-lib-cjs": "rollup -c --silent",
-    "generate-lib": "npm run generate-lib-types && npm run generate-lib-expressions && npm run generate-lib-cjs",
-    "generate-dist-types": "node --experimental-modules script/copy-dict.mjs",
+    "generate-lib-types": "node --experimental-modules script/generate-constant-typings.js",
+    "generate-lib-expressions": "node --experimental-modules script/generate-expressions.js",
+    "generate-lib": "npm run generate-lib-types && npm run generate-lib-expressions",
+    "generate-dist-types": "node --experimental-modules script/copy-dict.js",
     "generate-dist-js": "cross-env BUILD=dist rollup -c --silent",
     "generate-dist": "npm run generate-dist-types && npm run generate-dist-js",
     "generate-size": "cross-env BUILD=size rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "generate": "npm run generate-lib && npm run generate-dist && npm run generate-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
-    "pretest-fuzz": "patch-package --patch-dir script/patches && node script/generate-fixtures.mjs",
+    "pretest-fuzz": "patch-package --patch-dir script/patches && node script/generate-fixtures.js",
     "test-fuzz": "cross-env NODE_OPTIONS=\"-r esm\" timeout 15m jsfuzz test/fuzz.js test/fixtures",
-    "test-api": "node --experimental-modules test/index.mjs",
-    "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node --experimental-modules test/index.mjs",
+    "test-api": "node --experimental-modules test/index.js",
+    "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node --experimental-modules test/index.js",
     "test-types": "dtslint .",
     "test": "npm run generate && npm run format && npm run test-coverage && npm run test-types"
   },
@@ -139,7 +136,9 @@
       "import/extensions": [
         "error",
         "always"
-      ]
+      ],
+      "no-var": "off",
+      "prefer-arrow-callback": "off"
     },
     "overrides": [
       {
@@ -150,7 +149,7 @@
           "es"
         ],
         "extends": [
-          "plugin:es/no-new-in-es2015",
+          "plugin:es/no-new-in-es2016",
           "plugin:security/recommended"
         ],
         "rules": {
@@ -166,6 +165,7 @@
           "no-unmodified-loop-condition": "off",
           "security/detect-object-injection": "off",
           "unicorn/explicit-length-check": "off",
+          "unicorn/no-this-assignment": "off",
           "unicorn/prefer-includes": "off",
           "unicorn/prefer-number-properties": "off"
         }
@@ -193,6 +193,7 @@
     "ignores": [
       "dist/",
       "lib/**/*.js",
+      "**/*.d.ts",
       "micromark.test.ts"
     ]
   },

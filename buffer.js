@@ -1,3 +1,1 @@
-'use strict'
-
-module.exports = require('./dist')
+export {buffer} from './dist/index.js'

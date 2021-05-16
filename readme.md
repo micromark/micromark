@@ -87,7 +87,7 @@ Yields:
 ```
 
 The same can be done with ESM (in Node 10+, browsers that support it, or with a
-bundler), in an `example.mjs` file, like so:
+bundler), in an `example.js` file, like so:
 
 ```js
 import micromark from 'micromark'
@@ -698,7 +698,7 @@ It was great.
 
 [mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
 
-[constructs]: lib/constructs.mjs
+[constructs]: lib/constructs.js
 
 [extensions]: #list-of-extensions
 

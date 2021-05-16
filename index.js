@@ -1,3 +1,4 @@
-'use strict'
+console.log(1)
+import {buffer} from './buffer.js'
 
-module.exports = require('./buffer.js')
+export {buffer as micromark}
