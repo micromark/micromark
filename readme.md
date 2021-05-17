@@ -268,9 +268,9 @@ A higher level project, [`mdast-util-from-markdown`][from-markdown], can give
 you an AST.
 
 ```js
-var fromMarkdown = require('mdast-util-from-markdown')
+import fromMarkdown from 'mdast-util-from-markdown'
 
-var result = fromMarkdown('## Hello, *world*!')
+const result = fromMarkdown('## Hello, *world*!')
 
 console.log(result.children[0])
 ```
