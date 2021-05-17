@@ -90,7 +90,6 @@
     "regenerate": "^1.0.0",
     "remark-cli": "^9.0.0",
     "remark-preset-wooorm": "^8.0.0",
-    "resolve-from": "^5.0.0",
     "rollup": "^2.0.0",
     "rollup-plugin-terser": "^7.0.0",
     "tape": "^5.0.0",
