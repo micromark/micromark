@@ -190,7 +190,6 @@ Array of HTML extensions ([`Array.<HtmlExtension>`][html-extension], default:
 Streaming interface of micromark.
 Compiles markdown to HTML.
 `options` are the same as the buffering API above.
-Available at `require('micromark/stream')`.
 Note that some of the work to parse markdown can be done streaming, but in the
 end buffering is required.
 

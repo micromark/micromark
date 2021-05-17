@@ -48,18 +48,16 @@
     "Merlijn Vos <merlijn@soverin.net>"
   ],
   "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
   "files": [
     "dist/",
     "lib/",
-    "buffer.d.ts",
-    "buffer.js",
     "index.js",
     "index.d.ts",
     "stream.d.ts",
     "stream.js"
   ],
-  "main": "./index.js",
-  "types": "index.d.ts",
   "dependencies": {
     "debug": "^4.0.0",
     "parse-entities": "^3.0.0"

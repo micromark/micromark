@@ -1,3 +1,1 @@
-import {buffer} from './buffer.js'
-
-export {buffer as micromark}
+export * from './dist/index.js'
