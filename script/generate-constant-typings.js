@@ -8,11 +8,11 @@ import {types} from '../lib/constant/types.js'
 import {constants} from '../lib/constant/constants.js'
 
 function generateTyping(name, object, basePath) {
-  var uniqueValues = Array.from(new Set(Object.values(object)))
-  var literalType = uniqueValues
+  const uniqueValues = Array.from(new Set(Object.values(object)))
+  let literalType = uniqueValues
     .map((value) => JSON.stringify(value))
     .join(' | ')
-  var interfaceType = JSON.stringify(object)
+  const interfaceType = JSON.stringify(object)
 
   // Special logic for "Type" since we want to have types extendable btw, e.g., micromark-extension-gfm adds other types.
   if (name === 'Type') {

@@ -1,7 +1,7 @@
 {
-    "extends": "dtslint/dtslint.json",
-    "rules": {
-        "semicolon": false,
-        "whitespace": false
-    }
+  "extends": "dtslint/dtslint.json",
+  "rules": {
+    "semicolon": false,
+    "whitespace": false
+  }
 }

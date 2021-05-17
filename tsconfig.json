@@ -1,19 +1,13 @@
 {
-    "compilerOptions": {
-        "moduleResolution": "node",
-        "skipLibCheck": true,
-        "lib": [
-            "ES5"
-        ],
-        "strict": true,
-        "baseUrl": ".",
-        "paths": {
-            "micromark": [
-                "index.d.ts"
-            ],
-            "micromark/stream": [
-                "stream.d.ts"
-            ]
-        }
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "lib": ["ES5"],
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "micromark": ["index.d.ts"],
+      "micromark/stream": ["stream.d.ts"]
     }
+  }
 }

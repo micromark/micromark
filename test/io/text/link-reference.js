@@ -333,7 +333,7 @@ test('link (reference)', function (t) {
   )
 
   // 999 `x` characters.
-  var max = Array.from({length: 1000}).join('x')
+  const max = Array.from({length: 1000}).join('x')
 
   t.equal(
     micromark('[' + max + ']: a\n[y][' + max + ']'),

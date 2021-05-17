@@ -133,8 +133,8 @@ test('stream', function (t) {
   })
 
   t.test('should stream in non-UTF8', function (t) {
-    var encoding = 'utf16le'
-    var doc = [
+    const encoding = 'utf16le'
+    const doc = [
       'A bit of arabic: الإعلان العالمي لحقوق الإنسان',
       'Some hebrew: הכרזה לכל באי עולם בדבר זכויות האדם',
       'Mongolian (Halh, Mongolian script): ᠬᠦᠮᠦᠨ ᠪᠦᠷ ᠲᠥᠷᠥᠵᠦ ᠮᠡᠨᠳᠡᠯᠡᠬᠦ ᠡᠷᠬᠡ ᠴᠢᠯᠥᠭᠡ ᠲᠡᠢ᠂ ᠠᠳᠠᠯᠢᠬᠠᠨ ᠨᠡᠷ',
@@ -166,8 +166,8 @@ test('stream', function (t) {
   })
 
   t.test('#end and #write', function (t) {
-    var s
-    var phase
+    let s
+    let phase
 
     t.plan(8)
 
@@ -175,7 +175,7 @@ test('stream', function (t) {
 
     t.throws(
       function () {
-        var tr = micromark()
+        const tr = micromark()
         tr.end()
         tr.end()
       },
@@ -236,20 +236,19 @@ test('stream', function (t) {
   })
 
   t.test('#pipe', function (st) {
-    var tr
-    var s
+    let tr
 
     st.plan(5)
 
     st.doesNotThrow(function () {
       // Not writable.
-      var tr = micromark()
+      const tr = micromark()
       tr.pipe(new stream.Readable())
       tr.end('foo')
     }, 'should not throw when piping to a non-writable stream')
 
     tr = micromark()
-    s = new stream.PassThrough()
+    const s = new stream.PassThrough()
     s._isStdio = true // Act as if we’re stdout.
 
     tr.pipe(s)

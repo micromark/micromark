@@ -124,10 +124,6 @@
     "trailingComma": "none"
   },
   "xo": {
-    "esnext": false,
-    "extensions": [
-      "mjs"
-    ],
     "prettier": true,
     "envs": [
       "shared-node-browser"
@@ -137,13 +133,12 @@
         "error",
         "always"
       ],
-      "no-var": "off",
       "prefer-arrow-callback": "off"
     },
     "overrides": [
       {
         "files": [
-          "lib/**/*.{js,mjs}"
+          "lib/**/*.js"
         ],
         "plugin": [
           "es"
@@ -154,20 +149,10 @@
         ],
         "rules": {
           "complexity": "off",
-          "es/no-array-from": "off",
-          "es/no-object-assign": "off",
-          "es/no-modules": "off",
-          "import/no-mutable-exports": "off",
-          "import/no-anonymous-default-export": "off",
           "guard-for-in": "off",
           "max-depth": "off",
-          "no-multi-assign": "off",
-          "no-unmodified-loop-condition": "off",
           "security/detect-object-injection": "off",
-          "unicorn/explicit-length-check": "off",
-          "unicorn/no-this-assignment": "off",
-          "unicorn/prefer-includes": "off",
-          "unicorn/prefer-number-properties": "off"
+          "unicorn/no-this-assignment": "off"
         }
       },
       {
@@ -183,7 +168,7 @@
       },
       {
         "files": [
-          "test/**/*.{js,mjs}"
+          "test/**/*.js"
         ],
         "rules": {
           "import/no-unassigned-import": "off"
@@ -192,7 +177,6 @@
     ],
     "ignores": [
       "dist/",
-      "lib/**/*.js",
       "**/*.d.ts",
       "micromark.test.ts"
     ]

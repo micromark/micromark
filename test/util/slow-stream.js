@@ -1,10 +1,10 @@
 import stream from 'stream'
 
-var PassThrough = stream.PassThrough
+const PassThrough = stream.PassThrough
 
 export function slowStream(value, encoding) {
-  var stream = new PassThrough()
-  var index = 0
+  const stream = new PassThrough()
+  let index = 0
 
   tick()
 

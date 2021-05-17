@@ -1,7 +1,7 @@
 import test from 'tape'
 import {buffer as micromark} from '../../../lib/index.js'
 
-var unsafe = {allowDangerousHtml: true}
+const unsafe = {allowDangerousHtml: true}
 
 test('html', function (t) {
   t.equal(

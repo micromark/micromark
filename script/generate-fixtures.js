@@ -8,7 +8,7 @@
 import fs from 'fs'
 import cp from 'child_process'
 
-var script = [
+const script = [
   'export default capture',
   'import fs from "fs"',
   'import path from "path"',

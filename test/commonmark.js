@@ -2,17 +2,17 @@ import test from 'tape'
 import {commonmark} from 'commonmark.json'
 import {buffer as micromark} from '../lib/index.js'
 
-var own = {}.hasOwnProperty
+const own = {}.hasOwnProperty
 
-var options = {
+const options = {
   allowDangerousHtml: true,
   allowDangerousProtocol: true
 }
 
-var sections = {}
-var index = -1
-var list
-var d
+const sections = {}
+let index = -1
+let list
+let d
 
 while (++index < commonmark.length) {
   d = commonmark[index]
@@ -21,13 +21,13 @@ while (++index < commonmark.length) {
 }
 
 test('commonmark', function (t) {
-  var key
+  let key
 
   for (key in sections) {
     if (!own.call(sections, key)) continue
 
     t.test(key, function (t) {
-      var index = -1
+      let index = -1
 
       while (++index < sections[key].length) {
         t.equal(

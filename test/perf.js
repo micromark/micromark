@@ -2,7 +2,7 @@ import ms from 'ms'
 import {buffer as micromark} from '../lib/index.js'
 
 console.log('base')
-var then = Date.now()
+let then = Date.now()
 micromark('xxxx'.repeat(1e4))
 console.log(ms(Date.now() - then))
 

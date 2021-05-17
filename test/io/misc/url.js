@@ -98,8 +98,8 @@ test('url', function (t) {
     'should support an emoji'
   )
 
-  var ascii = []
-  var code = -1
+  const ascii = []
+  let code = -1
 
   while (++code < 128) {
     // LF and CR can’t be in resources.

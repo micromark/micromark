@@ -2,8 +2,8 @@ import test from 'tape'
 import {chunkedSplice} from '../../lib/util/chunked-splice.js'
 
 test('chunkedSplice', function (t) {
-  var list = [5, 4, 3, 2, 1]
-  var lots = [...Array.from({length: 140000}).keys()]
+  let list = [5, 4, 3, 2, 1]
+  const lots = [...Array.from({length: 140000}).keys()]
 
   t.throws(
     () => [].splice(0, 0, ...lots),

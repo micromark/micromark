@@ -10,7 +10,7 @@ import OtherPunctuation from '@unicode/unicode-13.0.0/General_Category/Other_Pun
 import OpenPunctuation from '@unicode/unicode-13.0.0/General_Category/Open_Punctuation/code-points.js'
 import {codes} from '../lib/character/codes.js'
 
-var pcAll = regenerate()
+const pcAll = regenerate()
   .addRange(codes.exclamationMark, codes.slash)
   .addRange(codes.colon, codes.atSign)
   .addRange(codes.leftSquareBracket, codes.graveAccent)
@@ -25,7 +25,7 @@ var pcAll = regenerate()
   .valueOf()
 
 // Note: we don’t support astrals.
-var pc = regenerate()
+const pc = regenerate()
   .add(
     pcAll.filter(function (d) {
       return d <= 0xffff

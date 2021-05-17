@@ -75,7 +75,7 @@ npm install micromark
 Typical use (buffering):
 
 ```js
-var micromark = require('micromark')
+import {micromark} from 'micromark'
 
 console.log(micromark('## Hello, *world*!'))
 ```
@@ -86,25 +86,16 @@ Yields:
 <h2>Hello, <em>world</em>!</h2>
 ```
 
-The same can be done with ESM (in Node 10+, browsers that support it, or with a
-bundler), in an `example.js` file, like so:
-
-```js
-import micromark from 'micromark'
-
-console.log(micromark('## Hello, *world*!'))
-```
-
 You can pass extensions (in this case [`micromark-extension-gfm`][gfm]):
 
 ```js
-var micromark = require('micromark')
-var gfmSyntax = require('micromark-extension-gfm')
-var gfmHtml = require('micromark-extension-gfm/html')
+import {micromark} from 'micromark'
+import gfmSyntax from 'micromark-extension-gfm'
+import gfmHtml from 'micromark-extension-gfm/html.js'
 
-var doc = '* [x] contact@example.com ~~strikethrough~~'
+const doc = '* [x] contact@example.com ~~strikethrough~~'
 
-var result = micromark(doc, {
+const result = micromark(doc, {
   extensions: [gfmSyntax()],
   htmlExtensions: [gfmHtml]
 })
@@ -123,17 +114,17 @@ Yields:
 Streaming interface:
 
 ```js
-var fs = require('fs')
-var micromarkStream = require('micromark/stream')
+import fs from 'fs'
+import {stream} from 'micromark/stream.js'
 
 fs.createReadStream('example.md')
   .on('error', handleError)
-  .pipe(micromarkStream())
+  .pipe(stream())
   .pipe(process.stdout)
 
-function handleError(err) {
+function handleError(error) {
   // Handle your error here!
-  throw err
+  throw error
 }
 ```
 

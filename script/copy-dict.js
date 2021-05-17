@@ -4,13 +4,13 @@ import fs from 'fs'
 import path from 'path'
 import glob from 'glob'
 
-var root = process.cwd()
-var dist = path.join(root, 'dist')
+const root = process.cwd()
+const dist = path.join(root, 'dist')
 
-var files = glob.sync('**/*.d.ts', {cwd: path.join(root, 'lib')})
-var index = -1
-var doc
-var position
+const files = glob.sync('**/*.d.ts', {cwd: path.join(root, 'lib')})
+let index = -1
+let doc
+let position
 
 while (++index < files.length) {
   doc = String(fs.readFileSync(path.join(root, 'lib', files[index])))

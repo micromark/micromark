@@ -5,7 +5,7 @@ import {buffer as micromark} from '../lib/index.js'
 import {stream} from '../lib/stream.js'
 
 test('syntax extension', function (t) {
-  var syntax = {
+  const syntax = {
     // An unknown key is treated as an existing key, potentially useful for
     // new tokenizers.
     unknown: {},
@@ -65,8 +65,8 @@ test('syntax extension', function (t) {
 })
 
 test('html extension', function (t) {
-  var syntax = {flow: {47: {tokenize: tokenizeCommentLine}}}
-  var html = {
+  const syntax = {flow: {47: {tokenize: tokenizeCommentLine}}}
+  const html = {
     // An unknown key is treated as an existing key, probably never useful, but
     // symetrical to syntax extensions.
     unknown: {},
@@ -127,7 +127,7 @@ function createFunkyThematicBreak(marker) {
   return {tokenize: tokenizeFunkyThematicBreak}
 
   function tokenizeFunkyThematicBreak(effects, ok, nok) {
-    var size = 0
+    let size = 0
 
     return start
 

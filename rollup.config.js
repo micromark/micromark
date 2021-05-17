@@ -1,14 +1,12 @@
 import path from 'path'
+import {babel} from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import {nodeResolve} from '@rollup/plugin-node-resolve'
 import {terser} from 'rollup-plugin-terser'
 
-import {babel} from '@rollup/plugin-babel'
+const configs = []
 
-// eslint-disable-next-line import/no-mutable-exports
-var configs = []
-
-var nodeVersion = Number.parseInt(process.versions.node, 10)
+const nodeVersion = Number.parseInt(process.versions.node, 10)
 
 if (nodeVersion < 12) {
   console.warn(
@@ -72,8 +70,7 @@ if (process.env.BUILD === 'size') {
     output: [
       {
         dir: 'dist',
-        format: 'cjs',
-        exports: 'auto',
+        format: 'esm',
         freeze: false,
         preserveModules: true,
         entryFileNames: '[name].js'

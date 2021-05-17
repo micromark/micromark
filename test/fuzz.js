@@ -1,6 +1,6 @@
 exports.fuzz = fuzz
 
-var {micromark} = require('..')
+const {micromark} = require('..')
 
 function fuzz(buf) {
   // Buffer.
