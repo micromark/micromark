@@ -5,39 +5,53 @@
 // Finally, it writes those given strings to `test/fixtures/` as separate files.
 // This can then be used to feed the fuzz tester.
 
-import fs from 'fs'
+import {promises as fs} from 'fs'
+import path from 'path'
 import cp from 'child_process'
 
-const script = [
-  'export default capture',
-  'import fs from "fs"',
-  'import path from "path"',
-  'import {micromark} from "./dist/index.js"',
-  'var captured = []',
-  'var base = path.join("test", "fixtures")',
-  'process.on("exit", onexit)',
-  'fs.mkdirSync(base, {recursive: true})',
-  'function capture(value) {',
-  '  if (typeof value === "string") captured.push(value)',
-  '  return m.apply(this, arguments)',
-  '}',
-  'function onexit() {',
-  '  captured',
-  '    .sort()',
-  '    .filter((d, i, a) => a.indexOf(d) === i)',
-  '    .forEach((d, i) => fs.writeFileSync(',
-  '      path.join(base, String(i)),',
-  '      d',
-  '    ))',
-  '}'
-].join('\n')
+main()
 
-fs.renameSync('index.js', 'index.bak.js')
-fs.writeFileSync('index.js', script)
-cp.execSync('node test/index.js')
+async function main() {
+  await fs.rename(
+    path.join('lib', 'index.js'),
+    path.join('lib', 'index.bak.js')
+  )
+  await fs.writeFile(
+    path.join('lib', 'index.js'),
+    [
+      'export {buffer, buffer as micromark}',
+      'import fs from "fs"',
+      'import path from "path"',
+      'import {micromark as core} from "./index.bak.js"',
+      'const captured = []',
+      'const base = path.join("test", "fixtures")',
+      'process.on("exit", onexit)',
+      'fs.mkdirSync(base, {recursive: true})',
+      'function buffer(value) {',
+      '  console.log(...arguments)',
+      '  if (typeof value === "string") captured.push(value)',
+      '  return core(...arguments)',
+      '}',
+      'function onexit() {',
+      '  captured',
+      '    .sort()',
+      '    .filter((d, i, a) => a.indexOf(d) === i)',
+      '    .forEach((d, i) => fs.writeFileSync(',
+      '      path.join(base, String(i)),',
+      '      d',
+      '    ))',
+      '}'
+    ].join('\n')
+  )
 
-process.on('exit', onexit)
+  cp.execSync('node test/index.js')
 
-function onexit() {
-  fs.renameSync('index.bak.js', 'index.js')
+  process.on('exit', onexit)
+
+  async function onexit() {
+    await fs.rename(
+      path.join('lib', 'index.bak.js'),
+      path.join('lib', 'index.js')
+    )
+  }
 }

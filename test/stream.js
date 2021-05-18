@@ -13,15 +13,15 @@ test('stream', function (t) {
       '`` some code? No, not code! A link though: <http://example.com>'
     )
       .pipe(micromark())
-      .pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(
-        result,
-        '<p>`` some code? No, not code! A link though: <a href="http://example.com">http://example.com</a></p>',
-        'pass'
+      .pipe(
+        concat(function (result) {
+          t.equal(
+            result,
+            '<p>`` some code? No, not code! A link though: <a href="http://example.com">http://example.com</a></p>',
+            'pass'
+          )
+        })
       )
-    }
   })
 
   t.test('should support streaming buffers', function (t) {
@@ -29,35 +29,39 @@ test('stream', function (t) {
 
     slowStream(Buffer.from('<admin@example.com>'))
       .pipe(micromark())
-      .pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(
-        result,
-        '<p><a href="mailto:admin@example.com">admin@example.com</a></p>',
-        'pass'
+      .pipe(
+        concat(function (result) {
+          t.equal(
+            result,
+            '<p><a href="mailto:admin@example.com">admin@example.com</a></p>',
+            'pass'
+          )
+        })
       )
-    }
   })
 
   t.test('should support reference-first definition-later', function (t) {
     t.plan(1)
 
-    slowStream('[x]\n\n[x]: y').pipe(micromark()).pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(result, '<p><a href="y">x</a></p>\n', 'pass')
-    }
+    slowStream('[x]\n\n[x]: y')
+      .pipe(micromark())
+      .pipe(
+        concat(function (result) {
+          t.equal(result, '<p><a href="y">x</a></p>\n', 'pass')
+        })
+      )
   })
 
   t.test('should support emphasis and strong', function (t) {
     t.plan(1)
 
-    slowStream('***x**y**').pipe(micromark()).pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(result, '<p><em><strong>x</strong>y</em>*</p>', 'pass')
-    }
+    slowStream('***x**y**')
+      .pipe(micromark())
+      .pipe(
+        concat(function (result) {
+          t.equal(result, '<p><em><strong>x</strong>y</em>*</p>', 'pass')
+        })
+      )
   })
 
   t.test('should support carriage returns between flow', function (t) {
@@ -65,15 +69,15 @@ test('stream', function (t) {
 
     slowStream('***\r\r    fn()\r\r### Heading\r\r')
       .pipe(micromark())
-      .pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(
-        result,
-        '<hr />\r<pre><code>fn()\r</code></pre>\r<h3>Heading</h3>\r',
-        'pass'
+      .pipe(
+        concat(function (result) {
+          t.equal(
+            result,
+            '<hr />\r<pre><code>fn()\r</code></pre>\r<h3>Heading</h3>\r',
+            'pass'
+          )
+        })
       )
-    }
   })
 
   t.test('should support carriage return + line feeds in flow', function (t) {
@@ -81,15 +85,15 @@ test('stream', function (t) {
 
     slowStream('***\r\n\r\n    fn()\r\n\r\n### Heading\r\n\r\n')
       .pipe(micromark())
-      .pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(
-        result,
-        '<hr />\r\n<pre><code>fn()\r\n</code></pre>\r\n<h3>Heading</h3>\r\n',
-        'pass'
+      .pipe(
+        concat(function (result) {
+          t.equal(
+            result,
+            '<hr />\r\n<pre><code>fn()\r\n</code></pre>\r\n<h3>Heading</h3>\r\n',
+            'pass'
+          )
+        })
       )
-    }
   })
 
   t.test('should integrate w/ `fs.create{Read,Write}Stream`', function (t) {
@@ -100,24 +104,24 @@ test('stream', function (t) {
     fs.createReadStream('integrate-input')
       .pipe(micromark())
       .pipe(fs.createWriteStream('integrate-output'))
-      .on('close', onend)
+      .on('close', function () {
+        t.equal(String(fs.readFileSync('integrate-output')), '<p>∵</p>', 'pass')
 
-    function onend() {
-      t.equal(String(fs.readFileSync('integrate-output')), '<p>∵</p>', 'pass')
-
-      fs.unlinkSync('integrate-input')
-      fs.unlinkSync('integrate-output')
-    }
+        fs.unlinkSync('integrate-input')
+        fs.unlinkSync('integrate-output')
+      })
   })
 
   t.test('should be safe by default', function (t) {
     t.plan(1)
 
-    slowStream('<x>').pipe(micromark()).pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(result, '&lt;x&gt;', 'pass')
-    }
+    slowStream('<x>')
+      .pipe(micromark())
+      .pipe(
+        concat(function (result) {
+          t.equal(result, '&lt;x&gt;', 'pass')
+        })
+      )
   })
 
   t.test('should be unsafe w/ `allowDangerousHtml`', function (t) {
@@ -125,11 +129,11 @@ test('stream', function (t) {
 
     slowStream('<x>')
       .pipe(micromark({allowDangerousHtml: true}))
-      .pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(result, '<x>', 'pass')
-    }
+      .pipe(
+        concat(function (result) {
+          t.equal(result, '<x>', 'pass')
+        })
+      )
   })
 
   t.test('should stream in non-UTF8', function (t) {
@@ -151,25 +155,25 @@ test('stream', function (t) {
     })
       .pipe(micromark())
       .pipe(fs.createWriteStream('non-utf8-output'))
-      .on('close', onend)
+      .on('close', function () {
+        t.equal(
+          String(fs.readFileSync('non-utf8-output')),
+          '<p>' + doc + '</p>',
+          'pass'
+        )
 
-    function onend() {
-      t.equal(
-        String(fs.readFileSync('non-utf8-output')),
-        '<p>' + doc + '</p>',
-        'pass'
-      )
-
-      fs.unlinkSync('non-utf8-input')
-      fs.unlinkSync('non-utf8-output')
-    }
+        fs.unlinkSync('non-utf8-input')
+        fs.unlinkSync('non-utf8-output')
+      })
   })
 
   t.test('#end and #write', function (t) {
+    /** @type {ReturnType<micromark>} */
     let s
+    /** @type {number} */
     let phase
 
-    t.plan(8)
+    t.plan(9)
 
     t.equal(micromark().end(), true, 'should return true for `end`')
 
@@ -218,6 +222,8 @@ test('stream', function (t) {
         t.equal(String(value), '<p>brC!vo</p>', 'should honour encoding')
       })
     )
+    // @ts-expect-error Types for `WritableStream#end` are wrong: buffers are
+    // fine.
     s.end(Buffer.from([0x62, 0x72, 0xc3, 0xa1, 0x76, 0x6f]), 'ascii')
 
     phase = 0
@@ -233,9 +239,18 @@ test('stream', function (t) {
       t.equal(phase, 0, 'should trigger callback before data')
       phase++
     })
+
+    phase = 0
+
+    micromark().end(() => {
+      phase++
+    })
+
+    t.equal(phase, 1, 'should trigger callback when it’s the only argument')
   })
 
   t.test('#pipe', function (st) {
+    /** @type {ReturnType<micromark>} */
     let tr
 
     st.plan(5)
@@ -243,12 +258,14 @@ test('stream', function (t) {
     st.doesNotThrow(function () {
       // Not writable.
       const tr = micromark()
+      // @ts-expect-error Runtime.
       tr.pipe(new stream.Readable())
       tr.end('foo')
     }, 'should not throw when piping to a non-writable stream')
 
     tr = micromark()
     const s = new stream.PassThrough()
+    // @ts-expect-error `std{err,out}` can have this field.
     s._isStdio = true // Act as if we’re stdout.
 
     tr.pipe(s)
@@ -261,7 +278,7 @@ test('stream', function (t) {
       s.write('delta')
     }, 'should not `end` stdio streams')
 
-    tr = micromark().on('error', function (error) {
+    tr = micromark().on('error', function (/** @type {Error} */ error) {
       st.equal(error.message, 'Whoops!', 'should pass errors')
     })
 

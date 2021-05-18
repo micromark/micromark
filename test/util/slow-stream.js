@@ -2,6 +2,10 @@ import stream from 'stream'
 
 const PassThrough = stream.PassThrough
 
+/**
+ * @param {string|Buffer} value
+ * @param {BufferEncoding} [encoding]
+ */
 export function slowStream(value, encoding) {
   const stream = new PassThrough()
   let index = 0

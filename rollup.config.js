@@ -6,14 +6,6 @@ import {terser} from 'rollup-plugin-terser'
 
 const configs = []
 
-const nodeVersion = Number.parseInt(process.versions.node, 10)
-
-if (nodeVersion < 12) {
-  console.warn(
-    'Not inlining constants from `dist/`, use Node 12+ to strip them'
-  )
-}
-
 if (process.env.BUILD === 'size') {
   configs.push({
     input: './lib/index.js',
@@ -35,23 +27,19 @@ if (process.env.BUILD === 'size') {
       babel({
         babelHelpers: 'external',
         skipPreflightCheck: true,
-        plugins: ['babel-plugin-unassert', 'babel-plugin-undebug'].concat(
-          nodeVersion > 12
-            ? [
-                [
-                  'babel-plugin-inline-constants',
-                  {
-                    modules: [
-                      './lib/character/codes.js',
-                      './lib/character/values.js',
-                      './lib/constant/constants.js',
-                      './lib/constant/types.js'
-                    ]
-                  }
-                ]
+        plugins: ['babel-plugin-unassert', 'babel-plugin-undebug'].concat([
+          [
+            'babel-plugin-inline-constants',
+            {
+              modules: [
+                './lib/character/codes.js',
+                './lib/character/values.js',
+                './lib/constant/constants.js',
+                './lib/constant/types.js'
               ]
-            : []
-        )
+            }
+          ]
+        ])
       }),
       commonjs({includes: /node_modules/})
     ]
@@ -81,23 +69,19 @@ if (process.env.BUILD === 'size') {
       babel({
         babelHelpers: 'external',
         skipPreflightCheck: true,
-        plugins: ['babel-plugin-unassert', 'babel-plugin-undebug'].concat(
-          nodeVersion > 12
-            ? [
-                [
-                  'babel-plugin-inline-constants',
-                  {
-                    modules: [
-                      './lib/character/codes.js',
-                      './lib/character/values.js',
-                      './lib/constant/constants.js',
-                      './lib/constant/types.js'
-                    ]
-                  }
-                ]
+        plugins: ['babel-plugin-unassert', 'babel-plugin-undebug'].concat([
+          [
+            'babel-plugin-inline-constants',
+            {
+              modules: [
+                './lib/character/codes.js',
+                './lib/character/values.js',
+                './lib/constant/constants.js',
+                './lib/constant/types.js'
               ]
-            : []
-        )
+            }
+          ]
+        ])
       })
     ]
   })

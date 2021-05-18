@@ -1,3 +1,4 @@
+.nyc_output/
 coverage/
 dist/
 node_modules/
@@ -6,3 +7,6 @@ test/fixtures/
 .DS_Store
 micromark.min.js
 yarn.lock
+lib/**/*.d.ts
+script/**/*.d.ts
+test/**/*.d.ts

@@ -31,8 +31,13 @@ test('constants', function (t) {
   t.end()
 })
 
+/**
+ * @param {string[]} list
+ * @returns {string}
+ */
 function longest(list) {
   let index = -1
+  /** @type {string} */
   let result
 
   while (++index < list.length) {

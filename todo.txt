@@ -1,4 +1,5 @@
 Things to check:
+- [ ] `resolver`s should mutate and not return?
 - [ ] Size/perf: feed more subtokenizers directly?
 - [ ] Perf: use `resolveAll` instead of `resolveToLabelEnd` for label end.
 - [ ] Perf: see if we can remove unneeded checks, interrupts, attempts, or other double parsing.

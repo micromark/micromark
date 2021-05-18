@@ -28,21 +28,25 @@ test('bom (byte order marker)', function (t) {
   t.test('should ignore a bom (stream)', function (t) {
     t.plan(1)
 
-    slowStream('\uFEFF# hea\uFEFFding').pipe(stream()).pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(result, '<h1>hea\uFEFFding</h1>', 'pass')
-    }
+    slowStream('\uFEFF# hea\uFEFFding')
+      .pipe(stream())
+      .pipe(
+        concat((result) => {
+          t.equal(result, '<h1>hea\uFEFFding</h1>', 'pass')
+        })
+      )
   })
 
   t.test('should ignore just a bom (stream)', function (t) {
     t.plan(1)
 
-    slowStream('\uFEFF').pipe(stream()).pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(result, '', 'pass')
-    }
+    slowStream('\uFEFF')
+      .pipe(stream())
+      .pipe(
+        concat((result) => {
+          t.equal(result, '', 'pass')
+        })
+      )
   })
 
   t.end()

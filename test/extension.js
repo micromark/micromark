@@ -1,3 +1,12 @@
+/**
+ * @typedef {import('../lib/types.js').Construct} Construct
+ * @typedef {import('../lib/types.js').Tokenize} Tokenize
+ * @typedef {import('../lib/types.js').State} State
+ * @typedef {import('../lib/types.js').Code} Code
+ * @typedef {import('../lib/types.js').Handle} Handle
+ * @typedef {import('../lib/types.js').HtmlExtension} HtmlExtension
+ */
+
 import test from 'tape'
 import concat from 'concat-stream'
 import {slowStream} from './util/slow-stream.js'
@@ -113,24 +122,30 @@ test('html extension', function (t) {
 
     slowStream('// a\r\nb')
       .pipe(stream({extensions: [syntax], htmlExtensions: [html]}))
-      .pipe(concat(onconcat))
-
-    function onconcat(result) {
-      t.equal(result, '<p>b</p>', 'pass')
-    }
+      .pipe(
+        concat(function (result) {
+          t.equal(result, '<p>b</p>', 'pass')
+        })
+      )
   })
 
   t.end()
 })
 
+/**
+ * @param {Code} marker
+ * @returns {Construct}
+ */
 function createFunkyThematicBreak(marker) {
   return {tokenize: tokenizeFunkyThematicBreak}
 
+  /** @type {Tokenize} */
   function tokenizeFunkyThematicBreak(effects, ok, nok) {
     let size = 0
 
     return start
 
+    /** @type {State} */
     function start(code) {
       if (code !== marker) {
         return nok(code)
@@ -140,6 +155,7 @@ function createFunkyThematicBreak(marker) {
       return atBreak(code)
     }
 
+    /** @type {State} */
     function atBreak(code) {
       // Plus.
       if (code === marker) {
@@ -165,6 +181,7 @@ function createFunkyThematicBreak(marker) {
       return nok(code)
     }
 
+    /** @type {State} */
     function sequence(code) {
       if (code === marker) {
         effects.consume(code)
@@ -176,6 +193,7 @@ function createFunkyThematicBreak(marker) {
       return atBreak(code)
     }
 
+    /** @type {State} */
     function whitespace(code) {
       if (code === -2 || code === -1 || code === 32) {
         effects.consume(code)
@@ -188,9 +206,11 @@ function createFunkyThematicBreak(marker) {
   }
 }
 
+/** @type {Tokenize} */
 function tokenizeCommentLine(effects, ok, nok) {
   return start
 
+  /** @type {State} */
   function start(code) {
     if (code !== 47) {
       return nok(code)
@@ -202,6 +222,7 @@ function tokenizeCommentLine(effects, ok, nok) {
     return insideSlashes
   }
 
+  /** @type {State} */
   function insideSlashes(code) {
     if (code === 47) {
       effects.consume(code)
@@ -212,6 +233,7 @@ function tokenizeCommentLine(effects, ok, nok) {
     return nok(code)
   }
 
+  /** @type {State} */
   function afterSlashes(code) {
     // Eol or eof.
     if (code === null || code === -5 || code === -4 || code === -3) {
@@ -224,6 +246,7 @@ function tokenizeCommentLine(effects, ok, nok) {
     return insideValue(code)
   }
 
+  /** @type {State} */
   function insideValue(code) {
     // Eol or eof.
     if (code === null || code === -5 || code === -4 || code === -3) {
@@ -238,9 +261,11 @@ function tokenizeCommentLine(effects, ok, nok) {
   }
 }
 
+/** @type {Tokenize} */
 function tokenizeJustALessThan(effects, ok, nok) {
   return start
 
+  /** @type {State} */
   function start(code) {
     if (code !== 60) {
       return nok(code)
@@ -253,19 +278,23 @@ function tokenizeJustALessThan(effects, ok, nok) {
   }
 }
 
+/** @type {Handle} */
 function enterComment() {
   this.buffer()
 }
 
+/** @type {Handle} */
 function exitComment() {
   this.resume()
   this.setData('slurpOneLineEnding', true)
 }
 
+/** @type {Handle} */
 function enterDocument() {
   this.raw('+')
 }
 
+/** @type {Handle} */
 function exitDocument() {
   this.raw('-')
 }

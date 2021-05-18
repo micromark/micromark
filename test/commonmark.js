@@ -4,23 +4,20 @@ import {buffer as micromark} from '../lib/index.js'
 
 const own = {}.hasOwnProperty
 
-const options = {
-  allowDangerousHtml: true,
-  allowDangerousProtocol: true
-}
+const options = {allowDangerousHtml: true, allowDangerousProtocol: true}
 
+/** @type {Record<string, {input: string, output: string}[]>} */
 const sections = {}
 let index = -1
-let list
-let d
 
 while (++index < commonmark.length) {
-  d = commonmark[index]
-  list = sections[d.section] || (sections[d.section] = [])
+  const d = commonmark[index]
+  const list = sections[d.section] || (sections[d.section] = [])
   list.push({input: d.markdown, output: d.html})
 }
 
 test('commonmark', function (t) {
+  /** @type {string} */
   let key
 
   for (key in sections) {
