@@ -397,6 +397,7 @@ It has syntax extensions, such as supporting 100% GFM compliance (with
 It’s the newest parser on the block.
 
 If you’re looking for fine grained control, use micromark.
+Or, if you just want HTML from markdown, use micromark.
 
 ###### remark
 
@@ -418,8 +419,9 @@ If you’re looking to inspect or transform lots of content, use [remark][].
 It’s been around for ages, is battle tested, small, popular, and has a bunch of
 extensions, but doesn’t match CommonMark or GFM, and is unsafe by default.
 
-If you have markdown you trust and want to turn it into HTML without a fuss, use
-[marked][].
+If you have markdown you trust and want to turn it into HTML without a fuss, and
+don’t care about perfect compatibility with CommonMark or GFM, but do appreciate
+a small bundle size, use [marked][].
 
 ###### markdown-it
 
@@ -429,8 +431,8 @@ It’s used a lot as a direct dependency in packages, but is rather big.
 It shines at syntax extensions, where you want to support not just markdown, but
 *your* (company’s) version of markdown.
 
-If you’re in Node and have CommonMark-compliant (or funky) markdown and want to
-turn it into HTML, use [markdown-it][].
+If you need a couple of custom syntax extensions to your otherwise
+CommonMark-compliant markdown, and want to get HTML out, use [markdown-it][].
 
 ###### Others
 
