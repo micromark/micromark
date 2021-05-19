@@ -1,12 +1,19 @@
 import {promises as fs} from 'fs'
 import path from 'path'
 import regenerate from 'regenerate'
+// @ts-expect-error untyped.
 import ConnectorPunctuation from '@unicode/unicode-13.0.0/General_Category/Connector_Punctuation/code-points.js'
+// @ts-expect-error untyped.
 import DashPunctuation from '@unicode/unicode-13.0.0/General_Category/Dash_Punctuation/code-points.js'
+// @ts-expect-error untyped.
 import ClosePunctuation from '@unicode/unicode-13.0.0/General_Category/Close_Punctuation/code-points.js'
+// @ts-expect-error untyped.
 import FinalPunctuation from '@unicode/unicode-13.0.0/General_Category/Final_Punctuation/code-points.js'
+// @ts-expect-error untyped.
 import InitialPunctuation from '@unicode/unicode-13.0.0/General_Category/Initial_Punctuation/code-points.js'
+// @ts-expect-error untyped.
 import OtherPunctuation from '@unicode/unicode-13.0.0/General_Category/Other_Punctuation/code-points.js'
+// @ts-expect-error untyped.
 import OpenPunctuation from '@unicode/unicode-13.0.0/General_Category/Open_Punctuation/code-points.js'
 import {codes} from '../lib/character/codes.js'
 

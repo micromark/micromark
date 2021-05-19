@@ -38,7 +38,7 @@ test('constants', function (t) {
 function longest(list) {
   let index = -1
   /** @type {string} */
-  let result
+  let result = ''
 
   while (++index < list.length) {
     if (!result || list[index].length > result.length) {

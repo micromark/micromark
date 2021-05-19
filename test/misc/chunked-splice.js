@@ -2,13 +2,16 @@ import test from 'tape'
 import {chunkedSplice} from '../../lib/util/chunked-splice.js'
 
 test('chunkedSplice', function (t) {
-  let list = [5, 4, 3, 2, 1]
+  /** @type {number[]} */
+  let list = []
   const lots = [...Array.from({length: 140000}).keys()]
 
   t.throws(
-    () => [].splice(0, 0, ...lots),
+    () => list.splice(0, 0, ...lots),
     'baseline: `[].slice` should crash on lots of items'
   )
+
+  list = [5, 4, 3, 2, 1]
 
   chunkedSplice(list, 0, 0, [])
 

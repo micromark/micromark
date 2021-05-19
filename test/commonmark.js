@@ -1,8 +1,7 @@
 import test from 'tape'
 import {commonmark} from 'commonmark.json'
 import {buffer as micromark} from '../lib/index.js'
-
-const own = {}.hasOwnProperty
+import {hasOwnProperty} from '../lib/constant/has-own-property.js'
 
 const options = {allowDangerousHtml: true, allowDangerousProtocol: true}
 
@@ -21,7 +20,7 @@ test('commonmark', function (t) {
   let key
 
   for (key in sections) {
-    if (!own.call(sections, key)) continue
+    if (!hasOwnProperty.call(sections, key)) continue
 
     t.test(key, function (t) {
       let index = -1

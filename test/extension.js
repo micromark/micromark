@@ -14,6 +14,7 @@ import {buffer as micromark} from '../lib/index.js'
 import {stream} from '../lib/stream.js'
 
 test('syntax extension', function (t) {
+  /** @type {import('../lib/types.js').Extension} */
   const syntax = {
     // An unknown key is treated as an existing key, potentially useful for
     // new tokenizers.
@@ -133,7 +134,7 @@ test('html extension', function (t) {
 })
 
 /**
- * @param {Code} marker
+ * @param {number} marker
  * @returns {Construct}
  */
 function createFunkyThematicBreak(marker) {

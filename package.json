@@ -69,7 +69,7 @@
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/concat-stream": "^1.6.0",
-    "@types/events": "^3.0.0",
+    "@types/ms": "^0.7.0",
     "@types/regenerate": "^1.0.0",
     "@types/tape": "^4.0.0",
     "@unicode/unicode-13.0.0": "^1.0.0",
