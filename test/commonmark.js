@@ -1,7 +1,8 @@
 import test from 'tape'
 import {commonmark} from 'commonmark.json'
 import {buffer as micromark} from '../lib/index.js'
-import {hasOwnProperty} from '../lib/constant/has-own-property.js'
+
+const hasOwnProperty = {}.hasOwnProperty
 
 const options = {allowDangerousHtml: true, allowDangerousProtocol: true}
 
