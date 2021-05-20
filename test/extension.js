@@ -1,20 +1,21 @@
 /**
- * @typedef {import('../lib/types.js').Construct} Construct
- * @typedef {import('../lib/types.js').Tokenize} Tokenize
- * @typedef {import('../lib/types.js').State} State
- * @typedef {import('../lib/types.js').Code} Code
- * @typedef {import('../lib/types.js').Handle} Handle
- * @typedef {import('../lib/types.js').HtmlExtension} HtmlExtension
+ * @typedef {import('../lib/micromark/index.js').Construct} Construct
+ * @typedef {import('../lib/micromark/index.js').Tokenizer} Tokenizer
+ * @typedef {import('../lib/micromark/index.js').State} State
+ * @typedef {import('../lib/micromark/index.js').Code} Code
+ * @typedef {import('../lib/micromark/index.js').Handle} Handle
+ * @typedef {import('../lib/micromark/index.js').HtmlExtension} HtmlExtension
+ * @typedef {import('../lib/micromark/index.js').Extension} Extension
  */
 
 import test from 'tape'
 import concat from 'concat-stream'
 import {slowStream} from './util/slow-stream.js'
-import {buffer as micromark} from '../lib/index.js'
-import {stream} from '../lib/stream.js'
+import {buffer as micromark} from '../lib/micromark/index.js'
+import {stream} from '../lib/micromark/stream.js'
 
 test('syntax extension', function (t) {
-  /** @type {import('../lib/types.js').Extension} */
+  /** @type {Extension} */
   const syntax = {
     // An unknown key is treated as an existing key, potentially useful for
     // new tokenizers.
@@ -140,7 +141,7 @@ test('html extension', function (t) {
 function createFunkyThematicBreak(marker) {
   return {tokenize: tokenizeFunkyThematicBreak}
 
-  /** @type {Tokenize} */
+  /** @type {Tokenizer} */
   function tokenizeFunkyThematicBreak(effects, ok, nok) {
     let size = 0
 
@@ -207,7 +208,7 @@ function createFunkyThematicBreak(marker) {
   }
 }
 
-/** @type {Tokenize} */
+/** @type {Tokenizer} */
 function tokenizeCommentLine(effects, ok, nok) {
   return start
 
@@ -262,7 +263,7 @@ function tokenizeCommentLine(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenize} */
+/** @type {Tokenizer} */
 function tokenizeJustALessThan(effects, ok, nok) {
   return start
 

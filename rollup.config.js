@@ -8,7 +8,7 @@ const configs = []
 
 if (process.env.BUILD === 'size') {
   configs.push({
-    input: './lib/index.js',
+    input: './lib/micromark/index.js',
     output: {
       file: './micromark.min.js',
       format: 'umd',
@@ -32,10 +32,10 @@ if (process.env.BUILD === 'size') {
             'babel-plugin-inline-constants',
             {
               modules: [
-                './lib/character/codes.js',
-                './lib/character/values.js',
-                './lib/constant/constants.js',
-                './lib/constant/types.js'
+                './lib/micromark-core-symbol/codes.js',
+                './lib/micromark-core-symbol/constants.js',
+                './lib/micromark-core-symbol/types.js',
+                './lib/micromark-core-symbol/values.js'
               ]
             }
           ]
@@ -47,13 +47,13 @@ if (process.env.BUILD === 'size') {
 } else if (process.env.BUILD === 'dist') {
   configs.push({
     input: [
-      './lib/index.js',
-      './lib/stream.js',
+      './lib/micromark/index.js',
+      './lib/micromark/stream.js',
       // Preserve compiled away constants for ecosystem packages
-      './lib/character/codes.js',
-      './lib/character/values.js',
-      './lib/constant/constants.js',
-      './lib/constant/types.js'
+      './lib/micromark-core-symbol/codes.js',
+      './lib/micromark-core-symbol/constants.js',
+      './lib/micromark-core-symbol/types.js',
+      './lib/micromark-core-symbol/values.js'
     ],
     output: [
       {
@@ -74,10 +74,10 @@ if (process.env.BUILD === 'size') {
             'babel-plugin-inline-constants',
             {
               modules: [
-                './lib/character/codes.js',
-                './lib/character/values.js',
-                './lib/constant/constants.js',
-                './lib/constant/types.js'
+                './lib/micromark-core-symbol/codes.js',
+                './lib/micromark-core-symbol/constants.js',
+                './lib/micromark-core-symbol/types.js',
+                './lib/micromark-core-symbol/values.js'
               ]
             }
           ]

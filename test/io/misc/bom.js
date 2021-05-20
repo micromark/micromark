@@ -1,7 +1,7 @@
 import test from 'tape'
 import concat from 'concat-stream'
-import {buffer as micromark} from '../../../lib/index.js'
-import {stream} from '../../../lib/stream.js'
+import {buffer as micromark} from '../../../lib/micromark/index.js'
+import {stream} from '../../../lib/micromark/stream.js'
 import {slowStream} from '../../util/slow-stream.js'
 
 test('bom (byte order marker)', function (t) {

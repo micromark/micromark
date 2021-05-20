@@ -1,5 +1,5 @@
 import test from 'tape'
-import {buffer as micromark} from '../../../lib/index.js'
+import {buffer as micromark} from '../../../lib/micromark/index.js'
 
 test('image', function (t) {
   t.equal(
@@ -189,6 +189,18 @@ test('image', function (t) {
     micromark('![x]()', {extensions: [{disable: {null: ['labelStartImage']}}]}),
     '<p>!<a href="">x</a></p>',
     'should support turning off label start (image)'
+  )
+
+  t.equal(
+    micromark('![](javascript:alert(1))'),
+    '<p><img src="" alt="" /></p>',
+    'should ignore non-http protocols by default'
+  )
+
+  t.equal(
+    micromark('![](javascript:alert(1))', {allowDangerousProtocol: true}),
+    '<p><img src="javascript:alert(1)" alt="" /></p>',
+    'should allow non-http protocols w/ `allowDangerousProtocol`'
   )
 
   t.end()

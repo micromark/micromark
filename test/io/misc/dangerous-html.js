@@ -1,5 +1,5 @@
 import test from 'tape'
-import {buffer as micromark} from '../../../lib/index.js'
+import {buffer as micromark} from '../../../lib/micromark/index.js'
 
 test('dangerous-html', function (t) {
   t.equal(micromark('<x>'), '&lt;x&gt;', 'should be safe by default for flow')

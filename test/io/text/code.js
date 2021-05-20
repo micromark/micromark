@@ -1,5 +1,5 @@
 import test from 'tape'
-import {buffer as micromark} from '../../../lib/index.js'
+import {buffer as micromark} from '../../../lib/micromark/index.js'
 
 test('code', function (t) {
   t.equal(micromark('`foo`'), '<p><code>foo</code></p>', 'should support code')

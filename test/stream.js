@@ -2,7 +2,7 @@ import fs from 'fs'
 import stream from 'stream'
 import test from 'tape'
 import concat from 'concat-stream'
-import {stream as micromark} from '../lib/stream.js'
+import {stream as micromark} from '../lib/micromark/stream.js'
 import {slowStream} from './util/slow-stream.js'
 
 test('stream', function (t) {

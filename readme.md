@@ -690,7 +690,7 @@ It was great.
 
 [mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
 
-[constructs]: lib/constructs.js
+[constructs]: lib/micromark/constructs.js
 
 [extensions]: #list-of-extensions
 

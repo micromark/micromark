@@ -1,5 +1,5 @@
 import test from 'tape'
-import {buffer as micromark} from '../../../lib/index.js'
+import {buffer as micromark} from '../../../lib/micromark/index.js'
 
 test('buffer', function (t) {
   t.equal(micromark(Buffer.from('')), '', 'should support empty buffers')

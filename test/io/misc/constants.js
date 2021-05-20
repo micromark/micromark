@@ -1,7 +1,7 @@
 import test from 'tape'
 import {characterEntities} from 'character-entities'
-import {constants} from '../../../lib/constant/constants.js'
-import {htmlRawNames} from '../../../lib/constant/html-raw-names.js'
+import {constants} from '../../../lib/micromark-core-symbol/constants.js'
+import {htmlRawNames} from '../../../lib/micromark-util-html-tag-name/index.js'
 
 test('constants', function (t) {
   t.equal(

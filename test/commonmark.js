@@ -1,6 +1,6 @@
 import test from 'tape'
 import {commonmark} from 'commonmark.json'
-import {buffer as micromark} from '../lib/index.js'
+import {buffer as micromark} from '../lib/micromark/index.js'
 
 const hasOwnProperty = {}.hasOwnProperty
 

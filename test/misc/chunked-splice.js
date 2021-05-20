@@ -1,7 +1,7 @@
 import test from 'tape'
-import {chunkedSplice} from '../../lib/util/chunked-splice.js'
+import {splice} from '../../lib/micromark-util-chunked/index.js'
 
-test('chunkedSplice', function (t) {
+test('splice', function (t) {
   /** @type {number[]} */
   let list = []
   const lots = [...Array.from({length: 140000}).keys()]
@@ -13,7 +13,7 @@ test('chunkedSplice', function (t) {
 
   list = [5, 4, 3, 2, 1]
 
-  chunkedSplice(list, 0, 0, [])
+  splice(list, 0, 0, [])
 
   t.deepEqual(
     list,
@@ -23,13 +23,13 @@ test('chunkedSplice', function (t) {
 
   list = [5, 4, 3, 2, 1]
 
-  chunkedSplice(list, 1, 2, [9, 99, 999])
+  splice(list, 1, 2, [9, 99, 999])
 
   t.deepEqual(list, [5, 9, 99, 999, 2, 1], 'should mutatefor deletes, inserts')
 
   list = [5, 4, 3, 2, 1]
 
-  chunkedSplice(list, -3, 2, [9, 99, 999])
+  splice(list, -3, 2, [9, 99, 999])
 
   t.deepEqual(
     list,
@@ -37,7 +37,7 @@ test('chunkedSplice', function (t) {
     'should mutate the list w/ a negative start'
   )
 
-  chunkedSplice(list, 100, 3, [10, 11, 12])
+  splice(list, 100, 3, [10, 11, 12])
 
   t.deepEqual(
     list,
@@ -45,7 +45,7 @@ test('chunkedSplice', function (t) {
     'should delete items for a too big start'
   )
 
-  chunkedSplice(list, -100, 3, [6])
+  splice(list, -100, 3, [6])
 
   t.deepEqual(
     list,
@@ -55,7 +55,7 @@ test('chunkedSplice', function (t) {
 
   list = [42, 10, 11, 12, 13, 43]
 
-  chunkedSplice(list, 1, 0, lots)
+  splice(list, 1, 0, lots)
 
   t.deepEqual(
     list,
@@ -65,7 +65,7 @@ test('chunkedSplice', function (t) {
 
   list = [42, 10, 11, 12, 13, 43]
 
-  chunkedSplice(list, 1, 4, lots)
+  splice(list, 1, 4, lots)
 
   t.deepEqual(
     list,

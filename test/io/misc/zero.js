@@ -1,5 +1,5 @@
 import test from 'tape'
-import {buffer as micromark} from '../../../lib/index.js'
+import {buffer as micromark} from '../../../lib/micromark/index.js'
 
 // Note: `nul` doesn’t work on Windows as a file name 🤷‍♂️
 test('nul', function (t) {
