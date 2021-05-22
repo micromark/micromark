@@ -1,7 +1,7 @@
 /**
- * @typedef {import('micromark').Effects} Effects
- * @typedef {import('micromark').TokenizeContext} TokenizeContext
- * @typedef {import('micromark').State} State
+ * @typedef {import('micromark-util-types').Effects} Effects
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').State} State
  */
 
 import assert from 'assert'

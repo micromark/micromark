@@ -13,92 +13,17 @@
  */
 
 /**
- * @typedef {import('../index.js').TokenizeContext} TokenizeContext
- * @typedef {import('../index.js').Type} Type
- * @typedef {import('../index.js').Token} Token
- * @typedef {import('../index.js').Event} Event
+ * @typedef {import('micromark-util-types').Event} Event
+ * @typedef {import('micromark-util-types').CompileOptions} CompileOptions
+ * @typedef {import('micromark-util-types').CompileData} CompileData
+ * @typedef {import('micromark-util-types').CompileContext} CompileContext
+ * @typedef {import('micromark-util-types').Compile} Compile
+ * @typedef {import('micromark-util-types').Handle} Handle
+ * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
+ * @typedef {import('micromark-util-types').NormalizedHtmlExtension} NormalizedHtmlExtension
  */
 
 /**
- * @typedef Context
- *   HTML compiler context
- * @property {Options} options
- *   Configuration passed by the user.
- * @property {(key: string, value?: unknown) => void} setData
- *   Set data into the key-value store.
- * @property {<K extends string>(key: K) => Data[K]} getData
- *   Get data from the key-value store.
- * @property {() => void} lineEndingIfNeeded
- *   Output an extra line ending if the previous value wasn’t EOF/EOL.
- * @property {(value: string) => string} encode
- *   Make a value safe for injection in HTML (except w/ `ignoreEncode`).
- * @property {() => void} buffer
- *   Capture some of the output data.
- * @property {() => string} resume
- *   Stop capturing and access the output data.
- * @property {(value: string) => void} raw
- *   Output raw data.
- * @property {(value: string) => void} tag
- *   Output (parts of) HTML tags.
- * @property {TokenizeContext['sliceSerialize']} sliceSerialize
- *   Get the string value of a token
- *
- * @typedef {(events: Event[]) => string} Compile
- *   Serialize micromark events as HTML
- *
- * @typedef {(this: Context, token: Token) => void} Handle
- *   Handle one token
- *
- * @typedef {(this: Omit<Context, 'sliceSerialize'>) => void} DocumentHandle
- *   Handle the whole
- *
- * @typedef {Record<Type, Handle> & {null?: DocumentHandle}} Handles
- *   Token types mapping the handles
- *
- * @typedef {Record<string, Record<Type, unknown>> & {enter: Handles, exit: Handles}} NormalizedHtmlExtension
- *
- * @typedef {Partial<NormalizedHtmlExtension>} HtmlExtension
- *   An HTML extension changes how markdown tokens are serialized.
- *
- * @typedef _DataFields
- * @property {boolean} lastWasTag
- * @property {boolean} expectFirstItem
- * @property {boolean} slurpOneLineEnding
- * @property {boolean} slurpAllLineEndings
- * @property {boolean} fencedCodeInside
- * @property {number} fencesCount
- * @property {boolean} flowCodeSeenData
- * @property {boolean} ignoreEncode
- * @property {number} headingRank
- * @property {boolean} inCodeText
- * @property {string} characterReferenceType
- * @property {boolean[]} tightStack
- *
- * @typedef {Record<string, unknown> & Partial<_DataFields>} Data
- *
- * @typedef Options
- *   Compile options
- * @property {'\r'|'\n'|'\r\n'} [defaultLineEnding]
- *   Value to use for line endings not in `doc` (`string`, default: first line
- *   ending or `'\n'`).
- *
- *   Generally, micromark copies line endings (`'\r'`, `'\n'`, `'\r\n'`) in the
- *   markdown document over to the compiled HTML.
- *   In some cases, such as `> a`, CommonMark requires that extra line endings
- *   are added: `<blockquote>\n<p>a</p>\n</blockquote>`.
- * @property {boolean} [allowDangerousHtml=false]
- *   Whether to allow embedded HTML (`boolean`, default: `false`).
- * @property {boolean} [allowDangerousProtocol=false]
- *   Whether to allow potentially dangerous protocols in links and images
- *   (`boolean`, default: `false`).
- *   URLs relative to the current protocol are always allowed (such as,
- *   `image.jpg`).
- *   For links, the allowed protocols are `http`, `https`, `irc`, `ircs`,
- *   `mailto`, and `xmpp`.
- *   For images, the allowed protocols are `http` and `https`.
- * @property {HtmlExtension[]} [htmlExtensions=[]]
- *   Array of HTML extensions
- *
  * @typedef Media
  * @property {boolean} [image]
  * @property {string} [labelId]
@@ -136,7 +61,7 @@ const protocolHref = /^(https?|ircs?|mailto|xmpp)$/i
 const protocolSrc = /^https?$/i
 
 /**
- * @param {Options} [options]
+ * @param {CompileOptions} [options]
  * @returns {Compile}
  */
 export function compile(options = {}) {
@@ -277,8 +202,7 @@ export function compile(options = {}) {
    *
    * @type {NormalizedHtmlExtension}
    */
-  // Note: this should crash TS, but because of the recursive types, it uses
-  // `any`.
+  // @ts-expect-error `defaultHandlers` is full, so the result will be too.
   const handlers = combineHtmlExtensions(
     [defaultHandlers].concat(options.htmlExtensions || [])
   )
@@ -287,7 +211,7 @@ export function compile(options = {}) {
    * Handlers do often need to keep track of some state.
    * That state is provided here as a key-value store (an object).
    *
-   * @type {Data}
+   * @type {CompileData}
    */
   const data = {tightStack}
 
@@ -296,7 +220,7 @@ export function compile(options = {}) {
    * In handlers from extensions, those can be accessed at `this`.
    * For the handlers here, they can be accessed directly.
    *
-   * @type {Omit<Context, 'sliceSerialize'>}
+   * @type {Omit<CompileContext, 'sliceSerialize'>}
    */
   const context = {
     lineEndingIfNeeded,
@@ -477,7 +401,7 @@ export function compile(options = {}) {
   }
 
   /**
-   * @type {Context['setData']}
+   * @type {CompileContext['setData']}
    * @param [value]
    */
   function setData(key, value) {
@@ -485,35 +409,35 @@ export function compile(options = {}) {
   }
 
   /**
-   * @type {Context['getData']}
+   * @type {CompileContext['getData']}
    * @template {string} K
    * @param {K} key
-   * @returns {Data[K]}
+   * @returns {CompileData[K]}
    */
   function getData(key) {
     return data[key]
   }
 
-  /** @type {Context['buffer']} */
+  /** @type {CompileContext['buffer']} */
   function buffer() {
     buffers.push([])
   }
 
-  /** @type {Context['resume']} */
+  /** @type {CompileContext['resume']} */
   function resume() {
     const buf = buffers.pop()
     assert(buf !== undefined, 'Cannot resume w/o buffer')
     return buf.join('')
   }
 
-  /** @type {Context['tag']} */
+  /** @type {CompileContext['tag']} */
   function tag(value) {
     if (!tags) return
     setData('lastWasTag', true)
     buffers[buffers.length - 1].push(value)
   }
 
-  /** @type {Context['raw']} */
+  /** @type {CompileContext['raw']} */
   function raw(value) {
     setData('lastWasTag')
     buffers[buffers.length - 1].push(value)
@@ -528,7 +452,7 @@ export function compile(options = {}) {
     raw(lineEndingStyle || '\n')
   }
 
-  /** @type {Context['lineEndingIfNeeded']} */
+  /** @type {CompileContext['lineEndingIfNeeded']} */
   function lineEndingIfNeeded() {
     const buffer = buffers[buffers.length - 1]
     const slice = buffer[buffer.length - 1]
@@ -545,7 +469,7 @@ export function compile(options = {}) {
     lineEnding()
   }
 
-  /** @type {Context['encode']} */
+  /** @type {CompileContext['encode']} */
   function encode(value) {
     return getData('ignoreEncode') ? value : _encode(value)
   }

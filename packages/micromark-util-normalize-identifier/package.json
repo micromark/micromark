@@ -41,11 +41,14 @@
   "dependencies": {
     "micromark-util-symbol": "^0.0.0"
   },
-  "devDependencies": {
-    "micromark-build": "^0.0.0"
-  },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"
   },
-  "xo": false
+  "xo": false,
+  "typeCoverage": {
+    "atLeast": 100,
+    "detail": true,
+    "strict": true,
+    "ignoreCatch": true
+  }
 }

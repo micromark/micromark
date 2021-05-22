@@ -1,202 +1,26 @@
 /**
- * @typedef {import('../index.js').ParseContext} ParseContext
+ * @typedef {import('micromark-util-types').Code} Code
+ * @typedef {import('micromark-util-types').Chunk} Chunk
+ * @typedef {import('micromark-util-types').Type} Type
+ * @typedef {import('micromark-util-types').ContentType} ContentType
+ * @typedef {import('micromark-util-types').Point} Point
+ * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').Event} Event
+ * @typedef {import('micromark-util-types').Effects} Effects
+ * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Resolver} Resolver
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').Initializer} Initializer
+ * @typedef {import('micromark-util-types').Exiter} Exiter
+ * @typedef {import('micromark-util-types').Previous} Previous
+ * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
+ * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').ParseContext} ParseContext
  */
 
 /**
- * @typedef {number|null} Code
- *   A character code.
- *
- *   `null` represents the end of the input stream (called eof).
- *   Negative integers are used instead of certain sequences of characters (such
- *   as line endings and tabs).
- *
- * @typedef {Code|string} Chunk
- *   A chunk is either a character code or a slice of a buffer in the form of a
- *   string.
- *
- * @typedef {string} Type
- *   A token type.
- *
- * @typedef {'flow'|'content'|'text'|'string'} ContentType
- *   Enumeration of the content types.
- *   As markdown needs to first parse containers, flow, content completely, and
- *   then later go on to phrasing and such, it needs to be declared on the
- *   tokens.
- *
- * @typedef Point
- *   A location in the document (`line`/`column`/`offset`) and chunk (`_index`,
- *   `_bufferIndex`).
- *
- *   `_bufferIndex` is `-1` when `_index` points to a code chunk and it’s a
- *   non-negative integer when pointing to a string chunk.
- * @property {number} line
- * @property {number} column
- * @property {number} offset
- * @property {number} _index
- * @property {number} _bufferIndex
- *
- * @typedef Token
- *   A token: a span of chunks.
- * @property {Type} type
- * @property {Point} start
- * @property {Point} end
- * @property {Token} [previous]
- *   The previous token in a list of linked tokens
- * @property {Token} [next]
- *   The next token in a list of linked tokens
- * @property {ContentType} [contentType]
- *   Declares a token as having content of a certain type.
- * @property {TokenizeContext} [_tokenizer]
- *   Used when dealing with linked tokens.
- *   A child tokenizer is needed to tokenize them, which is stored on those
- *   tokens.
- * @property {boolean} [_open]
- *   A marker used to parse attention, depending on the characters before
- *   sequences (`**`), the sequence can open, close, both, or none
- * @property {boolean} [_close]
- *   A marker used to parse attention, depending on the characters after
- *   sequences (`**`), the sequence can open, close, both, or none
- * @property {boolean} [_isInFirstContentOfListItem]
- *   A boolean used internally to figure out if a token is in the first content
- *   of a list item construct.
- * @property {boolean} [_container]
- *   A boolean used internally to figure out if a token is a container token.
- * @property {boolean} [_loose]
- *   A boolean used internally to figure out if a list is loose or not.
- * @property {boolean} [_inactive]
- *   A boolean used internally to figure out if a link opening can’t be used
- *   (because links in links are incorrect).
- * @property {boolean} [_balanced]
- *   A boolean used internally to figure out if a link opening is balanced: it’s
- *   not a link opening but has a balanced closing.
- *
- * @typedef {['enter'|'exit', Token, TokenizeContext]} Event
- *   An event is the start or end of a token, as tokens can contain other tokens
- *   but are stored in a flat list.
- *
- * @callback Enter
- *   Open a token.
- * @param {Type} type
- *   Token to enter.
- * @param {Record<string, unknown>} [fields]
- *   Fields to patch on the token
- * @returns {Token}
- *
- * @callback Exit
- *   Close a token.
- * @param {Type} type
- *   Token to close.
- *   Should match the current open token.
- * @returns {Token}
- *
- * @callback Consume
- *   Deal with the character and move to the next.
- * @param {Code} code
- *   Code that was given to the state function
- * @returns {void}
- *
- * @callback Attempt
- *   Attempt deals with several values, and tries to parse according to those
- *   values.
- *   If a value resulted in `ok`, it worked, the tokens that were made are used,
- *   and `returnState` is switched to.
- *   If the result is `nok`, the attempt failed, so we revert to the original
- *   state, and `bogusState` is used.
- * @param {Construct|Construct[]|ConstructRecord} construct
- * @param {State} returnState
- * @param {State} [bogusState]
- * @returns {(code: Code) => void}
- *
- * @typedef Effects
- *   A context object to transition the CommonMark State Machine (CSMS).
- * @property {Enter} enter
- *   Start a new token.
- * @property {Exit} exit
- *   End a started token.
- * @property {Consume} consume
- *   Deal with the character and move to the next.
- * @property {Attempt} attempt
- *   Try to tokenize a construct.
- * @property {Attempt} interrupt
- *   Interrupt is used for stuff right after a line of content.
- * @property {Attempt} lazy
- *   Lazy is used for lines that were not properly preceded by the container.
- * @property {Attempt} check
- *   Attempt, then revert.
- *
- * @callback State
- *   A state function should return another function: the next
- *   state-as-a-function to go to.
- *
- *   But there is one case where they return void: for the eof character code
- *   (at the end of a value).
- *   The reason being: well, there isn’t any state that makes sense, so void
- *   works well.
- *   Practically that has also helped: if for some reason it was a mistake, then
- *   an exception is throw because there is no next function, meaning it
- *   surfaces early.
- * @param {Code} code
- * @returns {State|void}
- *
- * @callback Resolver
- *   A resolver handles and cleans events coming from `tokenize`.
- * @param {Event[]} events
- * @param {TokenizeContext} context
- * @returns {Event[]}
- *
- * @typedef {(this: TokenizeContext, effects: Effects, ok: State, nok: State) => State} Tokenizer
- *   A tokenize function sets up a state machine to handle character codes streaming in.
- *
- * @typedef {(this: TokenizeContext, effects: Effects) => State} Initializer
- *   Like a tokenizer, but without `ok` or `nok`.
- *
- * @typedef {(this: TokenizeContext, effects: Effects) => void} Exiter
- *   Like a tokenizer, but without `ok` or `nok`, and returning void.
- *
- * @typedef {(this: TokenizeContext, code: Code) => boolean} Previous
- *   Guard whether `code` can come before the construct
- *
- * @typedef Construct
- *   An object descibing how to parse a markdown construct.
- * @property {Tokenizer} tokenize
- * @property {Previous} [previous] Guard whether the previous character can come before the construct
- * @property {Construct} [continuation] For containers, a continuation construct.
- * @property {Exiter} [exit] For containers, a final hook.
- * @property {string} [name] Name of the construct, used to toggle constructs off.
- * @property {boolean} [partial=false] Whether this construct represents a partial construct.
- * @property {Resolver} [resolve]
- * @property {Resolver} [resolveTo]
- * @property {Resolver} [resolveAll]
- * @property {boolean} [concrete] Concrete constructs cannot be interrupted (such as fenced code) by deeper containers
- * @property {boolean} [interruptible]
- * @property {boolean} [lazy]
- * @property {'before'|'after'} [add='before'] Whether the construct, when in a `ConstructRecord`, precedes over existing constructs for the same character code.
- *
- * @typedef {Construct & {tokenize: Initializer}} InitialConstruct
- *   Like a construct, but `tokenize` does not accept `ok` or `nok`.
- *
- * @typedef {Record<string, undefined|Construct|Construct[]>} ConstructRecord
- *   Several constructs, mapped from their initial codes.
- *
- * @typedef TokenizeContext
- *   A context object that helps w/ tokenizing markdown constructs.
- * @property {Code} previous The previous code.
- * @property {Code} code
- * @property {boolean} [interrupt]
- * @property {boolean} [lazy]
- * @property {Construct} [currentConstruct]
- * @property {Record<string, unknown> & {_closeFlow?: boolean}} [containerState]
- * @property {Event[]} events
- * @property {ParseContext} parser
- * @property {(token: Pick<Token, 'start'|'end'>) => Chunk[]} sliceStream Get the chunks that span a token.
- * @property {(token: Pick<Token, 'start'|'end'>, expandTabs?: boolean) => string} sliceSerialize Get the original string that spans a token.
- * @property {() => Point} now
- * @property {(value: Point) => void} defineSkip
- * @property {(slice: Chunk[]) => Event[]} write Write a slice of chunks. The eof code (`null`) can be used to signal the end of the stream.
- * @property {boolean} [_gfmTasklistFirstContentOfListItem] Internal boolean
- *   shared with `micromark-extension-gfm-task-list-item` to signal whether the
- *   tokenizer is tokenizing the first content of a list item construct.
- *
  * @typedef Info
  * @property {() => void} restore
  * @property {number} from
@@ -316,7 +140,7 @@ export function createTokenizer(parser, initialize, from) {
     addResult(initialize, 0)
 
     // Otherwise, resolve, and exit.
-    // @ts-expect-error TS can’t handle recursive types.
+    // Note: TS can’t handle recursive types.
     context.events = resolveAll(resolveAllConstructs, context.events, context)
 
     return context.events

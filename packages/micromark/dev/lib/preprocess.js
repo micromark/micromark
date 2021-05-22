@@ -1,23 +1,11 @@
 /**
- * @typedef {import('../index.js').Chunk} Chunk
- * @typedef {import('../index.js').Code} Code
+ * @typedef {import('micromark-util-types').Encoding} Encoding
+ * @typedef {import('micromark-util-types').Value} Value
+ * @typedef {import('micromark-util-types').Chunk} Chunk
+ * @typedef {import('micromark-util-types').Code} Code
  */
 
 /**
- * @typedef {'ascii'|'utf8'|'utf-8'|'utf16le'|'ucs2'|'ucs-2'|'base64'|'latin1'|'binary'|'hex'} Encoding
- *   Encodings supported by the buffer class.
- *   This is a copy of the typing from Node, copied to prevent Node globals from
- *   being needed.
- *   Copied from: <https://github.com/DefinitelyTyped/DefinitelyTyped/blob/a2bc1d8/types/node/globals.d.ts#L174>
- *
- * @typedef {string|Uint8Array} Value
- *   Contents of the file.
- *   Can either be text, or a `Buffer` like structure.
- *   This does not directly use type `Buffer`, because it can also be used in a
- *   browser context.
- *   Instead this leverages `Uint8Array` which is the base type for `Buffer`,
- *   and a native JavaScript construct.
- *
  * @callback Preprocessor
  * @param {Value} value
  * @param {Encoding} [encoding]

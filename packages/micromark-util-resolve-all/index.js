@@ -1,7 +1,7 @@
 /**
- * @typedef {import('micromark').TokenizeContext} TokenizeContext
- * @typedef {import('micromark').Event} Event
- * @typedef {import('micromark').Resolver} Resolver
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Event} Event
+ * @typedef {import('micromark-util-types').Resolver} Resolver
  */
 
 /**

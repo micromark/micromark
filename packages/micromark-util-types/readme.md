@@ -1,4 +1,4 @@
-# micromark-util-html-tag-name
+# micromark-util-types
 
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
@@ -8,15 +8,13 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility with list of html tag names.
+micromark utility with a couple of typescript types.
 
 ## Contents
 
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`htmlBlockNames`](#htmlblocknames)
-    *   [`htmlRawNames`](#htmlrawnames)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
@@ -26,54 +24,21 @@ micromark utility with list of html tag names.
 [npm][]:
 
 ```sh
-npm install micromark-util-html-tag-name
+npm install micromark-util-types
 ```
 
 ## Use
 
 ```js
-import {htmlBlockNames, htmlRawNames} from 'micromark-util-html-tag-name'
-
-console.log(htmlBlockNames) // ['address', 'article', …]
-console.log(htmlRawNames) // ['pre', 'script', …]
+/**
+ * @typedef {import('micromark-util-types').Point} Point
+ */
 ```
 
 ## API
 
-This package exports the following identifiers: `htmlBlockNames`,
-`htmlRawNames`.
+This package exports no identifiers.
 There is no default export.
-
-### `htmlBlockNames`
-
-List of lowercase HTML tag names which when parsing HTML (flow), result in more
-relaxed rules (condition 6): because they are known blocks, the
-HTML-like syntax doesn’t have to be strictly parsed.
-For tag names not in this list, a more strict algorithm (condition 7) is used
-to detect whether the HTML-like syntax is seen as HTML (flow) or not.
-
-This is copied from: <https://spec.commonmark.org/0.29/#html-blocks>.
-
-###### Type
-
-`string[]`.
-
-### `htmlRawNames`
-
-List of lowercase HTML tag names which when parsing HTML (flow), result in HTML
-that can include lines w/o exiting, until a closing tag also in this list is
-found (condition 1).
-
-This module is copied from:
-<https://spec.commonmark.org/0.29/#html-blocks>.
-
-Note that `textarea` is not available in `CommonMark@0.29` but has been merged
-to the primary branch and is slated to be released in the next release of
-CommonMark.
-
-###### Type
-
-`string[]`.
 
 ## Security
 
@@ -104,13 +69,13 @@ abide by its terms.
 
 [coverage]: https://codecov.io/github/micromark/micromark
 
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-html-tag-name.svg
+[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-encode.svg
 
-[downloads]: https://www.npmjs.com/package/micromark-util-html-tag-name
+[downloads]: https://www.npmjs.com/package/micromark-util-encode
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-html-tag-name.svg
+[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-encode.svg
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-html-tag-name
+[bundle-size]: https://bundlephobia.com/result?p=micromark-util-encode
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

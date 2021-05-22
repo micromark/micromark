@@ -46,5 +46,14 @@
     "./values": "./values.js",
     "./values.js": "./values.js"
   },
-  "xo": false
+  "scripts": {
+    "build": "rimraf \"*.d.ts\" && tsc && type-coverage"
+  },
+  "xo": false,
+  "typeCoverage": {
+    "atLeast": 100,
+    "detail": true,
+    "strict": true,
+    "ignoreCatch": true
+  }
 }

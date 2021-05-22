@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../index.js').Extension} Extension
+ * @typedef {import('micromark-util-types').Extension} Extension
  */
 
 import {

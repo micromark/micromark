@@ -1,9 +1,9 @@
 /**
- * @typedef {import('micromark').Construct} Construct
- * @typedef {import('micromark').Resolver} Resolver
- * @typedef {import('micromark').Tokenizer} Tokenizer
- * @typedef {import('micromark').Token} Token
- * @typedef {import('micromark').State} State
+ * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').Resolver} Resolver
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').State} State
  */
 
 import assert from 'assert'

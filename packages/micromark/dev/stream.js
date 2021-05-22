@@ -1,7 +1,7 @@
 /**
- * @typedef {import('./index.js').Options} Options
- * @typedef {import('./index.js').Value} Value
- * @typedef {import('./index.js').Encoding} Encoding
+ * @typedef {import('micromark-util-types').Options} Options
+ * @typedef {import('micromark-util-types').Value} Value
+ * @typedef {import('micromark-util-types').Encoding} Encoding
  */
 
 /**

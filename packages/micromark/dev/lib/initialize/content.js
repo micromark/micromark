@@ -1,8 +1,8 @@
 /**
- * @typedef {import('../../index.js').InitialConstruct} InitialConstruct
- * @typedef {import('../../index.js').Initializer} Initializer
- * @typedef {import('../../index.js').Token} Token
- * @typedef {import('../../index.js').State} State
+ * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
+ * @typedef {import('micromark-util-types').Initializer} Initializer
+ * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').State} State
  */
 
 import assert from 'assert'

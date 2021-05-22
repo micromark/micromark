@@ -1,5 +1,5 @@
 /**
- * @typedef {import('../index.js').Event} Event
+ * @typedef {import('micromark-util-types').Event} Event
  */
 
 import {subtokenize} from 'micromark-util-subtokenize'

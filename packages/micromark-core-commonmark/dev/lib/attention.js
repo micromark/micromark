@@ -1,12 +1,12 @@
 /**
- * @typedef {import('micromark').Construct} Construct
- * @typedef {import('micromark').Tokenizer} Tokenizer
- * @typedef {import('micromark').Resolver} Resolver
- * @typedef {import('micromark').State} State
- * @typedef {import('micromark').Token} Token
- * @typedef {import('micromark').Event} Event
- * @typedef {import('micromark').Code} Code
- * @typedef {import('micromark').Point} Point
+ * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').Resolver} Resolver
+ * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').Event} Event
+ * @typedef {import('micromark-util-types').Code} Code
+ * @typedef {import('micromark-util-types').Point} Point
  */
 
 import assert from 'assert'

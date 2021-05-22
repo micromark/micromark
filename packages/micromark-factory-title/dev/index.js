@@ -1,7 +1,7 @@
 /**
- * @typedef {import('micromark').Effects} Effects
- * @typedef {import('micromark').State} State
- * @typedef {import('micromark').Code} Code
+ * @typedef {import('micromark-util-types').Effects} Effects
+ * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Code} Code
  */
 
 import assert from 'assert'

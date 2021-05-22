@@ -1,7 +1,7 @@
 /**
- * @typedef {import('micromark').Token} Token
- * @typedef {import('micromark').Chunk} Chunk
- * @typedef {import('micromark').Event} Event
+ * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').Chunk} Chunk
+ * @typedef {import('micromark-util-types').Event} Event
  */
 
 import assert from 'assert'

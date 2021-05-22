@@ -1,11 +1,11 @@
 /**
- * @typedef {import('micromark').Construct} Construct
- * @typedef {import('micromark').Tokenizer} Tokenizer
- * @typedef {import('micromark').State} State
- * @typedef {import('micromark').Code} Code
- * @typedef {import('micromark').Handle} Handle
- * @typedef {import('micromark').HtmlExtension} HtmlExtension
- * @typedef {import('micromark').Extension} Extension
+ * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Code} Code
+ * @typedef {import('micromark-util-types').Handle} Handle
+ * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
+ * @typedef {import('micromark-util-types').Extension} Extension
  */
 
 import test from 'tape'

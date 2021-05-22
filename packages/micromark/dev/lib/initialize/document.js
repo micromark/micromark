@@ -1,11 +1,11 @@
 /**
- * @typedef {import('../../index.js').InitialConstruct} InitialConstruct
- * @typedef {import('../../index.js').Initializer} Initializer
- * @typedef {import('../../index.js').Construct} Construct
- * @typedef {import('../../index.js').TokenizeContext} TokenizeContext
- * @typedef {import('../../index.js').Tokenizer} Tokenizer
- * @typedef {import('../../index.js').Token} Token
- * @typedef {import('../../index.js').State} State
+ * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
+ * @typedef {import('micromark-util-types').Initializer} Initializer
+ * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').State} State
  */
 
 /**
