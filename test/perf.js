@@ -1,5 +1,5 @@
 import ms from 'ms'
-import {buffer as micromark} from '../lib/micromark/index.js'
+import {micromark} from 'micromark'
 
 console.log('base')
 let then = Date.now()

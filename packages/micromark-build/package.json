@@ -1,0 +1,42 @@
+{
+  "name": "micromark-build",
+  "version": "0.0.0",
+  "description": "Build production files from dev files",
+  "license": "MIT",
+  "keywords": [
+    "micromark",
+    "build"
+  ],
+  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-build",
+  "bugs": "https://github.com/micromark/micromark/issues",
+  "funding": [
+    {
+      "type": "GitHub Sponsors",
+      "url": "https://github.com/sponsors/unifiedjs"
+    },
+    {
+      "type": "OpenCollective",
+      "url": "https://opencollective.com/unified"
+    }
+  ],
+  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+  ],
+  "type": "module",
+  "bin": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.d.ts",
+    "index.js"
+  ],
+  "dependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-plugin-inline-constants": "^3.0.0",
+    "babel-plugin-unassert": "^3.1.0",
+    "babel-plugin-undebug": "^2.0.0",
+    "glob": "^7.0.0",
+    "import-meta-resolve": "^1.0.0"
+  },
+  "xo": false
+}

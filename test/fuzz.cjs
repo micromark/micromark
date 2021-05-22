@@ -1,5 +1,5 @@
 let micromark
-let promise = import('../index.js').then((d) => {
+let promise = import('micromark').then((d) => {
   promise = undefined
   micromark = d.micromark
 })

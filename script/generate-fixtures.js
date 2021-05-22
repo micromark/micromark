@@ -13,13 +13,13 @@ main()
 
 async function main() {
   await fs.rename(
-    path.join('lib', 'index.js'),
-    path.join('lib', 'index.bak.js')
+    path.join('packages', 'micromark', 'index.js'),
+    path.join('packages', 'micromark', 'index.bak.js')
   )
   await fs.writeFile(
-    path.join('lib', 'index.js'),
+    path.join('packages', 'micromark', 'index.js'),
     [
-      'export {buffer, buffer as micromark}',
+      'export {micromark}',
       'import fs from "fs"',
       'import path from "path"',
       'import {micromark as core} from "./index.bak.js"',
@@ -27,7 +27,7 @@ async function main() {
       'const base = path.join("test", "fixtures")',
       'process.on("exit", onexit)',
       'fs.mkdirSync(base, {recursive: true})',
-      'function buffer(value) {',
+      'function micromark(value) {',
       '  console.log(...arguments)',
       '  if (typeof value === "string") captured.push(value)',
       '  return core(...arguments)',
@@ -50,8 +50,8 @@ async function main() {
 
   async function onexit() {
     await fs.rename(
-      path.join('lib', 'index.bak.js'),
-      path.join('lib', 'index.js')
+      path.join('packages', 'micromark', 'index.bak.js'),
+      path.join('packages', 'micromark', 'index.js')
     )
   }
 }

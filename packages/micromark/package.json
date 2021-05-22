@@ -1,0 +1,88 @@
+{
+  "name": "micromark",
+  "version": "3.0.0-alpha.1",
+  "description": "small commonmark compliant markdown parser with positional info and concrete tokens",
+  "license": "MIT",
+  "keywords": [
+    "commonmark",
+    "compiler",
+    "gfm",
+    "html",
+    "lexer",
+    "markdown",
+    "markup",
+    "md",
+    "unified",
+    "parse",
+    "parser",
+    "plugin",
+    "process",
+    "remark",
+    "render",
+    "renderer",
+    "token",
+    "tokenizer"
+  ],
+  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark",
+  "bugs": "https://github.com/micromark/micromark/issues",
+  "funding": [
+    {
+      "type": "GitHub Sponsors",
+      "url": "https://github.com/sponsors/unifiedjs"
+    },
+    {
+      "type": "OpenCollective",
+      "url": "https://opencollective.com/unified"
+    }
+  ],
+  "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+  ],
+  "type": "module",
+  "main": "index.js",
+  "types": "dev/index.d.ts",
+  "files": [
+    "dev/",
+    "lib/",
+    "index.d.ts",
+    "index.js"
+  ],
+  "exports": {
+    ".": {
+      "development": "./dev/index.js",
+      "default": "./index.js"
+    },
+    "./stream": {
+      "development": "./dev/stream.js",
+      "default": "./stream.js"
+    },
+    "./stream.js": {
+      "development": "./dev/stream.js",
+      "default": "./stream.js"
+    }
+  },
+  "dependencies": {
+    "@types/debug": "^4.0.0",
+    "debug": "^4.0.0",
+    "parse-entities": "^3.0.0",
+    "micromark-core-commonmark": "0.0.0",
+    "micromark-factory-space": "0.0.0",
+    "micromark-util-character": "0.0.0",
+    "micromark-util-chunked": "0.0.0",
+    "micromark-util-combine-extensions": "0.0.0",
+    "micromark-util-encode": "0.0.0",
+    "micromark-util-normalize-identifier": "0.0.0",
+    "micromark-util-resolve-all": "0.0.0",
+    "micromark-util-sanitize-uri": "0.0.0",
+    "micromark-util-subtokenize": "0.0.0",
+    "micromark-util-symbol": "0.0.0"
+  },
+  "devDependencies": {
+    "micromark-build": "^0.0.0"
+  },
+  "scripts": {
+    "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"
+  },
+  "xo": false
+}

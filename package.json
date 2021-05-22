@@ -1,28 +1,10 @@
 {
-  "name": "micromark",
-  "version": "2.11.4",
-  "description": "small commonmark compliant markdown parser with positional info and concrete tokens",
+  "private": true,
+  "name": "micromark-mono",
+  "version": "0.0.0",
+  "description": "",
   "license": "MIT",
-  "keywords": [
-    "commonmark",
-    "compiler",
-    "gfm",
-    "html",
-    "lexer",
-    "markdown",
-    "markup",
-    "md",
-    "unified",
-    "parse",
-    "parser",
-    "plugin",
-    "process",
-    "remark",
-    "render",
-    "renderer",
-    "token",
-    "tokenizer"
-  ],
+  "keywords": [],
   "repository": "micromark/micromark",
   "bugs": "https://github.com/micromark/micromark/issues",
   "funding": [
@@ -48,42 +30,22 @@
     "Merlijn Vos <merlijn@soverin.net>"
   ],
   "type": "module",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "files": [
-    "dist/",
-    "lib/",
-    "index.js",
-    "index.d.ts",
-    "stream.d.ts",
-    "stream.js"
+  "workspaces": [
+    "./packages/*"
   ],
-  "dependencies": {
-    "@types/debug": "^4.0.0",
-    "debug": "^4.0.0",
-    "parse-entities": "^3.0.0"
-  },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@rollup/plugin-babel": "^5.0.0",
-    "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/concat-stream": "^1.6.0",
     "@types/ms": "^0.7.0",
     "@types/regenerate": "^1.0.0",
     "@types/tape": "^4.0.0",
     "@unicode/unicode-13.0.0": "^1.0.0",
-    "babel-plugin-inline-constants": "^3.0.0",
-    "babel-plugin-unassert": "^3.0.0",
-    "babel-plugin-undebug": "^2.0.0",
     "c8": "^7.0.0",
     "character-entities": "^2.0.0",
     "commonmark.json": "^0.30.0",
     "concat-stream": "^2.0.0",
-    "cross-env": "^7.0.0",
     "eslint-plugin-es": "^4.0.0",
     "eslint-plugin-security": "^1.0.0",
-    "glob": "^7.0.0",
     "gzip-size-cli": "^5.0.0",
     "jsfuzz": "1.0.14",
     "ms": "^2.0.0",
@@ -101,16 +63,15 @@
     "xo": "^0.39.0"
   },
   "scripts": {
-    "prepack": "npm run build && npm run format",
-    "build-lib": "rimraf \"dist/\" \"{lib,test}/**/*.d.ts\" && node script/generate-expressions.js && tsc && type-coverage",
-    "build-dist": "cross-env BUILD=dist rollup -c --silent && node script/copy-types.js",
-    "build-size": "cross-env BUILD=size rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
-    "build": "npm run build-lib && npm run build-dist && npm run build-size",
+    "build-workspace": "npm run build -ws --if-present",
+    "build-monorepo": "rimraf \"{script/**,test/**}/*.d.ts\" && rimraf \"{script/**,test/**}/*.d.ts\" && tsc && type-coverage",
+    "build-size": "rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
+    "build": "npm run build-workspace && npm run build-monorepo && npm run build-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "pretest-fuzz": "patch-package --patch-dir script/patches && node script/generate-fixtures.js",
-    "test-fuzz": "timeout 15m jsfuzz test/fuzz.cjs test/fixtures",
-    "test-api": "node test/index.js",
-    "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node test/index.js",
+    "test-fuzz": "timeout 30m jsfuzz test/fuzz.cjs test/fixtures",
+    "test-api": "node --conditions development test/index.js",
+    "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node --conditions development test/index.js",
     "test": "npm run build && npm run format && npm run test-coverage"
   },
   "prettier": {
@@ -136,7 +97,7 @@
     "overrides": [
       {
         "files": [
-          "lib/**/*.js"
+          "packages/**/*.js"
         ],
         "plugin": [
           "es"
@@ -151,17 +112,6 @@
           "max-depth": "off",
           "security/detect-object-injection": "off",
           "unicorn/no-this-assignment": "off"
-        }
-      },
-      {
-        "files": [
-          "**/*.d.ts"
-        ],
-        "rules": {
-          "import/extensions": [
-            "error",
-            "never"
-          ]
         }
       },
       {
@@ -182,9 +132,9 @@
       }
     ],
     "ignores": [
-      "dist/",
-      "**/*.d.ts",
-      "micromark.test.ts"
+      "packages/*/*.js",
+      "packages/*/lib/**/*.js",
+      "**/*.d.ts"
     ]
   },
   "remarkConfig": {
@@ -200,9 +150,6 @@
     "atLeast": 100,
     "detail": true,
     "strict": true,
-    "ignoreCatch": true,
-    "ignoreFiles": [
-      "lib/constant/assign.d.ts"
-    ]
+    "ignoreCatch": true
   }
 }

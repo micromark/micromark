@@ -1,5 +1,5 @@
 import test from 'tape'
-import {splice} from '../../lib/micromark-util-chunked/index.js'
+import {splice} from 'micromark-util-chunked'
 
 test('splice', function (t) {
   /** @type {number[]} */

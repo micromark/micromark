@@ -1,18 +1,18 @@
 /**
- * @typedef {import('../lib/micromark/index.js').Construct} Construct
- * @typedef {import('../lib/micromark/index.js').Tokenizer} Tokenizer
- * @typedef {import('../lib/micromark/index.js').State} State
- * @typedef {import('../lib/micromark/index.js').Code} Code
- * @typedef {import('../lib/micromark/index.js').Handle} Handle
- * @typedef {import('../lib/micromark/index.js').HtmlExtension} HtmlExtension
- * @typedef {import('../lib/micromark/index.js').Extension} Extension
+ * @typedef {import('micromark').Construct} Construct
+ * @typedef {import('micromark').Tokenizer} Tokenizer
+ * @typedef {import('micromark').State} State
+ * @typedef {import('micromark').Code} Code
+ * @typedef {import('micromark').Handle} Handle
+ * @typedef {import('micromark').HtmlExtension} HtmlExtension
+ * @typedef {import('micromark').Extension} Extension
  */
 
 import test from 'tape'
 import concat from 'concat-stream'
+import {micromark} from 'micromark'
+import {stream} from 'micromark/stream.js'
 import {slowStream} from './util/slow-stream.js'
-import {buffer as micromark} from '../lib/micromark/index.js'
-import {stream} from '../lib/micromark/stream.js'
 
 test('syntax extension', function (t) {
   /** @type {Extension} */

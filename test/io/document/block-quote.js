@@ -1,5 +1,5 @@
 import test from 'tape'
-import {buffer as micromark} from '../../../lib/micromark/index.js'
+import {micromark} from 'micromark'
 
 test('block-quote', function (t) {
   t.equal(

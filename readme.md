@@ -10,6 +10,10 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
+> ⚠️ Note: this is the readme for the upcoming release of micromark 3.0.0.\
+> [See here](https://github.com/micromark/micromark/tree/14d86e0) for the
+> current release.
+
 The smallest CommonMark compliant markdown parser with positional info and
 concrete tokens.
 
@@ -43,8 +47,8 @@ It’s in open beta: up next are [CMSM][] and CSTs.
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`micromark(doc[, encoding][, options])`](#micromarkdoc-encoding-options)
-    *   [`micromarkStream(options?)`](#micromarkstreamoptions)
+    *   [`micromark(value[, encoding][, options])`](#micromarkvalue-encoding-options)
+    *   [`stream(options?)`](#streamoptions)
 *   [Extensions](#extensions)
     *   [`SyntaxExtension`](#syntaxextension)
     *   [`HtmlExtension`](#htmlextension)
@@ -93,9 +97,9 @@ import {micromark} from 'micromark'
 import gfmSyntax from 'micromark-extension-gfm'
 import gfmHtml from 'micromark-extension-gfm/html.js'
 
-const doc = '* [x] contact@example.com ~~strikethrough~~'
+const value = '* [x] contact@example.com ~~strikethrough~~'
 
-const result = micromark(doc, {
+const result = micromark(value, {
   extensions: [gfmSyntax()],
   htmlExtensions: [gfmHtml]
 })
@@ -115,7 +119,7 @@ Streaming interface:
 
 ```js
 import fs from 'fs'
-import {stream} from 'micromark/stream.js'
+import {stream} from 'micromark/stream'
 
 fs.createReadStream('example.md')
   .on('error', handleError)
@@ -130,27 +134,31 @@ function handleError(error) {
 
 ## API
 
-This section documents the API.
-The parts can be used separately, but this isn’t documented yet.
+This package has two entries in its export map: `micromark` and
+`micromark/stream`.
 
-### `micromark(doc[, encoding][, options])`
+`micromark` exports the following identifiers: `micromark`.
+`micromark/stream` exports the following identifiers: `stream`.
+There are no default exports.
+
+### `micromark(value[, encoding][, options])`
 
 Compile markdown to HTML.
 
 ##### Parameters
 
-###### `doc`
+###### `value`
 
-Markdown to parse (`string` or `Buffer`)
+Markdown to parse (`string` or `Buffer`).
 
 ###### `encoding`
 
-[Character encoding][encoding] to understand `doc` as when it’s a
+[Character encoding][encoding] to understand `value` as when it’s a
 [`Buffer`][buffer] (`string`, default: `'utf8'`).
 
 ###### `options.defaultLineEnding`
 
-Value to use for line endings not in `doc` (`string`, default: first line
+Value to use for line endings not in `value` (`string`, default: first line
 ending or `'\n'`).
 
 Generally, micromark copies line endings (`'\r'`, `'\n'`, `'\r\n'`) in the
@@ -185,7 +193,7 @@ Array of HTML extensions ([`Array.<HtmlExtension>`][html-extension], default:
 
 `string` — Compiled HTML.
 
-### `micromarkStream(options?)`
+### `stream(options?)`
 
 Streaming interface of micromark.
 Compiles markdown to HTML.
@@ -327,7 +335,7 @@ The syntax of markdown can be described in Backus–Naur form (BNF) as:
 markdown = .*
 ```
 
-No, that’s not a [typo](http://trevorjim.com/a-specification-for-markdown/):
+No, that’s [not a typo](http://trevorjim.com/a-specification-for-markdown/):
 markdown has no syntax errors; anything thrown at it renders *something*.
 
 ## Test
@@ -354,26 +362,27 @@ Either install it or remove it from the script.
 micromark is really small.
 A ton of time went into making sure it minifies well, by the way code is written
 but also through custom build scripts to pre-evaluate certain expressions.
-Furthermore, care went into making it compress well with GZip and Brotli.
+Furthermore, care went into making it compress well with gzip and brotli.
 
-Normally, you’ll use the pre-evaluated version of micromark, which is published
-in the `dist/` folder and has entries in the root.
-While developing or debugging, you can switch to use the source, which is
-published in the `lib/` folder, and comes instrumented with assertions and debug
-messages.
-To see debug messages, run your script with a `DEBUG` env variable, such as with
-`DEBUG="micromark" node script.js`.
+Normally, you’ll use the pre-evaluated version of micromark.
+While developing or debugging, you can switch to use code instrumented with
+assertions and debug messages:
 
-To generate the codebase, use `$ npm run generate` after clone and install.
-The `$ npm run generate-dist` script specifically takes `lib/` and generates
-`dist/`.
-The `$ npm run generate-size` script checks the bundle size of `dist/`.
+```sh
+node --conditions development module.js
+```
+
+To see debug messages, use a `DEBUG` env variable set to `micromark`:
+
+```sh
+DEBUG="*" node --conditions development module.js
+```
 
 ## Comparison
 
-There are many other markdown parsers out there, and maybe they’re better suited
+There are many other markdown parsers out there and maybe they’re better suited
 to your use case!
-Here is a short comparison of a couple of ’em in JavaScript.
+Here is a short comparison of a couple in JavaScript.
 Note that this list is made by the folks who make `micromark` and `remark`, so
 there is some bias.
 
@@ -387,8 +396,7 @@ generate content, so that you can make things like [MDX][], [Prettier][], or
 ###### micromark
 
 micromark can be used in two different ways.
-It can either be used, optionally with existing extensions, to get HTML pretty
-easily.
+It can either be used, optionally with existing extensions, to get HTML easily.
 Or, it can give tremendous power, such as access to all tokens with positional
 info, at the cost of being hard to get into.
 It’s super small, pretty fast, and has 100% CommonMark compliance.
@@ -634,7 +642,7 @@ It was great.
 
 [chat]: https://github.com/micromark/micromark/discussions
 
-[license]: license
+[license]: https://github.com/micromark/micromark/blob/main/license
 
 [author]: https://wooorm.com
 
@@ -690,7 +698,7 @@ It was great.
 
 [mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
 
-[constructs]: lib/micromark/constructs.js
+[constructs]: /packages/micromark/dev/lib/constructs.js
 
 [extensions]: #list-of-extensions
 
