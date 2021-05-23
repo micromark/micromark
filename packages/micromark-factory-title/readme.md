@@ -8,8 +8,7 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-The subroutine to parse titles (as found in links, images, and
-definitions) in markdown.
+micromark factory to parse markdown titles (found in resources, definitions).
 
 ## Contents
 

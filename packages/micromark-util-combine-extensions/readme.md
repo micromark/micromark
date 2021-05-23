@@ -32,13 +32,13 @@ npm install micromark-util-combine-extensions
 ## Use
 
 ```js
-import autolink from 'micromark-extension-gfm-autolink-literal'
-import strikethrough from 'micromark-extension-gfm-strikethrough'
-import table from 'micromark-extension-gfm-table'
-import tasklist from 'micromark-extension-gfm-task-list-item'
+import {gfmAutolinkLiteral} from 'micromark-extension-gfm-autolink-literal'
+import {gfmStrikethrough} from 'micromark-extension-gfm-strikethrough'
+import {gfmTable} from 'micromark-extension-gfm-table'
+import {gfmTaskListItem} from 'micromark-extension-gfm-task-list-item'
 import {combineExtensions} from 'micromark-util-combine-extensions'
 
-const gfm = combineExtensions([autolink, strikethrough(), table, tasklist])
+const gfm = combineExtensions([gfmAutolinkLiteral, gfmStrikethrough(), gfmTable, gfmTaskListItem])
 ```
 
 ## API

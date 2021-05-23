@@ -8,7 +8,8 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-The subroutine to parse markdown space (as found in lots of places) in markdown.
+micromark factory to parse [markdown space][markdown-space] (found in lots of
+places).
 
 ## Contents
 
@@ -66,9 +67,12 @@ There is no default export.
 
 ### `factorySpace(…)`
 
-Note that there is no `nok` parameter: whitespace in markdown is often optional,
-or a space character is already detected with `markdownSpace(code)` from
-`micromark-util-character`.
+Note that there is no `nok` parameter:
+
+*   spaces in markdown are often optional, in which case this factory can be
+    used and `ok` will be switched to whether spaces were found or not,
+*   One space character can be detected with
+    [markdownSpace(code)][markdown-space] right before using `factorySpace`
 
 ###### Parameters
 
@@ -154,3 +158,5 @@ abide by its terms.
 [support]: https://github.com/micromark/.github/blob/HEAD/support.md
 
 [coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+
+[markdown-space]: https://github.com/micromark/micromark/tree/main/packages/micromark-util-character#markdownspacecode

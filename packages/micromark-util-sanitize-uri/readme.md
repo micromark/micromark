@@ -33,7 +33,14 @@ npm install micromark-util-sanitize-uri
 ```js
 import {sanitizeUri} from 'micromark-util-sanitize-uri'
 
-sanitizeUri(' a ') // 'A'
+sanitizeUri('https://example.com/a&amp;b') // 'https://example.com/a&amp;amp;b'
+sanitizeUri('https://example.com/a%b') // 'https://example.com/a%25b'
+sanitizeUri('https://example.com/a%20b') // 'https://example.com/a%20b'
+sanitizeUri('https://example.com/👍') // 'https://example.com/%F0%9F%91%8D'
+sanitizeUri('https://example.com/', /^https?$/i) // 'https://example.com/'
+sanitizeUri('javascript:alert(1)', /^https?$/i) // ''
+sanitizeUri('./example.jpg', /^https?$/i) // './example.jpg'
+sanitizeUri('#a', /^https?$/i) // '#a'
 ```
 
 ## API
@@ -50,10 +57,9 @@ encoded sequences (see `normalizeUri` internally).
 Further unsafe characters are encoded as character references (see
 `micromark-util-encode`).
 
-Then, a regex of allowed protocols can be given, in which case the URL is
-sanitized.
+A regex of allowed protocols can be given, in which case the URL is sanitized.
 For example, `/^(https?|ircs?|mailto|xmpp)$/i` can be used for `a[href]`, or
-`/^https?$/i` for `img[src]`.
+`/^https?$/i` for `img[src]` (this is what `github.com` allows).
 If the URL includes an unknown protocol (one not matched by `protocol`, such
 as a dangerous example, `javascript:`), the value is ignored.
 

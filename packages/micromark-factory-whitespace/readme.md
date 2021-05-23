@@ -8,7 +8,8 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-The subroutine to parse whitespace (as found in lots of places) in markdown.
+micromark factory to parse [markdown line endings or spaces][ws] (found in lots
+of places).
 
 ## Contents
 
@@ -57,6 +58,14 @@ This package exports the following identifiers: `factoryWhitespace`.
 There is no default export.
 
 ### `factoryWhitespace(…)`
+
+Note that there is no `nok` parameter:
+
+*   line endings or spaces in markdown are often optional, in which case this
+    factory can be used and `ok` will be switched to whether spaces were found
+    or not,
+*   One line ending or space can be detected with
+    [markdownLineEndingOrSpace(code)][ws] right before using `factoryWhitespace`
 
 ###### Parameters
 
@@ -129,3 +138,5 @@ abide by its terms.
 [support]: https://github.com/micromark/.github/blob/HEAD/support.md
 
 [coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+
+[ws]: https://github.com/micromark/micromark/tree/main/packages/micromark-util-character#markdownlineendingorspacecode

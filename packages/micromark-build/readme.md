@@ -6,13 +6,13 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-A tiny CLI to build micromark development source code into production.
+A small CLI to build micromark development source code into production code.
 
 If you are making a micromark extension or are otherwise integrating with
 its code, you *should* use this.
 
 State machines are hard: assertions, debugging messages, and readable names
-are great to develop with, but those also slow in production.
+are great to develop with, but slow in production, this solves that.
 
 ## Install
 
@@ -24,7 +24,7 @@ npm install micromark-build --save-dev
 
 ## Use
 
-Say we have this folder (`my-micromark-extension`):
+Say we have this folder (called `my-micromark-extension`):
 
 ```txt
 dev/lib/core.js
@@ -65,8 +65,21 @@ Users can then use `node --conditions development` to use the dev files.
 
 ## CLI
 
-No interface or options.
-Run it and get files out.
+There is no interface and there are no options.
+See Use above: run it and get files out.
+
+The following Babel plugins are used:
+
+*   [`babel-plugin-unassert`](https://github.com/unassert-js/babel-plugin-unassert)
+    — Remove [`assert`](https://nodejs.org/api/assert.html) calls
+*   [`babel-plugin-undebug`](https://github.com/wooorm/babel-plugin-undebug)
+    — Remove [`debug`](https://github.com/visionmedia/debug) calls
+*   [`babel-plugin-undebug`](https://github.com/wooorm/babel-plugin-inline-constants)
+    — Inline the values from
+    [`micromark-util-symbol`](https://github.com/micromark/micromark/tree/main/packages/micromark-util-symbol)
+
+You should use `assert`, `debug`, and `micromark-util-symbol` to develop
+micromark extensions!
 
 ## Security
 

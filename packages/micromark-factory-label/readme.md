@@ -8,8 +8,7 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-The subroutine to parse labels (as found in links, images, and definitions) in
-markdown.
+micromark factory to parse labels (found in media, definitions).
 
 ## Contents
 

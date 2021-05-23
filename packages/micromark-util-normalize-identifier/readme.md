@@ -49,12 +49,13 @@ There is no default export.
 Normalize an identifier (such as used in definitions).
 Collapse Markdown whitespace, trim, and then lower- and uppercase.
 
-Some characters are considered “uppercase”, but if their lowercase counterpart
-is uppercased will result in a different uppercase character.
+Some characters are considered “uppercase”, such as U+03F4 (`ϴ`), but if their
+lowercase counterpart (U+03B8 (`θ`)) is uppercased will result in a different
+uppercase character (U+0398 (`Θ`)).
 Hence, to get that form, we perform both lower- and uppercase.
 
-Upper case makes sure keys will not interact with default prototypal methods: no
-method is uppercase.
+Using uppercase last makes sure keys will not interact with default prototypal
+methods: no method is uppercase.
 
 ###### Parameters
 

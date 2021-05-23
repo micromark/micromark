@@ -63,8 +63,8 @@ There is no default export.
 
 ### `classifyCharacter(code)`
 
-Classify whether a character is unicode whitespace, unicode punctuation, or
-anything else.
+Classify whether a character code represents whitespace, punctuation, or
+something else.
 Used for attention (emphasis, strong), whose sequences can open or close based
 on the class of surrounding characters.
 

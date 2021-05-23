@@ -103,7 +103,7 @@ There is no default export.
 
 ### `resolveAll(constructs, events, context)`
 
-Call all `resolveAll`s.
+Call all `resolveAll`s in `constructs`.
 
 ###### Parameters
 

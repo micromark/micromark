@@ -36,14 +36,14 @@ import {push, splice} from 'micromark-util-chunked'
 
 // …
 
-splice(events, open - 1, index - open + 3, nextEvents)
-
-// …
-
 nextEvents = push(nextEvents, [
   ['enter', events[open][1], context],
   ['exit', events[open][1], context]
 ])
+
+// …
+
+splice(events, open - 1, index - open + 3, nextEvents)
 
 // …
 ```
@@ -52,6 +52,23 @@ nextEvents = push(nextEvents, [
 
 This package exports the following identifiers: `push`, `splice`.
 There is no default export.
+
+### `push(list, items)`
+
+Append `items` (an array) at the end of `list` (another array).
+When `list` was empty, returns `items` instead.
+
+This prevents a potentially expensive operation when `list` is empty,
+and adds items in batches to prevent V8 from hanging.
+
+###### Parameters
+
+*   `list` (`unknown[]`) — List to operate on
+*   `items` (`unknown[]`) — Items to add to `list`
+
+###### Returns
+
+`list` or `items`
 
 ### `splice(list, start, remove, items)`
 
@@ -73,23 +90,6 @@ array instead of rest parameters.
 ###### Returns
 
 `void`
-
-### `push(list, items)`
-
-Append `items` (an array) at the end of `list` (another array).
-When `list` was empty, returns `items` instead.
-
-This prevents a potentially expensive operation when `list` is empty,
-and adds items in batches to prevent V8 from hanging.
-
-###### Parameters
-
-*   `list` (`unknown[]`) — List to operate on
-*   `items` (`unknown[]`) — Items to add to `list`
-
-###### Returns
-
-`list` or `items`
 
 ## Security
 

@@ -8,7 +8,9 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-The core CommonMark constructs needed to parse markdown.
+The core CommonMark constructs needed to tokenize markdown.
+Some of these can be turned off, but they are often essential to markdown
+and weird things might happen.
 
 ## Contents
 

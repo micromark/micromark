@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-The information you need for dealing with characters in markdown and micromark.
+micromark utility to handle character codes.
 
 ## Contents
 
