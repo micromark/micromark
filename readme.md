@@ -37,6 +37,7 @@ generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or compile
 to other output formats.
 It’s in open beta: up next are [CMSM][] and CSTs.
 
+*   to learn markdown, see this [cheatsheet and tutorial][cheat]
 *   for updates, see [Twitter][]
 *   for more about us, see [`unifiedjs.com`][site]
 *   for questions, see [Discussions][chat]
@@ -50,9 +51,10 @@ It’s in open beta: up next are [CMSM][] and CSTs.
     *   [`micromark(value[, encoding][, options])`](#micromarkvalue-encoding-options)
     *   [`stream(options?)`](#streamoptions)
 *   [Extensions](#extensions)
+    *   [List of extensions](#list-of-extensions)
     *   [`SyntaxExtension`](#syntaxextension)
     *   [`HtmlExtension`](#htmlextension)
-    *   [List of extensions](#list-of-extensions)
+    *   [Extending markdown](#extending-markdown)
 *   [Syntax tree](#syntax-tree)
 *   [CommonMark](#commonmark)
 *   [Grammar](#grammar)
@@ -94,13 +96,12 @@ You can pass extensions (in this case [`micromark-extension-gfm`][gfm]):
 
 ```js
 import {micromark} from 'micromark'
-import gfmSyntax from 'micromark-extension-gfm'
-import gfmHtml from 'micromark-extension-gfm/html.js'
+import {gfm, gfmHtml} from 'micromark-extension-gfm'
 
 const value = '* [x] contact@example.com ~~strikethrough~~'
 
 const result = micromark(value, {
-  extensions: [gfmSyntax()],
+  extensions: [gfm()],
   htmlExtensions: [gfmHtml]
 })
 
@@ -207,33 +208,16 @@ As markdown does not know errors, `micromark` itself does not emit errors.
 
 ## Extensions
 
+micromark supports extensions.
 There are two types of extensions for micromark:
 [`SyntaxExtension`][syntax-extension] and [`HtmlExtension`][html-extension].
 They can be passed in [`extensions`][option-extensions] or
 [`htmlExtensions`][option-htmlextensions], respectively.
 
-### `SyntaxExtension`
+Syntax extensions change the way markdown is tokenized.
+HTML extensions change how those tokens are turned into HTML.
 
-A syntax extension is an object whose fields are the names of hooks, referring
-to where constructs “hook” into.
-`content` (a block of, well, content: definitions and paragraphs), `document`
-(containers such as block quotes and lists), `flow` (block constructs such as
-ATX and setext headings, HTML, indented and fenced code, thematic breaks),
-`string` (things that work in a few places such as destinations, fenced code
-info, etc: character escapes and -references), or `text` (rich inline text:
-autolinks, character escapes and -references, code, hard breaks, HTML, images,
-links, emphasis, strong).
-
-The fields at such objects are character codes, mapping to constructs as values.
-The built in [constructs][] are an extension.
-See it and the [existing extensions][extensions] for inspiration.
-
-### `HtmlExtension`
-
-An HTML extension is an object whose fields are either `enter` or `exit`
-(reflecting whether a token is entered or exited).
-The values at such objects are names of tokens mapping to handlers.
-See the [existing extensions][extensions] for inspiration.
+As a user, refer to the docs of each extension for more on how to use them.
 
 ### List of extensions
 
@@ -269,6 +253,162 @@ See the [existing extensions][extensions] for inspiration.
     — support misc MDX changes
 *   [`micromark/micromark-extension-mdxjs-esm`](https://github.com/micromark/micromark-extension-mdxjs-esm)
     — support MDX.js import/exports
+
+### `SyntaxExtension`
+
+A syntax extension is an object whose fields are typically the names of hooks,
+referring to where constructs “hook” into.
+
+The fields at such objects are character codes, mapping to constructs as values.
+The built in [constructs][] are an extension.
+See it and the [existing extensions][extensions] for inspiration.
+
+### `HtmlExtension`
+
+An HTML extension is an object whose fields are typically `enter` or `exit`
+(reflecting whether a token is entered or exited).
+The values at such objects are names of tokens mapping to handlers.
+See the [existing extensions][extensions] for inspiration.
+
+### Extending markdown
+
+micromark lets you change the markdown syntax, yes, but there are alternatives.
+The alternatives are often better.
+
+Over the years, many micromark and remark users have asked about their unique
+goals for markdown.
+These goals are limitless, but some exemplary ones are:
+
+1.  I want to add `rel="nofollow"` to external links
+2.  I want to add links from headings to themselves
+3.  I want line breaks in paragraphs to become hard breaks
+4.  I want to support embedded music sheets
+5.  I want authors to add arbitrary attributes
+6.  I want authors to mark certain blocks with meaning, such as tip, warning,
+    etc
+7.  I want to combine markdown with JS(X)
+8.  I want to support our legacy flavor of markdown-like syntax
+
+These goals can be solved in different ways of course, and which solution is
+the best is both subjective and dependant on unique needs.
+Often, there is already a solution in the form of an existing remark or rehype
+plugin.
+
+Respectively, the goals can be solved with:
+
+1.  [`remark-external-links`](https://github.com/remarkjs/remark-external-links)
+2.  [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
+3.  [`remark-breaks`](https://github.com/remarkjs/remark-breaks)
+4.  custom plugin similar to
+    [`rehype-katex`](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex)
+    but integrating [`abcjs`](https://www.abcjs.net)
+5.  either [`remark-directive`](https://github.com/remarkjs/remark-directive)
+    and a custom plugin or with
+    [`rehype-attr`](https://github.com/jaywcjlove/rehype-attr)
+6.  [`remark-directive`](https://github.com/remarkjs/remark-directive)
+    combined with a custom plugin
+7.  combining the existing micromark MDX extensions however you please, such as
+    done by [`mdx-js/mdx`](https://github.com/mdx-js/mdx) or
+    [`xdm`](https://github.com/wooorm/xdm)
+8.  Writing a micromark extension
+
+Looking at the solutions from a higher level, they can be categorized as
+follows:
+
+*   Changing the output by transforming syntax trees
+    (1 and 2)
+
+    This solution is nice because the input format remains plain markdown that
+    authors are familiar with and which will work with existing tools and
+    platforms.
+
+    Implementations of this solution category will deal with the syntax tree
+    ([`mdast`](https://github.com/syntax-tree/mdast)), and the ecosystems
+    **[remark][]** and **[rehype][]**.
+
+    There are many existing
+    [utilities for working with that tree](https://github.com/syntax-tree/mdast#list-of-utilities).
+    Many
+    [remark plugins](https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins)
+    and
+    [rehype plugins](https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins)
+    also already exist.
+*   Using and abusing markdown to add new meaning
+    (3, 4, potentially 5)
+
+    This category is similar to *Changing the output by transforming syntax
+    trees*, but adds a new meaning to certain things which already have a
+    meaning in markdown.
+
+    Some examples in pseudo code:
+
+    ````markdown
+    *   **A list item with the first paragraph bold**
+
+        And then more content, is turned into `<dl>` / `<dt>` / `<dd>` elements
+
+    Or, the title attributes on links or images is [overloaded](/url 'rel:nofollow')
+    with a new meaning.
+
+    ```csv
+    fenced,code,can,include,data
+    which,is,turned,into,a,graph
+    ```
+
+    ```js data can="be" passed=true
+    // after the code language name
+    ```
+
+    HTML, especially comments, could be used as **markers**<!--id="markers"-->
+    ````
+*   Arbitrary extension mechanism
+    (potentially 5; 6)
+
+    This solution is nice in certain cases where content should contain embedded
+    “components”.
+    Often this means authors will have some programming experience.
+    There are three good ways to solve arbitrary extensions.
+
+    **HTML**: Markdown already has an arbitrary extension syntax.
+    It works in most places that support markdown and many authors are familiar
+    with the syntax, but it’s reasonably hard to implement securely.
+    Certain platforms will remove HTML completely, yet others sanitize it to
+    varying degrees.
+
+    HTML also has support for custom elements.
+    These could be used and enhanced by client side JavaScript or they
+    could be enhanced when transforming the syntax tree.
+
+    **Generic directives**: although just
+    [a proposal](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444)
+    and thus semistandard, and not supported on most platforms, directives do
+    work with many tools already.
+
+    They are not the easiest to author compared to, say, a heading, but
+    sometimes that’s okay.
+    On the other hand, they have a lot of potential: they nicely solve the need
+    for an infinite number of potential extensions to markdown in a single
+    markdown-esque way.
+
+    **MDX** also adds support for components, by swapping HTML out for JS(X).
+    JSX is an extension to JavaScript that looks like HTML but makes it
+    convenient to use components (reusable things).
+    MDX is thus something along the lines of literate programming, and hence
+    requires knowledge of React and JavaScript, making it hard to author for
+    some folks.
+*   Extending markdown syntax
+    (7 and 8)
+
+    You probably **should not** extend the syntax of markdown, as that means:
+
+    *   Authors won’t be familiar with the syntax
+    *   Content won’t work in other places (such as on GitHub)
+    *   Defeating the purpose of markdown: being simple to author and looking
+        like what it means
+
+    It’s also hard to do, as it requires integration with a parser
+    (`micromark`).
+    But it’s definitely possible and in certain cases very powerful.
 
 ## Syntax tree
 
@@ -350,7 +490,6 @@ To build, format, and test the codebase, use `$ npm test` after clone and
 install.
 The `$ npm run test-api` and `$ npm run test-coverage` scripts check the unit
 tests and their coverage, respectively.
-The `$ npm run test-types` script checks TypeScript definitions.
 
 The `$ npm run test-fuzz` script does fuzz testing for 15 minutes.
 The timeout is provided by GNU coreutils **timeout(1)**, which might not be
@@ -365,8 +504,8 @@ but also through custom build scripts to pre-evaluate certain expressions.
 Furthermore, care went into making it compress well with gzip and brotli.
 
 Normally, you’ll use the pre-evaluated version of micromark.
-While developing or debugging, you can switch to use code instrumented with
-assertions and debug messages:
+While developing, debugging, or testing your code, you can switch to use code
+instrumented with assertions and debug messages:
 
 ```sh
 node --conditions development module.js
@@ -658,9 +797,13 @@ It was great.
 
 [coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
 
+[cheat]: https://commonmark.org/help/
+
 [twitter]: https://twitter.com/unifiedjs
 
 [remark]: https://github.com/remarkjs/remark
+
+[rehype]: https://github.com/rehypejs/rehype
 
 [site]: https://unifiedjs.com
 
