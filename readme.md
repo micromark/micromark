@@ -55,18 +55,18 @@ It’s in open beta: up next are [CMSM][] and CSTs.
     *   [`SyntaxExtension`](#syntaxextension)
     *   [`HtmlExtension`](#htmlextension)
     *   [Extending markdown](#extending-markdown)
-*   [Syntax tree](#syntax-tree)
-*   [CommonMark](#commonmark)
-*   [Grammar](#grammar)
-*   [Test](#test)
-*   [Size & debug](#size--debug)
-*   [Comparison](#comparison)
 *   [Architecture](#architecture)
     *   [Overview](#overview)
     *   [Preprocess](#preprocess)
     *   [Parse](#parse)
     *   [Postprocess](#postprocess)
     *   [Compile](#compile)
+*   [Syntax tree](#syntax-tree)
+*   [CommonMark](#commonmark)
+*   [Grammar](#grammar)
+*   [Test](#test)
+*   [Size & debug](#size--debug)
+*   [Comparison](#comparison)
 *   [Version](#version)
 *   [Security](#security)
 *   [Contribute](#contribute)
@@ -416,6 +416,169 @@ follows:
     (`micromark`).
     But it’s definitely possible and in certain cases very powerful.
 
+## Architecture
+
+micromark is maintained as a monorepo.
+Many of its internals, which are used in `micromark` but also useful for
+developers of extensions or integrations, are available as separate packages.
+Each package maintained here is available in
+[`packages/`](https://github.com/micromark/micromark/tree/main/packages).
+
+### Overview
+
+The naming scheme is as follows:
+
+```txt
+# A small CLI to build dev code into production code.
+micromark-build
+
+# The core CommonMark constructs used in micromark.
+micromark-core-commonmark
+
+# Reusable subroutines used to parse parts of constructs.
+micromark-factory-*
+
+# Reusable helpers often needed when parsing markdown.
+micromark-util-*
+
+# Core library itself
+micromark
+```
+
+micromark has two interfaces: buffering and streaming.
+The first takes all input in one go whereas the last uses a Node.js stream to
+take input separately.
+These are thin wrappers around how data flows through micromark:
+
+```txt
+                                            micromark
++-----------------------------------------------------------------------------------------------+
+|            +------------+         +-------+         +-------------+         +---------+       |
+| -markdown->+ preprocess +-chunks->+ parse +-events->+ postprocess +-events->+ compile +-html- |
+|            +------------+         +-------+         +-------------+         +---------+       |
++-----------------------------------------------------------------------------------------------+
+```
+
+### Preprocess
+
+The **preprocessor** takes markdown and turns it into chunks.
+
+A **chunk** is either a character code or a slice of a buffer in the form of a
+string.
+Chunks are used because strings are more efficient storage that character codes,
+but limited in what they can represent.
+
+A character **code** is often the same as what `String#charCodeAt()` yields but
+micromark adds meaning to certain other values.
+
+In micromark, the actual character U+0009 CHARACTER TABULATION (HT) is replaced
+by one M-0002 HORIZONTAL TAB (HT) and between 0 and 3 M-0001 VIRTUAL SPACE (VS)
+characters, depending on the column at which the tab occurred.
+
+The characters U+000A LINE FEED (LF) and U+000D CARRIAGE RETURN (CR) are
+replaced by virtual characters depending on whether they occur together: M-0003
+CARRIAGE RETURN LINE FEED (CRLF), M-0004 LINE FEED (LF), and M-0005 LINE FEED
+(CR).
+
+The `0` (U+0000 NUL) character code is replaced by U+FFFD REPLACEMENT CHARACTER
+(`�`).
+
+The `null` code represents the end of the input stream (called eof).
+
+### Parse
+
+The **parser** takes chunks and turns them into events.
+
+**Events** are the start or end of a token amongst other events.
+Tokens can “contain” other tokens, even though they are stored in a flat list,
+through `enter`ing before them, and exiting after them.
+
+A **token** is a span of chunks.
+Tokens are what the core of micromark produces: the built in HTML compiler or
+other tools can turn them into different things.
+
+Tokens are essentially names attached to a slice of chunks, such as
+`lineEndingBlank` for certain line endings, or `codeFenced` for a whole fenced
+code.
+
+Sometimes, more info is attached to tokens, such as `_open` and `_close`
+by `attention` (strong, emphasis) to signal whether the sequence can open
+or close an attention run.
+
+Linked tokens are used because outer constructs are parsed first.
+Take for example:
+
+```markdown
+- *a
+  b*.
+```
+
+1.  The list marker and the space after it is parsed first
+2.  The rest of the line is a `chunkFlow` token
+3.  The two spaces on the second line are a `linePrefix` of the list
+4.  The rest of the line is another `chunkFlow` token
+
+The two `chunkFlow` tokens are linked together.
+The chunks they span are then passed through the flow tokenizer.
+
+#### Content types
+
+The parser starts out with a document tokenizer.
+*Document* is the top-most content type, which includes containers such as block
+quotes and lists.
+Containers in markdown come from the margin and include more constructs
+on the lines that define them.
+
+*Flow* represents the sections, such as headings, code, and content, which like
+*document* are also parsed per line.
+An example is HTML, which has a certain starting condition (such as `<script>`
+on its own line), then continues for a while, until an end condition is found
+(such as `</style>`).
+If that line with an end condition is never found, that flow goes until the end.
+
+*Content* is zero or more definitions, and then zero or one paragraph.
+It’s a weird one, and needed to make certain edge cases around definitions spec
+compliant.
+Definitions are unlike other things in markdown, in that they behave like *text*
+in that they can contain arbitrary line endings, but *have* to end at a line
+ending.
+If they end in something else, the whole definition instead is seen as a
+paragraph.
+
+The content in markdown first needs to be parsed up to this level to figure out
+which things are defined, for the whole document, before continuing on with
+*text*, as whether a link or image reference forms or not depends on whether
+it’s defined.
+This unfortunately prevents a true streaming markdown parser.
+
+*text* contains phrasing content such as attention (emphasis, strong), media
+(links, images), and actual text.
+
+*string* is a limited *text*-like content type which only allows character
+references and character escapes.
+It exists in things such as identifiers (media references, definitions),
+titles, or URLs.
+
+### Postprocess
+
+The **postprocessor** is a small step that takes events, ensures all their
+nested content is parsed, and returns the modified events.
+
+### Compile
+
+The **compiler** takes events and turns them into HTML.
+While micromark is a lexer/tokenizer, the common case of going from markdown to
+HTML is currently built in as this module, even though the parts can be used
+separately to build ASTs, CSTs, or many other output formats.
+
+Having an HTML compiler built in is useful because it allows us to check for
+compliancy to CommonMark, the de facto norm of markdown, specified in roughly
+600 input/output cases.
+
+The compiler has an interface that accepts lists of events instead of the whole
+at once, however, because markdown can’t be truly streaming, events are buffered
+before compiling and outputting the final result.
+
 ## Syntax tree
 
 A higher level project, [`mdast-util-from-markdown`][from-markdown], can give
@@ -596,169 +759,6 @@ This list is not supposed to be exhaustive.
 This list of markdown parsers is a snapshot in time of why (not) to use
 (alternatives to) `micromark`: they’re all good choices, depending on what your
 goals are.
-
-## Architecture
-
-micromark is maintained as a monorepo.
-Many of its internals, which are used in `micromark` but also useful for
-developers of extensions or integrations, are available as separate packages.
-Each package maintained here is available in
-[`packages/`](https://github.com/micromark/micromark/tree/main/packages).
-
-### Overview
-
-The naming scheme is as follows:
-
-```txt
-# A small CLI to build dev code into production code.
-micromark-build
-
-# The core CommonMark constructs used in micromark.
-micromark-core-commonmark
-
-# Reusable subroutines used to parse parts of constructs.
-micromark-factory-*
-
-# Reusable helpers often needed when parsing markdown.
-micromark-util-*
-
-# Core library itself
-micromark
-```
-
-micromark has two interfaces: buffering and streaming.
-The first takes all input in one go whereas the last uses a Node.js stream to
-take input separately.
-These are thin wrappers around how data flows through micromark:
-
-```txt
-                                            micromark
-+-----------------------------------------------------------------------------------------------+
-|            +------------+         +-------+         +-------------+         +---------+       |
-| -markdown->+ preprocess +-chunks->+ parse +-events->+ postprocess +-events->+ compile +-html- |
-|            +------------+         +-------+         +-------------+         +---------+       |
-+-----------------------------------------------------------------------------------------------+
-```
-
-### Preprocess
-
-The **preprocessor** takes markdown and turns it into chunks.
-
-A **chunk** is either a character code or a slice of a buffer in the form of a
-string.
-Chunks are used because strings are more efficient storage that character codes,
-but limited in what they can represent.
-
-A character **code** is often the same as what `String#charCodeAt()` yields but
-micromark adds meaning to certain other values.
-
-In micromark, the actual character U+0009 CHARACTER TABULATION (HT) is replaced
-by one M-0002 HORIZONTAL TAB (HT) and between 0 and 3 M-0001 VIRTUAL SPACE (VS)
-characters, depending on the column at which the tab occurred.
-
-The characters U+000A LINE FEED (LF) and U+000D CARRIAGE RETURN (CR) are
-replaced by virtual characters depending on whether they occur together: M-0003
-CARRIAGE RETURN LINE FEED (CRLF), M-0004 LINE FEED (LF), and M-0005 LINE FEED
-(CR).
-
-The `0` (U+0000 NUL) character code is replaced by U+FFFD REPLACEMENT CHARACTER
-(`�`).
-
-The `null` code represents the end of the input stream (called eof).
-
-### Parse
-
-The **parser** takes chunks and turns them into events.
-
-**Events** are the start or end of a token amongst other events.
-Tokens can “contain” other tokens, even though they are stored in a flat list,
-through `enter`ing before them, and exiting after them.
-
-A **token** is a span of chunks.
-Tokens are what the core of micromark produces: the built in HTML compiler or
-other tools can turn them into different things.
-
-Tokens are essentially names attached to a slice of chunks, such as
-`lineEndingBlank` for certain line endings, or `codeFenced` for a whole fenced
-code.
-
-Sometimes, more info is attached to tokens, such as `_open` and `_close`
-by `attention` (strong, emphasis) to signal whether the sequence can open
-or close an attention run.
-
-Linked tokens are used because outer constructs are parsed first.
-Take for example:
-
-```markdown
-- *a
-  b*.
-```
-
-1.  The list marker and the space after it is parsed first
-2.  The rest of the line is a `chunkFlow` token
-3.  The two spaces on the second line are a `linePrefix` of the list
-4.  The rest of the line is another `chunkFlow` token
-
-The two `chunkFlow` tokens are linked together.
-The chunks they span are then passed through the flow tokenizer.
-
-#### Content types
-
-The parser starts out with a document tokenizer.
-*Document* is the top-most content type, which includes containers such as block
-quotes and lists.
-Containers in markdown come from the margin and include more constructs
-on the lines that define them.
-
-*Flow* represents the sections, such as headings, code, and content, which like
-*document* are also parsed per line.
-An example is HTML, which has a certain starting condition (such as `<script>`
-on its own line), then continues for a while, until an end condition is found
-(such as `</style>`).
-If that line with an end condition is never found, that flow goes until the end.
-
-*Content* is zero or more definitions, and then zero or one paragraph.
-It’s a weird one, and needed to make certain edge cases around definitions spec
-compliant.
-Definitions are unlike other things in markdown, in that they behave like *text*
-in that they can contain arbitrary line endings, but *have* to end at a line
-ending.
-If they end in something else, the whole definition instead is seen as a
-paragraph.
-
-The content in markdown first needs to be parsed up to this level to figure out
-which things are defined, for the whole document, before continuing on with
-*text*, as whether a link or image reference forms or not depends on whether
-it’s defined.
-This unfortunately prevents a true streaming markdown parser.
-
-*text* contains phrasing content such as attention (emphasis, strong), media
-(links, images), and actual text.
-
-*string* is a limited *text*-like content type which only allows character
-references and character escapes.
-It exists in things such as identifiers (media references, definitions),
-titles, or URLs.
-
-### Postprocess
-
-The **postprocessor** is a small step that takes events, ensures all their
-nested content is parsed, and returns the modified events.
-
-### Compile
-
-The **compiler** takes events and turns them into HTML.
-While micromark is a lexer/tokenizer, the common case of going from markdown to
-HTML is currently built in as this module, even though the parts can be used
-separately to build ASTs, CSTs, or many other output formats.
-
-Having an HTML compiler built in is useful because it allows us to check for
-compliancy to CommonMark, the de facto norm of markdown, specified in roughly
-600 input/output cases.
-
-The compiler has an interface that accepts lists of events instead of the whole
-at once, however, because markdown can’t be truly streaming, events are buffered
-before compiling and outputting the final result.
 
 ## Version
 
