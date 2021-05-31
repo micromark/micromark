@@ -40,6 +40,10 @@ npm install micromark-util-types
 This package exports no identifiers.
 There is no default export.
 
+See
+[the code](https://github.com/micromark/micromark/blob/main/packages/micromark-util-types/index.js)
+for all about the exposed types.
+
 ## Security
 
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to

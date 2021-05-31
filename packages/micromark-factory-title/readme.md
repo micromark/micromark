@@ -78,9 +78,10 @@ There is no default export.
 *   `effects` (`Effects`) — Context
 *   `ok` (`State`) — State switched to when successful
 *   `nok` (`State`) — State switched to when not successful
-*   `type` (`Type`) — Token type for whole (`"a"`, `'b'`, `(c)`)
-*   `markerType` (`Type`) — Token type for the markers (`"`, `'`, `(`, and `)`)
-*   `stringType` (`Type`) — Token type for the value (`a`)
+*   `type` (`string`) — Token type for whole (`"a"`, `'b'`, `(c)`)
+*   `markerType` (`string`) — Token type for the markers (`"`, `'`, `(`, and
+    `)`)
+*   `stringType` (`string`) — Token type for the value (`a`)
 
 ###### Returns
 

@@ -77,9 +77,9 @@ Note that labels in markdown are capped at 999 characters in the string.
 *   `effects` (`Effects`) — Context
 *   `ok` (`State`) — State switched to when successful
 *   `nok` (`State`) — State switched to when not successful
-*   `type` (`Type`) — Token type for whole (`[a]`)
-*   `markerType` (`Type`) — Token type for the markers (`[` and `]`)
-*   `stringType` (`Type`) — Token type for the identifier (`a`)
+*   `type` (`string`) — Token type for whole (`[a]`)
+*   `markerType` (`string`) — Token type for the markers (`[` and `]`)
+*   `stringType` (`string`) — Token type for the identifier (`a`)
 
 ###### Returns
 

@@ -77,11 +77,11 @@ There is no default export.
 *   `effects` (`Effects`) — Context
 *   `ok` (`State`) — State switched to when successful
 *   `nok` (`State`) — State switched to when not successful
-*   `type` (`Type`) — Token type for whole (`<a>` or `b`)
-*   `literalType` (`Type`) — Token type when enclosed (`<a>`)
-*   `literalMarkerType` (`Type`) — Token type for enclosing (`<` and `>`)
-*   `rawType` (`Type`) — Token type when not enclosed (`b`)
-*   `stringType` (`Type`) — Token type for the URI (`a` or `b`)
+*   `type` (`string`) — Token type for whole (`<a>` or `b`)
+*   `literalType` (`string`) — Token type when enclosed (`<a>`)
+*   `literalMarkerType` (`string`) — Token type for enclosing (`<` and `>`)
+*   `rawType` (`string`) — Token type when not enclosed (`b`)
+*   `stringType` (`string`) — Token type for the URI (`a` or `b`)
 *   `max` (`number`, default: `Infinity`) — Max depth of nested parens
 
 ###### Returns

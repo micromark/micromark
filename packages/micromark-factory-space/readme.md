@@ -78,7 +78,7 @@ Note that there is no `nok` parameter:
 
 *   `effects` (`Effects`) — Context
 *   `ok` (`State`) — State switched to when successful
-*   `type` (`Type`) — Token type for whole (`' \t'`)
+*   `type` (`string`) — Token type for whole (`' \t'`)
 *   `max` (`number`, default: `Infinity`) — Max size of whitespace
 
 ###### Returns
