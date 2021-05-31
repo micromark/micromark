@@ -45,7 +45,7 @@
  *   Definitions are unlike other things in markdown, in that they behave like
  *   `text` in that they can contain arbitrary line endings, but *have* to end
  *   at a line ending.
- *   If it ends in something else, the whole definition instead is seen as a
+ *   If they end in something else, the whole definition instead is seen as a
  *   paragraph.
  *
  *   The content in markdown first needs to be parsed up to this level to
@@ -98,18 +98,18 @@
  *   Linked tokens are used because outer constructs are parsed first.
  *   Take for example:
  *
- *   ````markdown
+ *   ```markdown
  *   > *a
  *     b*.
  *   ```
  *
  *   1.  The block quote marker and the space after it is parsed first
- *   2.  The rest of the line is a `chunkFlow` token.
+ *   2.  The rest of the line is a `chunkFlow` token
  *   3.  The two spaces on the second line are a `linePrefix`
- *   4.  The rest of the line is a `chunkFlow` token.
+ *   4.  The rest of the line is another `chunkFlow` token
  *
  *   The two `chunkFlow` tokens are linked together.
- *   The chunks they span are then passed through the flow parser.
+ *   The chunks they span are then passed through the flow tokenizer.
  *
  * @property {string} type
  * @property {Point} start
@@ -145,8 +145,9 @@
  *   not a link opening but has a balanced closing.
  *
  * @typedef {['enter'|'exit', Token, TokenizeContext]} Event
- *   An event is the start or end of a token.
- *   Tokens can contain other tokens but are stored in a flat list.
+ *   An event is the start or end of a token amongst other events.
+ *   Tokens can “contain” other tokens, even though they are stored in a flat
+ *   list, through `enter`ing before them, and exiting after them.
  *
  * @callback Enter
  *   Open a token.
