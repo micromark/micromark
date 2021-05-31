@@ -63,7 +63,9 @@ There is no default export.
 
 ### `classifyCharacter(code)`
 
-Classify whether a character code represents whitespace, punctuation, or
+Classify whether a
+[character code](https://github.com/micromark/micromark#preprocess)
+represents whitespace, punctuation, or
 something else.
 Used for attention (emphasis, strong), whose sequences can open or close based
 on the class of surrounding characters.

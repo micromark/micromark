@@ -47,7 +47,11 @@ This package exports the following identifiers: `attention`, `autolink`,
 `thematicBreak`.
 There is no default export.
 
-Each identifier refers to a construct.
+Each identifier refers to a [construct](https://github.com/micromark/micromark#constructs).
+
+See
+[the code](https://github.com/micromark/micromark/tree/main/packages/micromark-core-commonmark/)
+for all about the exported constructs.
 
 ## Security
 

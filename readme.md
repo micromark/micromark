@@ -559,6 +559,23 @@ references and character escapes.
 It exists in things such as identifiers (media references, definitions),
 titles, or URLs.
 
+#### Constructs
+
+Constructs are the things that make up markdown.
+Some examples are lists, thematic breaks, or character references.
+
+Note that, as a general rule of thumb, markdown is *really weird*.
+It’s essentially made up of edge cases rather than logical rules.
+When browsing the built in constructs, or venturing to build your own, you’ll
+find confusing new things and run into complex custom hooks.
+
+One more reasonable construct is the thematic break
+([see code](https://github.com/micromark/micromark/blob/main/packages/micromark-core-commonmark/dev/lib/thematic-break.js)).
+It’s an object that defines a `name` and a `tokenize` function.
+
+Most of what constructs do is defined in their required `tokenzie` function,
+which sets up a state machine to handle character codes streaming in.
+
 ### Postprocess
 
 The **postprocessor** is a small step that takes events, ensures all their

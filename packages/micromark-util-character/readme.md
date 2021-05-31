@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility to handle character codes.
+micromark utility to handle [character codes](https://github.com/micromark/micromark#preprocess).
 
 ## Contents
 
@@ -59,7 +59,9 @@ There is no default export.
 
 ### `asciiAlpha(code)`
 
-Check whether the character code represents an ASCII alpha (`a` though `z`,
+Check whether the
+[character code](https://github.com/micromark/micromark#preprocess)
+represents an ASCII alpha (`a` though `z`,
 case insensitive).
 
 An **ASCII alpha** is an ASCII upper alpha or ASCII lower alpha.
@@ -72,14 +74,18 @@ to U+007A (`z`).
 
 ### `asciiDigit(code)`
 
-Check whether the character code represents an ASCII digit (`0` though `9`).
+Check whether the
+[character code](https://github.com/micromark/micromark#preprocess)
+represents an ASCII digit (`0` though `9`).
 
 An **ASCII digit** is a character in the inclusive range U+0030 (`0`) to
 U+0039 (`9`).
 
 ### `asciiHexDigit(code)`
 
-Check whether the character code represents an ASCII hex digit (`a` though
+Check whether the
+[character code](https://github.com/micromark/micromark#preprocess)
+represents an ASCII hex digit (`a` though
 `f`, case insensitive, or `0` through `9`).
 
 An **ASCII hex digit** is an ASCII digit (see `asciiDigit`), ASCII upper hex
@@ -93,7 +99,9 @@ An **ASCII lower hex digit** is a character in the inclusive range U+0061
 
 ### `asciiAlphanumeric(code)`
 
-Check whether the character code represents an ASCII alphanumeric (`a`
+Check whether the
+[character code](https://github.com/micromark/micromark#preprocess)
+represents an ASCII alphanumeric (`a`
 though `z`, case insensitive, or `0` through `9`).
 
 An **ASCII alphanumeric** is an ASCII digit (see `asciiDigit`) or ASCII alpha
@@ -101,7 +109,9 @@ An **ASCII alphanumeric** is an ASCII digit (see `asciiDigit`) or ASCII alpha
 
 ### `asciiPunctuation(code)`
 
-Check whether the character code represents ASCII punctuation.
+Check whether the
+[character code](https://github.com/micromark/micromark#preprocess)
+represents ASCII punctuation.
 
 An **ASCII punctuation** is a character in the inclusive ranges U+0021
 EXCLAMATION MARK (`!`) to U+002F SLASH (`/`), U+003A COLON (`:`) to U+0040 AT
@@ -110,7 +120,9 @@ SIGN (`@`), U+005B LEFT SQUARE BRACKET (`[`) to U+0060 GRAVE ACCENT
 
 ### `asciiAtext(code)`
 
-Check whether the character code represents an ASCII atext.
+Check whether the
+[character code](https://github.com/micromark/micromark#preprocess)
+represents an ASCII atext.
 
 atext is an ASCII alphanumeric (see `asciiAlphanumeric`), or a character in
 the inclusive ranges U+0023 NUMBER SIGN (`#`) to U+0027 APOSTROPHE (`'`),
@@ -126,19 +138,25 @@ IETF.
 
 ### `asciiControl(code)`
 
-Check whether a character code is an ASCII control character.
+Check whether a
+[character code](https://github.com/micromark/micromark#preprocess)
+is an ASCII control character.
 
 An **ASCII control** is a character in the inclusive range U+0000 NULL (NUL)
 to U+001F (US), or U+007F (DEL).
 
 ### `markdownLineEndingOrSpace(code)`
 
-Check whether a character code is a markdown line ending (see
+Check whether a
+[character code](https://github.com/micromark/micromark#preprocess)
+is a markdown line ending (see
 `markdownLineEnding`) or markdown space (see `markdownSpace`).
 
 ### `markdownLineEnding(code)`
 
-Check whether a character code is a markdown line ending.
+Check whether a
+[character code](https://github.com/micromark/micromark#preprocess)
+is a markdown line ending.
 
 A **markdown line ending** is the virtual characters M-0003 CARRIAGE RETURN
 LINE FEED (CRLF), M-0004 LINE FEED (LF) and M-0005 LINE FEED (CR).
@@ -149,7 +167,9 @@ they occurred together.
 
 ### `markdownSpace(code)`
 
-Check whether a character code is a markdown space.
+Check whether a
+[character code](https://github.com/micromark/micromark#preprocess)
+is a markdown space.
 
 A **markdown space** is the concrete character U+0020 SPACE (SP) and the
 virtual characters M-0001 VIRTUAL SPACE (VS) and M-0002 HORIZONTAL TAB (HT).
@@ -160,7 +180,9 @@ SPACE (VS) characters, depending on the column at which the tab occurred.
 
 ### `unicodeWhitespace(code)`
 
-Check whether the character code represents Unicode whitespace.
+Check whether the
+[character code](https://github.com/micromark/micromark#preprocess)
+represents Unicode whitespace.
 
 Note that this does handle micromark specific markdown whitespace characters.
 See `markdownLineEndingOrSpace` to check that.
@@ -175,7 +197,9 @@ Unicode Consortium.
 
 ### `unicodePunctuation(code)`
 
-Check whether the character code represents Unicode punctuation.
+Check whether the
+[character code](https://github.com/micromark/micromark#preprocess)
+represents Unicode punctuation.
 
 A **Unicode punctuation** is a character in the Unicode `Pc` (Punctuation,
 Connector), `Pd` (Punctuation, Dash), `Pe` (Punctuation, Close), `Pf`
