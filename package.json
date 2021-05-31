@@ -30,6 +30,28 @@
     "Merlijn Vos <merlijn@soverin.net>"
   ],
   "type": "module",
+  "dependencies": {
+    "micromark": "file:packages/micromark",
+    "micromark-build": "file:packages/micromark-build",
+    "micromark-core-commonmark": "file:packages/micromark-core-commonmark",
+    "micromark-factory-destination": "file:packages/micromark-factory-destination",
+    "micromark-factory-label": "file:packages/micromark-factory-label",
+    "micromark-factory-space": "file:packages/micromark-factory-space",
+    "micromark-factory-title": "file:packages/micromark-factory-title",
+    "micromark-factory-whitespace": "file:packages/micromark-factory-whitespace",
+    "micromark-util-character": "file:packages/micromark-util-character",
+    "micromark-util-chunked": "file:packages/micromark-util-chunked",
+    "micromark-util-classify-character": "file:packages/micromark-util-classify-character",
+    "micromark-util-combine-extensions": "file:packages/micromark-util-combine-extensions",
+    "micromark-util-encode": "file:packages/micromark-util-encode",
+    "micromark-util-html-tag-name": "file:packages/micromark-util-html-tag-name",
+    "micromark-util-normalize-identifier": "file:packages/micromark-util-normalize-identifier",
+    "micromark-util-resolve-all": "file:packages/micromark-util-resolve-all",
+    "micromark-util-sanitize-uri": "file:packages/micromark-util-sanitize-uri",
+    "micromark-util-subtokenize": "file:packages/micromark-util-subtokenize",
+    "micromark-util-symbol": "file:packages/micromark-util-symbol",
+    "micromark-util-types": "file:packages/micromark-util-types"
+  },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/concat-stream": "^1.0.0",
@@ -144,28 +166,6 @@
         false
       ]
     ]
-  },
-  "dependencies": {
-    "micromark": "file:packages/micromark",
-    "micromark-build": "file:packages/micromark-build",
-    "micromark-core-commonmark": "file:packages/micromark-core-commonmark",
-    "micromark-factory-destination": "file:packages/micromark-factory-destination",
-    "micromark-factory-label": "file:packages/micromark-factory-label",
-    "micromark-factory-space": "file:packages/micromark-factory-space",
-    "micromark-factory-title": "file:packages/micromark-factory-title",
-    "micromark-factory-whitespace": "file:packages/micromark-factory-whitespace",
-    "micromark-util-character": "file:packages/micromark-util-character",
-    "micromark-util-chunked": "file:packages/micromark-util-chunked",
-    "micromark-util-classify-character": "file:packages/micromark-util-classify-character",
-    "micromark-util-combine-extensions": "file:packages/micromark-util-combine-extensions",
-    "micromark-util-encode": "file:packages/micromark-util-encode",
-    "micromark-util-html-tag-name": "file:packages/micromark-util-html-tag-name",
-    "micromark-util-normalize-identifier": "file:packages/micromark-util-normalize-identifier",
-    "micromark-util-resolve-all": "file:packages/micromark-util-resolve-all",
-    "micromark-util-sanitize-uri": "file:packages/micromark-util-sanitize-uri",
-    "micromark-util-subtokenize": "file:packages/micromark-util-subtokenize",
-    "micromark-util-symbol": "file:packages/micromark-util-symbol",
-    "micromark-util-types": "file:packages/micromark-util-types"
   },
   "typeCoverage": {
     "atLeast": 100,
