@@ -551,10 +551,10 @@ which things are defined, for the whole document, before continuing on with
 it’s defined.
 This unfortunately prevents a true streaming markdown parser.
 
-*text* contains phrasing content such as attention (emphasis, strong), media
+*Text* contains phrasing content such as attention (emphasis, strong), media
 (links, images), and actual text.
 
-*string* is a limited *text*-like content type which only allows character
+*String* is a limited *text*-like content type which only allows character
 references and character escapes.
 It exists in things such as identifiers (media references, definitions),
 titles, or URLs.
@@ -573,7 +573,7 @@ One more reasonable construct is the thematic break
 ([see code](https://github.com/micromark/micromark/blob/main/packages/micromark-core-commonmark/dev/lib/thematic-break.js)).
 It’s an object that defines a `name` and a `tokenize` function.
 
-Most of what constructs do is defined in their required `tokenzie` function,
+Most of what constructs do is defined in their required `tokenize` function,
 which sets up a state machine to handle character codes streaming in.
 
 ### Postprocess
