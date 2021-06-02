@@ -60,6 +60,38 @@
     "./stream.js": {
       "development": "./dev/stream.js",
       "default": "./stream.js"
+    },
+    "./lib/compile": {
+      "development": "./dev/lib/compile.js",
+      "default": "./lib/compile.js"
+    },
+    "./lib/compile.js": {
+      "development": "./dev/lib/compile.js",
+      "default": "./lib/compile.js"
+    },
+    "./lib/parse": {
+      "development": "./dev/lib/parse.js",
+      "default": "./lib/parse.js"
+    },
+    "./lib/parse.js": {
+      "development": "./dev/lib/parse.js",
+      "default": "./lib/parse.js"
+    },
+    "./lib/postprocess": {
+      "development": "./dev/lib/postprocess.js",
+      "default": "./lib/postprocess.js"
+    },
+    "./lib/postprocess.js": {
+      "development": "./dev/lib/postprocess.js",
+      "default": "./lib/postprocess.js"
+    },
+    "./lib/preprocess": {
+      "development": "./dev/lib/preprocess.js",
+      "default": "./lib/preprocess.js"
+    },
+    "./lib/preprocess.js": {
+      "development": "./dev/lib/preprocess.js",
+      "default": "./lib/preprocess.js"
     }
   },
   "dependencies": {
