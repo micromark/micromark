@@ -147,7 +147,7 @@
  * @typedef {['enter'|'exit', Token, TokenizeContext]} Event
  *   An event is the start or end of a token amongst other events.
  *   Tokens can “contain” other tokens, even though they are stored in a flat
- *   list, through `enter`ing before them, and exiting after them.
+ *   list, through `enter`ing before them, and `exit`ing after them.
  *
  * @callback Enter
  *   Open a token.

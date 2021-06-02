@@ -428,27 +428,24 @@ Each package maintained here is available in
 
 The naming scheme is as follows:
 
-```txt
-# A small CLI to build dev code into production code.
-micromark-build
+*   `micromark-build`
+    — A small CLI to build dev code into production code.
+*   `micromark-core-commonmark`
+    — The core CommonMark constructs used in micromark.
+*   `micromark-factory-*`
+    — Reusable subroutines used to parse parts of constructs.
+*   `micromark-util-*`
+    — Reusable helpers often needed when parsing markdown.
+*   `micromark`
+    — Core library itself
 
-# The core CommonMark constructs used in micromark.
-micromark-core-commonmark
-
-# Reusable subroutines used to parse parts of constructs.
-micromark-factory-*
-
-# Reusable helpers often needed when parsing markdown.
-micromark-util-*
-
-# Core library itself
-micromark
-```
-
-micromark has two interfaces: buffering and streaming.
-The first takes all input in one go whereas the last uses a Node.js stream to
-take input separately.
-These are thin wrappers around how data flows through micromark:
+micromark has two interfaces: buffering (maintained in
+[`micromark/dev/index.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/index.js))
+and streaming (maintained in
+[`micromark/dev/stream.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/stream.js)).
+The first takes all input at once whereas the last uses a Node.js stream to take
+input separately.
+They thinly wrap how data flows through micromark:
 
 ```txt
                                             micromark
@@ -461,7 +458,9 @@ These are thin wrappers around how data flows through micromark:
 
 ### Preprocess
 
-The **preprocessor** takes markdown and turns it into chunks.
+The **preprocessor**
+([`micromark/dev/lib/preprocess.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/lib/preprocess.js))
+takes markdown and turns it into chunks.
 
 A **chunk** is either a character code or a slice of a buffer in the form of a
 string.
@@ -487,11 +486,13 @@ The `null` code represents the end of the input stream (called eof).
 
 ### Parse
 
-The **parser** takes chunks and turns them into events.
+The **parser**
+([`micromark/dev/lib/parse.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/lib/parse.js))
+takes chunks and turns them into events.
 
 **Events** are the start or end of a token amongst other events.
 Tokens can “contain” other tokens, even though they are stored in a flat list,
-through `enter`ing before them, and exiting after them.
+by `enter`ing before and `exit`ing after them.
 
 A **token** is a span of chunks.
 Tokens are what the core of micromark produces: the built in HTML compiler or
@@ -518,8 +519,14 @@ Take for example:
 3.  The two spaces on the second line are a `linePrefix` of the list
 4.  The rest of the line is another `chunkFlow` token
 
-The two `chunkFlow` tokens are linked together.
-The chunks they span are then passed through the flow tokenizer.
+The two `chunkFlow` tokens are linked together and the chunks they span are
+passed through the flow tokenizer.
+There the chunks are seen as `chunkContent` and passed through the content
+tokenizer.
+There the chunks are seen as a paragraph and seen as `chunkText` and passed
+through the text tokenizer.
+Finally, the attention (emphasis) and data (“raw” characters) is parsed there,
+and we’re done!
 
 #### Content types
 
@@ -578,12 +585,16 @@ which sets up a state machine to handle character codes streaming in.
 
 ### Postprocess
 
-The **postprocessor** is a small step that takes events, ensures all their
+The **postprocessor**
+([`micromark/dev/lib/postprocess.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/lib/postprocess.js))
+is a small step that takes events, ensures all their
 nested content is parsed, and returns the modified events.
 
 ### Compile
 
-The **compiler** takes events and turns them into HTML.
+The **compiler**
+([`micromark/dev/lib/compile.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/lib/compile.js))
+takes events and turns them into HTML.
 While micromark is a lexer/tokenizer, the common case of going from markdown to
 HTML is currently built in as this module, even though the parts can be used
 separately to build ASTs, CSTs, or many other output formats.
