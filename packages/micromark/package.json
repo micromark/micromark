@@ -97,7 +97,6 @@
   "dependencies": {
     "@types/debug": "^4.0.0",
     "debug": "^4.0.0",
-    "parse-entities": "^3.0.0",
     "micromark-core-commonmark": "0.0.0",
     "micromark-factory-space": "0.0.0",
     "micromark-util-character": "0.0.0",
@@ -109,7 +108,8 @@
     "micromark-util-sanitize-uri": "0.0.0",
     "micromark-util-subtokenize": "0.0.0",
     "micromark-util-symbol": "0.0.0",
-    "micromark-util-types": "0.0.0"
+    "micromark-util-types": "0.0.0",
+    "parse-entities": "^3.0.0"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"

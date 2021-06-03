@@ -55,6 +55,7 @@ It’s in open beta: up next are [CMSM][] and CSTs.
     *   [`SyntaxExtension`](#syntaxextension)
     *   [`HtmlExtension`](#htmlextension)
     *   [Extending markdown](#extending-markdown)
+    *   [Creating a micromark extension](#creating-a-micromark-extension)
 *   [Architecture](#architecture)
     *   [Overview](#overview)
     *   [Preprocess](#preprocess)
@@ -412,9 +413,475 @@ follows:
     *   Defeating the purpose of markdown: being simple to author and looking
         like what it means
 
-    It’s also hard to do, as it requires integration with a parser
-    (`micromark`).
+    It’s also hard to do, as it requires integration with a parser.
     But it’s definitely possible and in certain cases very powerful.
+
+### Creating a micromark extension
+
+This section shows how to create a syntax extension for micromark that parses
+“variables” (a way to render some data), and one to turn a default construct
+off.
+The concepts here apply to the other possible syntax extensions as well.
+
+> Stuck?
+> See [`support.md`][support].
+
+#### Prerequisites
+
+*   You should possess an intermediate to high understanding of JavaScript:
+    it’s going to get a bit complex
+*   Read the readme of [unified](https://github.com/unifiedjs/unified)
+    (until you hit the API section) to better understand where micromark
+    fits
+*   Read the
+    [§ Architecture](https://github.com/micromark/micromark#architecture)
+    section to understand how micromark works
+*   Read the
+    [§ Extending markdown](https://github.com/micromark/micromark#extending-markdown)
+    section to understand whether it’s a good idea to extend the syntax of
+    markdown
+
+#### Extension basics
+
+Micromark supports two types of extensions.
+Syntax extensions change how markdown is parsed.
+HTML extensions change how it compiles.
+
+HTML extensions are often not used, because in most cases micromark is used
+through [`mdast-util-from-markdown`][from-markdown] to parse to a markdown
+syntax tree.
+Next to `from-markdown`, there is also [`mdast-util-to-markdown`][to-markdown],
+which is responsible for serializing syntax trees to markdown.
+
+When open sourcing your extension, it should probably contain four parts:
+syntax extension, HTML extension, `from-markdown` utility, and a `to-markdown`
+utility.
+When you’re developing something for internal use only, you can pick and choose
+which parts you need.
+
+Now you know the basics of extensions.
+On to our first case!
+
+#### Case: variables
+
+Before we start, let’s first outline what we want to make: render some data,
+similar to how Liquid and the like work, in our markdown.
+It could look like this:
+
+```markdown
+Hello, {planet}!
+```
+
+An opening curly brace, followed by one or more characters, and then a closing
+brace.
+We’ll then look up `planet` in some object and replace it, to get something like
+this:
+
+```html
+<p>Hello, Venus!</p>
+```
+
+It looks simple enough, but with markdown there are often a couple more things
+to think about.
+For this case, I can see the following:
+
+*   Is there a “block” version too?
+*   Are spaces allowed?
+    Line endings perhaps too?
+    Should initial and final spaces be ignored?
+*   What about “nested” braces?
+    Superfluous ones such as `{{planet}}` which are stripped, or meaningful
+    ones such as `{a {pla} net}`
+*   Are character escapes (`{pla\}net}`) and character references
+    (`{pla&#x7d;net}`) allowed?
+
+To keep things as simple as possible, we’ll not support a block syntax, see
+spaces as any other character, not support line endings, not support nested
+braces, but we *will* support character escapes and -references.
+
+Note that this particular case is solved quite nicely already as
+[`micromark-extension-mdx-expression`](https://github.com/micromark/micromark-extension-mdx-expression).
+It’s a bit more powerful and does some other things too, but can be used to
+solve this case and otherwise serve as inspiration.
+
+##### Setup
+
+Let’s get going!
+Create a new folder, enter it, and set up a new package:
+
+```sh
+mkdir example
+cd example
+npm init -y
+```
+
+In this example we’ll use ESM, so add `"type": "module"` to `package.json`:
+
+```diff
+@@ -2,6 +2,7 @@
+   "name": "example",
+   "version": "1.0.0",
+   "description": "",
++  "type": "module",
+   "main": "index.js",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1"
+```
+
+Add a markdown file, `example.md`, with the following text:
+
+```markdown
+Hello, {planet}!
+```
+
+To check if our extension works, add an `example.js` module, with the following
+code:
+
+```js
+import {promises as fs} from 'node:fs'
+import {micromark} from 'micromark'
+import {variables} from './index.js'
+
+main()
+
+async function main() {
+  const buf = await fs.readFile('example.md')
+  const out = micromark(buf, {extensions: [variables]})
+  console.log(out)
+}
+```
+
+While working on the extension, you can run `node example` to see whether things
+work.
+You can add some more examples of the variables syntax in `example.md` if need
+be.
+
+Our extension doesn’t work yet, for one because `micromark` is not installed:
+
+```sh
+npm install micromark --save-dev
+```
+
+…and we need to write our extension.
+Let’s do that in `index.js`:
+
+```js
+export const variables = {}
+```
+
+Although our extension doesn’t do anything, running `node example` now works!
+
+```sh
+node example
+```
+
+```html
+<p>Hello, {planet}!</p>
+```
+
+##### Syntax extension
+
+Much in micromark is based on character codes
+(see [§ Preprocess](https://github.com/micromark/micromark#preprocess)).
+For this extension, the relevant codes are:
+
+*   `-5`
+    — M-0005 CARRIAGE RETURN (CR)
+*   `-4`
+    — M-0004 LINE FEED (LF)
+*   `-3`
+    — M-0003 CARRIAGE RETURN LINE FEED (CRLF)
+*   `null`
+    — EOF (end of the stream)
+*   `92`
+    — U+005C BACKSLASH (`\`)
+*   `123`
+    — U+007B LEFT CURLY BRACE (`{`)
+*   `125`
+    — U+007D RIGHT CURLY BRACE (`}`)
+
+Also relevant are the content types
+(see [§ Content types](https://github.com/micromark/micromark#content-types)).
+This extension is a *text* construct, as it’s parsed alongsides links and such.
+The content inside it (between the braces) is *string*, to support character
+escapes and -references.
+
+So let’s write our extension.
+Add the following code to `index.js`:
+
+```js
+const variableConstruct = {name: 'variable', tokenize: variableTokenize}
+
+export const variables = {text: {123: variableConstruct}}
+
+function variableTokenize(effects, ok, nok) {
+  return start
+
+  function start(code) {
+    console.log('start:', effects, code);
+    return nok(code)
+  }
+}
+```
+
+It exports an extension with the identifier `variables`.
+The extension defines a *text* construct for the character code `123` (`{`).
+The construct has a `name`, so that it can be turned off, and it has a
+`tokenize` function that sets up a state machine, which receives `effects`,
+and the `ok` and `nok` states.
+`ok` can be used when successful, `nok` when not, and so constructs are a bit
+similar to how promises can *resolve* or *reject*.
+`tokenize` returns the initial state, `start`, which itself receives the current
+character code, prints some debugging information, and then returns a call
+to `nok`.
+
+Ensure that things work by running `node example` and see what it prints.
+
+So now we need to define our states and figure out how variables work.
+Some people enjoy sketching a diagram of the flow.
+I often prefer writing it down in pseudo-code prose.
+I’ve also found that test driven development works well too, where I write unit
+tests for how it should work, then write the state machine, and finally use a
+code coverage tool to ensure I’ve thought of everything.
+
+Let’s briefly walk through the flow in prose:
+
+*   **start**:
+    Receive `123` as `code`, enter a token for the whole (let’s call it
+    `variable`), enter a token for the marker (`variableMarker`), consume
+    `code`, exit the marker token, enter a token for the contents
+    (`variableString`), switch to *begin*
+*   **begin**:
+    If `code` is `125`, reconsume in *nok*.
+    Else, reconsume in *inside*
+*   **inside**:
+    If `code` is `-5`, `-4`, `-3`, or `null`, reconsume in `nok`.
+    Else, if `code` is `125`, exit the string token, enter a `variableMarker`,
+    consume `code`, exit the marker token, exit the variable token, and switch
+    to *ok*.
+    Else, consume, and switch to *inside*.
+
+That should be it!
+In code, these states look like this:
+
+```js
+function start(code) {
+  effects.enter('variable')
+  effects.enter('variableMarker')
+  effects.consume(code)
+  effects.exit('variableMarker')
+  effects.enter('variableString')
+  return begin
+}
+
+function begin(code) {
+  return code === 125 ? nok(code) : inside(code)
+}
+
+function inside(code) {
+  if (code === -5 || code === -4 || code === -3 || code === null) {
+    return nok(code)
+  }
+
+  if (code === 125) {
+    effects.exit('variableString')
+    effects.enter('variableMarker')
+    effects.consume(code)
+    effects.exit('variableMarker')
+    effects.exit('variable')
+    return ok
+  }
+
+  effects.consume(code)
+  return inside
+}
+```
+
+Remove the existing `start` function, used to debug our previous step, with
+the above three states.
+Running `node example` now prints.
+
+```html
+<p>Hello, !</p>
+```
+
+The HTML compiler ignores things it doesn’t know, so the variable is removed.
+
+We have our first syntax extension, and it sort of works, but we don’t handle
+character escapes and -references yet.
+We need to do two things to make it work:
+a) skip over `\\` and `\}` in our algorithm,
+b) tell micromark to parse them.
+
+Replace `example.md` with the following to test these:
+
+```markdown
+Hello, {planet}!
+
+{pla\}net} and {pla&#x7d;net}.
+```
+
+Then change `inside` in `index.js` to support escapes like so:
+
+```diff
+@@ -23,6 +23,11 @@ function variableTokenize(effects, ok, nok) {
+       return nok(code)
+     }
+
++    if (code === 92) {
++      effects.consume(code)
++      return insideEscape
++    }
++
+     if (code === 125) {
+       effects.exit('variableString')
+       effects.enter('variableMarker')
+@@ -35,4 +40,13 @@ function variableTokenize(effects, ok, nok) {
+     effects.consume(code)
+     return inside
+   }
++
++  function insideEscape(code) {
++    if (code === 92 || code === 125) {
++      effects.consume(code)
++      return inside
++    }
++
++    return inside(code)
++  }
+ }
+```
+
+Finally add support for character references and character escapes between
+braces by adding a special token that defines a content type:
+
+```diff
+@@ -11,6 +11,7 @@ function variableTokenize(effects, ok, nok) {
+     effects.consume(code)
+     effects.exit('variableMarker')
+     effects.enter('variableString')
++    effects.enter('chunkString', {contentType: 'string'})
+     return begin
+   }
+
+@@ -29,6 +30,7 @@ function variableTokenize(effects, ok, nok) {
+     }
+
+     if (code === 125) {
++      effects.exit('chunkString')
+       effects.exit('variableString')
+       effects.enter('variableMarker')
+       effects.consume(code)
+```
+
+Tokens with a `contentType` will be removed by *postprocess* (see
+[§ Postprocess](https://github.com/micromark/micromark#postprocess)) and
+replaced by the tokens belonging to that content type.
+
+##### HTML extension
+
+Up next is an HTML extension to replace variables with data.
+Change `example.js` to use one like so:
+
+```diff
+@@ -1,11 +1,12 @@
+ import {promises as fs} from 'node:fs'
+ import {micromark} from 'micromark'
+-import {variables} from './index.js'
++import {variables, variablesHtml} from './index.js'
+
+ main()
+
+ async function main() {
+   const buf = await fs.readFile('example.md')
+-  const out = micromark(buf, {extensions: [variables]})
++  const html = variablesHtml({planet: '1', 'pla}net': '2'})
++  const out = micromark(buf, {extensions: [variables], htmlExtensions: [html]})
+   console.log(out)
+ }
+```
+
+And set up `variablesHtml` in `index.js` like so:
+
+```diff
+@@ -52,3 +52,19 @@ function variableTokenize(effects, ok, nok) {
+     return inside(code)
+   }
+ }
++
++export function variablesHtml(data = {}) {
++  return {
++    enter: {variableString: enterVariableString},
++    exit: {variableString: exitVariableString},
++  }
++
++  function enterVariableString() {
++    this.buffer()
++  }
++
++  function exitVariableString() {
++    var id = this.resume()
++    if (id in data) {
++      this.raw(this.encode(data[id]))
++    }
++  }
++}
+```
+
+`variablesHtml` is a function that receives an object mapping “variables” to
+`string`s and returns an HTML extension.
+The extension hooks two functions to `variableString`, one when it starts,
+the other when it ends.
+We don’t need to do anything for this case to handle the other tokens, as
+they’re already ignored.
+`enterVariableString` calls `buffer`, which is a function to “stash” what would
+otherwise be output.
+`exitVariableString` calls `resume`, which is the inverse of `buffer` and
+returns the stashed value.
+If the variable is defined, we ensure it’s made safe (with `this.encode`), and
+finally output that (with `this.raw`).
+
+##### Further exercises
+
+It works, we’re done!
+Of course, it can be better, such as with the following potential features:
+
+*   Add support for empty variables
+*   Add support for spaces between markers and string
+*   Add support for line endings in variables
+*   Add support for nested braces
+*   Add support for blocks
+*   Add warnings on undefined variables
+*   Use `micromark-build` with `micromark-util-symbol`, `assert`, and `debug`
+    (see [§ Size & debug](https://github.com/micromark/micromark#size--debug))
+*   Add [`mdast-util-from-markdown`][from-markdown] and
+    [`mdast-util-to-markdown`][to-markdown] utilities to parse and serialize the
+    AST
+
+#### Case: turn off constructs
+
+Sometimes it’s needed to turn a default construct off.
+That’s possible through a syntax extension.
+Note that not everything can be turned off (such as paragraphs), and even if
+it’s possible to turn something off, it could break micromark (such as character
+escapes).
+
+To disable constructs, refer to them by name in an array at the `disable.null`
+field of an extension:
+
+```js
+import {micromark} from 'micromark'
+
+const extension = {disable: {null: ['codeIndented']}}
+
+console.log(micromark('\ta', {extensions: [extension]}))
+```
+
+Yields:
+
+```html
+<p>a</p>
+```
 
 ## Architecture
 
@@ -476,8 +943,8 @@ characters, depending on the column at which the tab occurred.
 
 The characters U+000A LINE FEED (LF) and U+000D CARRIAGE RETURN (CR) are
 replaced by virtual characters depending on whether they occur together: M-0003
-CARRIAGE RETURN LINE FEED (CRLF), M-0004 LINE FEED (LF), and M-0005 LINE FEED
-(CR).
+CARRIAGE RETURN LINE FEED (CRLF), M-0004 LINE FEED (LF), and M-0005 CARRIAGE
+RETURN (CR).
 
 The `0` (U+0000 NUL) character code is replaced by U+FFFD REPLACEMENT CHARACTER
 (`�`).
@@ -1025,6 +1492,8 @@ It was great.
 [mdx-cmsm]: https://github.com/micromark/mdx-state-machine
 
 [from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
+
+[to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
 [directives]: https://github.com/micromark/micromark-extension-directive
 
