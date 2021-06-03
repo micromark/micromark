@@ -284,7 +284,7 @@ The alternatives are often better.
 
 Over the years, many micromark and remark users have asked about their unique
 goals for markdown.
-These goals are limitless, but some exemplary ones are:
+Some exemplary goals are:
 
 1.  I want to add `rel="nofollow"` to external links
 2.  I want to add links from headings to themselves
@@ -296,12 +296,11 @@ These goals are limitless, but some exemplary ones are:
 7.  I want to combine markdown with JS(X)
 8.  I want to support our legacy flavor of markdown-like syntax
 
-These goals can be solved in different ways of course, and which solution is
-the best is both subjective and dependant on unique needs.
+These can be solved in different ways and which solution is best is both
+subjective and dependant on unique needs.
 Often, there is already a solution in the form of an existing remark or rehype
 plugin.
-
-Respectively, the goals can be solved with:
+Respectively, their solutions are:
 
 1.  [`remark-external-links`](https://github.com/remarkjs/remark-external-links)
 2.  [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
@@ -319,33 +318,30 @@ Respectively, the goals can be solved with:
     [`xdm`](https://github.com/wooorm/xdm)
 8.  Writing a micromark extension
 
-Looking at the solutions from a higher level, they can be categorized as
-follows:
+Looking at these from a higher level, they can be categorized:
 
-*   Changing the output by transforming syntax trees
+*   **Changing the output by transforming syntax trees**
     (1 and 2)
 
-    This solution is nice because the input format remains plain markdown that
-    authors are familiar with and which will work with existing tools and
-    platforms.
+    This category is nice as the format remains plain markdown that authors are
+    already familiar with and which will work with existing tools and platforms.
 
-    Implementations of this solution category will deal with the syntax tree
-    ([`mdast`](https://github.com/syntax-tree/mdast)), and the ecosystems
+    Implementations will deal with the syntax tree
+    ([`mdast`](https://github.com/syntax-tree/mdast)) and the ecosystems
     **[remark][]** and **[rehype][]**.
-
     There are many existing
     [utilities for working with that tree](https://github.com/syntax-tree/mdast#list-of-utilities).
     Many
     [remark plugins](https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins)
     and
     [rehype plugins](https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins)
-    also already exist.
-*   Using and abusing markdown to add new meaning
+    also exist.
+*   **Using and abusing markdown to add new meaning**
     (3, 4, potentially 5)
 
     This category is similar to *Changing the output by transforming syntax
-    trees*, but adds a new meaning to certain things which already have a
-    meaning in markdown.
+    trees*, but adds a new meaning to certain things which already have
+    semantics in markdown.
 
     Some examples in pseudo code:
 
@@ -368,60 +364,55 @@ follows:
 
     HTML, especially comments, could be used as **markers**<!--id="markers"-->
     ````
-*   Arbitrary extension mechanism
+*   **Arbitrary extension mechanism**
     (potentially 5; 6)
 
-    This solution is nice in certain cases where content should contain embedded
-    “components”.
-    Often this means authors will have some programming experience.
+    This category is nice when content should contain embedded “components”.
+    Often this means it’s required for authors to have some programming
+    experience.
     There are three good ways to solve arbitrary extensions.
 
     **HTML**: Markdown already has an arbitrary extension syntax.
-    It works in most places that support markdown and many authors are familiar
-    with the syntax, but it’s reasonably hard to implement securely.
-    Certain platforms will remove HTML completely, yet others sanitize it to
-    varying degrees.
+    It works in most places and authors are already familiar with the syntax,
+    but it’s reasonably hard to implement securely.
+    Certain platforms will remove HTML completely, others sanitize it to varying
+    degrees.
+    HTML also supports custom elements.
+    These could be used and enhanced by client side JavaScript or enhanced when
+    transforming the syntax tree.
 
-    HTML also has support for custom elements.
-    These could be used and enhanced by client side JavaScript or they
-    could be enhanced when transforming the syntax tree.
-
-    **Generic directives**: although just
+    **Generic directives**: although
     [a proposal](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444)
-    and thus semistandard, and not supported on most platforms, directives do
-    work with many tools already.
+    and not supported on most platforms, directives do work with many tools
+    already.
+    They’re not the easiest to author compared to, say, a heading, but sometimes
+    that’s okay.
+    They do have potential: they nicely solve the need for an infinite number of
+    potential extensions to markdown in a single markdown-esque way.
 
-    They are not the easiest to author compared to, say, a heading, but
-    sometimes that’s okay.
-    On the other hand, they have a lot of potential: they nicely solve the need
-    for an infinite number of potential extensions to markdown in a single
-    markdown-esque way.
-
-    **MDX** also adds support for components, by swapping HTML out for JS(X).
-    JSX is an extension to JavaScript that looks like HTML but makes it
-    convenient to use components (reusable things).
-    MDX is thus something along the lines of literate programming, and hence
-    requires knowledge of React and JavaScript, making it hard to author for
-    some folks.
-*   Extending markdown syntax
+    **MDX** also adds support for components by swapping HTML out for JS(X).
+    JSX is an extension to JavaScript, so MDX is something along the lines of
+    literate programming.
+    This does require knowledge of React (or Vue) and JavaScript, excluding some
+    authors.
+*   **Extending markdown syntax**
     (7 and 8)
 
-    You probably **should not** extend the syntax of markdown, as that means:
+    Extend the syntax of markdown means:
 
     *   Authors won’t be familiar with the syntax
     *   Content won’t work in other places (such as on GitHub)
     *   Defeating the purpose of markdown: being simple to author and looking
         like what it means
 
-    It’s also hard to do, as it requires integration with a parser.
-    But it’s definitely possible and in certain cases very powerful.
+    …and it’s hard to do as it requires some in-depth knowledge of JavaScript
+    and parsing.
+    But it’s possible and in certain cases very powerful.
 
 ### Creating a micromark extension
 
 This section shows how to create a syntax extension for micromark that parses
-“variables” (a way to render some data), and one to turn a default construct
-off.
-The concepts here apply to the other possible syntax extensions as well.
+“variables” (a way to render some data) and one to turn a default construct off.
 
 > Stuck?
 > See [`support.md`][support].
@@ -447,11 +438,11 @@ Micromark supports two types of extensions.
 Syntax extensions change how markdown is parsed.
 HTML extensions change how it compiles.
 
-HTML extensions are often not used, because in most cases micromark is used
-through [`mdast-util-from-markdown`][from-markdown] to parse to a markdown
-syntax tree.
-Next to `from-markdown`, there is also [`mdast-util-to-markdown`][to-markdown],
-which is responsible for serializing syntax trees to markdown.
+HTML extensions are not always needed, because micromark is often used through
+[`mdast-util-from-markdown`][from-markdown] to parse to a markdown syntax tree.
+so instead, a `from-markdown` utility is needed.
+And a [`mdast-util-to-markdown`][to-markdown] utility, which is responsible for
+serializing syntax trees to markdown.
 
 When open sourcing your extension, it should probably contain four parts:
 syntax extension, HTML extension, `from-markdown` utility, and a `to-markdown`
@@ -459,27 +450,28 @@ utility.
 When you’re developing something for internal use only, you can pick and choose
 which parts you need.
 
-Now you know the basics of extensions.
 On to our first case!
 
 #### Case: variables
 
-Before we start, let’s first outline what we want to make: render some data,
-similar to how Liquid and the like work, in our markdown.
+Let’s first outline what we want to make: render some data, similar to how
+Liquid and the like work, in our markdown.
 It could look like this:
 
 ```markdown
 Hello, {planet}!
 ```
 
-An opening curly brace, followed by one or more characters, and then a closing
-brace.
-We’ll then look up `planet` in some object and replace it, to get something like
-this:
+Turned into:
 
 ```html
 <p>Hello, Venus!</p>
 ```
+
+An opening curly brace, followed by one or more characters, and then a closing
+brace.
+We’ll then look up `planet` in some object and replace it, to get something
+`Venus` out.
 
 It looks simple enough, but with markdown there are often a couple more things
 to think about.
@@ -487,26 +479,26 @@ For this case, I can see the following:
 
 *   Is there a “block” version too?
 *   Are spaces allowed?
-    Line endings perhaps too?
-    Should initial and final spaces be ignored?
-*   What about “nested” braces?
-    Superfluous ones such as `{{planet}}` which are stripped, or meaningful
-    ones such as `{a {pla} net}`
-*   Are character escapes (`{pla\}net}`) and character references
-    (`{pla&#x7d;net}`) allowed?
+    Line endings?
+    Should initial and final white space be ignored?
+*   Balanced bested braces?
+    Superfluous ones such as `{{planet}}` or meaningful ones such as
+    `{a {pla} net}`?
+*   Character escapes (`{pla\}net}`) and character references
+    (`{pla&#x7d;net}`)?
 
-To keep things as simple as possible, we’ll not support a block syntax, see
-spaces as any other character, not support line endings, not support nested
-braces, but we *will* support character escapes and -references.
+To keep things as simple as possible, let’s not support a block syntax, see
+spaces as special, support line endings, or support nested braces.
+But to learn interesting things, we *will* support character escapes and
+\-references.
 
-Note that this particular case is solved quite nicely already as
+Note that this particular case is already solved quite nicely by
 [`micromark-extension-mdx-expression`](https://github.com/micromark/micromark-extension-mdx-expression).
-It’s a bit more powerful and does some other things too, but can be used to
-solve this case and otherwise serve as inspiration.
+It’s a bit more powerful and does more things, but it can be used to solve this
+case and otherwise serve as inspiration.
 
 ##### Setup
 
-Let’s get going!
 Create a new folder, enter it, and set up a new package:
 
 ```sh
@@ -515,7 +507,7 @@ cd example
 npm init -y
 ```
 
-In this example we’ll use ESM, so add `"type": "module"` to `package.json`:
+In this example we’ll use ESM, so add `type: 'module'` to `package.json`:
 
 ```diff
 @@ -2,6 +2,7 @@
@@ -532,6 +524,8 @@ Add a markdown file, `example.md`, with the following text:
 
 ```markdown
 Hello, {planet}!
+
+{pla\}net} and {pla&#x7d;net}.
 ```
 
 To check if our extension works, add an `example.js` module, with the following
@@ -551,10 +545,9 @@ async function main() {
 }
 ```
 
-While working on the extension, you can run `node example` to see whether things
-work.
-You can add some more examples of the variables syntax in `example.md` if need
-be.
+While working on the extension, run `node example` to see whether things work.
+Feel free to add more examples of the variables syntax in `example.md` if
+needed.
 
 Our extension doesn’t work yet, for one because `micromark` is not installed:
 
@@ -569,15 +562,8 @@ Let’s do that in `index.js`:
 export const variables = {}
 ```
 
-Although our extension doesn’t do anything, running `node example` now works!
-
-```sh
-node example
-```
-
-```html
-<p>Hello, {planet}!</p>
-```
+Although our extension doesn’t do anything, running `node example` now somewhat
+works!
 
 ##### Syntax extension
 
@@ -606,7 +592,7 @@ This extension is a *text* construct, as it’s parsed alongsides links and such
 The content inside it (between the braces) is *string*, to support character
 escapes and -references.
 
-So let’s write our extension.
+Let’s write our extension.
 Add the following code to `index.js`:
 
 ```js
@@ -624,11 +610,11 @@ function variableTokenize(effects, ok, nok) {
 }
 ```
 
-It exports an extension with the identifier `variables`.
-The extension defines a *text* construct for the character code `123` (`{`).
-The construct has a `name`, so that it can be turned off, and it has a
-`tokenize` function that sets up a state machine, which receives `effects`,
-and the `ok` and `nok` states.
+The above code exports an extension with the identifier `variables`.
+The extension defines a *text* construct for the character code `123`.
+The construct has a `name`, so that it can be turned off (optional, see next
+case), and it has a `tokenize` function that sets up a state machine, which
+receives `effects` and the `ok` and `nok` states.
 `ok` can be used when successful, `nok` when not, and so constructs are a bit
 similar to how promises can *resolve* or *reject*.
 `tokenize` returns the initial state, `start`, which itself receives the current
@@ -637,14 +623,14 @@ to `nok`.
 
 Ensure that things work by running `node example` and see what it prints.
 
-So now we need to define our states and figure out how variables work.
-Some people enjoy sketching a diagram of the flow.
+Now we need to define our states and figure out how variables work.
+Some people prefer sketching a diagram of the flow.
 I often prefer writing it down in pseudo-code prose.
 I’ve also found that test driven development works well too, where I write unit
 tests for how it should work, then write the state machine, and finally use a
 code coverage tool to ensure I’ve thought of everything.
 
-Let’s briefly walk through the flow in prose:
+In prose, what we have to code looks like this:
 
 *   **start**:
     Receive `123` as `code`, enter a token for the whole (let’s call it
@@ -659,69 +645,58 @@ Let’s briefly walk through the flow in prose:
     Else, if `code` is `125`, exit the string token, enter a `variableMarker`,
     consume `code`, exit the marker token, exit the variable token, and switch
     to *ok*.
-    Else, consume, and switch to *inside*.
+    Else, consume, and remain in *inside*.
 
 That should be it!
-In code, these states look like this:
+Replace `variableTokenize` with the following to include the needed states:
 
 ```js
-function start(code) {
-  effects.enter('variable')
-  effects.enter('variableMarker')
-  effects.consume(code)
-  effects.exit('variableMarker')
-  effects.enter('variableString')
-  return begin
-}
+function variableTokenize(effects, ok, nok) {
+  return start
 
-function begin(code) {
-  return code === 125 ? nok(code) : inside(code)
-}
-
-function inside(code) {
-  if (code === -5 || code === -4 || code === -3 || code === null) {
-    return nok(code)
-  }
-
-  if (code === 125) {
-    effects.exit('variableString')
+  function start(code) {
+    effects.enter('variable')
     effects.enter('variableMarker')
     effects.consume(code)
     effects.exit('variableMarker')
-    effects.exit('variable')
-    return ok
+    effects.enter('variableString')
+    return begin
   }
 
-  effects.consume(code)
-  return inside
+  function begin(code) {
+    return code === 125 ? nok(code) : inside(code)
+  }
+
+  function inside(code) {
+    if (code === -5 || code === -4 || code === -3 || code === null) {
+      return nok(code)
+    }
+
+    if (code === 125) {
+      effects.exit('variableString')
+      effects.enter('variableMarker')
+      effects.consume(code)
+      effects.exit('variableMarker')
+      effects.exit('variable')
+      return ok
+    }
+
+    effects.consume(code)
+    return inside
+  }
 }
 ```
 
-Remove the existing `start` function, used to debug our previous step, with
-the above three states.
-Running `node example` now prints.
-
-```html
-<p>Hello, !</p>
-```
-
-The HTML compiler ignores things it doesn’t know, so the variable is removed.
+Run `node example` again and see what it prints!
+The HTML compiler ignores things it doesn’t know, so variables are now removed.
 
 We have our first syntax extension, and it sort of works, but we don’t handle
 character escapes and -references yet.
-We need to do two things to make it work:
+We need to do two things to make that work:
 a) skip over `\\` and `\}` in our algorithm,
 b) tell micromark to parse them.
 
-Replace `example.md` with the following to test these:
-
-```markdown
-Hello, {planet}!
-
-{pla\}net} and {pla&#x7d;net}.
-```
-
-Then change `inside` in `index.js` to support escapes like so:
+Change the code in `index.js` to support escapes like so:
 
 ```diff
 @@ -23,6 +23,11 @@ function variableTokenize(effects, ok, nok) {
@@ -774,9 +749,9 @@ braces by adding a special token that defines a content type:
        effects.consume(code)
 ```
 
-Tokens with a `contentType` will be removed by *postprocess* (see
-[§ Postprocess](https://github.com/micromark/micromark#postprocess)) and
-replaced by the tokens belonging to that content type.
+Tokens with a `contentType` will be replaced by *postprocess* (see
+[§ Postprocess](https://github.com/micromark/micromark#postprocess)) by the
+tokens belonging to that content type.
 
 ##### HTML extension
 
@@ -801,7 +776,7 @@ Change `example.js` to use one like so:
  }
 ```
 
-And set up `variablesHtml` in `index.js` like so:
+And add the HTML extension, `variablesHtml`, to `index.js` like so:
 
 ```diff
 @@ -52,3 +52,19 @@ function variableTokenize(effects, ok, nok) {
@@ -829,21 +804,22 @@ And set up `variablesHtml` in `index.js` like so:
 ```
 
 `variablesHtml` is a function that receives an object mapping “variables” to
-`string`s and returns an HTML extension.
+strings and returns an HTML extension.
 The extension hooks two functions to `variableString`, one when it starts,
 the other when it ends.
-We don’t need to do anything for this case to handle the other tokens, as
-they’re already ignored.
-`enterVariableString` calls `buffer`, which is a function to “stash” what would
-otherwise be output.
+We don’t need to do anything to handle the other tokens as they’re already
+ignored by default.
+`enterVariableString` calls `buffer`, which is a function that “stashes” what
+would otherwise be emitted.
 `exitVariableString` calls `resume`, which is the inverse of `buffer` and
 returns the stashed value.
-If the variable is defined, we ensure it’s made safe (with `this.encode`), and
+If the variable is defined, we ensure it’s made safe (with `this.encode`) and
 finally output that (with `this.raw`).
 
 ##### Further exercises
 
-It works, we’re done!
+It works!
+We’re done!
 Of course, it can be better, such as with the following potential features:
 
 *   Add support for empty variables
@@ -852,8 +828,8 @@ Of course, it can be better, such as with the following potential features:
 *   Add support for nested braces
 *   Add support for blocks
 *   Add warnings on undefined variables
-*   Use `micromark-build` with `micromark-util-symbol`, `assert`, and `debug`
-    (see [§ Size & debug](https://github.com/micromark/micromark#size--debug))
+*   Use `micromark-build`, and use `assert`, `debug`, and
+    `micromark-util-symbol` (see [§ Size & debug](https://github.com/micromark/micromark#size--debug))
 *   Add [`mdast-util-from-markdown`][from-markdown] and
     [`mdast-util-to-markdown`][to-markdown] utilities to parse and serialize the
     AST
@@ -862,8 +838,8 @@ Of course, it can be better, such as with the following potential features:
 
 Sometimes it’s needed to turn a default construct off.
 That’s possible through a syntax extension.
-Note that not everything can be turned off (such as paragraphs), and even if
-it’s possible to turn something off, it could break micromark (such as character
+Note that not everything can be turned off (such as paragraphs) and even if it’s
+possible to turn something off, it could break micromark (such as character
 escapes).
 
 To disable constructs, refer to them by name in an array at the `disable.null`
