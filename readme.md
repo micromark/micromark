@@ -17,12 +17,21 @@
 The smallest CommonMark compliant markdown parser with positional info and
 concrete tokens.
 
+## Feature highlights
+
 *   [x] **[compliant][commonmark]** (100% to CommonMark)
 *   [x] **[extensions][]** ([GFM][], [directives][], [footnotes][],
     [frontmatter][], [math][], [MDX.js][mdxjs])
 *   [x] **[safe][security]** (by default)
 *   [x] **[small][size]** (smallest CM parser that exists)
 *   [x] **[robust][test]** (1800+ tests, 100% coverage, fuzz testing)
+
+## When to use this
+
+*   If you *just* want to turn markdown into HTML
+*   If you want to do *really complex things* with markdown
+
+See [Comparison »][comparison] for more info
 
 ## Intro
 
@@ -35,7 +44,6 @@ It was made to replace the internals of [`remark-parse`][remark-parse], the most
 Its API compiles to HTML, but its parts are made to be used separately, so as to
 generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or compile
 to other output formats.
-It’s in open beta: up next are [CMSM][] and CSTs.
 
 *   to learn markdown, see this [cheatsheet and tutorial][cheat]
 *   for updates, see [Twitter][]
@@ -62,18 +70,24 @@ It’s in open beta: up next are [CMSM][] and CSTs.
     *   [Parse](#parse)
     *   [Postprocess](#postprocess)
     *   [Compile](#compile)
-*   [Syntax tree](#syntax-tree)
-*   [CommonMark](#commonmark)
-*   [Grammar](#grammar)
-*   [Test](#test)
-*   [Size & debug](#size--debug)
-*   [Comparison](#comparison)
-*   [Version](#version)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [Sponsor](#sponsor)
-*   [Origin story](#origin-story)
-*   [License](#license)
+*   [Examples](#examples)
+    *   [GitHub flavored markdown (GFM)](#github-flavored-markdown-gfm)
+    *   [Math](#math)
+    *   [Footnotes](#footnotes)
+    *   [Syntax tree](#syntax-tree)
+*   [Markdown](#markdown)
+    *   [CommonMark](#commonmark)
+    *   [Grammar](#grammar)
+*   [Project](#project)
+    *   [Comparison](#comparison)
+    *   [Test](#test)
+    *   [Size & debug](#size--debug)
+    *   [Version](#version)
+    *   [Security](#security)
+    *   [Contribute](#contribute)
+    *   [Sponsor](#sponsor)
+    *   [Origin story](#origin-story)
+    *   [License](#license)
 
 ## Install
 
@@ -1050,7 +1064,194 @@ The compiler has an interface that accepts lists of events instead of the whole
 at once, however, because markdown can’t be truly streaming, events are buffered
 before compiling and outputting the final result.
 
-## Syntax tree
+## Examples
+
+### GitHub flavored markdown (GFM)
+
+To support GFM (autolink literals, strikethrough, tables, and tasklists) use
+[`micromark-extension-gfm`][gfm].
+Say we have a file like this:
+
+```markdown
+# GFM
+
+## Autolink literals
+
+www.example.com, https://example.com, and contact@example.com.
+
+## Strikethrough
+
+~one~ or ~~two~~ tildes.
+
+## Table
+
+| a | b  |  c |  d  |
+| - | :- | -: | :-: |
+
+## Tasklist
+
+* [ ] to do
+* [x] done
+```
+
+Then do something like this:
+
+```js
+import fs from 'node:fs'
+import {micromark} from 'micromark'
+import gfm from 'micromark-extension-gfm'
+import gfmHtml from 'micromark-extension-gfm/html.js'
+
+const doc = fs.readFileSync('example.md')
+
+console.log(micromark(doc, {extensions: [gfm()], htmlExtensions: [gfmHtml]}))
+```
+
+<details>
+<summary>Show equivalent HTML</summary>
+
+```html
+<h1>GFM</h1>
+<h2>Autolink literals</h2>
+<p><a href="http://www.example.com">www.example.com</a>, <a href="https://example.com">https://example.com</a>, and <a href="mailto:contact@example.com">contact@example.com</a>.</p>
+<h2>Strikethrough</h2>
+<p><del>one</del> or <del>two</del> tildes.</p>
+<h2>Table</h2>
+<table>
+<thead>
+<tr>
+<th>a</th>
+<th align="left">b</th>
+<th align="right">c</th>
+<th align="center">d</th>
+</tr>
+</thead>
+</table>
+<h2>Tasklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> to do</li>
+<li><input checked="" disabled="" type="checkbox"> done</li>
+</ul>
+```
+
+</details>
+
+### Math
+
+To support math use [`micromark-extension-math`][math].
+Say we have a file like this:
+
+```markdown
+Lift($L$) can be determined by Lift Coefficient ($C_L$) like the following equation.
+
+$$
+L = \frac{1}{2} \rho v^2 S C_L
+$$
+```
+
+Then do something like this:
+
+```js
+import fs from 'node:fs'
+import {micromark} from 'micromark'
+import math from 'micromark-extension-math'
+import mathHtml from 'micromark-extension-math/html.js'
+
+const doc = fs.readFileSync('example.md')
+
+console.log(micromark(doc, {extensions: [math], htmlExtensions: [mathHtml()]}))
+```
+
+<details>
+<summary>Show equivalent HTML</summary>
+
+```html
+<p>Lift(<span class="math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient (<span class="math math-inline"><span class="katex">…</span></span>) like the following equation.</p>
+<div class="math math-display"><span class="katex-display"><span class="katex">…</span></span></div>
+```
+
+</details>
+
+### Footnotes
+
+To support footnotes use [`micromark-extension-footnote`][footnotes].
+Say we have a file like this:
+
+```markdown
+Here is a footnote call,[^1] and another.[^longnote]
+
+[^1]: Here is the footnote.
+
+[^longnote]: Here’s one with multiple blocks.
+
+    Subsequent paragraphs are indented to show that they
+belong to the previous footnote.
+
+        { some.code }
+
+    The whole paragraph can be indented, or just the first
+    line.  In this way, multi-paragraph footnotes work like
+    multi-paragraph list items.
+
+This paragraph won’t be part of the note, because it
+isn’t indented.
+
+Here is an inline note.^[Inlines notes are easier to write, since
+you don’t have to pick an identifier and move down to type the
+note.]
+```
+
+Then do something like this:
+
+```js
+import fs from 'node:fs'
+import {micromark} from 'micromark'
+import footnote from 'micromark-extension-footnote'
+import footnoteHtml from 'micromark-extension-footnote/html.js'
+
+const doc = fs.readFileSync('example.md')
+
+console.log(
+  micromark(doc, {extensions: [footnote], htmlExtensions: [footnoteHtml()]})
+)
+```
+
+<details>
+<summary>Show equivalent HTML</summary>
+
+```html
+<p>Here is a footnote call,<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and another.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>This paragraph won’t be part of the note, because it
+isn’t indented.</p>
+<p>Here is an inline note.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1">
+<p>Here is the footnote.<a href="#fnref1" class="footnote-back">↩︎</a></p>
+</li>
+<li id="fn2">
+<p>Here’s one with multiple blocks.</p>
+<p>Subsequent paragraphs are indented to show that they
+belong to the previous footnote.</p>
+<pre><code>{ some.code }
+</code></pre>
+<p>The whole paragraph can be indented, or just the first
+line.  In this way, multi-paragraph footnotes work like
+multi-paragraph list items.<a href="#fnref2" class="footnote-back">↩︎</a></p>
+</li>
+<li id="fn3">
+<p>Inlines notes are easier to write, since
+you don’t have to pick an identifier and move down to type the
+note.<a href="#fnref3" class="footnote-back">↩︎</a></p>
+</li>
+</ol>
+</div>
+```
+
+</details>
+
+### Syntax tree
 
 A higher level project, [`mdast-util-from-markdown`][from-markdown], can give
 you an AST.
@@ -1084,7 +1285,9 @@ Yields:
 Another level up is [**remark**][remark], which provides a nice interface and
 hundreds of plugins.
 
-## CommonMark
+## Markdown
+
+### CommonMark
 
 The first definition of “Markdown” gave several examples of how it worked,
 showing input Markdown and output HTML, and came with a reference implementation
@@ -1107,7 +1310,7 @@ CommonMark reference parsers.
 Finally, it comes with [CMSM][], which describes how to parse markup, instead
 of documenting input and output examples.
 
-## Grammar
+### Grammar
 
 The syntax of markdown can be described in Backus–Naur form (BNF) as:
 
@@ -1118,46 +1321,9 @@ markdown = .*
 No, that’s [not a typo](http://trevorjim.com/a-specification-for-markdown/):
 markdown has no syntax errors; anything thrown at it renders *something*.
 
-## Test
+## Project
 
-micromark is tested with the \~650 CommonMark tests and more than 1.2k extra
-tests confirmed with CM reference parsers.
-These tests reach all branches in the code, thus this project has 100% coverage.
-Finally, we use fuzz testing to ensure micromark is stable, reliable, and
-secure.
-
-To build, format, and test the codebase, use `$ npm test` after clone and
-install.
-The `$ npm run test-api` and `$ npm run test-coverage` scripts check the unit
-tests and their coverage, respectively.
-
-The `$ npm run test-fuzz` script does fuzz testing for 15 minutes.
-The timeout is provided by GNU coreutils **timeout(1)**, which might not be
-available on your system.
-Either install it or remove it from the script.
-
-## Size & debug
-
-micromark is really small.
-A ton of time went into making sure it minifies well, by the way code is written
-but also through custom build scripts to pre-evaluate certain expressions.
-Furthermore, care went into making it compress well with gzip and brotli.
-
-Normally, you’ll use the pre-evaluated version of micromark.
-While developing, debugging, or testing your code, you can switch to use code
-instrumented with assertions and debug messages:
-
-```sh
-node --conditions development module.js
-```
-
-To see debug messages, use a `DEBUG` env variable set to `micromark`:
-
-```sh
-DEBUG="*" node --conditions development module.js
-```
-
-## Comparison
+### Comparison
 
 There are many other markdown parsers out there and maybe they’re better suited
 to your use case!
@@ -1231,14 +1397,53 @@ This list of markdown parsers is a snapshot in time of why (not) to use
 (alternatives to) `micromark`: they’re all good choices, depending on what your
 goals are.
 
-## Version
+### Test
+
+micromark is tested with the \~650 CommonMark tests and more than 1.2k extra
+tests confirmed with CM reference parsers.
+These tests reach all branches in the code, thus this project has 100% coverage.
+Finally, we use fuzz testing to ensure micromark is stable, reliable, and
+secure.
+
+To build, format, and test the codebase, use `$ npm test` after clone and
+install.
+The `$ npm run test-api` and `$ npm run test-coverage` scripts check the unit
+tests and their coverage, respectively.
+
+The `$ npm run test-fuzz` script does fuzz testing for 15 minutes.
+The timeout is provided by GNU coreutils **timeout(1)**, which might not be
+available on your system.
+Either install it or remove it from the script.
+
+### Size & debug
+
+micromark is really small.
+A ton of time went into making sure it minifies well, by the way code is written
+but also through custom build scripts to pre-evaluate certain expressions.
+Furthermore, care went into making it compress well with gzip and brotli.
+
+Normally, you’ll use the pre-evaluated version of micromark.
+While developing, debugging, or testing your code, you can switch to use code
+instrumented with assertions and debug messages:
+
+```sh
+node --conditions development module.js
+```
+
+To see debug messages, use a `DEBUG` env variable set to `micromark`:
+
+```sh
+DEBUG="*" node --conditions development module.js
+```
+
+### Version
 
 The open beta of micromark starts at version `2.0.0` (there was a different
 package published on npm as `micromark` before).
 micromark will adhere to semver at `3.0.0`.
 Use tilde ranges for now: `"micromark": "~2.10.1"`.
 
-## Security
+### Security
 
 The typical security aspect discussed for markdown is [cross-site scripting
 (XSS)][xss] attacks.
@@ -1267,7 +1472,7 @@ For more information on markdown sanitation, see
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
-## Contribute
+### Contribute
 
 See [`contributing.md`][contributing] in [`micromark/.github`][health] for ways
 to get started.
@@ -1277,7 +1482,7 @@ This project has a [code of conduct][coc].
 By interacting with this repository, organisation, or community you agree to
 abide by its terms.
 
-## Sponsor
+### Sponsor
 
 Support this effort and give back by sponsoring on [OpenCollective][]!
 
@@ -1329,7 +1534,7 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 </tr>
 </table>
 
-## Origin story
+### Origin story
 
 Over the summer of 2018, micromark was planned, and the idea shared in August
 with a couple of friends and potential sponsors.
@@ -1387,7 +1592,7 @@ micromark.
 And it’s hard to describe how that moment felt.
 It was great.
 
-## License
+### License
 
 [MIT][license] © [Titus Wormer][author]
 
@@ -1484,6 +1689,8 @@ It was great.
 [mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
 
 [constructs]: /packages/micromark/dev/lib/constructs.js
+
+[comparison]: #comparison
 
 [extensions]: #list-of-extensions
 
