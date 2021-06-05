@@ -46,8 +46,8 @@ generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or compile
 to other output formats.
 
 *   to learn markdown, see this [cheatsheet and tutorial][cheat]
-*   for updates, see [Twitter][]
 *   for more about us, see [`unifiedjs.com`][site]
+*   for updates, see [Twitter][]
 *   for questions, see [Discussions][chat]
 *   to help, see [contribute][] or [sponsor][] below
 
@@ -159,8 +159,8 @@ function handleError(error) {
 This package has two entries in its export map: `micromark` and
 `micromark/stream`.
 
-`micromark` exports the following identifiers: `micromark`.
-`micromark/stream` exports the following identifiers: `stream`.
+`micromark` exports the following identifier: `micromark`.
+`micromark/stream` exports the following identifier: `stream`.
 There are no default exports.
 
 ### `micromark(value[, encoding][, options])`
@@ -341,15 +341,11 @@ Looking at these from a higher level, they can be categorized:
     already familiar with and which will work with existing tools and platforms.
 
     Implementations will deal with the syntax tree
-    ([`mdast`](https://github.com/syntax-tree/mdast)) and the ecosystems
+    ([`mdast`][mdast]) and the ecosystems
     **[remark][]** and **[rehype][]**.
     There are many existing
-    [utilities for working with that tree](https://github.com/syntax-tree/mdast#list-of-utilities).
-    Many
-    [remark plugins](https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins)
-    and
-    [rehype plugins](https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins)
-    also exist.
+    [utilities for working with that tree][utilities].
+    Many [remark plugins][] and [rehype plugins][] also exist.
 *   **Using and abusing markdown to add new meaning**
     (3, 4, potentially 5)
 
@@ -396,7 +392,7 @@ Looking at these from a higher level, they can be categorized:
     transforming the syntax tree.
 
     **Generic directives**: although
-    [a proposal](https://talk.commonmark.org/t/generic-directives-plugins-syntax/444)
+    [a proposal][directive-proposal]
     and not supported on most platforms, directives do work with many tools
     already.
     They’re not the easiest to author compared to, say, a heading, but sometimes
@@ -435,16 +431,12 @@ This section shows how to create a syntax extension for micromark that parses
 
 *   You should possess an intermediate to high understanding of JavaScript:
     it’s going to get a bit complex
-*   Read the readme of [unified](https://github.com/unifiedjs/unified)
-    (until you hit the API section) to better understand where micromark
-    fits
-*   Read the
-    [§ Architecture](https://github.com/micromark/micromark#architecture)
-    section to understand how micromark works
-*   Read the
-    [§ Extending markdown](https://github.com/micromark/micromark#extending-markdown)
-    section to understand whether it’s a good idea to extend the syntax of
-    markdown
+*   Read the readme of [unified][] (until you hit the API section) to better
+    understand where micromark fits
+*   Read the [§ Architecture][architecture] section to understand how micromark
+    works
+*   Read the [§ Extending markdown][extending-markdown] section to understand
+    whether it’s a good idea to extend the syntax of markdown
 
 #### Extension basics
 
@@ -507,7 +499,7 @@ But to learn interesting things, we *will* support character escapes and
 \-references.
 
 Note that this particular case is already solved quite nicely by
-[`micromark-extension-mdx-expression`](https://github.com/micromark/micromark-extension-mdx-expression).
+[`micromark-extension-mdx-expression`][mdx-expression].
 It’s a bit more powerful and does more things, but it can be used to solve this
 case and otherwise serve as inspiration.
 
@@ -581,8 +573,7 @@ works!
 
 ##### Syntax extension
 
-Much in micromark is based on character codes
-(see [§ Preprocess](https://github.com/micromark/micromark#preprocess)).
+Much in micromark is based on character codes (see [§ Preprocess][preprocess]).
 For this extension, the relevant codes are:
 
 *   `-5`
@@ -600,8 +591,7 @@ For this extension, the relevant codes are:
 *   `125`
     — U+007D RIGHT CURLY BRACE (`}`)
 
-Also relevant are the content types
-(see [§ Content types](https://github.com/micromark/micromark#content-types)).
+Also relevant are the content types (see [§ Content types][content-types]).
 This extension is a *text* construct, as it’s parsed alongsides links and such.
 The content inside it (between the braces) is *string*, to support character
 escapes and -references.
@@ -764,8 +754,7 @@ braces by adding a special token that defines a content type:
 ```
 
 Tokens with a `contentType` will be replaced by *postprocess* (see
-[§ Postprocess](https://github.com/micromark/micromark#postprocess)) by the
-tokens belonging to that content type.
+[§ Postprocess][postprocess]) by the tokens belonging to that content type.
 
 ##### HTML extension
 
@@ -843,7 +832,7 @@ Of course, it can be better, such as with the following potential features:
 *   Add support for blocks
 *   Add warnings on undefined variables
 *   Use `micromark-build`, and use `assert`, `debug`, and
-    `micromark-util-symbol` (see [§ Size & debug](https://github.com/micromark/micromark#size--debug))
+    `micromark-util-symbol` (see [§ Size & debug][size-debug])
 *   Add [`mdast-util-from-markdown`][from-markdown] and
     [`mdast-util-to-markdown`][to-markdown] utilities to parse and serialize the
     AST
@@ -878,12 +867,11 @@ Yields:
 micromark is maintained as a monorepo.
 Many of its internals, which are used in `micromark` but also useful for
 developers of extensions or integrations, are available as separate packages.
-Each package maintained here is available in
-[`packages/`](https://github.com/micromark/micromark/tree/main/packages).
+Each package maintained here is available in [`packages/`][packages].
 
 ### Overview
 
-The naming scheme is as follows:
+The naming scheme in [`packages/`][packages] is as follows:
 
 *   `micromark-build`
     — A small CLI to build dev code into production code.
@@ -1701,6 +1689,34 @@ It was great.
 [option-extensions]: #optionsextensions
 
 [option-htmlextensions]: #optionshtmlextensions
+
+[mdast]: https://github.com/syntax-tree/mdast
+
+[utilities]: https://github.com/syntax-tree/mdast#list-of-utilities
+
+[unified]: https://github.com/unifiedjs/unified
+
+[remark plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
+
+[rehype plugins]: https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
+
+[directive-proposal]: https://talk.commonmark.org/t/generic-directives-plugins-syntax/444
+
+[architecture]: #architecture
+
+[extending-markdown]: #extending-markdown
+
+[mdx-expression]: https://github.com/micromark/micromark-extension-mdx-expression
+
+[preprocess]: #preprocess
+
+[content-types]: https://github.com/micromark/micromark#content-types
+
+[postprocess]: https://github.com/micromark/micromark#postprocess
+
+[size-debug]: https://github.com/micromark/micromark#size--debug
+
+[packages]: https://github.com/micromark/micromark/tree/main/packages
 
 [marked]: https://github.com/markedjs/marked
 
