@@ -1,5 +1,3 @@
-// Tokenize:
-
 /**
  * @typedef {number|null} Code
  *   A character code.
