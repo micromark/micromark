@@ -28,10 +28,10 @@ concrete tokens.
 
 ## When to use this
 
-*   If you *just* want to turn markdown into HTML
+*   If you *just* want to turn markdown into HTML (w/ maybe a few extensions)
 *   If you want to do *really complex things* with markdown
 
-See [Comparison »][comparison] for more info
+See [§ Comparison][comparison] for more info
 
 ## Intro
 
@@ -191,6 +191,7 @@ added: `<blockquote>\n<p>a</p>\n</blockquote>`.
 ###### `options.allowDangerousHtml`
 
 Whether to allow embedded HTML (`boolean`, default: `false`).
+See [§ Security][security].
 
 ###### `options.allowDangerousProtocol`
 
@@ -200,16 +201,19 @@ URLs relative to the current protocol are always allowed (such as, `image.jpg`).
 For links, the allowed protocols are `http`, `https`, `irc`, `ircs`, `mailto`,
 and `xmpp`.
 For images, the allowed protocols are `http` and `https`.
+See [§ Security][security].
 
 ###### `options.extensions`
 
 Array of syntax extensions ([`Array.<SyntaxExtension>`][syntax-extension],
 default: `[]`).
+See [§ Extensions][extensions].
 
 ###### `options.htmlExtensions`
 
 Array of HTML extensions ([`Array.<HtmlExtension>`][html-extension], default:
 `[]`).
+See [§ Extensions][extensions].
 
 ##### Returns
 
@@ -231,14 +235,17 @@ As markdown does not know errors, `micromark` itself does not emit errors.
 
 micromark supports extensions.
 There are two types of extensions for micromark:
-[`SyntaxExtension`][syntax-extension] and [`HtmlExtension`][html-extension].
-They can be passed in [`extensions`][option-extensions] or
-[`htmlExtensions`][option-htmlextensions], respectively.
+[`SyntaxExtension`][syntax-extension],
+which change how markdown is parsed, and [`HtmlExtension`][html-extension],
+which change how it compiles.
+They can be passed in [`options.extensions`][option-extensions] or
+[`options.htmlExtensions`][option-htmlextensions], respectively.
 
-Syntax extensions change the way markdown is tokenized.
-HTML extensions change how those tokens are turned into HTML.
-
-As a user, refer to the docs of each extension for more on how to use them.
+As a user of extensions, refer to each extension’s readme for more on how to use
+them.
+As a (potential) author of extensions, refer to
+[§ Extending markdown][extending-markdown] and
+[§ Creating a micromark extension][create-extension].
 
 ### List of extensions
 
@@ -279,21 +286,22 @@ As a user, refer to the docs of each extension for more on how to use them.
 
 A syntax extension is an object whose fields are typically the names of hooks,
 referring to where constructs “hook” into.
-
 The fields at such objects are character codes, mapping to constructs as values.
-The built in [constructs][] are an extension.
-See it and the [existing extensions][extensions] for inspiration.
+
+The built in [constructs][] are an example.
+See it and [existing extensions][extensions] for inspiration.
 
 ### `HtmlExtension`
 
 An HTML extension is an object whose fields are typically `enter` or `exit`
 (reflecting whether a token is entered or exited).
 The values at such objects are names of tokens mapping to handlers.
-See the [existing extensions][extensions] for inspiration.
+
+See [existing extensions][extensions] for inspiration.
 
 ### Extending markdown
 
-micromark lets you change the markdown syntax, yes, but there are alternatives.
+micromark lets you change markdown syntax, yes, but there are alternatives.
 The alternatives are often better.
 
 Over the years, many micromark and remark users have asked about their unique
@@ -421,7 +429,7 @@ Looking at these from a higher level, they can be categorized:
 
 ### Creating a micromark extension
 
-This section shows how to create a syntax extension for micromark that parses
+This section shows how to create an extension for micromark that parses
 “variables” (a way to render some data) and one to turn a default construct off.
 
 > Stuck?
@@ -440,28 +448,29 @@ This section shows how to create a syntax extension for micromark that parses
 
 #### Extension basics
 
-Micromark supports two types of extensions.
+micromark supports two types of extensions.
 Syntax extensions change how markdown is parsed.
 HTML extensions change how it compiles.
 
-HTML extensions are not always needed, because micromark is often used through
-[`mdast-util-from-markdown`][from-markdown] to parse to a markdown syntax tree.
-so instead, a `from-markdown` utility is needed.
-And a [`mdast-util-to-markdown`][to-markdown] utility, which is responsible for
-serializing syntax trees to markdown.
+HTML extensions are not always needed, as micromark is often used through
+[`mdast-util-from-markdown`][from-markdown] to parse to a markdown syntax tree
+So instead of an HTML extension a `from-markdown` utility is needed.
+Then, a [`mdast-util-to-markdown`][to-markdown] utility, which is responsible
+for serializing syntax trees to markdown, is also needed.
 
-When open sourcing your extension, it should probably contain four parts:
+When developing something for internal use only, you can pick and choose which
+parts you need.
+When open sourcing your extensions, it should probably contain four parts:
 syntax extension, HTML extension, `from-markdown` utility, and a `to-markdown`
 utility.
-When you’re developing something for internal use only, you can pick and choose
-which parts you need.
 
 On to our first case!
 
 #### Case: variables
 
 Let’s first outline what we want to make: render some data, similar to how
-Liquid and the like work, in our markdown.
+[Liquid](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers) and the
+like work, in our markdown.
 It could look like this:
 
 ```markdown
@@ -476,8 +485,8 @@ Turned into:
 
 An opening curly brace, followed by one or more characters, and then a closing
 brace.
-We’ll then look up `planet` in some object and replace it, to get something
-`Venus` out.
+We’ll then look up `planet` in some object and replace the variable with its
+corresponding value, to get something like `Venus` out.
 
 It looks simple enough, but with markdown there are often a couple more things
 to think about.
@@ -487,7 +496,7 @@ For this case, I can see the following:
 *   Are spaces allowed?
     Line endings?
     Should initial and final white space be ignored?
-*   Balanced bested braces?
+*   Balanced nested braces?
     Superfluous ones such as `{{planet}}` or meaningful ones such as
     `{a {pla} net}`?
 *   Character escapes (`{pla\}net}`) and character references
@@ -865,7 +874,7 @@ Yields:
 ## Architecture
 
 micromark is maintained as a monorepo.
-Many of its internals, which are used in `micromark` but also useful for
+Many of its internals, which are used in `micromark` (core) but also useful for
 developers of extensions or integrations, are available as separate packages.
 Each package maintained here is available in [`packages/`][packages].
 
@@ -874,13 +883,13 @@ Each package maintained here is available in [`packages/`][packages].
 The naming scheme in [`packages/`][packages] is as follows:
 
 *   `micromark-build`
-    — A small CLI to build dev code into production code.
+    — Small CLI to build dev code into production code
 *   `micromark-core-commonmark`
-    — The core CommonMark constructs used in micromark.
+    — CommonMark constructs used in micromark
 *   `micromark-factory-*`
-    — Reusable subroutines used to parse parts of constructs.
+    — Reusable subroutines used to parse parts of constructs
 *   `micromark-util-*`
-    — Reusable helpers often needed when parsing markdown.
+    — Reusable helpers often needed when parsing markdown
 *   `micromark`
     — Core library itself
 
@@ -911,6 +920,7 @@ A **chunk** is either a character code or a slice of a buffer in the form of a
 string.
 Chunks are used because strings are more efficient storage that character codes,
 but limited in what they can represent.
+For example, the input `ab\ncd` is represented as `['ab', -4, 'cd']` in chunks.
 
 A character **code** is often the same as what `String#charCodeAt()` yields but
 micromark adds meaning to certain other values.
@@ -918,16 +928,21 @@ micromark adds meaning to certain other values.
 In micromark, the actual character U+0009 CHARACTER TABULATION (HT) is replaced
 by one M-0002 HORIZONTAL TAB (HT) and between 0 and 3 M-0001 VIRTUAL SPACE (VS)
 characters, depending on the column at which the tab occurred.
+For example, the input `\ta` is represented as `[-2, -1, -1, -1, 97]` and `a\tb`
+as `[97, -2, -1, -1, 98]` in character codes.
 
 The characters U+000A LINE FEED (LF) and U+000D CARRIAGE RETURN (CR) are
 replaced by virtual characters depending on whether they occur together: M-0003
 CARRIAGE RETURN LINE FEED (CRLF), M-0004 LINE FEED (LF), and M-0005 CARRIAGE
 RETURN (CR).
+For example, the input `a\r\nb\nc\rd` is represented as `[97, -5, 98, -4, 99,
+-3, 100]` in character codes.
 
 The `0` (U+0000 NUL) character code is replaced by U+FFFD REPLACEMENT CHARACTER
 (`�`).
 
-The `null` code represents the end of the input stream (called eof).
+The `null` code represents the end of the input stream (called *eof* for end of
+file).
 
 ### Parse
 
@@ -935,22 +950,24 @@ The **parser**
 ([`micromark/dev/lib/parse.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/lib/parse.js))
 takes chunks and turns them into events.
 
-**Events** are the start or end of a token amongst other events.
+An **event** is the start or end of a token amongst other events.
 Tokens can “contain” other tokens, even though they are stored in a flat list,
-by `enter`ing before and `exit`ing after them.
+by entering before and exiting after them.
 
-A **token** is a span of chunks.
-Tokens are what the core of micromark produces: the built in HTML compiler or
-other tools can turn them into different things.
+A **token** is a span of one or more codes.
+Tokens are most of what micromark produces: the built in HTML compiler or other
+tools can turn them into different things.
+Tokens are essentially names attached to a slice, such as `lineEndingBlank` for
+certain line endings, or `codeFenced` for a whole fenced code.
 
-Tokens are essentially names attached to a slice of chunks, such as
-`lineEndingBlank` for certain line endings, or `codeFenced` for a whole fenced
-code.
+Sometimes, more info is attached to tokens, such as `_open` and `_close` by
+`attention` (strong, emphasis) to signal whether the sequence can open or close
+an attention run.
+These fields have to do with how the parser works, which is complex and not
+always pretty.
 
-Sometimes, more info is attached to tokens, such as `_open` and `_close`
-by `attention` (strong, emphasis) to signal whether the sequence can open
-or close an attention run.
-
+Certain fields (`previous`, `next`, and `contentType`) are used in many cases:
+linked tokens for subcontent.
 Linked tokens are used because outer constructs are parsed first.
 Take for example:
 
@@ -981,7 +998,8 @@ quotes and lists.
 Containers in markdown come from the margin and include more constructs
 on the lines that define them.
 
-*Flow* represents the sections, such as headings, code, and content, which like
+*Flow* represents the sections (block constructs such as ATX and setext
+headings, HTML, indented and fenced code, thematic breaks), which like
 *document* are also parsed per line.
 An example is HTML, which has a certain starting condition (such as `<script>`
 on its own line), then continues for a while, until an end condition is found
@@ -1003,13 +1021,13 @@ which things are defined, for the whole document, before continuing on with
 it’s defined.
 This unfortunately prevents a true streaming markdown parser.
 
-*Text* contains phrasing content such as attention (emphasis, strong), media
-(links, images), and actual text.
+*Text* contains phrasing content (rich inline text: autolinks, character escapes
+and -references, code, hard breaks, HTML, images, links, emphasis, strong).
 
 *String* is a limited *text*-like content type which only allows character
 references and character escapes.
 It exists in things such as identifiers (media references, definitions),
-titles, or URLs.
+titles, or URLs and such.
 
 #### Constructs
 
@@ -1041,16 +1059,15 @@ The **compiler**
 ([`micromark/dev/lib/compile.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/lib/compile.js))
 takes events and turns them into HTML.
 While micromark is a lexer/tokenizer, the common case of going from markdown to
-HTML is currently built in as this module, even though the parts can be used
-separately to build ASTs, CSTs, or many other output formats.
-
-Having an HTML compiler built in is useful because it allows us to check for
-compliancy to CommonMark, the de facto norm of markdown, specified in roughly
-600 input/output cases.
+HTML is built in as this module, even though the parts can be used separately to
+build ASTs, CSTs, or many other output formats.
+A built in HTML compiler is useful because it allows us to check for compliancy
+to CommonMark, the de facto norm of markdown, specified in roughly 650
+input/output cases.
 
 The compiler has an interface that accepts lists of events instead of the whole
-at once, however, because markdown can’t be truly streaming, events are buffered
-before compiling and outputting the final result.
+at once, but because markdown can’t truly stream, events are buffered before
+compiling and outputting the final result.
 
 ## Examples
 
@@ -1087,8 +1104,7 @@ Then do something like this:
 ```js
 import fs from 'node:fs'
 import {micromark} from 'micromark'
-import gfm from 'micromark-extension-gfm'
-import gfmHtml from 'micromark-extension-gfm/html.js'
+import {gfm, gfmHtml} from 'micromark-extension-gfm'
 
 const doc = fs.readFileSync('example.md')
 
@@ -1142,8 +1158,7 @@ Then do something like this:
 ```js
 import fs from 'node:fs'
 import {micromark} from 'micromark'
-import math from 'micromark-extension-math'
-import mathHtml from 'micromark-extension-math/html.js'
+import {math, mathHtml} from 'micromark-extension-math'
 
 const doc = fs.readFileSync('example.md')
 
@@ -1194,8 +1209,7 @@ Then do something like this:
 ```js
 import fs from 'node:fs'
 import {micromark} from 'micromark'
-import footnote from 'micromark-extension-footnote'
-import footnoteHtml from 'micromark-extension-footnote/html.js'
+import {footnote, footnoteHtml} from 'micromark-extension-footnote'
 
 const doc = fs.readFileSync('example.md')
 
@@ -1245,7 +1259,7 @@ A higher level project, [`mdast-util-from-markdown`][from-markdown], can give
 you an AST.
 
 ```js
-import fromMarkdown from 'mdast-util-from-markdown'
+import fromMarkdown from 'mdast-util-from-markdown' // This wraps micromark.
 
 const result = fromMarkdown('## Hello, *world*!')
 
@@ -1335,10 +1349,12 @@ info, at the cost of being hard to get into.
 It’s super small, pretty fast, and has 100% CommonMark compliance.
 It has syntax extensions, such as supporting 100% GFM compliance (with
 `micromark-extension-gfm`), but they’re rather complex to write.
-It’s the newest parser on the block.
+It’s the newest parser on the block, which means it’s fresh and well suited for
+contemporary markdown needs, but it’s also battle-tested, and already the 3rd
+most popular markdown parser in JavaScript.
 
 If you’re looking for fine grained control, use micromark.
-Or, if you just want HTML from markdown, use micromark.
+If you just want HTML from markdown, use micromark.
 
 ###### remark
 
@@ -1347,12 +1363,12 @@ It’s built on top of `micromark` and boasts syntax trees.
 For an analogy, it’s like if Babel, ESLint, and more, were one project.
 It supports the syntax extensions that micromark has (so it’s 100% CM compliant
 and can be 100% GFM compliant), but most of the work is done in plugins that
-transform or inspect the tree.
+transform or inspect the tree, and there’s *tons* of them.
 Transforming the tree is relatively easy: it’s a JSON object that can be
 manipulated directly.
 remark is stable, widely used, and extremely powerful for handling complex data.
 
-If you’re looking to inspect or transform lots of content, use [remark][].
+You probably should use [remark][].
 
 ###### marked
 
@@ -1362,7 +1378,7 @@ extensions, but doesn’t match CommonMark or GFM, and is unsafe by default.
 
 If you have markdown you trust and want to turn it into HTML without a fuss, and
 don’t care about perfect compatibility with CommonMark or GFM, but do appreciate
-a small bundle size, use [marked][].
+a small bundle size and stability, use [marked][].
 
 ###### markdown-it
 
@@ -1378,9 +1394,9 @@ CommonMark-compliant markdown, and want to get HTML out, use [markdown-it][].
 ###### Others
 
 There are lots of other markdown parsers!
-Some say they’re small, or fast, or that they’re CommonMark compliant — but
+Some say they’re small, or fast, or that they’re CommonMark compliant—but
 that’s not always true.
-This list is not supposed to be exhaustive.
+This list is not supposed to be exhaustive (but it’s the most relevant ones).
 This list of markdown parsers is a snapshot in time of why (not) to use
 (alternatives to) `micromark`: they’re all good choices, depending on what your
 goals are.
@@ -1389,19 +1405,21 @@ goals are.
 
 micromark is tested with the \~650 CommonMark tests and more than 1.2k extra
 tests confirmed with CM reference parsers.
-These tests reach all branches in the code, thus this project has 100% coverage.
+These tests reach all branches in the code, which means that this project has
+100% code coverage.
 Finally, we use fuzz testing to ensure micromark is stable, reliable, and
 secure.
 
 To build, format, and test the codebase, use `$ npm test` after clone and
 install.
-The `$ npm run test-api` and `$ npm run test-coverage` scripts check the unit
-tests and their coverage, respectively.
+The `$ npm run test-api` and `$ npm run test-coverage` scripts check either the
+unit tests, or both them and their coverage, respectively.
 
 The `$ npm run test-fuzz` script does fuzz testing for 15 minutes.
 The timeout is provided by GNU coreutils **timeout(1)**, which might not be
 available on your system.
-Either install it or remove it from the script.
+Either install `timeout` or remove that part temporarily from the script and
+manually exit the program after a while.
 
 ### Size & debug
 
@@ -1411,8 +1429,8 @@ but also through custom build scripts to pre-evaluate certain expressions.
 Furthermore, care went into making it compress well with gzip and brotli.
 
 Normally, you’ll use the pre-evaluated version of micromark.
-While developing, debugging, or testing your code, you can switch to use code
-instrumented with assertions and debug messages:
+While developing, debugging, or testing your code, you *should* switch to use
+code instrumented with assertions and debug messages:
 
 ```sh
 node --conditions development module.js
@@ -1426,23 +1444,20 @@ DEBUG="*" node --conditions development module.js
 
 ### Version
 
-The open beta of micromark starts at version `2.0.0` (there was a different
-package published on npm as `micromark` before).
-micromark will adhere to semver at `3.0.0`.
-Use tilde ranges for now: `"micromark": "~2.10.1"`.
+micromark adheres to [semver](https://semver.org) since 3.0.0.
 
 ### Security
 
 The typical security aspect discussed for markdown is [cross-site scripting
 (XSS)][xss] attacks.
-It’s safe to compile markdown to HTML if it does not include embedded HTML nor
-uses dangerous protocols in links (such as `javascript:` or `data:`).
-micromark is safe by default when embedded HTML or dangerous protocols are used
-too, as it encodes or drops them.
+Markdown itself is safe if it does not include embedded HTML or dangerous
+protocols in links/images (such as `javascript:` or `data:`).
+micromark makes any markdown safe by default, even if HTML is embedded or
+dangerous protocols are used, as it encodes or drops them.
 Turning on the `allowDangerousHtml` or `allowDangerousProtocol` options for
 user-provided markdown opens you up to XSS attacks.
 
-Another aspect is DDoS attacks.
+Another security aspect is DDoS attacks.
 For example, an attacker could throw a 100mb file at micromark, in which case
 the JavaScript engine will run out of memory and crash.
 It is also possible to crash micromark with smaller payloads, notably when
@@ -1705,6 +1720,8 @@ It was great.
 [architecture]: #architecture
 
 [extending-markdown]: #extending-markdown
+
+[create-extension]: #creating-a-micromark-extension
 
 [mdx-expression]: https://github.com/micromark/micromark-extension-mdx-expression
 
