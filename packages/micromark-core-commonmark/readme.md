@@ -9,8 +9,8 @@
 [![Chat][chat-badge]][chat]
 
 The core CommonMark constructs needed to tokenize markdown.
-Some of these can be turned off, but they are often essential to markdown
-and weird things might happen.
+Some of these can be [turned off][disable], but they are often essential to
+markdown and weird things might happen.
 
 ## Contents
 
@@ -115,3 +115,5 @@ abide by its terms.
 [support]: https://github.com/micromark/.github/blob/HEAD/support.md
 
 [coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+
+[disable]: https://github.com/micromark/micromark#case-turn-off-constructs

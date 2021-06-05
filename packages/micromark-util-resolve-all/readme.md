@@ -10,7 +10,7 @@
 
 micromark utility to resolve subtokens.
 
-Resolvers are functions that take events and manipulate them.
+[Resolvers][resolver] are functions that take events and manipulate them.
 This is needed for example because media (links, images) and attention (strong,
 italic) aren’t parsed left-to-right.
 Instead, their openings and closings are parsed, and when done, their openings
@@ -178,3 +178,5 @@ abide by its terms.
 [support]: https://github.com/micromark/.github/blob/HEAD/support.md
 
 [coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+
+[resolver]: https://github.com/micromark/micromark/blob/a571c09/packages/micromark-util-types/index.js#L219

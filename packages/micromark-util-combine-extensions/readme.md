@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility combine syntax or html extensions.
+micromark utility combine [syntax][] or [html][] extensions.
 
 ## Contents
 
@@ -133,3 +133,7 @@ abide by its terms.
 [support]: https://github.com/micromark/.github/blob/HEAD/support.md
 
 [coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+
+[syntax]: https://github.com/micromark/micromark#syntaxextension
+
+[html]: https://github.com/micromark/micromark#htmlextension
