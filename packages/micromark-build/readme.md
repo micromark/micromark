@@ -6,13 +6,14 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-A small CLI to build micromark development source code into production code.
+A small CLI to build micromark development source code (for this monorepo but
+also for extensions and integrations) into production code.
 
 If you are making a micromark extension or are otherwise integrating with
 its code, you *should* use this.
 
 State machines are hard: assertions, debugging messages, and readable names
-are great to develop with, but slow in production, this solves that.
+are great to develop with, but slow or big in production, this solves that.
 
 ## Install
 

@@ -61,7 +61,7 @@ There is no default export.
 
 Check whether the
 [character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII alpha (`a` though `z`,
+represents an ASCII alpha (`a` through `z`,
 case insensitive).
 
 An **ASCII alpha** is an ASCII upper alpha or ASCII lower alpha.
@@ -76,7 +76,7 @@ to U+007A (`z`).
 
 Check whether the
 [character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII digit (`0` though `9`).
+represents an ASCII digit (`0` through `9`).
 
 An **ASCII digit** is a character in the inclusive range U+0030 (`0`) to
 U+0039 (`9`).
@@ -85,8 +85,8 @@ U+0039 (`9`).
 
 Check whether the
 [character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII hex digit (`a` though
-`f`, case insensitive, or `0` through `9`).
+represents an ASCII hex digit (`a` through `f`, case insensitive, or `0` through
+`9`).
 
 An **ASCII hex digit** is an ASCII digit (see `asciiDigit`), ASCII upper hex
 digit, or an ASCII lower hex digit.
@@ -101,8 +101,8 @@ An **ASCII lower hex digit** is a character in the inclusive range U+0061
 
 Check whether the
 [character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII alphanumeric (`a`
-though `z`, case insensitive, or `0` through `9`).
+represents an ASCII alphanumeric (`a` through `z`, case insensitive, or `0`
+through `9`).
 
 An **ASCII alphanumeric** is an ASCII digit (see `asciiDigit`) or ASCII alpha
 (see `asciiAlpha`).
@@ -149,8 +149,8 @@ to U+001F (US), or U+007F (DEL).
 
 Check whether a
 [character code](https://github.com/micromark/micromark#preprocess)
-is a markdown line ending (see
-`markdownLineEnding`) or markdown space (see `markdownSpace`).
+is a markdown line ending (see `markdownLineEnding`) or markdown space (see
+`markdownSpace`).
 
 ### `markdownLineEnding(code)`
 

@@ -8,7 +8,7 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility combine [syntax][] or [html][] extensions.
+micromark utility to combine [syntax][] or [html][] extensions.
 
 ## Contents
 

@@ -1,7 +1,7 @@
 {
   "name": "micromark-util-combine-extensions",
   "version": "0.0.0",
-  "description": "micromark utility combine syntax or html extensions",
+  "description": "micromark utility to combine syntax or html extensions",
   "license": "MIT",
   "keywords": [
     "micromark",

@@ -639,7 +639,7 @@ Ensure that things work by running `node example` and see what it prints.
 Now we need to define our states and figure out how variables work.
 Some people prefer sketching a diagram of the flow.
 I often prefer writing it down in pseudo-code prose.
-I’ve also found that test driven development works well too, where I write unit
+I’ve also found that test driven development works well, where I write unit
 tests for how it should work, then write the state machine, and finally use a
 code coverage tool to ensure I’ve thought of everything.
 
@@ -918,7 +918,7 @@ takes markdown and turns it into chunks.
 
 A **chunk** is either a character code or a slice of a buffer in the form of a
 string.
-Chunks are used because strings are more efficient storage that character codes,
+Chunks are used because strings are more efficient storage than character codes,
 but limited in what they can represent.
 For example, the input `ab\ncd` is represented as `['ab', -4, 'cd']` in chunks.
 
@@ -935,8 +935,8 @@ The characters U+000A LINE FEED (LF) and U+000D CARRIAGE RETURN (CR) are
 replaced by virtual characters depending on whether they occur together: M-0003
 CARRIAGE RETURN LINE FEED (CRLF), M-0004 LINE FEED (LF), and M-0005 CARRIAGE
 RETURN (CR).
-For example, the input `a\r\nb\nc\rd` is represented as `[97, -5, 98, -4, 99,
--3, 100]` in character codes.
+For example, the input `a\r\nb\nc\rd` is represented as
+`[97, -5, 98, -4, 99, -3, 100]` in character codes.
 
 The `0` (U+0000 NUL) character code is replaced by U+FFFD REPLACEMENT CHARACTER
 (`�`).
@@ -1042,7 +1042,6 @@ find confusing new things and run into complex custom hooks.
 One more reasonable construct is the thematic break
 ([see code](https://github.com/micromark/micromark/blob/main/packages/micromark-core-commonmark/dev/lib/thematic-break.js)).
 It’s an object that defines a `name` and a `tokenize` function.
-
 Most of what constructs do is defined in their required `tokenize` function,
 which sets up a state machine to handle character codes streaming in.
 
@@ -1058,12 +1057,13 @@ nested content is parsed, and returns the modified events.
 The **compiler**
 ([`micromark/dev/lib/compile.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/lib/compile.js))
 takes events and turns them into HTML.
-While micromark is a lexer/tokenizer, the common case of going from markdown to
-HTML is built in as this module, even though the parts can be used separately to
-build ASTs, CSTs, or many other output formats.
+While micromark was created mostly to advance markdown parsing irrespective of
+compiling to HTML, the common case of doing so is built in.
 A built in HTML compiler is useful because it allows us to check for compliancy
 to CommonMark, the de facto norm of markdown, specified in roughly 650
 input/output cases.
+The parsing parts can still be used separately to build ASTs, CSTs, or many
+other output formats.
 
 The compiler has an interface that accepts lists of events instead of the whole
 at once, but because markdown can’t truly stream, events are buffered before

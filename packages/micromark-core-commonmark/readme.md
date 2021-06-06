@@ -49,9 +49,7 @@ There is no default export.
 
 Each identifier refers to a [construct](https://github.com/micromark/micromark#constructs).
 
-See
-[the code](https://github.com/micromark/micromark/tree/main/packages/micromark-core-commonmark/)
-for all about the exported constructs.
+See the code for more on the exported constructs.
 
 ## Security
 

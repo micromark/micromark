@@ -6,7 +6,7 @@ import {codes} from 'micromark-util-symbol/codes.js'
 import {unicodePunctuationRegex} from './lib/unicode-punctuation-regex.js'
 
 /**
- * Check whether the character code represents an ASCII alpha (`a` though `z`,
+ * Check whether the character code represents an ASCII alpha (`a` through `z`,
  * case insensitive).
  *
  * An **ASCII alpha** is an ASCII upper alpha or ASCII lower alpha.
@@ -20,7 +20,7 @@ import {unicodePunctuationRegex} from './lib/unicode-punctuation-regex.js'
 export const asciiAlpha = regexCheck(/[A-Za-z]/)
 
 /**
- * Check whether the character code represents an ASCII digit (`0` though `9`).
+ * Check whether the character code represents an ASCII digit (`0` through `9`).
  *
  * An **ASCII digit** is a character in the inclusive range U+0030 (`0`) to
  * U+0039 (`9`).
@@ -28,7 +28,7 @@ export const asciiAlpha = regexCheck(/[A-Za-z]/)
 export const asciiDigit = regexCheck(/\d/)
 
 /**
- * Check whether the character code represents an ASCII hex digit (`a` though
+ * Check whether the character code represents an ASCII hex digit (`a` through
  * `f`, case insensitive, or `0` through `9`).
  *
  * An **ASCII hex digit** is an ASCII digit (see `asciiDigit`), ASCII upper hex
@@ -44,7 +44,7 @@ export const asciiHexDigit = regexCheck(/[\dA-Fa-f]/)
 
 /**
  * Check whether the character code represents an ASCII alphanumeric (`a`
- * though `z`, case insensitive, or `0` through `9`).
+ * through `z`, case insensitive, or `0` through `9`).
  *
  * An **ASCII alphanumeric** is an ASCII digit (see `asciiDigit`) or ASCII alpha
  * (see `asciiAlpha`).
