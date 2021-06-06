@@ -163,6 +163,12 @@ function handleError(error) {
 `micromark/stream` exports the following identifier: `stream`.
 There are no default exports.
 
+The export map supports the endorsed
+[`development` condition](https://nodejs.org/api/packages.html#packages_resolving_user_conditions).
+Run `node --conditions development module.js` to get instrumented dev code.
+Without this condition, production code is loaded.
+See [§ Size & debug][size-debug] for more info.
+
 ### `micromark(value[, encoding][, options])`
 
 Compile markdown to HTML.
