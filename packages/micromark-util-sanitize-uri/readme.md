@@ -45,7 +45,7 @@ sanitizeUri('#a', /^https?$/i) // '#a'
 
 ## API
 
-This package exports the following identifiers: `sanitizeUri`.
+This module exports the following identifiers: `sanitizeUri`.
 There is no default export.
 
 ### `sanitizeUri(url[, pattern])`

@@ -67,7 +67,7 @@ function tokenizeResource(effects, ok, nok) {
 
 ## API
 
-This package exports the following identifiers: `factoryDestination`.
+This module exports the following identifiers: `factoryDestination`.
 There is no default export.
 
 ### `factoryDestination(…)`

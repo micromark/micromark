@@ -50,7 +50,7 @@ splice(events, open - 1, index - open + 3, nextEvents)
 
 ## API
 
-This package exports the following identifiers: `push`, `splice`.
+This module exports the following identifiers: `push`, `splice`.
 There is no default export.
 
 ### `push(list, items)`

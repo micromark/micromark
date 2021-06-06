@@ -98,7 +98,7 @@ function resolveAllAttention(events, context) {
 
 ## API
 
-This package exports the following identifiers: `resolveAll`.
+This module exports the following identifiers: `resolveAll`.
 There is no default export.
 
 ### `resolveAll(constructs, events, context)`

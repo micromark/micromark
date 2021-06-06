@@ -156,7 +156,7 @@ function handleError(error) {
 
 ## API
 
-This package has two entries in its export map: `micromark` and
+`micromark` core has two entries in its export map: `micromark` and
 `micromark/stream`.
 
 `micromark` exports the following identifier: `micromark`.
@@ -875,8 +875,8 @@ Yields:
 
 micromark is maintained as a monorepo.
 Many of its internals, which are used in `micromark` (core) but also useful for
-developers of extensions or integrations, are available as separate packages.
-Each package maintained here is available in [`packages/`][packages].
+developers of extensions or integrations, are available as separate modules.
+Each module maintained here is available in [`packages/`][packages].
 
 ### Overview
 
@@ -891,7 +891,7 @@ The naming scheme in [`packages/`][packages] is as follows:
 *   `micromark-util-*`
     — Reusable helpers often needed when parsing markdown
 *   `micromark`
-    — Core library itself
+    — Core module
 
 micromark has two interfaces: buffering (maintained in
 [`micromark/dev/index.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/index.js))

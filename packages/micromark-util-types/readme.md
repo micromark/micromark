@@ -37,7 +37,7 @@ npm install micromark-util-types
 
 ## API
 
-This package exports no identifiers.
+This module exports no identifiers.
 There is no default export.
 
 See

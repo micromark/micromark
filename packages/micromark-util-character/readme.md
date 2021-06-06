@@ -50,7 +50,7 @@ console.log(asciiAlpha(65)) // true
 
 ## API
 
-This package exports the following identifiers: `asciiAlpha`,
+This module exports the following identifiers: `asciiAlpha`,
 `asciiAlphanumeric`, `asciiAtext`, `asciiControl`, `asciiDigit`,
 `asciiHexDigit`, `asciiPunctuation`, `markdownLineEnding`,
 `markdownLineEndingOrSpace`, `markdownSpace`, `unicodePunctuation`,

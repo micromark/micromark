@@ -50,7 +50,7 @@ This package has four entries in its export map: `micromark-util-symbol/codes`,
 `micromark-util-symbol/constants`, `micromark-util-symbol/types`,
 `micromark-util-symbol/values`.
 
-Each entry exports an identifier with the same name (for example,
+Each module exports an identifier with the same name (for example,
 `micromark-util-symbol/codes` has `codes`), which is an object mapping strings
 to other values.
 

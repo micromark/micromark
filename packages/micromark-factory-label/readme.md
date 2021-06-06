@@ -64,7 +64,7 @@ function tokenizeDefinition(effects, ok, nok) {
 
 ## API
 
-This package exports the following identifiers: `factoryLabel`.
+This module exports the following identifiers: `factoryLabel`.
 There is no default export.
 
 ### `factoryLabel(…)`

@@ -38,7 +38,7 @@ encode('<3') // '&lt;3'
 
 ## API
 
-This package exports the following identifiers: `encode`.
+This module exports the following identifiers: `encode`.
 There is no default export.
 
 ### `encode(value)`

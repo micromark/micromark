@@ -47,7 +47,7 @@ function resolveContent(events) {
 
 ## API
 
-This package exports the following identifiers: `subtokenize`.
+This module exports the following identifiers: `subtokenize`.
 There is no default export.
 
 ### `subtokenize(events)`

@@ -39,7 +39,7 @@ console.log(autolink) // Do things with `autolink`.
 
 ## API
 
-This package exports the following identifiers: `attention`, `autolink`,
+This module exports the following identifiers: `attention`, `autolink`,
 `blankLine`, `blockQuote`, `characterEscape`, `characterReference`,
 `codeFenced`, `codeIndented`, `codeText`, `content`, `definition`,
 `hardBreakEscape`, `headingAtx`, `htmlFlow`, `htmlText`, `labelEnd`,

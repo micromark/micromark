@@ -54,7 +54,7 @@ function tokenizeTitle(effects, ok, nok) {
 
 ## API
 
-This package exports the following identifiers: `factoryWhitespace`.
+This module exports the following identifiers: `factoryWhitespace`.
 There is no default export.
 
 ### `factoryWhitespace(…)`

@@ -58,7 +58,7 @@ function tokenizeAttention(effects, ok) {
 
 ## API
 
-This package exports the following identifiers: `classifyCharacter`.
+This module exports the following identifiers: `classifyCharacter`.
 There is no default export.
 
 ### `classifyCharacter(code)`

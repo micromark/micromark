@@ -62,7 +62,7 @@ function tokenizeCodeFenced(effects, ok, nok) {
 
 ## API
 
-This package exports the following identifiers: `factorySpace`.
+This module exports the following identifiers: `factorySpace`.
 There is no default export.
 
 ### `factorySpace(…)`

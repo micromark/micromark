@@ -41,7 +41,7 @@ normalizeIdentifier('Толпой') // 'ТОЛПОЙ'
 
 ## API
 
-This package exports the following identifiers: `normalizeIdentifier`.
+This module exports the following identifiers: `normalizeIdentifier`.
 There is no default export.
 
 ### `normalizeIdentifier(value)`

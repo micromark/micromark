@@ -40,7 +40,7 @@ console.log(htmlRawNames) // ['pre', 'script', …]
 
 ## API
 
-This package exports the following identifiers: `htmlBlockNames`,
+This module exports the following identifiers: `htmlBlockNames`,
 `htmlRawNames`.
 There is no default export.
 

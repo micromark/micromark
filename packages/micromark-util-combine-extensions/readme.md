@@ -43,7 +43,7 @@ const gfm = combineExtensions([gfmAutolinkLiteral, gfmStrikethrough(), gfmTable,
 
 ## API
 
-This package exports the following identifiers: `combineExtensions`,
+This module exports the following identifiers: `combineExtensions`,
 `combineHtmlExtensions`.
 There is no default export.
 
