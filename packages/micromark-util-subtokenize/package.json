@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-subtokenize",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "micromark utility to tokenize subtokens",
   "license": "MIT",
   "keywords": [
@@ -39,9 +39,9 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-chunked": "^1.0.0-alpha.1",
-    "micromark-util-symbol": "^1.0.0-alpha.1",
-    "micromark-util-types": "1.0.0-alpha.1"
+    "micromark-util-chunked": "^1.0.0-alpha.2",
+    "micromark-util-symbol": "^1.0.0-alpha.2",
+    "micromark-util-types": "1.0.0-alpha.2"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"

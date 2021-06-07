@@ -1,6 +1,6 @@
 {
   "name": "micromark-core-commonmark",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "The CommonMark markdown constructs",
   "license": "MIT",
   "keywords": [
@@ -40,20 +40,20 @@
   },
   "dependencies": {
     "parse-entities": "^3.0.0",
-    "micromark-factory-destination": "^1.0.0-alpha.1",
-    "micromark-factory-label": "^1.0.0-alpha.1",
-    "micromark-factory-space": "^1.0.0-alpha.1",
-    "micromark-factory-title": "^1.0.0-alpha.1",
-    "micromark-factory-whitespace": "^1.0.0-alpha.1",
-    "micromark-util-character": "^1.0.0-alpha.1",
-    "micromark-util-chunked": "^1.0.0-alpha.1",
-    "micromark-util-classify-character": "^1.0.0-alpha.1",
-    "micromark-util-html-tag-name": "^1.0.0-alpha.1",
-    "micromark-util-normalize-identifier": "^1.0.0-alpha.1",
-    "micromark-util-resolve-all": "^1.0.0-alpha.1",
-    "micromark-util-subtokenize": "^1.0.0-alpha.1",
-    "micromark-util-symbol": "^1.0.0-alpha.1",
-    "micromark-util-types": "1.0.0-alpha.1"
+    "micromark-factory-destination": "^1.0.0-alpha.2",
+    "micromark-factory-label": "^1.0.0-alpha.2",
+    "micromark-factory-space": "^1.0.0-alpha.2",
+    "micromark-factory-title": "^1.0.0-alpha.2",
+    "micromark-factory-whitespace": "^1.0.0-alpha.2",
+    "micromark-util-character": "^1.0.0-alpha.2",
+    "micromark-util-chunked": "^1.0.0-alpha.2",
+    "micromark-util-classify-character": "^1.0.0-alpha.2",
+    "micromark-util-html-tag-name": "^1.0.0-alpha.2",
+    "micromark-util-normalize-identifier": "^1.0.0-alpha.2",
+    "micromark-util-resolve-all": "^1.0.0-alpha.2",
+    "micromark-util-subtokenize": "^1.0.0-alpha.2",
+    "micromark-util-symbol": "^1.0.0-alpha.2",
+    "micromark-util-types": "1.0.0-alpha.2"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"
