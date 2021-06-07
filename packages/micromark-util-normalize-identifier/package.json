@@ -31,6 +31,7 @@
   "main": "index.js",
   "types": "dev/index.d.ts",
   "files": [
+    "dev/",
     "index.d.ts",
     "index.js"
   ],
