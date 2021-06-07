@@ -23,6 +23,7 @@
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
+  "sideEffects": false,
   "type": "module",
   "bin": "index.js",
   "types": "index.d.ts",

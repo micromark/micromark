@@ -25,6 +25,7 @@
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
+  "sideEffects": false,
   "type": "module",
   "files": [
     "codes.d.ts",
