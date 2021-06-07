@@ -1,6 +1,6 @@
 {
   "name": "micromark-factory-destination",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.1",
   "description": "micromark factory to parse destinations (found in resources, definitions)",
   "license": "MIT",
   "keywords": [
@@ -37,9 +37,9 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-character": "^0.0.0",
-    "micromark-util-symbol": "^0.0.0",
-    "micromark-util-types": "0.0.0"
+    "micromark-util-character": "^1.0.0-alpha.1",
+    "micromark-util-symbol": "^1.0.0-alpha.1",
+    "micromark-util-types": "1.0.0-alpha.1"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"

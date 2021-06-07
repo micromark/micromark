@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-normalize-identifier",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.1",
   "description": "micromark utility normalize identifiers (as found in references, definitions)",
   "license": "MIT",
   "keywords": [
@@ -39,7 +39,7 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-symbol": "^0.0.0"
+    "micromark-util-symbol": "^1.0.0-alpha.1"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"
