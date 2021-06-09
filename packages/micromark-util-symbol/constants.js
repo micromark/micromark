@@ -19,6 +19,7 @@ export const constants = {
   characterReferenceHexadecimalSizeMax: 6, // `&#xff9999;`.
   characterReferenceNamedSizeMax: 31, // `&CounterClockwiseContourIntegral;`.
   codeFencedSequenceSizeMin: 3, // At least 3 ticks or tildes are needed.
+  contentTypeDocument: 'document',
   contentTypeFlow: 'flow',
   contentTypeContent: 'content',
   contentTypeString: 'string',

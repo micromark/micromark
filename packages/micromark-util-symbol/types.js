@@ -443,6 +443,7 @@ export const types = {
   listItemValue: 'listItemValue',
 
   // Internal types used for subtokenizers, compiled away
+  chunkDocument: 'chunkDocument',
   chunkContent: 'chunkContent',
   chunkFlow: 'chunkFlow',
   chunkText: 'chunkText',

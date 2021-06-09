@@ -16,7 +16,7 @@
  *   Chunks are used because strings are more efficient storage that character
  *   codes, but limited in what they can represent.
  *
- * @typedef {'flow'|'content'|'text'|'string'} ContentType
+ * @typedef {'document'|'flow'|'content'|'text'|'string'} ContentType
  *   Enumeration of the content types.
  *
  *   Technically `document` is also a content type, which includes containers
