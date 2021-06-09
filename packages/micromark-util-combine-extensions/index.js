@@ -49,6 +49,7 @@ function syntaxExtension(all, extension) {
       if (!hasOwnProperty.call(left, code)) left[code] = []
       const value = right[code]
       constructs(
+        // @ts-expect-error Looks like a list.
         left[code],
         Array.isArray(value) ? value : value ? [value] : []
       )

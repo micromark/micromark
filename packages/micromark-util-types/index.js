@@ -419,7 +419,7 @@
  *   See: <https://github.com/micromark/micromark#syntaxextension>
  *
  * @typedef {Record<string, Record<string, unknown[]>> & _NormalizedExtensionFields} FullNormalizedExtension
- * @typedef {Partial<FullNormalizedExtension>} NormalizedExtension
+ * @typedef {Record<string, Record<string, unknown[]|undefined>> & Partial<_NormalizedExtensionFields>} NormalizedExtension
  *
  * @callback Create
  *   Set up a tokenizer for a content type.
