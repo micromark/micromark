@@ -288,30 +288,20 @@
  *   ````
  *
  *   …then `- list?` cannot form if this fenced code construct is concrete.
- * @property {boolean} [interruptible]
- *   Similar to `concrete`, interruptible content can *sometimes* be interrupted
- *   by more containers.
- *   Normally, only content (paragraphs, definitions) is interruptible.
  *
- *   For example, when parsing the document (containers, such as block quotes
- *   and lists) and the subcontent is currently on content (which is
- *   interruptible):
+ *   An example of a construct that is not concrete is a GFM table:
  *
  *   ````markdown
- *   asd
- *   1. list?
- *
- *   asd
- *   2. list?
+ *   | a |
+ *   | - |
+ *   > | b |
  *   ````
  *
- *   …then `list?` can typically form.
- *   However, the list construct can check `tokenizer.interrupt` when parsing to
- *   see allow `1` but disallow `2` as start markers when interrupting.
+ *   …`b` is not part of the table.
  * @property {boolean} [lazy]
  *   Lazy constructs can continue even if containers are not explicitly
  *   continued.
- *   Normally, only content (paragraphs, definitions) is interruptible.
+ *   Normally, only content (paragraphs, definitions) is lazy.
  *
  *   For example, when parsing the document (containers, such as block quotes
  *   and lists) and this construct is parsing content:

@@ -50,20 +50,24 @@ function initializeDocument(effects) {
 
   /** @type {State} */
   function start(code) {
+    // Try the first continued container.
     if (continued < stack.length) {
       const item = stack[continued]
       self.containerState = item[1]
       assert(
         item[0].continuation,
-        'expected `contination` to be defined on container construct'
+        'expected `continuation` to be defined on container construct'
       )
       return effects.attempt(
         item[0].continuation,
+        // Try the next.
         documentContinue,
+        // Nope.
         documentContinued
       )(code)
     }
 
+    // Done.
     return documentContinued(code)
   }
 
@@ -81,14 +85,17 @@ function initializeDocument(effects) {
       return flowStart(code)
     }
 
+    // Try new containers.
     self.interrupt =
       childFlow &&
       childFlow.currentConstruct &&
-      childFlow.currentConstruct.interruptible
+      !childFlow.currentConstruct.concrete
     self.containerState = {}
     return effects.attempt(
       containerConstruct,
+      // Try another.
       containerContinue,
+      // Nope.
       flowStart
     )(code)
   }
@@ -104,6 +111,7 @@ function initializeDocument(effects) {
       'expected `containerState` to be defined on tokenizer'
     )
     stack.push([self.currentConstruct, self.containerState])
+    // Try another.
     self.containerState = undefined
     return documentContinued(code)
   }
@@ -242,7 +250,7 @@ function initializeDocument(effects) {
       }
 
       self.interrupt =
-        childFlow.currentConstruct && childFlow.currentConstruct.interruptible
+        childFlow.currentConstruct && !childFlow.currentConstruct.concrete
       self.containerState = {}
       return effects.attempt(
         containerConstruct,

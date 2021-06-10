@@ -22,7 +22,6 @@ import {types} from 'micromark-util-symbol/types.js'
 export const content = {
   tokenize: tokenizeContent,
   resolve: resolveContent,
-  interruptible: true,
   lazy: true
 }
 
