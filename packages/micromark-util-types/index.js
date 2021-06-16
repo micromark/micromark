@@ -192,8 +192,6 @@
  *   Try to tokenize a construct.
  * @property {Attempt} interrupt
  *   Interrupt is used for stuff right after a line of content.
- * @property {Attempt} lazy
- *   Lazy is used for lines that were not properly preceded by the container.
  * @property {Attempt} check
  *   Attempt, then revert.
  *
@@ -298,21 +296,6 @@
  *   ````
  *
  *   …`b` is not part of the table.
- * @property {boolean} [lazy]
- *   Lazy constructs can continue even if containers are not explicitly
- *   continued.
- *   Normally, only content (paragraphs, definitions) is lazy.
- *
- *   For example, when parsing the document (containers, such as block quotes
- *   and lists) and this construct is parsing content:
- *
- *   ````markdown
- *   > a
- *   b
- *   ````
- *
- *   …then `b` is part of the current content (with `a`), because content has
- *   `lazy: true`, and thus doesn’t need container markers.
  * @property {'before'|'after'} [add='before']
  *   Whether the construct, when in a `ConstructRecord`, precedes over existing
  *   constructs for the same character code when merged
@@ -332,8 +315,24 @@
  *   Current code.
  * @property {boolean} [interrupt]
  *   Whether we’re currently interrupting.
+ *   Take for example:
+ *
+ *   ```markdown
+ *   a
+ *   # b
+ *   ```
+ *
+ *   At 2:1, we’re “interrupting”.
  * @property {boolean} [lazy]
  *   Whether we’re currently lazy.
+ *   Take for example:
+ *
+ *   ```markdown
+ *   > a
+ *   b
+ *   ```
+ *
+ *   At 2:1, we’re “lazy”.
  * @property {Construct} [currentConstruct]
  *   The current construct.
  *   Constructs that are not `partial` are set here.

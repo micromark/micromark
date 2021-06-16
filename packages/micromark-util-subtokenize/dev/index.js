@@ -170,6 +170,12 @@ function subcontent(events, eventIndex) {
       // Empty.
     }
 
+    assert(
+      !previous || current.previous === previous,
+      'expected previous to match'
+    )
+    assert(!previous || previous.next === current, 'expected next to match')
+
     startPositions.push(startPosition)
 
     if (!current._tokenizer) {

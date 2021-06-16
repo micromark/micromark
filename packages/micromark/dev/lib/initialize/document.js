@@ -6,51 +6,55 @@
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  * @typedef {import('micromark-util-types').Token} Token
  * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Point} Point
  */
 
 /**
  * @typedef {Record<string, unknown>} StackState
  * @typedef {[Construct, StackState]} StackItem
- *
- * @typedef {{flowContinue: boolean, lazy: boolean, continued: number, flowEnd: boolean}} Result
  */
 
 import assert from 'assert'
-import {blankLine} from 'micromark-core-commonmark'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {splice} from 'micromark-util-chunked'
 
 /** @type {InitialConstruct} */
 export const document = {tokenize: initializeDocument}
 
 /** @type {Construct} */
 const containerConstruct = {tokenize: tokenizeContainer}
-/** @type {Construct} */
-const lazyFlowConstruct = {tokenize: tokenizeLazyFlow}
 
 /** @type {Initializer} */
 function initializeDocument(effects) {
   const self = this
   /** @type {StackItem[]} */
   const stack = []
-  /** @type {Construct} */
-  const inspectConstruct = {tokenize: tokenizeInspect, partial: true}
   let continued = 0
-  /** @type {Result|undefined} */
-  let inspectResult
   /** @type {TokenizeContext|undefined} */
   let childFlow
   /** @type {Token|undefined} */
   let childToken
+  /** @type {number} */
+  let lineStartOffset
 
   return start
 
   /** @type {State} */
   function start(code) {
-    // Try the first continued container.
+    // First we iterate through the open blocks, starting with the root
+    // document, and descending through last children down to the last open
+    // block.
+    // Each block imposes a condition that the line must satisfy if the block is
+    // to remain open.
+    // For example, a block quote requires a `>` character.
+    // A paragraph requires a non-blank line.
+    // In this phase we may match all or just some of the open blocks.
+    // But we cannot close unmatched blocks yet, because we may have a lazy
+    // continuation line.
     if (continued < stack.length) {
       const item = stack[continued]
       self.containerState = item[1]
@@ -60,42 +64,82 @@ function initializeDocument(effects) {
       )
       return effects.attempt(
         item[0].continuation,
-        // Try the next.
         documentContinue,
-        // Nope.
-        documentContinued
+        checkNewContainers
       )(code)
     }
 
     // Done.
-    return documentContinued(code)
+    return checkNewContainers(code)
   }
 
   /** @type {State} */
   function documentContinue(code) {
+    assert(
+      self.containerState,
+      'expected `containerState` to be defined after continuation'
+    )
+    if (self.containerState._closeFlow) closeFlow()
     continued++
     return start(code)
   }
 
   /** @type {State} */
-  function documentContinued(code) {
-    // If we’re in a concrete construct (such as when expecting another line of
-    // HTML, or we resulted in lazy content), we can immediately start flow.
-    if (inspectResult && inspectResult.flowContinue) {
-      return flowStart(code)
+  function checkNewContainers(code) {
+    // Next, after consuming the continuation markers for existing blocks, we
+    // look for new block starts (e.g. `>` for a block quote).
+    // If we encounter a new block start, we close any blocks unmatched in
+    // step 1 before creating the new block as a child of the last matched
+    // block.
+    if (continued === stack.length) {
+      // No need to `check` whether there’s a container, of `exitContainers`
+      // would be moot.
+      // We can instead immediately `attempt` to parse one.
+      if (!childFlow) {
+        return documentContinued(code)
+      }
+
+      // If we have concrete content, such as block HTML or fenced code,
+      // we can’t have containers “pierce” into them, so we can immediately
+      // start.
+      if (childFlow.currentConstruct && childFlow.currentConstruct.concrete) {
+        return flowStart(code)
+      }
+
+      // If we do have flow, we’d be interrupting it w/ a new container.
+      self.interrupt = true
     }
 
+    // Check if there is a new container.
+    self.containerState = {}
+    return effects.check(
+      containerConstruct,
+      thereIsANewContainer,
+      thereIsNoNewContainer
+    )(code)
+  }
+
+  /** @type {State} */
+  function thereIsANewContainer(code) {
+    if (childFlow) closeFlow()
+    exitContainers(continued)
+    return documentContinued(code)
+  }
+
+  /** @type {State} */
+  function thereIsNoNewContainer(code) {
+    self.lazy = continued !== stack.length
+    lineStartOffset = self.now().offset
+    return flowStart(code)
+  }
+
+  /** @type {State} */
+  function documentContinued(code) {
     // Try new containers.
-    self.interrupt =
-      childFlow &&
-      childFlow.currentConstruct &&
-      !childFlow.currentConstruct.concrete
     self.containerState = {}
     return effects.attempt(
       containerConstruct,
-      // Try another.
       containerContinue,
-      // Nope.
       flowStart
     )(code)
   }
@@ -110,22 +154,22 @@ function initializeDocument(effects) {
       self.containerState,
       'expected `containerState` to be defined on tokenizer'
     )
+    continued++
     stack.push([self.currentConstruct, self.containerState])
     // Try another.
-    self.containerState = undefined
     return documentContinued(code)
   }
 
   /** @type {State} */
   function flowStart(code) {
     if (code === codes.eof) {
-      exitContainers(0, true)
+      if (childFlow) closeFlow()
+      exitContainers(0)
       effects.consume(code)
       return
     }
 
     childFlow = childFlow || self.parser.flow(self.now())
-
     effects.enter(types.chunkFlow, {
       contentType: constants.contentTypeFlow,
       previous: childToken,
@@ -138,60 +182,151 @@ function initializeDocument(effects) {
   /** @type {State} */
   function flowContinue(code) {
     if (code === codes.eof) {
-      continueFlow(effects.exit(types.chunkFlow))
-      return flowStart(code)
+      writeToChild(effects.exit(types.chunkFlow), true)
+      exitContainers(0)
+      effects.consume(code)
+      return
     }
 
     if (markdownLineEnding(code)) {
       effects.consume(code)
-      continueFlow(effects.exit(types.chunkFlow))
-      return effects.check(inspectConstruct, documentAfterPeek)
+      writeToChild(effects.exit(types.chunkFlow))
+      // Get ready for the next line.
+      continued = 0
+      self.interrupt = undefined
+      self.lazy = undefined
+      return start
     }
 
     effects.consume(code)
     return flowContinue
   }
 
-  /** @type {State} */
-  function documentAfterPeek(code) {
-    assert(inspectResult, 'expected `inspectResult` to be defined after peek')
-    exitContainers(inspectResult.continued, inspectResult.flowEnd)
-    continued = 0
-    return start(code)
-  }
-
   /**
    * @param {Token} token
+   * @param {boolean} [eof]
    * @returns {void}
    */
-  function continueFlow(token) {
+  function writeToChild(token, eof) {
+    assert(childFlow, 'expected `childFlow` to be defined when continuing')
+    const stream = self.sliceStream(token)
+    if (eof) stream.push(null)
+    token.previous = childToken
     if (childToken) childToken.next = token
     childToken = token
-    assert(childFlow, 'expected `childFlow` to be defined when continuing')
-    childFlow.lazy = inspectResult ? inspectResult.lazy : false
+    childFlow.lazy = self.lazy
     childFlow.defineSkip(token.start)
-    childFlow.write(self.sliceStream(token))
+    childFlow.write(stream)
+
+    // Alright, so we just added a lazy line:
+    //
+    // ```markdown
+    // > a
+    // b.
+    //
+    // Or:
+    //
+    // > ~~~c
+    // d
+    //
+    // Or:
+    //
+    // > | e |
+    // f
+    // ```
+    //
+    // The construct in the second example (fenced code) does not accept lazy
+    // lines, so it marked itself as done at the end of its first line, and
+    // then the content construct parses `d`.
+    // Most constructs in markdown match on the first line: if the first line
+    // forms a construct, a non-lazy line can’t “unmake” it.
+    //
+    // The construct in the third example is potentially a GFM table, and
+    // those are *weird*.
+    // It *could* be a table, from the first line, if the following line
+    // matches a condition.
+    // In this case, that second line is lazy, which “unmakes” the first line
+    // and turns the whole into one content block.
+    //
+    // We’ve now parsed the non-lazy and the lazy line, and can figure out
+    // whether the lazy line started a new flow block.
+    // If it did, we exit the current containers between the two flow blocks.
+    if (self.lazy) {
+      let index = childFlow.events.length
+
+      while (index--) {
+        if (
+          // The token starts before the line ending…
+          childFlow.events[index][1].start.offset < lineStartOffset &&
+          // …and either is not ended yet…
+          (!childFlow.events[index][1].end ||
+            // …or ends after it.
+            childFlow.events[index][1].end.offset > lineStartOffset)
+        ) {
+          // Exit: there’s still something open, which means it’s a lazy line
+          // part of something.
+          return
+        }
+      }
+
+      const indexBeforeExits = self.events.length
+      let indexBeforeFlow = indexBeforeExits
+      /** @type {boolean|undefined} */
+      let seen
+      /** @type {Point|undefined} */
+      let point
+
+      // Find the previous chunk (the one before the lazy line).
+      while (indexBeforeFlow--) {
+        if (
+          self.events[indexBeforeFlow][0] === 'exit' &&
+          self.events[indexBeforeFlow][1].type === types.chunkFlow
+        ) {
+          if (seen) {
+            point = self.events[indexBeforeFlow][1].end
+            break
+          }
+
+          seen = true
+        }
+      }
+
+      assert(point, 'could not find previous flow chunk')
+
+      exitContainers(continued)
+
+      // Fix positions.
+      index = indexBeforeExits
+
+      while (index < self.events.length) {
+        self.events[index][1].end = Object.assign({}, point)
+        index++
+      }
+
+      // Inject the exits earlier (they’re still also at the end).
+      splice(
+        self.events,
+        indexBeforeFlow + 1,
+        0,
+        self.events.slice(indexBeforeExits)
+      )
+
+      // Discard the duplicate exits.
+      self.events.length = index
+    }
   }
 
   /**
    * @param {number} size
-   * @param {boolean} end
    * @returns {void}
    */
-  function exitContainers(size, end) {
+  function exitContainers(size) {
     let index = stack.length
-
-    // Close the flow.
-    if (childFlow && end) {
-      childFlow.write([codes.eof])
-      childToken = undefined
-      childFlow = undefined
-    }
 
     // Exit open containers.
     while (index-- > size) {
-      self.containerState = stack[index][1]
       const entry = stack[index]
+      self.containerState = entry[1]
       assert(
         entry[0].exit,
         'expected `exit` to be defined on container construct'
@@ -202,135 +337,16 @@ function initializeDocument(effects) {
     stack.length = size
   }
 
-  /** @type {Tokenizer} */
-  function tokenizeInspect(effects, ok) {
-    let subcontinued = 0
-
-    inspectResult = {
-      flowContinue: false,
-      lazy: false,
-      continued: 0,
-      flowEnd: false
-    }
-
-    return inspectStart
-
-    /** @type {State} */
-    function inspectStart(code) {
-      if (subcontinued < stack.length) {
-        const entry = stack[subcontinued]
-        self.containerState = entry[1]
-
-        assert(
-          entry[0].continuation,
-          'expected `continuation` to be defined on container construct'
-        )
-
-        return effects.attempt(
-          entry[0].continuation,
-          inspectContinue,
-          inspectLess
-        )(code)
-      }
-
-      assert(
-        childFlow,
-        'expected `childFlow` to be defined when starting inspection'
-      )
-
-      // If we’re continued but in a concrete flow, we can’t have more
-      // containers.
-      if (childFlow.currentConstruct && childFlow.currentConstruct.concrete) {
-        assert(
-          inspectResult,
-          'expected `inspectResult` to be defined when starting inspection'
-        )
-        inspectResult.flowContinue = true
-        return inspectDone(code)
-      }
-
-      self.interrupt =
-        childFlow.currentConstruct && !childFlow.currentConstruct.concrete
-      self.containerState = {}
-      return effects.attempt(
-        containerConstruct,
-        inspectFlowEnd,
-        inspectDone
-      )(code)
-    }
-
-    /** @type {State} */
-    function inspectContinue(code) {
-      subcontinued++
-      assert(
-        self.containerState,
-        'expected `containerState` to be defined when continuing inspection'
-      )
-      return self.containerState._closeFlow
-        ? inspectFlowEnd(code)
-        : inspectStart(code)
-    }
-
-    /** @type {State} */
-    function inspectLess(code) {
-      assert(
-        childFlow,
-        'expected `childFlow` to be defined when inspecting less'
-      )
-      if (childFlow.currentConstruct && childFlow.currentConstruct.lazy) {
-        // Maybe another container?
-        self.containerState = {}
-        return effects.attempt(
-          containerConstruct,
-          inspectFlowEnd,
-          // Maybe flow, or a blank line?
-          effects.attempt(
-            lazyFlowConstruct,
-            inspectFlowEnd,
-            effects.check(blankLine, inspectFlowEnd, inspectLazy)
-          )
-        )(code)
-      }
-
-      // Otherwise we’re interrupting.
-      return inspectFlowEnd(code)
-    }
-
-    /** @type {State} */
-    function inspectLazy(code) {
-      // Act as if all containers are continued.
-      subcontinued = stack.length
-      assert(
-        inspectResult,
-        'expected `inspectResult` to be defined when inspecting lazy'
-      )
-      inspectResult.lazy = true
-      inspectResult.flowContinue = true
-      return inspectDone(code)
-    }
-
-    // We’re done with flow if we have more containers, or an interruption.
-    /** @type {State} */
-    function inspectFlowEnd(code) {
-      assert(
-        inspectResult,
-        'expected `inspectResult` to be defined when inspecting flow end'
-      )
-      inspectResult.flowEnd = true
-      return inspectDone(code)
-    }
-
-    /** @type {State} */
-    function inspectDone(code) {
-      assert(
-        inspectResult,
-        'expected `inspectResult` to be defined when done inspecting'
-      )
-      inspectResult.continued = subcontinued
-      self.interrupt = undefined
-      self.containerState = undefined
-      return ok(code)
-    }
+  function closeFlow() {
+    assert(
+      self.containerState,
+      'expected `containerState` to be defined when closing flow'
+    )
+    assert(childFlow, 'expected `childFlow` to be defined when closing it')
+    childFlow.write([codes.eof])
+    childToken = undefined
+    childFlow = undefined
+    self.containerState._closeFlow = undefined
   }
 }
 
@@ -339,18 +355,6 @@ function tokenizeContainer(effects, ok, nok) {
   return factorySpace(
     effects,
     effects.attempt(this.parser.constructs.document, ok, nok),
-    types.linePrefix,
-    this.parser.constructs.disable.null.includes('codeIndented')
-      ? undefined
-      : constants.tabSize
-  )
-}
-
-/** @type {Tokenizer} */
-function tokenizeLazyFlow(effects, ok, nok) {
-  return factorySpace(
-    effects,
-    effects.lazy(this.parser.constructs.flow, ok, nok),
     types.linePrefix,
     this.parser.constructs.disable.null.includes('codeIndented')
       ? undefined

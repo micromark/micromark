@@ -224,13 +224,13 @@ test('code-fenced', function (t) {
   t.equal(
     micromark('   ```\naaa\n    ```'),
     '<pre><code>aaa\n ```\n</code></pre>\n',
-    'should not support a closing sequence w/ too much indent, regardless of opening sequence'
+    'should not support a closing sequence w/ too much indent, regardless of opening sequence (1)'
   )
 
   t.equal(
     micromark('> ```\n>\n>\n>\n\na'),
     '<blockquote>\n<pre><code>\n\n\n</code></pre>\n</blockquote>\n<p>a</p>',
-    'should not support a closing sequence w/ too much indent, regardless of opening sequence'
+    'should not support a closing sequence w/ too much indent, regardless of opening sequence (2)'
   )
 
   t.equal(

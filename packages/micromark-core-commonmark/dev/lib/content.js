@@ -16,14 +16,9 @@ import {types} from 'micromark-util-symbol/types.js'
 
 /**
  * No name because it must not be turned off.
- *
  * @type {Construct}
  */
-export const content = {
-  tokenize: tokenizeContent,
-  resolve: resolveContent,
-  lazy: true
-}
+export const content = {tokenize: tokenizeContent, resolve: resolveContent}
 
 /** @type {Construct} */
 const continuationConstruct = {tokenize: tokenizeContinuation, partial: true}

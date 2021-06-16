@@ -76,8 +76,7 @@ export function createTokenizer(parser, initialize, from) {
     exit,
     attempt: constructFactory(onsuccessfulconstruct),
     check: constructFactory(onsuccessfulcheck),
-    interrupt: constructFactory(onsuccessfulcheck, {interrupt: true}),
-    lazy: constructFactory(onsuccessfulcheck, {lazy: true})
+    interrupt: constructFactory(onsuccessfulcheck, {interrupt: true})
   }
 
   /**
@@ -132,7 +131,6 @@ export function createTokenizer(parser, initialize, from) {
     addResult(initialize, 0)
 
     // Otherwise, resolve, and exit.
-    // Note: TS can’t handle recursive types.
     context.events = resolveAll(resolveAllConstructs, context.events, context)
 
     return context.events
@@ -233,7 +231,7 @@ export function createTokenizer(parser, initialize, from) {
     assert.strictEqual(
       consumed,
       undefined,
-      'expected code to not have been consumed'
+      'expected code to not have been consumed: this might be because `return x(code)` instead of `return x` was used'
     )
     assert(
       code === null

@@ -345,7 +345,7 @@ export function compile(options = {}) {
    * @returns {void}
    */
   function prepareList(slice) {
-    const length = slice.length - 1 // Skip close.
+    const length = slice.length
     let index = 0 // Skip open.
     let containerBalance = 0
     let loose = false
@@ -602,7 +602,6 @@ export function compile(options = {}) {
 
     if (!count) {
       tag('>')
-      setData('fencedCodeInside', true)
       setData('slurpOneLineEnding', true)
     }
 
@@ -618,8 +617,28 @@ export function compile(options = {}) {
   /** @type {Handle} */
   function onexitflowcode() {
     const count = getData('fencesCount')
-    // Send an extra line feed if we saw data.
-    if (getData('flowCodeSeenData')) lineEndingIfNeeded()
+
+    // One special case is if we are inside a container, and the fenced code was
+    // not closed (meaning it runs to the end).
+    // In that case, the following line ending, is considered *outside* the
+    // fenced code and block quote by micromark, but CM wants to treat that
+    // ending as part of the code.
+    if (
+      count !== undefined &&
+      count < 2 &&
+      // @ts-expect-error `tightStack` is always set.
+      data.tightStack.length > 0 &&
+      !getData('lastWasTag')
+    ) {
+      lineEnding()
+    }
+
+    // But in most cases, it’s simpler: when we’ve seen some data, emit an extra
+    // line ending when needed.
+    if (getData('flowCodeSeenData')) {
+      lineEndingIfNeeded()
+    }
+
     tag('</code></pre>')
     if (count !== undefined && count < 2) lineEndingIfNeeded()
     setData('flowCodeSeenData')
