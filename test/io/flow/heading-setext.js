@@ -244,6 +244,18 @@ test('heading-setext', function (t) {
   )
 
   t.equal(
+    micromark('> ===\na'),
+    '<blockquote>\n<p>===\na</p>\n</blockquote>',
+    'should not support lazyness (1)'
+  )
+
+  t.equal(
+    micromark('> a\n==='),
+    '<blockquote>\n<p>a\n===</p>\n</blockquote>',
+    'should not support lazyness (2)'
+  )
+
+  t.equal(
     micromark('a\n-', {extensions: [{disable: {null: ['setextUnderline']}}]}),
     '<p>a\n-</p>',
     'should support turning off setext underlines'

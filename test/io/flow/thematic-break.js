@@ -153,6 +153,18 @@ test('thematic-break', function (t) {
   )
 
   t.equal(
+    micromark('> ---\na'),
+    '<blockquote>\n<hr />\n</blockquote>\n<p>a</p>',
+    'should not support lazyness (1)'
+  )
+
+  t.equal(
+    micromark('> a\n---'),
+    '<blockquote>\n<p>a</p>\n</blockquote>\n<hr />',
+    'should not support lazyness (2)'
+  )
+
+  t.equal(
     micromark('***', {extensions: [{disable: {null: ['thematicBreak']}}]}),
     '<p>***</p>',
     'should support turning off thematic breaks'

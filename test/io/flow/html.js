@@ -157,6 +157,18 @@ test('html', function (t) {
       'should support blank lines in raw'
     )
 
+    t.equal(
+      micromark('> <script>\na', unsafe),
+      '<blockquote>\n<script>\n</blockquote>\n<p>a</p>',
+      'should not support lazyness (1)'
+    )
+
+    t.equal(
+      micromark('> a\n<script>', unsafe),
+      '<blockquote>\n<p>a</p>\n</blockquote>\n<script>',
+      'should not support lazyness (2)'
+    )
+
     t.end()
   })
 
@@ -222,6 +234,18 @@ test('html', function (t) {
       'should support blank lines in comments'
     )
 
+    t.equal(
+      micromark('> <!--\na', unsafe),
+      '<blockquote>\n<!--\n</blockquote>\n<p>a</p>',
+      'should not support lazyness (1)'
+    )
+
+    t.equal(
+      micromark('> a\n<!--', unsafe),
+      '<blockquote>\n<p>a</p>\n</blockquote>\n<!--',
+      'should not support lazyness (2)'
+    )
+
     t.end()
   })
 
@@ -255,6 +279,18 @@ test('html', function (t) {
       micromark('<?\n  \n  \n?>', unsafe),
       '<?\n  \n  \n?>',
       'should support blank lines in instructions'
+    )
+
+    t.equal(
+      micromark('> <?\na', unsafe),
+      '<blockquote>\n<?\n</blockquote>\n<p>a</p>',
+      'should not support lazyness (1)'
+    )
+
+    t.equal(
+      micromark('> a\n<?', unsafe),
+      '<blockquote>\n<p>a</p>\n</blockquote>\n<?',
+      'should not support lazyness (2)'
     )
 
     t.end()
@@ -298,6 +334,18 @@ test('html', function (t) {
       micromark('<!a\n  \n  \n>', unsafe),
       '<!a\n  \n  \n>',
       'should support blank lines in declarations'
+    )
+
+    t.equal(
+      micromark('> <!a\nb', unsafe),
+      '<blockquote>\n<!a\n</blockquote>\n<p>b</p>',
+      'should not support lazyness (1)'
+    )
+
+    t.equal(
+      micromark('> a\n<!b', unsafe),
+      '<blockquote>\n<p>a</p>\n</blockquote>\n<!b',
+      'should not support lazyness (2)'
     )
 
     t.end()
@@ -350,6 +398,18 @@ test('html', function (t) {
       micromark('<![CDATA[\n  \n  \n]]>', unsafe),
       '<![CDATA[\n  \n  \n]]>',
       'should support blank lines in cdata'
+    )
+
+    t.equal(
+      micromark('> <![CDATA[\na', unsafe),
+      '<blockquote>\n<![CDATA[\n</blockquote>\n<p>a</p>',
+      'should not support lazyness (1)'
+    )
+
+    t.equal(
+      micromark('> a\n<![CDATA[', unsafe),
+      '<blockquote>\n<p>a</p>\n</blockquote>\n<![CDATA[',
+      'should not support lazyness (2)'
     )
 
     t.end()
@@ -623,6 +683,18 @@ test('html', function (t) {
       micromark('<div\n  \n  \n>', unsafe),
       '<div\n<blockquote>\n</blockquote>',
       'should not support blank lines in basic'
+    )
+
+    t.equal(
+      micromark('> <div\na', unsafe),
+      '<blockquote>\n<div\n</blockquote>\n<p>a</p>',
+      'should not support lazyness (1)'
+    )
+
+    t.equal(
+      micromark('> a\n<div', unsafe),
+      '<blockquote>\n<p>a</p>\n</blockquote>\n<div',
+      'should not support lazyness (2)'
     )
 
     t.end()
@@ -915,6 +987,18 @@ test('html', function (t) {
       micromark('<x>\n  \n  \n>', unsafe),
       '<x>\n<blockquote>\n</blockquote>',
       'should not support blank lines in complete'
+    )
+
+    t.equal(
+      micromark('> <a>\n*bar*', unsafe),
+      '<blockquote>\n<a>\n</blockquote>\n<p><em>bar</em></p>',
+      'should not support lazyness (1)'
+    )
+
+    t.equal(
+      micromark('> a\n<a>', unsafe),
+      '<blockquote>\n<p>a</p>\n</blockquote>\n<a>',
+      'should not support lazyness (2)'
     )
 
     t.end()

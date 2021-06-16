@@ -183,6 +183,18 @@ test('heading-atx', function (t) {
   )
 
   t.equal(
+    micromark('> #\na'),
+    '<blockquote>\n<h1></h1>\n</blockquote>\n<p>a</p>',
+    'should not support lazyness (1)'
+  )
+
+  t.equal(
+    micromark('> a\n#'),
+    '<blockquote>\n<p>a</p>\n</blockquote>\n<h1></h1>',
+    'should not support lazyness (2)'
+  )
+
+  t.equal(
     micromark('# a', {extensions: [{disable: {null: ['headingAtx']}}]}),
     '<p># a</p>',
     'should support turning off heading (atx)'

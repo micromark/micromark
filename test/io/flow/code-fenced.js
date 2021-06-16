@@ -234,6 +234,24 @@ test('code-fenced', function (t) {
   )
 
   t.equal(
+    micromark('> ```a\nb'),
+    '<blockquote>\n<pre><code class="language-a"></code></pre>\n</blockquote>\n<p>b</p>',
+    'should not support lazyness (1)'
+  )
+
+  t.equal(
+    micromark('> a\n```b'),
+    '<blockquote>\n<p>a</p>\n</blockquote>\n<pre><code class="language-b"></code></pre>\n',
+    'should not support lazyness (2)'
+  )
+
+  t.equal(
+    micromark('> ```a\n```'),
+    '<blockquote>\n<pre><code class="language-a"></code></pre>\n</blockquote>\n<pre><code></code></pre>\n',
+    'should not support lazyness (3)'
+  )
+
+  t.equal(
     micromark('```', {extensions: [{disable: {null: ['codeFenced']}}]}),
     '<p>```</p>',
     'should support turning off code (fenced)'

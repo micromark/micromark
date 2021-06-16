@@ -200,8 +200,8 @@ function tokenizeHtmlFlow(effects, ok, nok) {
       }
 
       kind = constants.htmlComplete
-      // Do not support complete HTML when interrupting.
-      return self.interrupt
+      // Do not support complete HTML when interrupting
+      return self.interrupt && !self.lazy
         ? nok(code)
         : startTag
         ? completeAttributeNameBefore(code)
@@ -443,14 +443,33 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     }
 
     if (markdownLineEnding(code)) {
-      effects.enter(types.lineEnding)
-      effects.consume(code)
-      effects.exit(types.lineEnding)
-      return htmlContinueStart
+      return effects.attempt(
+        {tokenize: htmlLineEnd, partial: true},
+        htmlContinueStart,
+        done
+      )(code)
     }
 
     effects.enter(types.htmlFlowData)
     return continuation(code)
+  }
+
+  /** @type {Tokenizer} */
+  function htmlLineEnd(effects, ok, nok) {
+    return start
+
+    /** @type {State} */
+    function start(code) {
+      effects.enter(types.lineEnding)
+      effects.consume(code)
+      effects.exit(types.lineEnding)
+      return lineStart
+    }
+
+    /** @type {State} */
+    function lineStart(code) {
+      return self.lazy ? nok(code) : ok(code)
+    }
   }
 
   /** @type {State} */

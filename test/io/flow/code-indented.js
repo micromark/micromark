@@ -75,6 +75,48 @@ test('code-indented', function (t) {
   )
 
   t.equal(
+    micromark('>     a\nb'),
+    '<blockquote>\n<pre><code>a\n</code></pre>\n</blockquote>\n<p>b</p>',
+    'should not support lazyness (1)'
+  )
+
+  t.equal(
+    micromark('> a\n    b'),
+    '<blockquote>\n<p>a\nb</p>\n</blockquote>',
+    'should not support lazyness (2)'
+  )
+
+  t.equal(
+    micromark('> a\n     b'),
+    '<blockquote>\n<p>a\nb</p>\n</blockquote>',
+    'should not support lazyness (3)'
+  )
+
+  t.equal(
+    micromark('> a\n      b'),
+    '<blockquote>\n<p>a\nb</p>\n</blockquote>',
+    'should not support lazyness (4)'
+  )
+
+  t.equal(
+    micromark('>     a\n    b'),
+    '<blockquote>\n<pre><code>a\n</code></pre>\n</blockquote>\n<pre><code>b\n</code></pre>',
+    'should not support lazyness (5)'
+  )
+
+  t.equal(
+    micromark('>     a\n     b'),
+    '<blockquote>\n<pre><code>a\n</code></pre>\n</blockquote>\n<pre><code> b\n</code></pre>',
+    'should not support lazyness (6)'
+  )
+
+  t.equal(
+    micromark('>     a\n      b'),
+    '<blockquote>\n<pre><code>a\n</code></pre>\n</blockquote>\n<pre><code>  b\n</code></pre>',
+    'should not support lazyness (7)'
+  )
+
+  t.equal(
     micromark('   a', {extensions: [{disable: {null: ['codeIndented']}}]}),
     '<p>a</p>',
     'should support turning off code (indented, 1)'
