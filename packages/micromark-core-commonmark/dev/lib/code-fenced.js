@@ -184,7 +184,7 @@ function tokenizeCodeFenced(effects, ok, nok) {
 
     /** @type {State} */
     function lineStart(code) {
-      return self.lazy ? nok(code) : ok(code)
+      return self.parser.lazy[self.now().line] ? nok(code) : ok(code)
     }
   }
 

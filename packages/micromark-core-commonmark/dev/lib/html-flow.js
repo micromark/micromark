@@ -201,7 +201,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
 
       kind = constants.htmlComplete
       // Do not support complete HTML when interrupting
-      return self.interrupt && !self.lazy
+      return self.interrupt && !self.parser.lazy[self.now().line]
         ? nok(code)
         : startTag
         ? completeAttributeNameBefore(code)
@@ -460,6 +460,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
 
     /** @type {State} */
     function start(code) {
+      assert(markdownLineEnding(code), 'expected eol')
       effects.enter(types.lineEnding)
       effects.consume(code)
       effects.exit(types.lineEnding)
@@ -468,7 +469,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
 
     /** @type {State} */
     function lineStart(code) {
-      return self.lazy ? nok(code) : ok(code)
+      return self.parser.lazy[self.now().line] ? nok(code) : ok(code)
     }
   }
 

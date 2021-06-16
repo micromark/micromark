@@ -115,7 +115,7 @@ function tokenizeSetextUnderline(effects, ok, nok) {
       'expected `=` or `-`'
     )
 
-    if (!self.lazy && (self.interrupt || paragraph)) {
+    if (!self.parser.lazy[self.now().line] && (self.interrupt || paragraph)) {
       effects.enter(types.setextHeadingLine)
       effects.enter(types.setextHeadingLineSequence)
       marker = code

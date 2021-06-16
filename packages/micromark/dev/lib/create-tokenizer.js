@@ -448,7 +448,10 @@ export function createTokenizer(parser, initialize, from) {
           }
 
           return construct.tokenize.call(
-            fields ? Object.assign({}, context, fields) : context,
+            // If we do have fields, create an object w/ `context` as its
+            // prototype.
+            // This allows a “live binding”, which is needed for `interrupt`.
+            fields ? Object.assign(Object.create(context), fields) : context,
             effects,
             ok,
             nok

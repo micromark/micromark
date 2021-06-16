@@ -88,7 +88,7 @@ function tokenizeIndentedContent(effects, ok, nok) {
   /** @type {State} */
   function start(code) {
     // If this is a lazy line, it can’t be code.
-    if (self.lazy) {
+    if (self.parser.lazy[self.now().line]) {
       return nok(code)
     }
 

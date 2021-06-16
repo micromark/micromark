@@ -28,6 +28,7 @@ export function parse(options = {}) {
   /** @type {ParseContext} */
   const parser = {
     defined: [],
+    lazy: {},
     constructs,
     content: create(content),
     document: create(document),

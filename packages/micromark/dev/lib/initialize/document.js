@@ -128,7 +128,7 @@ function initializeDocument(effects) {
 
   /** @type {State} */
   function thereIsNoNewContainer(code) {
-    self.lazy = continued !== stack.length
+    self.parser.lazy[self.now().line] = continued !== stack.length
     lineStartOffset = self.now().offset
     return flowStart(code)
   }
@@ -194,7 +194,6 @@ function initializeDocument(effects) {
       // Get ready for the next line.
       continued = 0
       self.interrupt = undefined
-      self.lazy = undefined
       return start
     }
 
@@ -214,7 +213,6 @@ function initializeDocument(effects) {
     token.previous = childToken
     if (childToken) childToken.next = token
     childToken = token
-    childFlow.lazy = self.lazy
     childFlow.defineSkip(token.start)
     childFlow.write(stream)
 
@@ -251,7 +249,7 @@ function initializeDocument(effects) {
     // We’ve now parsed the non-lazy and the lazy line, and can figure out
     // whether the lazy line started a new flow block.
     // If it did, we exit the current containers between the two flow blocks.
-    if (self.lazy) {
+    if (self.parser.lazy[token.start.line]) {
       let index = childFlow.events.length
 
       while (index--) {

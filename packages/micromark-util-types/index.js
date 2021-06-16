@@ -323,16 +323,6 @@
  *   ```
  *
  *   At 2:1, we’re “interrupting”.
- * @property {boolean} [lazy]
- *   Whether we’re currently lazy.
- *   Take for example:
- *
- *   ```markdown
- *   > a
- *   b
- *   ```
- *
- *   At 2:1, we’re “lazy”.
  * @property {Construct} [currentConstruct]
  *   The current construct.
  *   Constructs that are not `partial` are set here.
@@ -428,6 +418,17 @@
  * @property {Create} string
  * @property {Create} text
  * @property {string[]} defined List of defined identifiers.
+ * @property {Record<number, boolean>} lazy
+ *   Map of line numbers to whether they are lazy (as opposed to the line before
+ *   them).
+ *   Take for example:
+ *
+ *   ```markdown
+ *   > a
+ *   b
+ *   ```
+ *
+ *   L1 here is not lazy, L2 is.
  */
 
 /**
