@@ -132,8 +132,7 @@ export function subtokenize(events) {
  * @returns {Record<string, number>}
  */
 function subcontent(events, eventIndex) {
-  /** @type {Token} */
-  let token = events[eventIndex][1]
+  const token = events[eventIndex][1]
   const context = events[eventIndex][2]
   let startPosition = eventIndex - 1
   /** @type {number[]} */
@@ -150,17 +149,12 @@ function subcontent(events, eventIndex) {
   let stream
   /** @type {Token|undefined} */
   let previous
-  /** @type {number} */
-  let index
-  /** @type {boolean|undefined} */
-  let entered
-  /** @type {number|undefined} */
-  let end
-  /** @type {number} */
-  let adjust
-
+  let index = -1
   /** @type {Token|undefined} */
   let current = token
+  let adjust = 0
+  let start = 0
+  const breaks = [start]
 
   // Loop forward through the linked tokens to pass them in order to the
   // subtokenizer.
@@ -207,42 +201,54 @@ function subcontent(events, eventIndex) {
 
   // Now, loop back through all events (and linked tokens), to figure out which
   // parts belong where.
-  // @ts-expect-error Assume at least one `previous` is set.
-  token = previous
-  index = childEvents.length
+  current = token
 
-  while (index--) {
-    // Make sure we’ve at least seen something (final eol is part of the last
-    // token).
-    if (childEvents[index][0] === 'enter') {
-      entered = true
-    } else if (
+  while (++index < childEvents.length) {
+    if (
       // Find a void token that includes a break.
-      entered &&
+      childEvents[index][0] === 'exit' &&
+      childEvents[index - 1][0] === 'enter' &&
       childEvents[index][1].type === childEvents[index - 1][1].type &&
       childEvents[index][1].start.line !== childEvents[index][1].end.line
     ) {
-      add(childEvents.slice(index + 1, end))
-      assert(token.previous, 'expected a previous token')
+      assert(current, 'expected a current token')
+      start = index + 1
+      breaks.push(start)
       // Help GC.
-      token._tokenizer = undefined
-      token.next = undefined
-      token = token.previous
-      end = index + 1
+      current._tokenizer = undefined
+      current.previous = undefined
+      current = current.next
     }
   }
 
-  assert(!token.previous, 'expected no previous token')
   // Help GC.
   tokenizer.events = []
-  token._tokenizer = undefined
-  token.next = undefined
 
-  // Do head:
-  add(childEvents.slice(0, end))
+  // If there’s one more token (which is the cases for lines that end in an
+  // EOF), that’s perfect: the last point we found starts it.
+  // If there isn’t then make sure any remaining content is added to it.
+  if (current) {
+    // Help GC.
+    current._tokenizer = undefined
+    current.previous = undefined
+    assert(!current.next, 'expected no next token')
+  } else {
+    breaks.pop()
+  }
+
+  // Now splice the events from the subtokenizer into the current events,
+  // moving back to front so that splice indices aren’t affected.
+  index = breaks.length
+
+  while (index--) {
+    const slice = childEvents.slice(breaks[index], breaks[index + 1])
+    const start = startPositions.pop()
+    assert(start !== undefined, 'expected a start position when splicing')
+    jumps.unshift([start, start + slice.length - 1])
+    splice(events, start, 2, slice)
+  }
 
   index = -1
-  adjust = 0
 
   while (++index < jumps.length) {
     gaps[adjust + jumps[index][0]] = adjust + jumps[index][1]
@@ -250,15 +256,4 @@ function subcontent(events, eventIndex) {
   }
 
   return gaps
-
-  /**
-   * @param {Event[]} slice
-   * @returns {void}
-   */
-  function add(slice) {
-    const start = startPositions.pop()
-    assert(start !== undefined, 'expected a start position when calling `add`')
-    jumps.unshift([start, start + slice.length - 1])
-    splice(events, start, 2, slice)
-  }
 }
