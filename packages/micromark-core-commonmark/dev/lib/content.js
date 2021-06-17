@@ -104,6 +104,7 @@ function tokenizeContinuation(effects, ok, nok) {
   /** @type {State} */
   function startLookahead(code) {
     assert(markdownLineEnding(code), 'expected a line ending')
+    effects.exit(types.chunkContent)
     effects.enter(types.lineEnding)
     effects.consume(code)
     effects.exit(types.lineEnding)
