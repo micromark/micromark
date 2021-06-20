@@ -21,6 +21,7 @@ packages/micromark-util-character/lib/
 packages/micromark-util-character/index.js
 packages/micromark-util-chunked/index.js
 packages/micromark-util-classify-character/index.js
+packages/micromark-util-decode-numeric-character-reference/index.js
 packages/micromark-util-normalize-identifier/index.js
 packages/micromark-util-sanitize-uri/index.js
 packages/micromark-util-subtokenize/index.js

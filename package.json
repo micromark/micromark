@@ -43,6 +43,7 @@
     "micromark-util-chunked": "file:packages/micromark-util-chunked",
     "micromark-util-classify-character": "file:packages/micromark-util-classify-character",
     "micromark-util-combine-extensions": "file:packages/micromark-util-combine-extensions",
+    "micromark-util-decode-numeric-character-reference": "file:packages/micromark-util-decode-numeric-character-reference",
     "micromark-util-encode": "file:packages/micromark-util-encode",
     "micromark-util-html-tag-name": "file:packages/micromark-util-html-tag-name",
     "micromark-util-normalize-identifier": "file:packages/micromark-util-normalize-identifier",

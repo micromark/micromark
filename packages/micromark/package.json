@@ -103,6 +103,7 @@
     "micromark-util-character": "1.0.0-alpha.3",
     "micromark-util-chunked": "1.0.0-alpha.3",
     "micromark-util-combine-extensions": "1.0.0-alpha.3",
+    "micromark-util-decode-numeric-character-reference": "1.0.0-alpha.3",
     "micromark-util-encode": "1.0.0-alpha.3",
     "micromark-util-normalize-identifier": "1.0.0-alpha.3",
     "micromark-util-resolve-all": "1.0.0-alpha.3",
