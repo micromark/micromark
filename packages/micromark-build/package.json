@@ -1,6 +1,6 @@
 {
   "name": "micromark-build",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-beta.1",
   "description": "Build production files from dev files",
   "license": "MIT",
   "keywords": [

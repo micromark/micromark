@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-classify-character",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-beta.1",
   "description": "micromark utility to classify whether a character is whitespace or punctuation",
   "license": "MIT",
   "keywords": [
@@ -41,9 +41,9 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-character": "^1.0.0-alpha.3",
-    "micromark-util-symbol": "^1.0.0-alpha.3",
-    "micromark-util-types": "1.0.0-alpha.3"
+    "micromark-util-character": "^1.0.0-beta.1",
+    "micromark-util-symbol": "^1.0.0-beta.1",
+    "micromark-util-types": "1.0.0-beta.1"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"

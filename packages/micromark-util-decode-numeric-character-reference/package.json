@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-decode-numeric-character-reference",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-beta.1",
   "description": "micromark utility to decode numeric character references",
   "license": "MIT",
   "keywords": [
@@ -43,7 +43,7 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-symbol": "^1.0.0-alpha.3"
+    "micromark-util-symbol": "^1.0.0-beta.1"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"

@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-encode",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-beta.1",
   "description": "micromark utility to encode dangerous html characters",
   "license": "MIT",
   "keywords": [

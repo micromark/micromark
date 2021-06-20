@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-combine-extensions",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-beta.1",
   "description": "micromark utility to combine syntax or html extensions",
   "license": "MIT",
   "keywords": [
@@ -37,8 +37,8 @@
   ],
   "exports": "./index.js",
   "dependencies": {
-    "micromark-util-chunked": "^1.0.0-alpha.3",
-    "micromark-util-types": "1.0.0-alpha.3"
+    "micromark-util-chunked": "^1.0.0-beta.1",
+    "micromark-util-types": "1.0.0-beta.1"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" && tsc && type-coverage"
