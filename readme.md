@@ -10,10 +10,6 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-> ⚠️ Note: this is the readme for the upcoming release of micromark 3.0.0.\
-> [See here](https://github.com/micromark/micromark/tree/14d86e0) for the
-> current release.
-
 The smallest CommonMark compliant markdown parser with positional info and
 concrete tokens.
 
