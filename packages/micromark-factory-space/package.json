@@ -1,6 +1,6 @@
 {
   "name": "micromark-factory-space",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "description": "micromark factory to parse markdown space (found in lots of places)",
   "license": "MIT",
   "keywords": [
@@ -38,8 +38,8 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-character": "^1.0.0-beta.1",
-    "micromark-util-types": "1.0.0-beta.1"
+    "micromark-util-character": "^1.0.0",
+    "micromark-util-types": "^1.0.0"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"
