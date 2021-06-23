@@ -75,7 +75,7 @@ The following Babel plugins are used:
     — Remove [`assert`](https://nodejs.org/api/assert.html) calls
 *   [`babel-plugin-undebug`](https://github.com/wooorm/babel-plugin-undebug)
     — Remove [`debug`](https://github.com/visionmedia/debug) calls
-*   [`babel-plugin-undebug`](https://github.com/wooorm/babel-plugin-inline-constants)
+*   [`babel-plugin-inline-constants`](https://github.com/wooorm/babel-plugin-inline-constants)
     — Inline the values from
     [`micromark-util-symbol`](https://github.com/micromark/micromark/tree/main/packages/micromark-util-symbol)
 
