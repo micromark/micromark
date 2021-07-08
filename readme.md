@@ -24,7 +24,7 @@ concrete tokens.
 
 ## When to use this
 
-*   If you *just* want to turn markdown into HTML (maybe a few extensions)
+*   If you *just* want to turn markdown into HTML (with maybe a few extensions)
 *   If you want to do *really complex things* with markdown
 
 See [§ Comparison][comparison] for more info
