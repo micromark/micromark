@@ -85,7 +85,7 @@
   },
   "scripts": {
     "postinstall": "lerna bootstrap --no-ci",
-    "build-workspace": "lerna run build",
+    "build-workspace": "lerna run build && cp readme.md packages/micromark/readme.md",
     "build-monorepo": "node script/generate-expressions.js && rimraf \"{script/**,test/**}/*.d.ts\" && rimraf \"{script/**,test/**}/*.d.ts\" && tsc && type-coverage",
     "build-size": "rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "build": "npm run build-workspace && npm run build-monorepo && npm run build-size",
