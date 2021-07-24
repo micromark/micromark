@@ -1,5 +1,5 @@
-import fs from 'fs'
-import stream from 'stream'
+import fs from 'node:fs'
+import stream from 'node:stream'
 import test from 'tape'
 import concat from 'concat-stream'
 import {stream as micromark} from 'micromark/stream.js'

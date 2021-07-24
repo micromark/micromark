@@ -5,9 +5,9 @@
 // Finally, it writes those given strings to `test/fixtures/` as separate files.
 // This can then be used to feed the fuzz tester.
 
-import {promises as fs} from 'fs'
-import path from 'path'
-import cp from 'child_process'
+import {promises as fs} from 'node:fs'
+import path from 'node:path'
+import cp from 'node:child_process'
 
 main()
 

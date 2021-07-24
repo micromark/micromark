@@ -1,5 +1,5 @@
-import {promises as fs} from 'fs'
-import path from 'path'
+import {promises as fs} from 'node:fs'
+import path from 'node:path'
 import regenerate from 'regenerate'
 // @ts-expect-error untyped.
 import ConnectorPunctuation from '@unicode/unicode-13.0.0/General_Category/Connector_Punctuation/code-points.js'
@@ -36,7 +36,7 @@ async function main() {
 
   // Note: we don’t support astrals.
   const pc = regenerate()
-    .add(pcAll.filter((d) => d <= 0xffff))
+    .add(pcAll.filter((d) => d <= 0xff_ff))
     .toRegExp()
 
   await fs.writeFile(

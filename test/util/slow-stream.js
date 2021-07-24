@@ -1,4 +1,4 @@
-import stream from 'stream'
+import stream from 'node:stream'
 
 const PassThrough = stream.PassThrough
 

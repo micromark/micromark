@@ -36,10 +36,10 @@ export function splice(list, start, remove, items) {
     parameters = Array.from(items)
     parameters.unshift(start, remove)
     // @ts-expect-error Hush, it’s fine.
-    ;[].splice.apply(list, parameters)
+    list.splice(...parameters)
   } else {
     // Delete `remove` items starting from `start`
-    if (remove) [].splice.apply(list, [start, remove])
+    if (remove) list.splice(start, remove)
 
     // Insert the items in chunks to not cause stack overflows.
     while (chunkStart < items.length) {
@@ -49,7 +49,7 @@ export function splice(list, start, remove, items) {
       )
       parameters.unshift(start, 0)
       // @ts-expect-error Hush, it’s fine.
-      ;[].splice.apply(list, parameters)
+      list.splice(...parameters)
 
       chunkStart += constants.v8MaxSafeChunkSize
       start += constants.v8MaxSafeChunkSize

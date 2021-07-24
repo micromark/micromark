@@ -6,13 +6,13 @@ import {constants} from 'micromark-util-symbol/constants.js'
 test('constants', function (t) {
   t.equal(
     constants.characterReferenceDecimalSizeMax,
-    (0x10ffff).toString(10).length,
+    (0x10_ff_ff).toString(10).length,
     '`characterReferenceDecimalSizeMax`'
   )
 
   t.equal(
     constants.characterReferenceHexadecimalSizeMax,
-    (0x10ffff).toString(16).length,
+    (0x10_ff_ff).toString(16).length,
     '`characterReferenceHexadecimalSizeMax`'
   )
 

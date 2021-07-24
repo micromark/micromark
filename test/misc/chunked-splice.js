@@ -4,7 +4,7 @@ import {splice} from 'micromark-util-chunked'
 test('splice', function (t) {
   /** @type {number[]} */
   let list = []
-  const lots = [...Array.from({length: 140000}).keys()]
+  const lots = [...Array.from({length: 140_000}).keys()]
 
   t.throws(
     () => list.splice(0, 0, ...lots),
