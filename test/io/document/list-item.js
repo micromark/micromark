@@ -321,6 +321,18 @@ test('list-item', function (t) {
   )
 
   t.equal(
+    micromark('\n2. a'),
+    '<ol start="2">\n<li>a</li>\n</ol>',
+    'should “interrupt” a blank line (1)'
+  )
+
+  t.equal(
+    micromark('a\n\n2. b'),
+    '<p>a</p>\n<ol start="2">\n<li>b</li>\n</ol>',
+    'should “interrupt” a blank line (2)'
+  )
+
+  t.equal(
     micromark('a\n1. b'),
     '<p>a</p>\n<ol>\n<li>b</li>\n</ol>',
     'should support interrupting a paragraph with a 1 numbered item'

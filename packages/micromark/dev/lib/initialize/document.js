@@ -106,8 +106,10 @@ function initializeDocument(effects) {
         return flowStart(code)
       }
 
-      // If we do have flow, we’d be interrupting it w/ a new container.
-      self.interrupt = true
+      // If we do have flow, it could still be a blank line,
+      // but we’d be interrupting it w/ a new container if there’s a current
+      // construct.
+      self.interrupt = Boolean(childFlow.currentConstruct)
     }
 
     // Check if there is a new container.
