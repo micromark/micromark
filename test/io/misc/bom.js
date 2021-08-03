@@ -1,3 +1,4 @@
+import {Buffer} from 'node:buffer'
 import test from 'tape'
 import concat from 'concat-stream'
 import {micromark} from 'micromark'

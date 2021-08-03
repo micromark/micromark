@@ -1,3 +1,4 @@
+import {Buffer} from 'node:buffer'
 import fs from 'node:fs'
 import stream from 'node:stream'
 import test from 'tape'

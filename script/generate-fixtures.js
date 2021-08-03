@@ -5,6 +5,7 @@
 // Finally, it writes those given strings to `test/fixtures/` as separate files.
 // This can then be used to feed the fuzz tester.
 
+import process from 'node:process'
 import {promises as fs} from 'node:fs'
 import path from 'node:path'
 import cp from 'node:child_process'
