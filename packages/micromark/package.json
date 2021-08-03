@@ -47,7 +47,9 @@
     "dev/",
     "lib/",
     "index.d.ts",
-    "index.js"
+    "index.js",
+    "stream.d.ts",
+    "stream.js"
   ],
   "exports": {
     ".": {
