@@ -532,6 +532,24 @@ test('list-item', function (t) {
   )
 
   t.equal(
+    micromark('- +\n-'),
+    '<ul>\n<li>\n<ul>\n<li></li>\n</ul>\n</li>\n<li></li>\n</ul>',
+    'should support complex nested and empty lists (1)'
+  )
+
+  t.equal(
+    micromark('- 1.\n-'),
+    '<ul>\n<li>\n<ol>\n<li></li>\n</ol>\n</li>\n<li></li>\n</ul>',
+    'should support complex nested and empty lists (2)'
+  )
+
+  t.equal(
+    micromark('* - +\n* -'),
+    '<ul>\n<li>\n<ul>\n<li>\n<ul>\n<li></li>\n</ul>\n</li>\n</ul>\n</li>\n<li>\n<ul>\n<li></li>\n</ul>\n</li>\n</ul>',
+    'should support complex nested and empty lists (3)'
+  )
+
+  t.equal(
     micromark('* a\n\n<!---->\n\n* b', {allowDangerousHtml: true}),
     '<ul>\n<li>a</li>\n</ul>\n<!---->\n<ul>\n<li>b</li>\n</ul>',
     'should support the common list breaking comment method'

@@ -79,8 +79,63 @@ function initializeDocument(effects) {
       self.containerState,
       'expected `containerState` to be defined after continuation'
     )
-    if (self.containerState._closeFlow) closeFlow()
+
     continued++
+
+    // Note: this field is called `_closeFlow` but it also closes containers.
+    // Perhaps a good idea to rename it but it’s already used in the wild by
+    // extensions.
+    if (self.containerState._closeFlow) {
+      self.containerState._closeFlow = undefined
+
+      if (childFlow) {
+        closeFlow()
+      }
+
+      // Note: this algorithm for moving events around is similar to the
+      // algorithm when dealing with lazy lines in `writeToChild`.
+      const indexBeforeExits = self.events.length
+      let indexBeforeFlow = indexBeforeExits
+      /** @type {Point|undefined} */
+      let point
+
+      // Find the flow chunk.
+      while (indexBeforeFlow--) {
+        if (
+          self.events[indexBeforeFlow][0] === 'exit' &&
+          self.events[indexBeforeFlow][1].type === types.chunkFlow
+        ) {
+          point = self.events[indexBeforeFlow][1].end
+          break
+        }
+      }
+
+      assert(point, 'could not find previous flow chunk')
+
+      exitContainers(continued)
+
+      // Fix positions.
+      let index = indexBeforeExits
+
+      while (index < self.events.length) {
+        self.events[index][1].end = Object.assign({}, point)
+        index++
+      }
+
+      // Inject the exits earlier (they’re still also at the end).
+      splice(
+        self.events,
+        indexBeforeFlow + 1,
+        0,
+        self.events.slice(indexBeforeExits)
+      )
+
+      // Discard the duplicate exits.
+      self.events.length = index
+
+      return checkNewContainers(code)
+    }
+
     return start(code)
   }
 
@@ -269,6 +324,8 @@ function initializeDocument(effects) {
         }
       }
 
+      // Note: this algorithm for moving events around is similar to the
+      // algorithm when closing flow in `documentContinue`.
       const indexBeforeExits = self.events.length
       let indexBeforeFlow = indexBeforeExits
       /** @type {boolean|undefined} */
