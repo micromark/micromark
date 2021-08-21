@@ -196,7 +196,10 @@ function resolveAllAttention(events, context) {
 
 /** @type {Tokenizer} */
 function tokenizeAttention(effects, ok) {
-  const before = classifyCharacter(this.previous)
+  const attentionMarkers = this.parser.constructs.attentionMarkers.null
+  const previous = this.previous
+  const before = classifyCharacter(previous)
+
   /** @type {NonNullable<Code>} */
   let marker
 
@@ -222,10 +225,16 @@ function tokenizeAttention(effects, ok) {
 
     const token = effects.exit('attentionSequence')
     const after = classifyCharacter(code)
+
     const open =
-      !after || (after === constants.characterGroupPunctuation && before)
+      !after ||
+      (after === constants.characterGroupPunctuation && before) ||
+      attentionMarkers.includes(code)
     const close =
-      !before || (before === constants.characterGroupPunctuation && after)
+      !before ||
+      (before === constants.characterGroupPunctuation && after) ||
+      attentionMarkers.includes(previous)
+
     token._open = Boolean(
       marker === codes.asterisk ? open : open && (before || !close)
     )

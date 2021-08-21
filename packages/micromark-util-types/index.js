@@ -382,6 +382,7 @@
  * @property {ConstructRecord} text
  * @property {{null?: string[]}} disable
  * @property {{null?: Pick<Construct, 'resolveAll'>[]}} insideSpan
+ * @property {{null?: Code[]}} attentionMarkers
  *
  * @typedef _NormalizedExtensionFields
  * @property {Record<string, Construct[]>} document
@@ -392,6 +393,7 @@
  * @property {Record<string, Construct[]>} text
  * @property {{null: string[]}} disable
  * @property {{null: Pick<Construct, 'resolveAll'>[]}} insideSpan
+ * @property {{null: Code[]}} attentionMarkers
  *
  * @typedef {Record<string, Record<string, unknown>> & Partial<_ExtensionFields>} Extension
  *   A syntax extension changes how markdown is tokenized.
