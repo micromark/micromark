@@ -53,7 +53,7 @@
     "micromark-util-resolve-all": "^1.0.0",
     "micromark-util-subtokenize": "^1.0.0",
     "micromark-util-symbol": "^1.0.0",
-    "micromark-util-types": "^1.0.0"
+    "micromark-util-types": "^1.0.1"
   },
   "scripts": {
     "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"
