@@ -284,6 +284,11 @@ As a (potential) author of extensions, refer to
 *   [`micromark/micromark-extension-mdxjs-esm`](https://github.com/micromark/micromark-extension-mdxjs-esm)
     — support MDX.js import/exports
 
+#### Community extensions
+
+*   [`wataru-chocola/micromark-extension-definition-list`](https://github.com/wataru-chocola/micromark-extension-definition-list)
+    — support definition lists
+
 ### `SyntaxExtension`
 
 A syntax extension is an object whose fields are typically the names of hooks,
