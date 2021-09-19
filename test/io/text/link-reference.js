@@ -332,6 +332,35 @@ test('link (reference)', function (t) {
     'should not support mismatched character references in fulls'
   )
 
+  t.equal(
+    micromark(
+      `[*f*][]
+[&semi;][]
+[\\;][]
+[;][]
+[*f*&semi;][]
+[*f*\\;][]
+[*f*;][]
+
+[*f*]: alpha
+[&semi;]: bravo
+[\\;]: charlie
+[;]: delta
+[*f*&semi;]: echo
+[*f*\\;]: foxtrot
+[*f*;]: golf`
+    ),
+    `<p><a href="alpha"><em>f</em></a>
+<a href="bravo">;</a>
+<a href="charlie">;</a>
+<a href="delta">;</a>
+<a href="echo"><em>f</em>;</a>
+<a href="foxtrot"><em>f</em>;</a>
+<a href="golf"><em>f</em>;</a></p>
+`,
+    'should properly handle labels w/ character references and -escapes, and phrasing'
+  )
+
   // 999 `x` characters.
   const max = Array.from({length: 1000}).join('x')
 
