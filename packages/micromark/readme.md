@@ -160,7 +160,7 @@ function handleError(error) {
 There are no default exports.
 
 The export map supports the endorsed
-[`development` condition](https://nodejs.org/api/packages.html#packages_resolving_user_conditions).
+[`development` condition](https://nodejs.org/api/packages.html#packages\_resolving\_user\_conditions).
 Run `node --conditions development module.js` to get instrumented dev code.
 Without this condition, production code is loaded.
 See [§ Size & debug][size-debug] for more info.
@@ -283,6 +283,11 @@ As a (potential) author of extensions, refer to
     — support misc MDX changes
 *   [`micromark/micromark-extension-mdxjs-esm`](https://github.com/micromark/micromark-extension-mdxjs-esm)
     — support MDX.js import/exports
+
+#### Community extensions
+
+*   [`wataru-chocola/micromark-extension-definition-list`](https://github.com/wataru-chocola/micromark-extension-definition-list)
+    — support definition lists
 
 ### `SyntaxExtension`
 
