@@ -44,6 +44,7 @@
     "packages/micromark-util-classify-character",
     "packages/micromark-util-combine-extensions",
     "packages/micromark-util-decode-numeric-character-reference",
+    "packages/micromark-util-decode-string",
     "packages/micromark-util-encode",
     "packages/micromark-util-html-tag-name",
     "packages/micromark-util-normalize-identifier",
