@@ -3,6 +3,8 @@ coverage/
 dist/
 node_modules/
 test/fixtures/
+.stryker-tmp/
+reports/
 *.log
 .DS_Store
 micromark.min.js
