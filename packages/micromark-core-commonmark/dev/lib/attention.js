@@ -9,7 +9,7 @@
  * @typedef {import('micromark-util-types').Point} Point
  */
 
-import assert from 'assert'
+import assert from 'power-assert'
 import {push, splice} from 'micromark-util-chunked'
 import {classifyCharacter} from 'micromark-util-classify-character'
 import {resolveAll} from 'micromark-util-resolve-all'

@@ -6,7 +6,7 @@
  * @typedef {import('micromark-util-types').State} State
  */
 
-import assert from 'assert'
+import assert from 'power-assert'
 import {factorySpace} from 'micromark-factory-space'
 import {
   markdownLineEnding,

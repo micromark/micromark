@@ -4,7 +4,7 @@
  * @typedef {import('micromark-util-types').State} State
  */
 
-import assert from 'assert'
+import assert from 'power-assert'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
 import {labelEnd} from './label-end.js'

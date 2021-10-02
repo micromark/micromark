@@ -14,7 +14,7 @@
  * @typedef {[Construct, StackState]} StackItem
  */
 
-import assert from 'assert'
+import assert from 'power-assert'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'

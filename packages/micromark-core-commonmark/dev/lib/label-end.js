@@ -8,7 +8,7 @@
  * @typedef {import('micromark-util-types').Code} Code
  */
 
-import assert from 'assert'
+import assert from 'power-assert'
 import {factoryDestination} from 'micromark-factory-destination'
 import {factoryLabel} from 'micromark-factory-label'
 import {factoryTitle} from 'micromark-factory-title'

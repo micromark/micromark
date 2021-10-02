@@ -72,14 +72,15 @@ See Use above: run it and get files out.
 The following Babel plugins are used:
 
 *   [`babel-plugin-unassert`](https://github.com/unassert-js/babel-plugin-unassert)
-    — Remove [`assert`](https://nodejs.org/api/assert.html) calls
+    — Remove [`assert`](https://nodejs.org/api/assert.html) and
+    [`power-assert`](https://github.com/power-assert-js/power-assert) calls
 *   [`babel-plugin-undebug`](https://github.com/wooorm/babel-plugin-undebug)
     — Remove [`debug`](https://github.com/visionmedia/debug) calls
 *   [`babel-plugin-inline-constants`](https://github.com/wooorm/babel-plugin-inline-constants)
     — Inline the values from
     [`micromark-util-symbol`](https://github.com/micromark/micromark/tree/main/packages/micromark-util-symbol)
 
-You should use `assert`, `debug`, and `micromark-util-symbol` to develop
+You should use `power-assert`, `debug`, and `micromark-util-symbol` to develop
 micromark extensions!
 
 ## Security

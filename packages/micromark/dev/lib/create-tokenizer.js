@@ -24,7 +24,7 @@
  * @returns {void}
  */
 
-import assert from 'assert'
+import assert from 'power-assert'
 import createDebug from 'debug'
 import {markdownLineEnding} from 'micromark-util-character'
 import {push, splice} from 'micromark-util-chunked'

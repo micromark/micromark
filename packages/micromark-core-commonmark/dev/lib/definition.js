@@ -4,7 +4,7 @@
  * @typedef {import('micromark-util-types').State} State
  */
 
-import assert from 'assert'
+import assert from 'power-assert'
 import {factoryDestination} from 'micromark-factory-destination'
 import {factoryLabel} from 'micromark-factory-label'
 import {factorySpace} from 'micromark-factory-space'

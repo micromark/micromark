@@ -6,7 +6,7 @@
  * @typedef {import('micromark-util-types').Code} Code
  */
 
-import assert from 'assert'
+import assert from 'power-assert'
 import {
   asciiAlpha,
   asciiAlphanumeric,

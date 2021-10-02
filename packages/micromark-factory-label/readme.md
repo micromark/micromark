@@ -31,7 +31,7 @@ npm install micromark-factory-label
 ## Use
 
 ```js
-import assert from 'assert'
+import assert from 'power-assert'
 import {factoryLabel} from 'micromark-factory-label'
 import {codes} from 'micromark-util-symbol/codes'
 import {types} from 'micromark-util-symbol/types'
