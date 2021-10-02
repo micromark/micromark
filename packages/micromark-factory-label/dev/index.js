@@ -46,6 +46,9 @@ export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
       code === codes.eof ||
       code === codes.leftSquareBracket ||
       (code === codes.rightSquareBracket && !data) ||
+      /* To do: remove in the future once we’ve switched from
+       * `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
+       * which doesn’t need this */
       /* Hidden footnotes hook */
       /* c8 ignore next 3 */
       (code === codes.caret &&

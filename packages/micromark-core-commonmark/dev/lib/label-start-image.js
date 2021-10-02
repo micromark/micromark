@@ -47,6 +47,9 @@ function tokenizeLabelStartImage(effects, ok, nok) {
 
   /** @type {State} */
   function after(code) {
+    /* To do: remove in the future once we’ve switched from
+     * `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
+     * which doesn’t need this */
     /* Hidden footnotes hook */
     /* c8 ignore next 3 */
     return code === codes.caret &&

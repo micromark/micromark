@@ -16,8 +16,8 @@ concrete tokens.
 ## Feature highlights
 
 *   [x] **[compliant][commonmark]** (100% to CommonMark)
-*   [x] **[extensions][]** ([GFM][], [directives][], [footnotes][],
-    [frontmatter][], [math][], [MDX.js][mdxjs])
+*   [x] **[extensions][]** ([GFM][], [directives][], [frontmatter][], [math][],
+    [MDX.js][mdxjs])
 *   [x] **[safe][security]** (by default)
 *   [x] **[small][size]** (smallest CM parser that exists)
 *   [x] **[robust][test]** (1800+ tests, 100% coverage, fuzz testing)
@@ -69,7 +69,6 @@ to other output formats.
 *   [Examples](#examples)
     *   [GitHub flavored markdown (GFM)](#github-flavored-markdown-gfm)
     *   [Math](#math)
-    *   [Footnotes](#footnotes)
     *   [Syntax tree](#syntax-tree)
 *   [Markdown](#markdown)
     *   [CommonMark](#commonmark)
@@ -253,14 +252,14 @@ As a (potential) author of extensions, refer to
 
 *   [`micromark/micromark-extension-directive`][directives]
     — support directives (generic extensions)
-*   [`micromark/micromark-extension-footnote`][footnotes]
-    — support footnotes
 *   [`micromark/micromark-extension-frontmatter`][frontmatter]
     — support frontmatter (YAML, TOML, etc)
 *   [`micromark/micromark-extension-gfm`][gfm]
     — support GFM (GitHub Flavored Markdown)
 *   [`micromark/micromark-extension-gfm-autolink-literal`](https://github.com/micromark/micromark-extension-gfm-autolink-literal)
     — support GFM autolink literals
+*   [`micromark/micromark-extension-gfm-footnote`](https://github.com/micromark/micromark-extension-gfm-footnote)
+    — support GFM footnotes
 *   [`micromark/micromark-extension-gfm-strikethrough`](https://github.com/micromark/micromark-extension-gfm-strikethrough)
     — support GFM strikethrough
 *   [`micromark/micromark-extension-gfm-table`](https://github.com/micromark/micromark-extension-gfm-table)
@@ -1091,6 +1090,12 @@ Say we have a file like this:
 
 www.example.com, https://example.com, and contact@example.com.
 
+## Footnote
+
+A note[^1]
+
+[^1]: Big note.
+
 ## Strikethrough
 
 ~one~ or ~~two~~ tildes.
@@ -1099,6 +1104,10 @@ www.example.com, https://example.com, and contact@example.com.
 
 | a | b  |  c |  d  |
 | - | :- | -: | :-: |
+
+## Tag filter
+
+<plaintext>
 
 ## Tasklist
 
@@ -1115,7 +1124,7 @@ import {gfm, gfmHtml} from 'micromark-extension-gfm'
 
 const doc = fs.readFileSync('example.md')
 
-console.log(micromark(doc, {extensions: [gfm()], htmlExtensions: [gfmHtml]}))
+console.log(micromark(doc, {extensions: [gfm()], htmlExtensions: [gfmHtml()]}))
 ```
 
 <details>
@@ -1125,6 +1134,8 @@ console.log(micromark(doc, {extensions: [gfm()], htmlExtensions: [gfmHtml]}))
 <h1>GFM</h1>
 <h2>Autolink literals</h2>
 <p><a href="http://www.example.com">www.example.com</a>, <a href="https://example.com">https://example.com</a>, and <a href="mailto:contact@example.com">contact@example.com</a>.</p>
+<h2>Footnote</h2>
+<p>A note<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup></p>
 <h2>Strikethrough</h2>
 <p><del>one</del> or <del>two</del> tildes.</p>
 <h2>Table</h2>
@@ -1138,11 +1149,20 @@ console.log(micromark(doc, {extensions: [gfm()], htmlExtensions: [gfmHtml]}))
 </tr>
 </thead>
 </table>
+<h2>Tag filter</h2>
+&lt;plaintext&gt;
 <h2>Tasklist</h2>
 <ul>
 <li><input disabled="" type="checkbox"> to do</li>
 <li><input checked="" disabled="" type="checkbox"> done</li>
 </ul>
+<section data-footnotes="" class="footnotes"><h2 id="footnote-label" class="sr-only">Footnotes</h2>
+<ol>
+<li id="user-content-fn-1">
+<p>Big note. <a href="#user-content-fnref-1" data-footnote-backref="" class="data-footnote-backref" aria-label="Back to content">↩</a></p>
+</li>
+</ol>
+</section>
 ```
 
 </details>
@@ -1178,84 +1198,6 @@ console.log(micromark(doc, {extensions: [math], htmlExtensions: [mathHtml()]}))
 ```html
 <p>Lift(<span class="math math-inline"><span class="katex">…</span></span>) can be determined by Lift Coefficient (<span class="math math-inline"><span class="katex">…</span></span>) like the following equation.</p>
 <div class="math math-display"><span class="katex-display"><span class="katex">…</span></span></div>
-```
-
-</details>
-
-### Footnotes
-
-To support footnotes use [`micromark-extension-footnote`][footnotes].
-Say we have a file like this:
-
-```markdown
-Here is a footnote call,[^1] and another.[^longnote]
-
-[^1]: Here is the footnote.
-
-[^longnote]: Here’s one with multiple blocks.
-
-    Subsequent paragraphs are indented to show that they
-belong to the previous footnote.
-
-        { some.code }
-
-    The whole paragraph can be indented, or just the first
-    line.  In this way, multi-paragraph footnotes work like
-    multi-paragraph list items.
-
-This paragraph won’t be part of the note, because it
-isn’t indented.
-
-Here is an inline note.^[Inlines notes are easier to write, since
-you don’t have to pick an identifier and move down to type the
-note.]
-```
-
-Then do something like this:
-
-```js
-import fs from 'node:fs'
-import {micromark} from 'micromark'
-import {footnote, footnoteHtml} from 'micromark-extension-footnote'
-
-const doc = fs.readFileSync('example.md')
-
-console.log(
-  micromark(doc, {extensions: [footnote], htmlExtensions: [footnoteHtml()]})
-)
-```
-
-<details>
-<summary>Show equivalent HTML</summary>
-
-```html
-<p>Here is a footnote call,<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and another.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
-<p>This paragraph won’t be part of the note, because it
-isn’t indented.</p>
-<p>Here is an inline note.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1">
-<p>Here is the footnote.<a href="#fnref1" class="footnote-back">↩︎</a></p>
-</li>
-<li id="fn2">
-<p>Here’s one with multiple blocks.</p>
-<p>Subsequent paragraphs are indented to show that they
-belong to the previous footnote.</p>
-<pre><code>{ some.code }
-</code></pre>
-<p>The whole paragraph can be indented, or just the first
-line.  In this way, multi-paragraph footnotes work like
-multi-paragraph list items.<a href="#fnref2" class="footnote-back">↩︎</a></p>
-</li>
-<li id="fn3">
-<p>Inlines notes are easier to write, since
-you don’t have to pick an identifier and move down to type the
-note.<a href="#fnref3" class="footnote-back">↩︎</a></p>
-</li>
-</ol>
-</div>
 ```
 
 </details>
@@ -1687,8 +1629,6 @@ It was great.
 [to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
 [directives]: https://github.com/micromark/micromark-extension-directive
-
-[footnotes]: https://github.com/micromark/micromark-extension-footnote
 
 [frontmatter]: https://github.com/micromark/micromark-extension-frontmatter
 
