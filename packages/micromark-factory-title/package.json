@@ -1,6 +1,6 @@
 {
   "name": "micromark-factory-title",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "micromark factory to parse markdown titles (found in resources, definitions)",
   "license": "MIT",
   "keywords": [
