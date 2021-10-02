@@ -45,6 +45,7 @@
   "dependencies": {
     "micromark-util-character": "^1.0.0",
     "micromark-util-decode-numeric-character-reference": "^1.0.0",
+    "micromark-util-symbol": "^1.0.0",
     "parse-entities": "^3.0.0"
   },
   "scripts": {
