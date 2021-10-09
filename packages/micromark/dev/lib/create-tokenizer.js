@@ -24,7 +24,7 @@
  * @returns {void}
  */
 
-import assert from 'power-assert'
+import {ok as assert} from 'uvu/assert'
 import createDebug from 'debug'
 import {markdownLineEnding} from 'micromark-util-character'
 import {push, splice} from 'micromark-util-chunked'
@@ -210,7 +210,7 @@ export function createTokenizer(parser, initialize, from) {
    * @returns {void}
    */
   function go(code) {
-    assert.strictEqual(consumed, true, 'expected character to be consumed')
+    assert(consumed === true, 'expected character to be consumed')
     consumed = undefined
     debug('main: passing `%s` to %s', code, state && state.name)
     expectedCode = code
@@ -220,17 +220,12 @@ export function createTokenizer(parser, initialize, from) {
 
   /** @type {Effects['consume']} */
   function consume(code) {
-    assert.strictEqual(
-      code,
-      expectedCode,
-      'expected given code to equal expected code'
-    )
+    assert(code === expectedCode, 'expected given code to equal expected code')
 
     debug('consume: `%s`', code)
 
-    assert.strictEqual(
-      consumed,
-      undefined,
+    assert(
+      consumed === undefined,
       'expected code to not have been consumed: this might be because `return x(code)` instead of `return x` was used'
     )
     assert(
@@ -283,7 +278,7 @@ export function createTokenizer(parser, initialize, from) {
     token.start = now()
 
     assert(typeof type === 'string', 'expected string type')
-    assert.notStrictEqual(type.length, 0, 'expected non-empty string')
+    assert(type.length > 0, 'expected non-empty string')
     debug('enter: `%s`', type)
 
     context.events.push(['enter', token, context])
@@ -296,17 +291,13 @@ export function createTokenizer(parser, initialize, from) {
   /** @type {Effects['exit']} */
   function exit(type) {
     assert(typeof type === 'string', 'expected string type')
-    assert.notStrictEqual(type.length, 0, 'expected non-empty string')
+    assert(type.length > 0, 'expected non-empty string')
 
     const token = stack.pop()
     assert(token, 'cannot close w/o open tokens')
     token.end = now()
 
-    assert.strictEqual(
-      type,
-      token.type,
-      'expected exit token to match current token'
-    )
+    assert(type === token.type, 'expected exit token to match current token')
 
     assert(
       !(
@@ -461,7 +452,7 @@ export function createTokenizer(parser, initialize, from) {
 
       /** @type {State} */
       function ok(code) {
-        assert.strictEqual(code, expectedCode, 'expected code')
+        assert(code === expectedCode, 'expected code')
         consumed = true
         onreturn(currentConstruct, info)
         return returnState
@@ -469,7 +460,7 @@ export function createTokenizer(parser, initialize, from) {
 
       /** @type {State} */
       function nok(code) {
-        assert.strictEqual(code, expectedCode, 'expected code')
+        assert(code === expectedCode, 'expected code')
         consumed = true
         info.restore()
 

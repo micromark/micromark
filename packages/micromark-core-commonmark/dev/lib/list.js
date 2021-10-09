@@ -12,7 +12,7 @@
  * @typedef {TokenizeContext & {containerState: ListContainerState}} TokenizeContextWithState
  */
 
-import assert from 'power-assert'
+import {ok as assert} from 'uvu/assert'
 import {factorySpace} from 'micromark-factory-space'
 import {asciiDigit, markdownSpace} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'

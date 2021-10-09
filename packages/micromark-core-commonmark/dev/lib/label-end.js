@@ -8,7 +8,7 @@
  * @typedef {import('micromark-util-types').Code} Code
  */
 
-import assert from 'power-assert'
+import {ok as assert} from 'uvu/assert'
 import {factoryDestination} from 'micromark-factory-destination'
 import {factoryLabel} from 'micromark-factory-label'
 import {factoryTitle} from 'micromark-factory-title'
@@ -255,7 +255,7 @@ function tokenizeResource(effects, ok, nok) {
 
   /** @type {State} */
   function start(code) {
-    assert.strictEqual(code, codes.leftParenthesis, 'expected left paren')
+    assert(code === codes.leftParenthesis, 'expected left paren')
     effects.enter(types.resource)
     effects.enter(types.resourceMarker)
     effects.consume(code)
@@ -331,7 +331,7 @@ function tokenizeFullReference(effects, ok, nok) {
 
   /** @type {State} */
   function start(code) {
-    assert.strictEqual(code, codes.leftSquareBracket, 'expected left bracket')
+    assert(code === codes.leftSquareBracket, 'expected left bracket')
     return factoryLabel.call(
       self,
       effects,
@@ -361,7 +361,7 @@ function tokenizeCollapsedReference(effects, ok, nok) {
 
   /** @type {State} */
   function start(code) {
-    assert.strictEqual(code, codes.leftSquareBracket, 'expected left bracket')
+    assert(code === codes.leftSquareBracket, 'expected left bracket')
     effects.enter(types.reference)
     effects.enter(types.referenceMarker)
     effects.consume(code)

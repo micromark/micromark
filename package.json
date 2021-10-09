@@ -59,7 +59,6 @@
     "@types/concat-stream": "^1.0.0",
     "@types/glob": "^7.0.0",
     "@types/ms": "^0.7.0",
-    "@types/power-assert": "^1.0.0",
     "@types/regenerate": "^1.0.0",
     "@types/tape": "^4.0.0",
     "@unicode/unicode-14.0.0": "^1.0.0",
@@ -113,8 +112,9 @@
     "rules": {
       "import/extensions": [
         "error",
-        "always"
+        "ignorePackages"
       ],
+      "node/file-extension-in-import": "off",
       "prefer-arrow-callback": "off"
     },
     "overrides": [

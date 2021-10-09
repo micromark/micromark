@@ -4,7 +4,7 @@
  * @typedef {import('micromark-util-types').State} State
  */
 
-import assert from 'power-assert'
+import {ok as assert} from 'uvu/assert'
 import {
   asciiAlpha,
   asciiAlphanumeric,
@@ -149,7 +149,7 @@ function tokenizeAutolink(effects, ok, nok) {
 
   /** @type {State} */
   function end(code) {
-    assert.strictEqual(code, codes.greaterThan, 'expected `>`')
+    assert(code === codes.greaterThan, 'expected `>`')
     effects.enter(types.autolinkMarker)
     effects.consume(code)
     effects.exit(types.autolinkMarker)

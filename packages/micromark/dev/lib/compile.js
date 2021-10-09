@@ -37,7 +37,7 @@
  * @property {string} [title]
  */
 
-import assert from 'power-assert'
+import {ok as assert} from 'uvu/assert'
 import {decodeEntity} from 'parse-entities/decode-entity.js'
 import {combineHtmlExtensions} from 'micromark-util-combine-extensions'
 import {push} from 'micromark-util-chunked'

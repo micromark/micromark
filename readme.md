@@ -846,7 +846,7 @@ Of course, it can be better, such as with the following potential features:
 *   Add support for nested braces
 *   Add support for blocks
 *   Add warnings on undefined variables
-*   Use `micromark-build`, and use `power-assert`, `debug`, and
+*   Use `micromark-build`, and use `uvu/assert`, `debug`, and
     `micromark-util-symbol` (see [§ Size & debug][size-debug])
 *   Add [`mdast-util-from-markdown`][from-markdown] and
     [`mdast-util-to-markdown`][to-markdown] utilities to parse and serialize the

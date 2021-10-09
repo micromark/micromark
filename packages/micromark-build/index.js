@@ -59,7 +59,10 @@ async function main() {
     const result = await babel(String(await fs.readFile(input)), {
       filename: input,
       plugins: [
-        'babel-plugin-unassert',
+        [
+          'babel-plugin-unassert',
+          {modules: ['assert', 'node:assert', 'power-assert', 'uvu/assert']}
+        ],
         'babel-plugin-undebug',
         ['babel-plugin-inline-constants', {modules}]
       ]

@@ -6,7 +6,7 @@
  * @typedef {import('micromark-util-types').State} State
  */
 
-import assert from 'power-assert'
+import {ok as assert} from 'uvu/assert'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {subtokenize} from 'micromark-util-subtokenize'
