@@ -530,6 +530,12 @@ function tokenizeHtmlFlow(effects, ok, nok) {
       return continuationClose
     }
 
+    // More dashes.
+    if (code === codes.dash && kind === constants.htmlComment) {
+      effects.consume(code)
+      return continuationDeclarationInside
+    }
+
     return continuation(code)
   }
 

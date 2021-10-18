@@ -209,6 +209,28 @@ test('html', function (t) {
       'should support empty comments'
     )
 
+    // If the `"` is encoded, we’re in text. If it remains, we’re in HTML.
+    t.equal(
+      micromark('<!--\n->\n"', unsafe),
+      '<!--\n->\n"',
+      'should not end a comment at one dash (`->`)'
+    )
+    t.equal(
+      micromark('<!--\n-->\n"', unsafe),
+      '<!--\n-->\n<p>&quot;</p>',
+      'should end a comment at two dashes (`-->`)'
+    )
+    t.equal(
+      micromark('<!--\n--->\n"', unsafe),
+      '<!--\n--->\n<p>&quot;</p>',
+      'should end a comment at three dashes (`--->`)'
+    )
+    t.equal(
+      micromark('<!--\n---->\n"', unsafe),
+      '<!--\n---->\n<p>&quot;</p>',
+      'should end a comment at four dashes (`---->`)'
+    )
+
     t.equal(
       micromark('  <!-- foo -->', unsafe),
       '  <!-- foo -->',
