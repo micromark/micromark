@@ -354,6 +354,26 @@
  *   Internal boolean shared with `micromark-extension-gfm-task-list-item` to
  *   signal whether the tokenizer is tokenizing the first content of a list item
  *   construct.
+ * @property {boolean} [_gfmTableDynamicInterruptHack=false]
+ *   Internal boolean shared with `micromark-extension-gfm-table` whose body
+ *   rows are not affected by normal interruption rules.
+ *   “Normal” rules are, for example, that an empty list item can’t interrupt:
+ *
+ *   ````markdown
+ *   a
+ *   *
+ *   ````
+ *
+ *   The above is one paragraph.
+ *   These rules don’t apply to table body rows:
+ *
+ *   ````markdown
+ *   | a |
+ *   | - |
+ *   *
+ *   ````
+ *
+ *   The above list interrupts the table.
  */
 
 /**
