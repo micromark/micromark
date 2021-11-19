@@ -159,7 +159,7 @@ function handleError(error) {
 There are no default exports.
 
 The export map supports the endorsed
-[`development` condition](https://nodejs.org/api/packages.html#packages\_resolving\_user\_conditions).
+[`development` condition](https://nodejs.org/api/packages.html#packages_resolving_user_conditions).
 Run `node --conditions development module.js` to get instrumented dev code.
 Without this condition, production code is loaded.
 See [§ Size & debug][size-debug] for more info.
