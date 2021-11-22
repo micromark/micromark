@@ -38,7 +38,7 @@
  */
 
 import {ok as assert} from 'uvu/assert'
-import {decodeEntity} from 'parse-entities/decode-entity.js'
+import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {combineHtmlExtensions} from 'micromark-util-combine-extensions'
 import {push} from 'micromark-util-chunked'
 import {decodeNumericCharacterReference} from 'micromark-util-decode-numeric-character-reference'
@@ -948,8 +948,9 @@ export function compile(options = {}) {
   function onexitcharacterreferencevalue(token) {
     let value = this.sliceSerialize(token)
 
-    // @ts-expect-error `decodeEntity` can return false for invalid named
-    // character references, but everything we’ve tokenized is valid.
+    // @ts-expect-error `decodeNamedCharacterReference` can return false for
+    // invalid named character references, but everything we’ve tokenized is
+    // valid.
     value = getData('characterReferenceType')
       ? decodeNumericCharacterReference(
           value,
@@ -958,7 +959,7 @@ export function compile(options = {}) {
             ? constants.numericBaseDecimal
             : constants.numericBaseHexadecimal
         )
-      : decodeEntity(value)
+      : decodeNamedCharacterReference(value)
 
     raw(encode(value))
     setData('characterReferenceType')

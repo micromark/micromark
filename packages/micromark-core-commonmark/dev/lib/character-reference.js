@@ -7,7 +7,7 @@
  */
 
 import {ok as assert} from 'uvu/assert'
-import {decodeEntity} from 'parse-entities/decode-entity.js'
+import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {
   asciiAlphanumeric,
   asciiDigit,
@@ -87,7 +87,7 @@ function tokenizeCharacterReference(effects, ok, nok) {
 
       if (
         test === asciiAlphanumeric &&
-        !decodeEntity(self.sliceSerialize(token))
+        !decodeNamedCharacterReference(self.sliceSerialize(token))
       ) {
         return nok(code)
       }

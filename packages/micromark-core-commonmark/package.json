@@ -53,7 +53,7 @@
     "micromark-util-subtokenize": "^1.0.0",
     "micromark-util-symbol": "^1.0.0",
     "micromark-util-types": "^1.0.1",
-    "parse-entities": "^3.0.0",
+    "decode-named-character-reference": "^1.0.0",
     "uvu": "^0.5.0"
   },
   "scripts": {

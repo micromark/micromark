@@ -1,4 +1,4 @@
-import {decodeEntity} from 'parse-entities/decode-entity.js'
+import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {decodeNumericCharacterReference} from 'micromark-util-decode-numeric-character-reference'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
@@ -43,5 +43,5 @@ function decode($0, $1, $2) {
     )
   }
 
-  return decodeEntity($2) || $0
+  return decodeNamedCharacterReference($2) || $0
 }
