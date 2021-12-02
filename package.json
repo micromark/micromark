@@ -82,7 +82,7 @@
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^4.0.0",
-    "xo": "^0.46.0"
+    "xo": "^0.47.0"
   },
   "scripts": {
     "build-workspace": "npm run build --workspaces && cp readme.md packages/micromark/readme.md",
@@ -115,6 +115,7 @@
         "ignorePackages"
       ],
       "node/file-extension-in-import": "off",
+      "unicorn/prefer-code-point": "off",
       "prefer-arrow-callback": "off"
     },
     "overrides": [
