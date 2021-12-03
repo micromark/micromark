@@ -6,7 +6,7 @@
  * to detect whether the HTML-like syntax is seen as HTML (flow) or not.
  *
  * This is copied from:
- * <https://spec.commonmark.org/0.29/#html-blocks>.
+ * <https://spec.commonmark.org/0.30/#html-blocks>.
  */
 export const htmlBlockNames = [
   'address',
@@ -79,10 +79,8 @@ export const htmlBlockNames = [
  * list is found (condition 1).
  *
  * This module is copied from:
- * <https://spec.commonmark.org/0.29/#html-blocks>.
+ * <https://spec.commonmark.org/0.30/#html-blocks>.
  *
- * Note that `textarea` is not available in `CommonMark@0.29` but has been
- * merged to the primary branch and is slated to be released in the next release
- * of CommonMark.
+ * Note that `textarea` was added in `CommonMark@0.30`.
  */
 export const htmlRawNames = ['pre', 'script', 'style', 'textarea']

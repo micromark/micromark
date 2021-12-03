@@ -33,9 +33,9 @@ export const constants = {
   htmlBasic: 6, // Symbol for `<div`
   htmlComplete: 7, // Symbol for `<x>`
   htmlRawSizeMax: 8, // Length of `textarea`.
-  linkResourceDestinationBalanceMax: 32, // See: <https://spec.commonmark.org/0.29/#link-destination>, <https://github.com/remarkjs/react-markdown/issues/658#issuecomment-984345577>
-  linkReferenceSizeMax: 999, // See: <https://spec.commonmark.org/0.29/#link-label>
-  listItemValueSizeMax: 10, // See: <https://spec.commonmark.org/0.29/#ordered-list-marker>
+  linkResourceDestinationBalanceMax: 32, // See: <https://spec.commonmark.org/0.30/#link-destination>, <https://github.com/remarkjs/react-markdown/issues/658#issuecomment-984345577>
+  linkReferenceSizeMax: 999, // See: <https://spec.commonmark.org/0.30/#link-label>
+  listItemValueSizeMax: 10, // See: <https://spec.commonmark.org/0.30/#ordered-list-marker>
   numericBaseDecimal: 10,
   numericBaseHexadecimal: 0x10,
   tabSize: 4, // Tabs have a hard-coded size of 4, per CommonMark.
