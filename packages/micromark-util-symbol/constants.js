@@ -33,7 +33,7 @@ export const constants = {
   htmlBasic: 6, // Symbol for `<div`
   htmlComplete: 7, // Symbol for `<x>`
   htmlRawSizeMax: 8, // Length of `textarea`.
-  linkResourceDestinationBalanceMax: 3, // See: <https://spec.commonmark.org/0.29/#link-destination>
+  linkResourceDestinationBalanceMax: 32, // See: <https://spec.commonmark.org/0.29/#link-destination>, <https://github.com/remarkjs/react-markdown/issues/658#issuecomment-984345577>
   linkReferenceSizeMax: 999, // See: <https://spec.commonmark.org/0.29/#link-label>
   listItemValueSizeMax: 10, // See: <https://spec.commonmark.org/0.29/#ordered-list-marker>
   numericBaseDecimal: 10,
