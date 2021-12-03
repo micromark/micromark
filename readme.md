@@ -118,7 +118,7 @@ const value = '* [x] contact@example.com ~~strikethrough~~'
 
 const result = micromark(value, {
   extensions: [gfm()],
-  htmlExtensions: [gfmHtml]
+  htmlExtensions: [gfmHtml()]
 })
 
 console.log(result)
