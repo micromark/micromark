@@ -139,7 +139,7 @@ function createResolver(extraResolver) {
  * @type {Resolver}
  */
 function resolveAllLineSuffixes(events, context) {
-  let eventIndex = -1
+  let eventIndex = 0 // Skip first.
 
   while (++eventIndex <= events.length) {
     if (
