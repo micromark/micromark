@@ -3,57 +3,39 @@ on:
   - pull_request
   - push
 jobs:
-  main:
-    name: '${{matrix.node}} on ${{matrix.os}}'
+  canary:
+    name: testing ${{matrix.package}} with ${{matrix.node}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}
     steps:
-      - uses: actions/checkout@v2
-      - uses: dcodeIO/setup-node-nvm@master
+      - name: checkout micromark
+        uses: actions/checkout@v2
+      - name: setup node
+        uses: dcodeIO/setup-node-nvm@master
         with:
           node-version: ${{matrix.node}}
-      - run: npm install -g npm
-      - run: npm install
-      - run: npm run build
+      - name: update npm
+        run: npm install -g npm
+      - name: install micromark
+        run: npm install
+      - name: build micromark
+        run: npm run build
 
-      - name: checkout mdast-util-from-markdown
+      - name: checkout ${{matrix.package}}
         uses: actions/checkout@v2
         with:
-          repository: syntax-tree/mdast-util-from-markdown
-          path: canary/mdast-util-from-markdown
-      - name: test mdast-util-from-markdown
+          repository: ${{matrix.package}}
+          path: canary/${{matrix.package}}
+      - name: test ${{matrix.package}}
         run: |
           npm install
           npx rimraf "**/micromark"
           npx rimraf "**/micromark-util-*"
           npm test
-        working-directory: canary/mdast-util-from-markdown
-      
-      - name: checkout remark
-        uses: actions/checkout@v2
-        with:
-          repository: remarkjs/remark
-          path: canary/remark
-      - name: test remark
-        run: |
-          npm install
-          npx rimraf "**/micromark"
-          npx rimraf "**/micromark-util-*"
-          npm test
-        working-directory: canary/remark
+        working-directory: canary/${{matrix.package}}
 
-      - name: checkout react-markdown
-        uses: actions/checkout@v2
-        with:
-          repository: remarkjs/react-markdown
-          path: canary/react-markdown
-      - name: test react-markdown
-        run: |
-          npm install
-          npx rimraf "**/micromark"
-          npx rimraf "**/micromark-util-*"
-          npm test
-        working-directory: canary/react-markdown
     strategy:
+      fail-fast: false
+      max-parallel: 2
       matrix:
         os:
           - ubuntu-latest
@@ -61,3 +43,7 @@ jobs:
         node:
           - lts/erbium
           - node
+        package:
+          - syntax-tree/mdast-util-from-markdown
+          - remarkjs/remark
+          - remarkjs/react-markdown
