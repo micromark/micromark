@@ -91,7 +91,7 @@
     "build-size": "rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "build": "npm run build-workspace && npm run build-monorepo && npm run build-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
-    "pretest-fuzz": "patch-package --patch-dir script/patches && echo \"import {micromark} from 'micromark'; export {micromark}\" | esbuild --format=cjs --platform=node --bundle > test/fuzz-bundle.cjs && node script/generate-fixtures.js",
+    "pretest-fuzz": "patch-package --patch-dir script/patches && esbuild micromark --format=cjs --platform=node --bundle > test/fuzz-bundle.cjs && node script/generate-fixtures.js",
     "test-fuzz": "timeout 30m jsfuzz test/fuzz.cjs test/fixtures",
     "test-api": "node --conditions development test/index.js",
     "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node --conditions development test/index.js",
