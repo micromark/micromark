@@ -1,8 +1,4 @@
-let micromark
-let promise = import('micromark').then((d) => {
-  promise = undefined
-  micromark = d.micromark
-})
+const {micromark} = require('./fuzz-bundle.cjs')
 
 exports.fuzz = fuzz
 
@@ -10,11 +6,6 @@ exports.fuzz = fuzz
  * @param {Buffer} buf
  */
 function fuzz(buf) {
-  if (promise) {
-    // Queue
-    promise.then(() => fuzz(buf))
-  } else {
-    // Buffer.
-    micromark(buf)
-  }
+  // Buffer.
+  micromark(buf)
 }

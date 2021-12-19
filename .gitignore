@@ -29,3 +29,4 @@ packages/micromark-util-subtokenize/index.js
 packages/**/*.d.ts
 script/**/*.d.ts
 test/**/*.d.ts
+test/fuzz-bundle.cjs
