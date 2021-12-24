@@ -26,8 +26,9 @@ jobs:
       - name: test ${{matrix.package}}
         run: |
           npm install
-          npx rimraf "**/micromark"
-          npx rimraf "**/micromark-util-*"
+          for package in $(ls ../../packages); do
+            npx rimraf "node_modules/**/$package"
+          done
           npm test
         working-directory: canary/${{matrix.package}}
 
