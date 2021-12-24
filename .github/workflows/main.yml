@@ -4,7 +4,7 @@ on:
   - push
 jobs:
   test:
-    name: '${{matrix.node}} on ${{matrix.os}}'
+    name: test / micromark / ${{matrix.node}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
           - lts/erbium
           - node
   canary:
-    name: testing ${{matrix.package}}
+    name: canary / ${{matrix.package}} / ${{matrix.node}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}
     steps:
       - name: checkout micromark
@@ -51,7 +51,6 @@ jobs:
           done
           npm test
         working-directory: canary/${{matrix.package}}
-
     strategy:
       fail-fast: false
       max-parallel: 2
