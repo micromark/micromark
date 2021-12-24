@@ -40,6 +40,9 @@ jobs:
         node:
           - node
         package:
+          - micromark/micromark-extension-gfm
+          - micromark/micromark-extension-directive
+          - micromark/micromark-extension-mdx
           - syntax-tree/mdast-util-from-markdown
           - remarkjs/remark
           - remarkjs/react-markdown
