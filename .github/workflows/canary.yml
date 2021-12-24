@@ -4,7 +4,7 @@ on:
   - push
 jobs:
   canary:
-    name: testing ${{matrix.package}} with ${{matrix.node}} on ${{matrix.os}}
+    name: testing ${{matrix.package}}
     runs-on: ${{matrix.os}}
     steps:
       - name: checkout micromark
@@ -13,13 +13,11 @@ jobs:
         uses: dcodeIO/setup-node-nvm@master
         with:
           node-version: ${{matrix.node}}
-      - name: update npm
-        run: npm install -g npm
-      - name: install micromark
-        run: npm install
-      - name: build micromark
-        run: npm run build
-
+      - name: setup micromark
+        run: |
+          npm install -g npm
+          npm install
+          npm run build
       - name: checkout ${{matrix.package}}
         uses: actions/checkout@v2
         with:
@@ -40,7 +38,6 @@ jobs:
         os:
           - ubuntu-latest
         node:
-          - lts/erbium
           - node
         package:
           - syntax-tree/mdast-util-from-markdown
