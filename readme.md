@@ -287,6 +287,9 @@ As a (potential) author of extensions, refer to
 
 *   [`wataru-chocola/micromark-extension-definition-list`](https://github.com/wataru-chocola/micromark-extension-definition-list)
     — support definition lists
+*   [`leebyron/remark-comment`](https://github.com/leebyron/remark-comment)
+    — includes micromark plugin for omitting HTML comments from rendered HTML
+
 
 ### `SyntaxExtension`
 
