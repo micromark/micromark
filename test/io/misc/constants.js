@@ -32,7 +32,7 @@ test('constants', function (t) {
 })
 
 /**
- * @param {string[]} list
+ * @param {Array<string>} list
  * @returns {string}
  */
 function longest(list) {

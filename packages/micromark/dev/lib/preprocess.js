@@ -10,7 +10,7 @@
  * @param {Value} value
  * @param {Encoding} [encoding]
  * @param {boolean} [end=false]
- * @returns {Chunk[]}
+ * @returns {Array<Chunk>}
  */
 
 import {codes} from 'micromark-util-symbol/codes.js'
@@ -33,7 +33,7 @@ export function preprocess() {
 
   /** @type {Preprocessor} */
   function preprocessor(value, encoding, end) {
-    /** @type {Chunk[]} */
+    /** @type {Array<Chunk>} */
     const chunks = []
     /** @type {RegExpMatchArray|null} */
     let match

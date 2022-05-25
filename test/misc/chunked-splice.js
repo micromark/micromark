@@ -2,7 +2,7 @@ import test from 'tape'
 import {splice} from 'micromark-util-chunked'
 
 test('splice', function (t) {
-  /** @type {number[]} */
+  /** @type {Array<number>} */
   let list = []
   const lots = [...Array.from({length: 140_000}).keys()]
 

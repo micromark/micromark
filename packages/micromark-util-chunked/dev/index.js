@@ -10,16 +10,16 @@ import {constants} from 'micromark-util-symbol/constants.js'
  * array instead of rest parameters.
  *
  * @template {unknown} T
- * @param {T[]} list
+ * @param {Array<T>} list
  * @param {number} start
  * @param {number} remove
- * @param {T[]} items
+ * @param {Array<T>} items
  * @returns {void}
  */
 export function splice(list, start, remove, items) {
   const end = list.length
   let chunkStart = 0
-  /** @type {unknown[]} */
+  /** @type {Array<unknown>} */
   let parameters
 
   // Make start between zero and `end` (included).
@@ -65,9 +65,9 @@ export function splice(list, start, remove, items) {
  * and adds items in batches to prevent V8 from hanging.
  *
  * @template {unknown} T
- * @param {T[]} list
- * @param {T[]} items
- * @returns {T[]}
+ * @param {Array<T>} list
+ * @param {Array<T>} items
+ * @returns {Array<T>}
  */
 export function push(list, items) {
   if (list.length > 0) {

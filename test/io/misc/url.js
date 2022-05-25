@@ -98,7 +98,7 @@ test('url', function (t) {
     'should support an emoji'
   )
 
-  /** @type {string[]} */
+  /** @type {Array<string>} */
   const ascii = []
   let code = -1
 

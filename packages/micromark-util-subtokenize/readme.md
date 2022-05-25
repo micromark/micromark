@@ -56,7 +56,7 @@ Tokenize subcontent.
 
 ###### Parameters
 
-*   `events` (`Event[]`) — List of events
+*   `events` (`Array<Event>`) — List of events
 
 ###### Returns
 

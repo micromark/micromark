@@ -70,7 +70,7 @@ function resolveToLabelEnd(events, context) {
   let open
   /** @type {number|undefined} */
   let close
-  /** @type {Event[]} */
+  /** @type {Array<Event>} */
   let media
 
   // Find an opening.

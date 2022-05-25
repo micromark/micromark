@@ -31,7 +31,7 @@ const containerConstruct = {tokenize: tokenizeContainer}
 /** @type {Initializer} */
 function initializeDocument(effects) {
   const self = this
-  /** @type {StackItem[]} */
+  /** @type {Array<StackItem>} */
   const stack = []
   let continued = 0
   /** @type {TokenizeContext|undefined} */

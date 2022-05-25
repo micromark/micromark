@@ -6,7 +6,7 @@ const hasOwnProperty = {}.hasOwnProperty
 
 const options = {allowDangerousHtml: true, allowDangerousProtocol: true}
 
-/** @type {Record<string, {input: string, output: string}[]>} */
+/** @type {Record<string, Array<{input: string, output: string}>>} */
 const sections = {}
 let index = -1
 

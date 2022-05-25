@@ -89,7 +89,7 @@ export function compile(options = {}) {
    * We do that by tracking a stack of buffers, that can be opened (with
    * `buffer`) and closed (with `resume`) to access them.
    *
-   * @type {string[][]}
+   * @type {Array<Array<string>>}
    */
   const buffers = [[]]
 
@@ -97,7 +97,7 @@ export function compile(options = {}) {
    * As we can have links in images and the other way around, where the deepest
    * ones are closed first, we need to track which one we’re in.
    *
-   * @type {Media[]}
+   * @type {Array<Media>}
    */
   const mediaStack = []
 
@@ -105,7 +105,7 @@ export function compile(options = {}) {
    * Same as `mediaStack` for tightness, which is specific to lists.
    * We need to track if we’re currently in a tight or loose container.
    *
-   * @type {boolean[]}
+   * @type {Array<boolean>}
    */
   const tightStack = []
 
@@ -253,21 +253,21 @@ export function compile(options = {}) {
    * Return either the empty string if there’s nothing of note to return, or the
    * result when done.
    *
-   * @param {Event[]} events
+   * @param {Array<Event>} events
    * @returns {string}
    */
   function compile(events) {
     let index = -1
     let start = 0
-    /** @type {number[]} */
+    /** @type {Array<number>} */
     const listStack = []
     // As definitions can come after references, we need to figure out the media
     // (urls and titles) defined by them before handling the references.
     // So, we do sort of what HTML does: put metadata at the start (in head), and
     // then put content after (`body`).
-    /** @type {Event[]} */
+    /** @type {Array<Event>} */
     let head = []
-    /** @type {Event[]} */
+    /** @type {Array<Event>} */
     let body = []
 
     while (++index < events.length) {
@@ -341,7 +341,7 @@ export function compile(options = {}) {
   /**
    * Figure out whether lists are loose or not.
    *
-   * @param {Event[]} slice
+   * @param {Array<Event>} slice
    * @returns {void}
    */
   function prepareList(slice) {

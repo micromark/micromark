@@ -107,14 +107,14 @@ Call all `resolveAll`s in `constructs`.
 
 ###### Parameters
 
-*   `constructs` (`Construct[]`) — List of constructs, optionally with
+*   `constructs` (`Array<Construct>`) — List of constructs, optionally with
     `resolveAll`s
-*   `events` (`Event[]`) — List of events
+*   `events` (`Array<Event>`) — List of events
 *   `context` (`TokenizeContext`) — Context used by `tokenize`
 
 ###### Returns
 
-`Events[]` — Changed events.
+`Array<Events>` — Changed events.
 
 ## Security
 

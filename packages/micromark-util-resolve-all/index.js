@@ -7,13 +7,13 @@
 /**
  * Call all `resolveAll`s.
  *
- * @param {{resolveAll?: Resolver}[]} constructs
- * @param {Event[]} events
+ * @param {Array<{resolveAll?: Resolver}>} constructs
+ * @param {Array<Event>} events
  * @param {TokenizeContext} context
- * @returns {Event[]}
+ * @returns {Array<Event>}
  */
 export function resolveAll(constructs, events, context) {
-  /** @type {Resolver[]} */
+  /** @type {Array<Resolver>} */
   const called = []
   let index = -1
 

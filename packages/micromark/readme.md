@@ -206,13 +206,13 @@ See [§ Security][security].
 
 ###### `options.extensions`
 
-Array of syntax extensions ([`Array.<SyntaxExtension>`][syntax-extension],
+Array of syntax extensions ([`Array<SyntaxExtension>`][syntax-extension],
 default: `[]`).
 See [§ Extensions][extensions].
 
 ###### `options.htmlExtensions`
 
-Array of HTML extensions ([`Array.<HtmlExtension>`][html-extension], default:
+Array of HTML extensions ([`Array<HtmlExtension>`][html-extension], default:
 `[]`).
 See [§ Extensions][extensions].
 

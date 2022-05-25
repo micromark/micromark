@@ -56,11 +56,11 @@ export function createTokenizer(parser, initialize, from) {
   )
   /** @type {Record<string, number>} */
   const columnStart = {}
-  /** @type {Construct[]} */
+  /** @type {Array<Construct>} */
   const resolveAllConstructs = []
-  /** @type {Chunk[]} */
+  /** @type {Array<Chunk>} */
   let chunks = []
-  /** @type {Token[]} */
+  /** @type {Array<Token>} */
   let stack = []
   /** @type {boolean|undefined} */
   let consumed = true
@@ -344,13 +344,13 @@ export function createTokenizer(parser, initialize, from) {
      * Handle either an object mapping codes to constructs, a list of
      * constructs, or a single construct.
      *
-     * @param {Construct|Construct[]|ConstructRecord} constructs
+     * @param {Construct|Array<Construct>|ConstructRecord} constructs
      * @param {State} returnState
      * @param {State} [bogusState]
      * @returns {State}
      */
     function hook(constructs, returnState, bogusState) {
-      /** @type {Construct[]} */
+      /** @type {Array<Construct>} */
       let listOfConstructs
       /** @type {number} */
       let constructIndex
@@ -394,7 +394,7 @@ export function createTokenizer(parser, initialize, from) {
       /**
        * Handle a list of construct.
        *
-       * @param {Construct[]} list
+       * @param {Array<Construct>} list
        * @returns {State}
        */
       function handleListOfConstructs(list) {
@@ -551,16 +551,16 @@ export function createTokenizer(parser, initialize, from) {
 /**
  * Get the chunks from a slice of chunks in the range of a token.
  *
- * @param {Chunk[]} chunks
+ * @param {Array<Chunk>} chunks
  * @param {Pick<Token, 'start'|'end'>} token
- * @returns {Chunk[]}
+ * @returns {Array<Chunk>}
  */
 function sliceChunks(chunks, token) {
   const startIndex = token.start._index
   const startBufferIndex = token.start._bufferIndex
   const endIndex = token.end._index
   const endBufferIndex = token.end._bufferIndex
-  /** @type {Chunk[]} */
+  /** @type {Array<Chunk>} */
   let view
 
   if (startIndex === endIndex) {
@@ -588,13 +588,13 @@ function sliceChunks(chunks, token) {
 /**
  * Get the string value of a slice of chunks.
  *
- * @param {Chunk[]} chunks
+ * @param {Array<Chunk>} chunks
  * @param {boolean} [expandTabs=false]
  * @returns {string}
  */
 function serializeChunks(chunks, expandTabs) {
   let index = -1
-  /** @type {string[]} */
+  /** @type {Array<string>} */
   const result = []
   /** @type {boolean|undefined} */
   let atTab

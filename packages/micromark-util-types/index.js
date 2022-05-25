@@ -175,7 +175,7 @@
  *   and `returnState` is switched to.
  *   If the result is `nok`, the attempt failed, so we revert to the original
  *   state, and `bogusState` is used.
- * @param {Construct|Construct[]|ConstructRecord} construct
+ * @param {Construct|Array<Construct>|ConstructRecord} construct
  * @param {State} returnState
  * @param {State} [bogusState]
  * @returns {(code: Code) => void}
@@ -214,11 +214,11 @@
  *
  * @callback Resolver
  *   A resolver handles and cleans events coming from `tokenize`.
- * @param {Event[]} events
+ * @param {Array<Event>} events
  *   List of events.
  * @param {TokenizeContext} context
  *   Context.
- * @returns {Event[]}
+ * @returns {Array<Event>}
  *
  * @typedef {(this: TokenizeContext, effects: Effects, ok: State, nok: State) => State} Tokenizer
  *   A tokenize function sets up a state machine to handle character codes streaming in.
@@ -304,7 +304,7 @@
  * @typedef {Construct & {tokenize: Initializer}} InitialConstruct
  *   Like a construct, but `tokenize` does not accept `ok` or `nok`.
  *
- * @typedef {Record<string, undefined|Construct|Construct[]>} ConstructRecord
+ * @typedef {Record<string, undefined|Construct|Array<Construct>>} ConstructRecord
  *   Several constructs, mapped from their initial codes.
  *
  * @typedef TokenizeContext
@@ -331,11 +331,11 @@
  *   Containers are parsed in separate phases: their first line (`tokenize`),
  *   continued lines (`continuation.tokenize`), and finally `exit`.
  *   This record can be used to store some information between these hooks.
- * @property {Event[]} events
+ * @property {Array<Event>} events
  *   Current list of events.
  * @property {ParseContext} parser
  *   The relevant parsing context.
- * @property {(token: Pick<Token, 'start'|'end'>) => Chunk[]} sliceStream
+ * @property {(token: Pick<Token, 'start'|'end'>) => Array<Chunk>} sliceStream
  *   Get the chunks that span a token (or location).
  * @property {(token: Pick<Token, 'start'|'end'>, expandTabs?: boolean) => string} sliceSerialize
  *   Get the source text that spans a token (or location).
@@ -347,7 +347,7 @@
  *   When the tokenizers moves after consuming a line ending corresponding to
  *   the line number in the given point, the tokenizer shifts past the prefix
  *   based on the column in the shifted point.
- * @property {(slice: Chunk[]) => Event[]} write
+ * @property {(slice: Array<Chunk>) => Array<Event>} write
  *   Write a slice of chunks.
  *   The eof code (`null`) can be used to signal the end of the stream.
  * @property {boolean} [_gfmTasklistFirstContentOfListItem]
@@ -400,27 +400,27 @@
  * @property {ConstructRecord} flow
  * @property {ConstructRecord} string
  * @property {ConstructRecord} text
- * @property {{null?: string[]}} disable
- * @property {{null?: Pick<Construct, 'resolveAll'>[]}} insideSpan
- * @property {{null?: Code[]}} attentionMarkers
+ * @property {{null?: Array<string>}} disable
+ * @property {{null?: Array<Pick<Construct, 'resolveAll'>>}} insideSpan
+ * @property {{null?: Array<Code>}} attentionMarkers
  *
  * @typedef _NormalizedExtensionFields
- * @property {Record<string, Construct[]>} document
- * @property {Record<string, Construct[]>} contentInitial
- * @property {Record<string, Construct[]>} flowInitial
- * @property {Record<string, Construct[]>} flow
- * @property {Record<string, Construct[]>} string
- * @property {Record<string, Construct[]>} text
- * @property {{null: string[]}} disable
- * @property {{null: Pick<Construct, 'resolveAll'>[]}} insideSpan
- * @property {{null: Code[]}} attentionMarkers
+ * @property {Record<string, Array<Construct>>} document
+ * @property {Record<string, Array<Construct>>} contentInitial
+ * @property {Record<string, Array<Construct>>} flowInitial
+ * @property {Record<string, Array<Construct>>} flow
+ * @property {Record<string, Array<Construct>>} string
+ * @property {Record<string, Array<Construct>>} text
+ * @property {{null: Array<string>}} disable
+ * @property {{null: Array<Pick<Construct, 'resolveAll'>>}} insideSpan
+ * @property {{null: Array<Code>}} attentionMarkers
  *
  * @typedef {Record<string, Record<string, unknown>> & Partial<_ExtensionFields>} Extension
  *   A syntax extension changes how markdown is tokenized.
  *   See: <https://github.com/micromark/micromark#syntaxextension>
  *
- * @typedef {Record<string, Record<string, unknown[]>> & _NormalizedExtensionFields} FullNormalizedExtension
- * @typedef {Record<string, Record<string, unknown[]|undefined>> & Partial<_NormalizedExtensionFields>} NormalizedExtension
+ * @typedef {Record<string, Record<string, Array<unknown>>> & _NormalizedExtensionFields} FullNormalizedExtension
+ * @typedef {Record<string, Record<string, Array<unknown>|undefined>> & Partial<_NormalizedExtensionFields>} NormalizedExtension
  *
  * @callback Create
  *   Set up a tokenizer for a content type.
@@ -429,7 +429,7 @@
  *
  * @typedef ParseOptions
  *   Parse options.
- * @property {Extension[]} [extensions] Array of syntax extensions
+ * @property {Array<Extension>} [extensions] Array of syntax extensions
  *
  * @typedef ParseContext
  *   A context object that helps w/ parsing markdown.
@@ -439,7 +439,7 @@
  * @property {Create} flow
  * @property {Create} string
  * @property {Create} text
- * @property {string[]} defined List of defined identifiers.
+ * @property {Array<string>} defined List of defined identifiers.
  * @property {Record<number, boolean>} lazy
  *   Map of line numbers to whether they are lazy (as opposed to the line before
  *   them).
@@ -479,7 +479,7 @@
  *
  * @callback Compile
  *   Serialize micromark events as HTML
- * @param {Event[]} events
+ * @param {Array<Event>} events
  * @returns {string}
  *
  * @typedef {(this: CompileContext, token: Token) => void} Handle
@@ -508,7 +508,7 @@
  * @property {number} headingRank
  * @property {boolean} inCodeText
  * @property {string} characterReferenceType
- * @property {boolean[]} tightStack
+ * @property {Array<boolean>} tightStack
  *
  * @typedef {Record<string, unknown> & Partial<_CompileDataFields>} CompileData
  *
@@ -532,7 +532,7 @@
  *   For links, the allowed protocols are `http`, `https`, `irc`, `ircs`,
  *   `mailto`, and `xmpp`.
  *   For images, the allowed protocols are `http` and `https`.
- * @property {HtmlExtension[]} [htmlExtensions=[]]
+ * @property {Array<HtmlExtension>} [htmlExtensions=[]]
  *   Array of HTML extensions
  */
 

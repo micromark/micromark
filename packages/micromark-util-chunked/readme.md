@@ -63,8 +63,8 @@ and adds items in batches to prevent V8 from hanging.
 
 ###### Parameters
 
-*   `list` (`unknown[]`) — List to operate on
-*   `items` (`unknown[]`) — Items to add to `list`
+*   `list` (`Array<unknown>`) — List to operate on
+*   `items` (`Array<unknown>`) — Items to add to `list`
 
 ###### Returns
 
@@ -82,10 +82,10 @@ array instead of rest parameters.
 
 ###### Parameters
 
-*   `list` (`unknown[]`) — List to operate on
+*   `list` (`Array<unknown>`) — List to operate on
 *   `start` (`number`) — Index to remove/insert at (can be negative)
 *   `remove` (`number`) — Number of items to remove
-*   `items` (`unknown[]`) — Items to inject into `list`
+*   `items` (`Array<unknown>`) — Items to inject into `list`
 
 ###### Returns
 

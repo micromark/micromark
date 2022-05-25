@@ -12,7 +12,7 @@ import {types} from 'micromark-util-symbol/types.js'
 /**
  * Tokenize subcontent.
  *
- * @param {Event[]} events
+ * @param {Array<Event>} events
  * @returns {boolean}
  */
 export function subtokenize(events) {
@@ -27,9 +27,9 @@ export function subtokenize(events) {
   let otherIndex
   /** @type {Event} */
   let otherEvent
-  /** @type {Event[]} */
+  /** @type {Array<Event>} */
   let parameters
-  /** @type {Event[]} */
+  /** @type {Array<Event>} */
   let subevents
   /** @type {boolean|undefined} */
   let more
@@ -127,7 +127,7 @@ export function subtokenize(events) {
 /**
  * Tokenize embedded tokens.
  *
- * @param {Event[]} events
+ * @param {Array<Event>} events
  * @param {number} eventIndex
  * @returns {Record<string, number>}
  */
@@ -135,17 +135,17 @@ function subcontent(events, eventIndex) {
   const token = events[eventIndex][1]
   const context = events[eventIndex][2]
   let startPosition = eventIndex - 1
-  /** @type {number[]} */
+  /** @type {Array<number>} */
   const startPositions = []
   assert(token.contentType, 'expected `contentType` on subtokens')
   const tokenizer =
     token._tokenizer || context.parser[token.contentType](token.start)
   const childEvents = tokenizer.events
-  /** @type {[number, number][]} */
+  /** @type {Array<[number, number]>} */
   const jumps = []
   /** @type {Record<string, number>} */
   const gaps = {}
-  /** @type {Chunk[]} */
+  /** @type {Array<Chunk>} */
   let stream
   /** @type {Token|undefined} */
   let previous

@@ -43,7 +43,7 @@ function resolveAllAttention(events, context) {
   let closingSequence
   /** @type {number} */
   let use
-  /** @type {Event[]} */
+  /** @type {Array<Event>} */
   let nextEvents
   /** @type {number} */
   let offset

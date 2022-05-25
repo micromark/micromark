@@ -60,7 +60,7 @@ export function sanitizeUri(url, protocol) {
  * @returns {string}
  */
 function normalizeUri(value) {
-  /** @type {string[]} */
+  /** @type {Array<string>} */
   const result = []
   let index = -1
   let start = 0

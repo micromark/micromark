@@ -12,7 +12,7 @@ const hasOwnProperty = {}.hasOwnProperty
 /**
  * Combine several syntax extensions into one.
  *
- * @param {Extension[]} extensions List of syntax extensions.
+ * @param {Array<Extension>} extensions List of syntax extensions.
  * @returns {NormalizedExtension} A single combined extension.
  */
 export function combineExtensions(extensions) {
@@ -61,13 +61,13 @@ function syntaxExtension(all, extension) {
  * Merge `list` into `existing` (both lists of constructs).
  * Mutates `existing`.
  *
- * @param {unknown[]} existing
- * @param {unknown[]} list
+ * @param {Array<unknown>} existing
+ * @param {Array<unknown>} list
  * @returns {void}
  */
 function constructs(existing, list) {
   let index = -1
-  /** @type {unknown[]} */
+  /** @type {Array<unknown>} */
   const before = []
 
   while (++index < list.length) {
@@ -81,7 +81,7 @@ function constructs(existing, list) {
 /**
  * Combine several HTML extensions into one.
  *
- * @param {HtmlExtension[]} htmlExtensions List of HTML extensions.
+ * @param {Array<HtmlExtension>} htmlExtensions List of HTML extensions.
  * @returns {HtmlExtension} A single combined extension.
  */
 export function combineHtmlExtensions(htmlExtensions) {

@@ -53,7 +53,7 @@ Combine several syntax extensions into one.
 
 ###### Parameters
 
-*   `extensions` (`Extension[]`) — List of syntax extensions
+*   `extensions` (`Array<Extension>`) — List of syntax extensions
 
 ###### Returns
 
@@ -65,7 +65,7 @@ Combine several html extensions into one.
 
 ###### Parameters
 
-*   `htmlExtensions` (`HtmlExtension[]`) — List of html extensions
+*   `htmlExtensions` (`Array<HtmlExtension>`) — List of html extensions
 
 ###### Returns
 

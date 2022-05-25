@@ -5,8 +5,8 @@
 import {subtokenize} from 'micromark-util-subtokenize'
 
 /**
- * @param {Event[]} events
- * @returns {Event[]}
+ * @param {Array<Event>} events
+ * @returns {Array<Event>}
  */
 export function postprocess(events) {
   while (!subtokenize(events)) {
