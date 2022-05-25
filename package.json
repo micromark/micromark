@@ -56,7 +56,7 @@
   ],
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.0",
-    "@types/concat-stream": "^1.0.0",
+    "@types/concat-stream": "^2.0.0",
     "@types/glob": "^7.0.0",
     "@types/ms": "^0.7.0",
     "@types/regenerate": "^1.0.0",
@@ -83,7 +83,7 @@
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^4.0.0",
-    "xo": "^0.47.0"
+    "xo": "^0.49.0"
   },
   "scripts": {
     "build-workspace": "npm run build --workspaces && cp readme.md packages/micromark/readme.md",
