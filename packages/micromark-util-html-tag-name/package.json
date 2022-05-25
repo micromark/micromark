@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-html-tag-name",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "micromark utility with list of html tag names",
   "license": "MIT",
   "keywords": [
