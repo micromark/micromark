@@ -17,7 +17,8 @@ are great to develop with, but slow or big in production, this solves that.
 
 ## Install
 
-[npm][]:
+This package is a CLI.
+In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
 
 ```sh
 npm install micromark-build --save-dev

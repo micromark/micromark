@@ -21,7 +21,8 @@ micromark utility with a couple of typescript types.
 
 ## Install
 
-[npm][]:
+This package is types only.
+In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
 
 ```sh
 npm install micromark-util-types

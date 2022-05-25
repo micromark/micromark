@@ -22,10 +22,25 @@ micromark factory to parse labels (found in media, definitions).
 
 ## Install
 
-[npm][]:
+This package is [ESM only][esm].
+In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
 
 ```sh
 npm install micromark-factory-label
+```
+
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import {factoryLabel} from 'https://esm.sh/micromark-factory-label@1'
+```
+
+In browsers with [`esm.sh`][esmsh]:
+
+```html
+<script type="module">
+  import {factoryLabel} from 'https://esm.sh/micromark-factory-label@1?bundle'
+</script>
 ```
 
 ## Use
@@ -138,6 +153,10 @@ abide by its terms.
 [opencollective]: https://opencollective.com/unified
 
 [npm]: https://docs.npmjs.com/cli/install
+
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
 
 [chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
