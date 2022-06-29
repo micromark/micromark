@@ -290,7 +290,7 @@ test('definition', function (t) {
   t.equal(
     micromark('[x]: a "x" \t\n\n[x]'),
     '<p><a href="a" title="x">x</a></p>',
-    'should support trailing whitespace after a destination'
+    'should support trailing whitespace after a title'
   )
 
   t.equal(
