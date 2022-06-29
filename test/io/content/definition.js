@@ -254,7 +254,7 @@ test('definition', function (t) {
   t.equal(
     micromark("[x]: a '\"'\n\n[x]"),
     '<p><a href="a" title="&quot;">x</a></p>',
-    'should support double quoted titles'
+    'should support single quoted titles'
   )
 
   t.equal(
