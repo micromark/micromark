@@ -22,7 +22,16 @@ function tokenizeLabelStartLink(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of label (link) start.
+   *
+   * ```markdown
+   * > | a [b] c
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.leftSquareBracket, 'expected `[`')
     effects.enter(types.labelLink)

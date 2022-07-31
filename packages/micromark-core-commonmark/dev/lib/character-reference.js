@@ -1,7 +1,6 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').Token} Token
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Code} Code
  */
@@ -34,7 +33,19 @@ function tokenizeCharacterReference(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of a character reference.
+   *
+   * ```markdown
+   * > | a&amp;b
+   *      ^
+   * > | a&#123;b
+   *      ^
+   * > | a&#x9;b
+   *      ^
+   * ```
+   *
+   * @type {State} */
   function start(code) {
     assert(code === codes.ampersand, 'expected `&`')
     effects.enter(types.characterReference)
@@ -44,7 +55,19 @@ function tokenizeCharacterReference(effects, ok, nok) {
     return open
   }
 
-  /** @type {State} */
+  /**
+   * Inside a character reference, after `&`, before `#` for numeric references
+   * or an alphanumeric for named references.
+   * ```markdown
+   * > | a&amp;b
+   *       ^
+   * > | a&#123;b
+   *       ^
+   * > | a&#x9;b
+   *       ^
+   * ```
+   *
+   * @type {State} */
   function open(code) {
     if (code === codes.numberSign) {
       effects.enter(types.characterReferenceMarkerNumeric)
@@ -59,7 +82,17 @@ function tokenizeCharacterReference(effects, ok, nok) {
     return value(code)
   }
 
-  /** @type {State} */
+  /**
+   * Inside a numeric character reference, right before `x` for hexadecimals,
+   * or a digit for decimals.
+   * ```markdown
+   * > | a&#123;b
+   *        ^
+   * > | a&#x9;b
+   *        ^
+   * ```
+   *
+   * @type {State} */
   function numeric(code) {
     if (code === codes.uppercaseX || code === codes.lowercaseX) {
       effects.enter(types.characterReferenceMarkerHexadecimal)
@@ -77,13 +110,26 @@ function tokenizeCharacterReference(effects, ok, nok) {
     return value(code)
   }
 
-  /** @type {State} */
+  /**
+   * Inside a character reference value, after the markers (`&#x`, `&#`, or
+   * `&`) that define its kind, but before the `;`.
+   *
+   * The character reference kind defines what and how many characters are
+   * allowed.
+   *
+   * ```markdown
+   * > | a&amp;b
+   *       ^^^
+   * > | a&#123;b
+   *        ^^^
+   * > | a&#x9;b
+   *         ^
+   * ```
+   *
+   * @type {State} */
   function value(code) {
-    /** @type {Token} */
-    let token
-
     if (code === codes.semicolon && size) {
-      token = effects.exit(types.characterReferenceValue)
+      const token = effects.exit(types.characterReferenceValue)
 
       if (
         test === asciiAlphanumeric &&

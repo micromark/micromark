@@ -16,7 +16,18 @@ export const blankLine = {tokenize: tokenizeBlankLine, partial: true}
 function tokenizeBlankLine(effects, ok, nok) {
   return factorySpace(effects, afterWhitespace, types.linePrefix)
 
-  /** @type {State} */
+  /**
+   * After zero or more spaces or tabs, before a line ending or EOF.
+   *
+   * ```markdown
+   * > | ␠␠␊
+   *       ^
+   * > | ␊
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function afterWhitespace(code) {
     return code === codes.eof || markdownLineEnding(code) ? ok(code) : nok(code)
   }

@@ -103,40 +103,68 @@ function tokenizeCodeText(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of code (text).
+   *
+   * ```markdown
+   * > | `a`
+   *     ^
+   * > | \`a`
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.graveAccent, 'expected `` ` ``')
     assert(previous.call(self, self.previous), 'expected correct previous')
     effects.enter(types.codeText)
     effects.enter(types.codeTextSequence)
-    return openingSequence(code)
+    return sequenceOpen(code)
   }
 
-  /** @type {State} */
-  function openingSequence(code) {
+  /**
+   * In the opening sequence.
+   *
+   * ```markdown
+   * > | `a`
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function sequenceOpen(code) {
     if (code === codes.graveAccent) {
       effects.consume(code)
       sizeOpen++
-      return openingSequence
+      return sequenceOpen
     }
 
     effects.exit(types.codeTextSequence)
-    return gap(code)
+    return between(code)
   }
 
-  /** @type {State} */
-  function gap(code) {
+  /**
+   * Between something and something else
+   *
+   * ```markdown
+   * > | `a`
+   *      ^^
+   * ```
+   *
+   * @type {State}
+   */
+  function between(code) {
     // EOF.
     if (code === codes.eof) {
       return nok(code)
     }
 
-    // Closing fence?
-    // Could also be data.
+    // Closing fence? Could also be data.
     if (code === codes.graveAccent) {
       token = effects.enter(types.codeTextSequence)
       size = 0
-      return closingSequence(code)
+      return sequenceClose(code)
     }
 
     // Tabs don’t work, and virtual spaces don’t make sense.
@@ -144,14 +172,14 @@ function tokenizeCodeText(effects, ok, nok) {
       effects.enter('space')
       effects.consume(code)
       effects.exit('space')
-      return gap
+      return between
     }
 
     if (markdownLineEnding(code)) {
       effects.enter(types.lineEnding)
       effects.consume(code)
       effects.exit(types.lineEnding)
-      return gap
+      return between
     }
 
     // Data.
@@ -159,8 +187,16 @@ function tokenizeCodeText(effects, ok, nok) {
     return data(code)
   }
 
-  // In code.
-  /** @type {State} */
+  /**
+   * In data.
+   *
+   * ```markdown
+   * > | `a`
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
   function data(code) {
     if (
       code === codes.eof ||
@@ -169,21 +205,29 @@ function tokenizeCodeText(effects, ok, nok) {
       markdownLineEnding(code)
     ) {
       effects.exit(types.codeTextData)
-      return gap(code)
+      return between(code)
     }
 
     effects.consume(code)
     return data
   }
 
-  // Closing fence.
-  /** @type {State} */
-  function closingSequence(code) {
+  /**
+   * In the closing sequence.
+   *
+   * ```markdown
+   * > | `a`
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
+  function sequenceClose(code) {
     // More.
     if (code === codes.graveAccent) {
       effects.consume(code)
       size++
-      return closingSequence
+      return sequenceClose
     }
 
     // Done!

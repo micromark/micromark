@@ -22,7 +22,16 @@ function tokenizeLabelStartImage(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of label (image) start.
+   *
+   * ```markdown
+   * > | a ![b] c
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.exclamationMark, 'expected `!`')
     effects.enter(types.labelImage)
@@ -32,7 +41,16 @@ function tokenizeLabelStartImage(effects, ok, nok) {
     return open
   }
 
-  /** @type {State} */
+  /**
+   * After `!`, before a `[`.
+   *
+   * ```markdown
+   * > | a ![b] c
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function open(code) {
     if (code === codes.leftSquareBracket) {
       effects.enter(types.labelMarker)

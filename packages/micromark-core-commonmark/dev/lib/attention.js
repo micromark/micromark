@@ -205,7 +205,16 @@ function tokenizeAttention(effects, ok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Before a sequence.
+   *
+   * ```markdown
+   * > | **
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(
       code === codes.asterisk || code === codes.underscore,
@@ -216,7 +225,16 @@ function tokenizeAttention(effects, ok) {
     return sequence(code)
   }
 
-  /** @type {State} */
+  /**
+   * In a sequence.
+   *
+   * ```markdown
+   * > | **
+   *     ^^
+   * ```
+   *
+   * @type {State}
+   */
   function sequence(code) {
     if (code === marker) {
       effects.consume(code)

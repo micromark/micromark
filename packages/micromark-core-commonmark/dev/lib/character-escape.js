@@ -19,7 +19,16 @@ export const characterEscape = {
 function tokenizeCharacterEscape(effects, ok, nok) {
   return start
 
-  /** @type {State} */
+  /**
+   * Start of a character escape.
+   *
+   * ```markdown
+   * > | a\*b
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.backslash, 'expected `\\`')
     effects.enter(types.characterEscape)
@@ -29,7 +38,16 @@ function tokenizeCharacterEscape(effects, ok, nok) {
     return open
   }
 
-  /** @type {State} */
+  /**
+   * Inside a character escape, after `\`.
+   *
+   * ```markdown
+   * > | a\*b
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
   function open(code) {
     if (asciiPunctuation(code)) {
       effects.enter(types.characterEscapeValue)

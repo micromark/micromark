@@ -19,19 +19,37 @@ export const hardBreakEscape = {
 function tokenizeHardBreakEscape(effects, ok, nok) {
   return start
 
-  /** @type {State} */
+  /**
+   * Start of a hard break (escape).
+   *
+   * ```markdown
+   * > | a\
+   *      ^
+   *   | b
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.backslash, 'expected `\\`')
     effects.enter(types.hardBreakEscape)
-    effects.enter(types.escapeMarker)
     effects.consume(code)
     return open
   }
 
-  /** @type {State} */
+  /**
+   * At the end of a hard break (escape), after `\`.
+   *
+   * ```markdown
+   * > | a\
+   *       ^
+   *   | b
+   * ```
+   *
+   *  @type {State}
+   */
   function open(code) {
     if (markdownLineEnding(code)) {
-      effects.exit(types.escapeMarker)
       effects.exit(types.hardBreakEscape)
       return ok(code)
     }

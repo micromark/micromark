@@ -35,7 +35,16 @@ function tokenizeHtmlText(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of HTML (text)
+   *
+   * ```markdown
+   * > | a <b> c
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.lessThan, 'expected `<`')
     effects.enter(types.htmlText)
@@ -44,7 +53,20 @@ function tokenizeHtmlText(effects, ok, nok) {
     return open
   }
 
-  /** @type {State} */
+  /**
+   * After `<`, before a tag name or other stuff.
+   *
+   * ```markdown
+   * > | a <b> c
+   *        ^
+   * > | a <!doctype> c
+   *        ^
+   * > | a <!--b--> c
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function open(code) {
     if (code === codes.exclamationMark) {
       effects.consume(code)
@@ -69,18 +91,31 @@ function tokenizeHtmlText(effects, ok, nok) {
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * After `<!`, so inside a declaration, comment, or CDATA.
+   *
+   * ```markdown
+   * > | a <!doctype> c
+   *         ^
+   * > | a <!--b--> c
+   *         ^
+   * > | a <![CDATA[>&<]]> c
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
   function declarationOpen(code) {
     if (code === codes.dash) {
       effects.consume(code)
-      return commentOpen
+      return commentOpenInside
     }
 
     if (code === codes.leftSquareBracket) {
       effects.consume(code)
       buffer = constants.cdataOpeningString
       index = 0
-      return cdataOpen
+      return cdataOpenInside
     }
 
     if (asciiAlpha(code)) {
@@ -91,8 +126,17 @@ function tokenizeHtmlText(effects, ok, nok) {
     return nok(code)
   }
 
-  /** @type {State} */
-  function commentOpen(code) {
+  /**
+   * After `<!-`, inside a comment, before another `-`.
+   *
+   * ```markdown
+   * > | a <!--b--> c
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
+  function commentOpenInside(code) {
     if (code === codes.dash) {
       effects.consume(code)
       return commentStart
@@ -101,9 +145,23 @@ function tokenizeHtmlText(effects, ok, nok) {
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * After `<!--`, inside a comment
+   *
+   * > 👉 **Note**: html (flow) does allow `<!-->` or `<!--->` as empty
+   * > comments.
+   * > This is prohibited in html (text).
+   * > See: <https://github.com/commonmark/commonmark-spec/issues/712>.
+   *
+   * ```markdown
+   * > | a <!--b--> c
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
   function commentStart(code) {
-    if (code === codes.eof || code === codes.greaterThan) {
+    if (code === codes.greaterThan) {
       return nok(code)
     }
 
@@ -115,16 +173,39 @@ function tokenizeHtmlText(effects, ok, nok) {
     return comment(code)
   }
 
-  /** @type {State} */
+  /**
+   * After `<!---`, inside a comment
+   *
+   * > 👉 **Note**: html (flow) does allow `<!-->` or `<!--->` as empty
+   * > comments.
+   * > This is prohibited in html (text).
+   * > See: <https://github.com/commonmark/commonmark-spec/issues/712>.
+   *
+   * ```markdown
+   * > | a <!---b--> c
+   *            ^
+   * ```
+   *
+   * @type {State}
+   */
   function commentStartDash(code) {
-    if (code === codes.eof || code === codes.greaterThan) {
+    if (code === codes.greaterThan) {
       return nok(code)
     }
 
     return comment(code)
   }
 
-  /** @type {State} */
+  /**
+   * In a comment.
+   *
+   * ```markdown
+   * > | a <!--b--> c
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
   function comment(code) {
     if (code === codes.eof) {
       return nok(code)
@@ -144,7 +225,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return comment
   }
 
-  /** @type {State} */
+  /**
+   * In a comment, after `-`.
+   *
+   * ```markdown
+   * > | a <!--b--> c
+   *             ^
+   * ```
+   *
+   * @type {State}
+   */
   function commentClose(code) {
     if (code === codes.dash) {
       effects.consume(code)
@@ -154,17 +244,35 @@ function tokenizeHtmlText(effects, ok, nok) {
     return comment(code)
   }
 
-  /** @type {State} */
-  function cdataOpen(code) {
+  /**
+   * After `<![`, inside CDATA, expecting `CDATA[`.
+   *
+   * ```markdown
+   * > | a <![CDATA[>&<]]> b
+   *          ^^^^^^
+   * ```
+   *
+   * @type {State}
+   */
+  function cdataOpenInside(code) {
     if (code === buffer.charCodeAt(index++)) {
       effects.consume(code)
-      return index === buffer.length ? cdata : cdataOpen
+      return index === buffer.length ? cdata : cdataOpenInside
     }
 
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * In CDATA.
+   *
+   * ```markdown
+   * > | a <![CDATA[>&<]]> b
+   *                ^^^
+   * ```
+   *
+   * @type {State}
+   */
   function cdata(code) {
     if (code === codes.eof) {
       return nok(code)
@@ -184,7 +292,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return cdata
   }
 
-  /** @type {State} */
+  /**
+   * In CDATA, after `]`.
+   *
+   * ```markdown
+   * > | a <![CDATA[>&<]]> b
+   *                    ^
+   * ```
+   *
+   * @type {State}
+   */
   function cdataClose(code) {
     if (code === codes.rightSquareBracket) {
       effects.consume(code)
@@ -194,7 +311,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return cdata(code)
   }
 
-  /** @type {State} */
+  /**
+   * In CDATA, after `]]`.
+   *
+   * ```markdown
+   * > | a <![CDATA[>&<]]> b
+   *                     ^
+   * ```
+   *
+   * @type {State}
+   */
   function cdataEnd(code) {
     if (code === codes.greaterThan) {
       return end(code)
@@ -208,7 +334,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return cdata(code)
   }
 
-  /** @type {State} */
+  /**
+   * In a declaration.
+   *
+   * ```markdown
+   * > | a <!b> c
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
   function declaration(code) {
     if (code === codes.eof || code === codes.greaterThan) {
       return end(code)
@@ -223,7 +358,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return declaration
   }
 
-  /** @type {State} */
+  /**
+   * In an instruction.
+   *
+   * ```markdown
+   * > | a <?b?> c
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
   function instruction(code) {
     if (code === codes.eof) {
       return nok(code)
@@ -243,12 +387,30 @@ function tokenizeHtmlText(effects, ok, nok) {
     return instruction
   }
 
-  /** @type {State} */
+  /**
+   * In an instruction, after `?`.
+   *
+   * ```markdown
+   * > | a <?b?> c
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
   function instructionClose(code) {
     return code === codes.greaterThan ? end(code) : instruction(code)
   }
 
-  /** @type {State} */
+  /**
+   * After `</`, in a closing tag, before a tag name.
+   *
+   * ```markdown
+   * > | a </b> c
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagCloseStart(code) {
     if (asciiAlpha(code)) {
       effects.consume(code)
@@ -258,7 +420,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * After `</x`, in a tag name.
+   *
+   * ```markdown
+   * > | a </b> c
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagClose(code) {
     if (code === codes.dash || asciiAlphanumeric(code)) {
       effects.consume(code)
@@ -268,7 +439,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return tagCloseBetween(code)
   }
 
-  /** @type {State} */
+  /**
+   * In a closing tag, after the tag name.
+   *
+   * ```markdown
+   * > | a </b> c
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagCloseBetween(code) {
     if (markdownLineEnding(code)) {
       returnState = tagCloseBetween
@@ -283,7 +463,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return end(code)
   }
 
-  /** @type {State} */
+  /**
+   * After `<x`, in an opening tag name.
+   *
+   * ```markdown
+   * > | a <b> c
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagOpen(code) {
     if (code === codes.dash || asciiAlphanumeric(code)) {
       effects.consume(code)
@@ -301,7 +490,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * In an opening tag, after the tag name.
+   *
+   * ```markdown
+   * > | a <b> c
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagOpenBetween(code) {
     if (code === codes.slash) {
       effects.consume(code)
@@ -326,7 +524,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return end(code)
   }
 
-  /** @type {State} */
+  /**
+   * In an attribute name.
+   *
+   * ```markdown
+   * > | a <b c> d
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagOpenAttributeName(code) {
     if (
       code === codes.dash ||
@@ -342,7 +549,17 @@ function tokenizeHtmlText(effects, ok, nok) {
     return tagOpenAttributeNameAfter(code)
   }
 
-  /** @type {State} */
+  /**
+   * After an attribute name, before an attribute initializer, the end of the
+   * tag, or whitespace.
+   *
+   * ```markdown
+   * > | a <b c> d
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagOpenAttributeNameAfter(code) {
     if (code === codes.equalsTo) {
       effects.consume(code)
@@ -362,7 +579,17 @@ function tokenizeHtmlText(effects, ok, nok) {
     return tagOpenBetween(code)
   }
 
-  /** @type {State} */
+  /**
+   * Before an unquoted, double quoted, or single quoted attribute value,
+   * allowing whitespace.
+   *
+   * ```markdown
+   * > | a <b c=d> e
+   *            ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagOpenAttributeValueBefore(code) {
     if (
       code === codes.eof ||
@@ -395,7 +622,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return tagOpenAttributeValueUnquoted
   }
 
-  /** @type {State} */
+  /**
+   * In a double or single quoted attribute value.
+   *
+   * ```markdown
+   * > | a <b c="d"> e
+   *             ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagOpenAttributeValueQuoted(code) {
     if (code === marker) {
       effects.consume(code)
@@ -415,20 +651,16 @@ function tokenizeHtmlText(effects, ok, nok) {
     return tagOpenAttributeValueQuoted
   }
 
-  /** @type {State} */
-  function tagOpenAttributeValueQuotedAfter(code) {
-    if (
-      code === codes.greaterThan ||
-      code === codes.slash ||
-      markdownLineEndingOrSpace(code)
-    ) {
-      return tagOpenBetween(code)
-    }
-
-    return nok(code)
-  }
-
-  /** @type {State} */
+  /**
+   * In an unquoted attribute value.
+   *
+   * ```markdown
+   * > | a <b c=d> e
+   *            ^
+   * ```
+   *
+   * @type {State}
+   */
   function tagOpenAttributeValueUnquoted(code) {
     if (
       code === codes.eof ||
@@ -441,7 +673,11 @@ function tokenizeHtmlText(effects, ok, nok) {
       return nok(code)
     }
 
-    if (code === codes.greaterThan || markdownLineEndingOrSpace(code)) {
+    if (
+      code === codes.greaterThan ||
+      code === codes.slash ||
+      markdownLineEndingOrSpace(code)
+    ) {
       return tagOpenBetween(code)
     }
 
@@ -449,9 +685,64 @@ function tokenizeHtmlText(effects, ok, nok) {
     return tagOpenAttributeValueUnquoted
   }
 
-  // We can’t have blank lines in content, so no need to worry about empty
-  // tokens.
-  /** @type {State} */
+  /**
+   * After a double or single quoted attribute value, before whitespace or the
+   * end of the tag.
+   *
+   * ```markdown
+   * > | a <b c="d"> e
+   *               ^
+   * ```
+   *
+   * @type {State}
+   */
+  function tagOpenAttributeValueQuotedAfter(code) {
+    if (
+      code === codes.greaterThan ||
+      code === codes.slash ||
+      markdownLineEndingOrSpace(code)
+    ) {
+      return tagOpenBetween(code)
+    }
+
+    return nok(code)
+  }
+
+  /**
+   * In certain circumstances of a complete tag where only an `>` is allowed.
+   *
+   * ```markdown
+   * > | a <b c="d"> e
+   *               ^
+   * ```
+   *
+   * @type {State}
+   */
+  function end(code) {
+    if (code === codes.greaterThan) {
+      effects.consume(code)
+      effects.exit(types.htmlTextData)
+      effects.exit(types.htmlText)
+      return ok
+    }
+
+    return nok(code)
+  }
+
+  /**
+   * At an allowed line ending.
+   *
+   * > 👉 **Note**: we can’t have blank lines in text, so no need to worry about
+   * > empty tokens.
+   *
+   * ```markdown
+   * > | a <!--a
+   *            ^
+   *   | b-->
+   * ```
+   *
+   * @type {State}
+   */
   function atLineEnding(code) {
     assert(returnState, 'expected return state')
     assert(markdownLineEnding(code), 'expected eol')
@@ -469,21 +760,22 @@ function tokenizeHtmlText(effects, ok, nok) {
     )
   }
 
-  /** @type {State} */
+  /**
+   * After a line ending.
+   *
+   * > 👉 **Note**: we can’t have blank lines in text, so no need to worry about
+   * > empty tokens.
+   *
+   * ```markdown
+   *   | a <!--a
+   * > | b-->
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function afterPrefix(code) {
     effects.enter(types.htmlTextData)
     return returnState(code)
-  }
-
-  /** @type {State} */
-  function end(code) {
-    if (code === codes.greaterThan) {
-      effects.consume(code)
-      effects.exit(types.htmlTextData)
-      effects.exit(types.htmlText)
-      return ok
-    }
-
-    return nok(code)
   }
 }

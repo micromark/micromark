@@ -23,6 +23,12 @@ test('code', function (t) {
   )
 
   t.equal(
+    micromark('`` ` ``'),
+    '<p><code>`</code></p>',
+    'should support code w/ padding and one character'
+  )
+
+  t.equal(
     micromark('` a`'),
     '<p><code> a</code></p>',
     'should support code w/ unbalanced padding'

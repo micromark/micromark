@@ -5,7 +5,6 @@
  * @typedef {import('micromark-util-types').Event} Event
  * @typedef {import('micromark-util-types').Token} Token
  * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').Code} Code
  */
 
 import {ok as assert} from 'uvu/assert'
@@ -39,11 +38,9 @@ const collapsedReferenceConstruct = {tokenize: tokenizeCollapsedReference}
 /** @type {Resolver} */
 function resolveAllLabelEnd(events) {
   let index = -1
-  /** @type {Token} */
-  let token
 
   while (++index < events.length) {
-    token = events[index][1]
+    const token = events[index][1]
 
     if (
       token.type === types.labelImage ||
@@ -193,7 +190,21 @@ function tokenizeLabelEnd(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of label end.
+   *
+   * ```markdown
+   * > | [a](b) c
+   *       ^
+   * > | [a][b] c
+   *       ^
+   * > | [a][] b
+   *       ^
+   * > | [a] b
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.rightSquareBracket, 'expected `]`')
 
@@ -203,6 +214,7 @@ function tokenizeLabelEnd(effects, ok, nok) {
 
     // It’s a balanced bracket, but contains a link.
     if (labelStart._inactive) return balanced(code)
+
     defined = self.parser.defined.includes(
       normalizeIdentifier(
         self.sliceSerialize({start: labelStart.end, end: self.now()})
@@ -216,9 +228,24 @@ function tokenizeLabelEnd(effects, ok, nok) {
     return afterLabelEnd
   }
 
-  /** @type {State} */
+  /**
+   * After `]`.
+   *
+   * ```markdown
+   * > | [a](b) c
+   *       ^
+   * > | [a][b] c
+   *       ^
+   * > | [a][] b
+   *       ^
+   * > | [a] b
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
   function afterLabelEnd(code) {
-    // Resource: `[asd](fgh)`.
+    // Resource (`[asd](fgh)`)?
     if (code === codes.leftParenthesis) {
       return effects.attempt(
         resourceConstruct,
@@ -227,7 +254,7 @@ function tokenizeLabelEnd(effects, ok, nok) {
       )(code)
     }
 
-    // Collapsed (`[asd][]`) or full (`[asd][fgh]`) reference?
+    // Full (`[asd][fgh]`) or collapsed (`[asd][]`) reference?
     if (code === codes.leftSquareBracket) {
       return effects.attempt(
         fullReferenceConstruct,
@@ -238,11 +265,26 @@ function tokenizeLabelEnd(effects, ok, nok) {
       )(code)
     }
 
-    // Shortcut reference: `[asd]`?
+    // Shortcut (`[asd]`) reference?
     return defined ? ok(code) : balanced(code)
   }
 
-  /** @type {State} */
+  /**
+   * Done, it’s nothing.
+   *
+   * There was an okay opening, but we didn’t match anything.
+   *
+   * ```markdown
+   * > | [a](b c
+   *        ^
+   * > | [a][b c
+   *        ^
+   * > | [a] b
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function balanced(code) {
     labelStart._balanced = true
     return nok(code)
@@ -253,7 +295,16 @@ function tokenizeLabelEnd(effects, ok, nok) {
 function tokenizeResource(effects, ok, nok) {
   return start
 
-  /** @type {State} */
+  /**
+   * Before a resource, at `(`.
+   *
+   * ```markdown
+   * > | [a](b) c
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.leftParenthesis, 'expected left paren')
     effects.enter(types.resource)
@@ -263,7 +314,16 @@ function tokenizeResource(effects, ok, nok) {
     return factoryWhitespace(effects, open)
   }
 
-  /** @type {State} */
+  /**
+   * At the start of a resource, after optional whitespace.
+   *
+   * ```markdown
+   * > | [a](b) c
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
   function open(code) {
     if (code === codes.rightParenthesis) {
       return end(code)
@@ -282,14 +342,32 @@ function tokenizeResource(effects, ok, nok) {
     )(code)
   }
 
-  /** @type {State} */
+  /**
+   * In a resource, after a destination, before optional whitespace.
+   *
+   * ```markdown
+   * > | [a](b) c
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
   function destinationAfter(code) {
     return markdownLineEndingOrSpace(code)
       ? factoryWhitespace(effects, between)(code)
       : end(code)
   }
 
-  /** @type {State} */
+  /**
+   * In a resource, after a destination, after whitespace.
+   *
+   * ```markdown
+   * > | [a](b ) c
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
   function between(code) {
     if (
       code === codes.quotationMark ||
@@ -309,7 +387,16 @@ function tokenizeResource(effects, ok, nok) {
     return end(code)
   }
 
-  /** @type {State} */
+  /**
+   * In a resource, at the `)`.
+   *
+   * ```markdown
+   * > | [a](b) d
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
   function end(code) {
     if (code === codes.rightParenthesis) {
       effects.enter(types.resourceMarker)
@@ -329,7 +416,16 @@ function tokenizeFullReference(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * In a reference (full), at the `[`.
+   *
+   * ```markdown
+   * > | [a][b] d
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.leftSquareBracket, 'expected left bracket')
     return factoryLabel.call(
@@ -343,7 +439,16 @@ function tokenizeFullReference(effects, ok, nok) {
     )(code)
   }
 
-  /** @type {State} */
+  /**
+   * In a reference (full), after `]`.
+   *
+   * ```markdown
+   * > | [a][b] d
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
   function afterLabel(code) {
     return self.parser.defined.includes(
       normalizeIdentifier(
@@ -359,7 +464,18 @@ function tokenizeFullReference(effects, ok, nok) {
 function tokenizeCollapsedReference(effects, ok, nok) {
   return start
 
-  /** @type {State} */
+  /**
+   * In a reference (collapsed), at the `[`.
+   *
+   * > 👉 **Note**: we only get here if the label is defined.
+   *
+   * ```markdown
+   * > | [a][] d
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.leftSquareBracket, 'expected left bracket')
     effects.enter(types.reference)
@@ -369,7 +485,18 @@ function tokenizeCollapsedReference(effects, ok, nok) {
     return open
   }
 
-  /** @type {State} */
+  /**
+   * In a reference (collapsed), at the `]`.
+   *
+   * > 👉 **Note**: we only get here if the label is defined.
+   *
+   * ```markdown
+   * > | [a][] d
+   *         ^
+   * ```
+   *
+   *  @type {State}
+   */
   function open(code) {
     if (code === codes.rightSquareBracket) {
       effects.enter(types.referenceMarker)

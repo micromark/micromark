@@ -221,7 +221,7 @@ export const types = {
   escapeMarker: 'escapeMarker',
 
   // A hard break created with a backslash (`\\n`).
-  // Includes `escapeMarker` (does not include the line ending)
+  // Note: does not include the line ending.
   hardBreakEscape: 'hardBreakEscape',
 
   // A hard break created with trailing spaces (`  \n`).
