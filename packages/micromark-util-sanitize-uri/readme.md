@@ -16,6 +16,7 @@ micromark utility to sanitize urls.
 *   [Use](#use)
 *   [API](#api)
     *   [`sanitizeUri(url[, pattern])`](#sanitizeuriurl-pattern)
+    *   [`normalizeUri(url[, pattern])`](#normalizeuriurl-pattern)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
@@ -86,6 +87,21 @@ as a dangerous example, `javascript:`), the value is ignored.
 ###### Returns
 
 `string` — Sanitized URI.
+
+### `normalizeUri(url[, pattern])`
+
+Normalize a URL (such as used in definitions).
+
+Encode unsafe characters with percent-encoding, skipping already encoded
+sequences.
+
+###### Parameters
+
+*   `url` (`string`) — URI to normalize.
+
+###### Returns
+
+`string` — Normalized URI.
 
 ## Security
 
