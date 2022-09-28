@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-sanitize-uri",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "micromark utility to sanitize urls",
   "license": "MIT",
   "keywords": [
