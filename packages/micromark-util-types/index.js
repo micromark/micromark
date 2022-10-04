@@ -496,6 +496,10 @@
  * @typedef {Partial<NormalizedHtmlExtension>} HtmlExtension
  *   An HTML extension changes how markdown tokens are serialized.
  *
+ * @typedef Definition
+ * @property {string} [destination]
+ * @property {string} [title]
+ *
  * @typedef _CompileDataFields
  * @property {boolean} lastWasTag
  * @property {boolean} expectFirstItem
@@ -509,6 +513,7 @@
  * @property {boolean} inCodeText
  * @property {string} characterReferenceType
  * @property {Array<boolean>} tightStack
+ * @property {Record<string, Definition>} definitions
  *
  * @typedef {Record<string, unknown> & Partial<_CompileDataFields>} CompileData
  *
