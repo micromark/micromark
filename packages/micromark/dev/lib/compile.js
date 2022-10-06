@@ -17,6 +17,7 @@
  * @typedef {import('micromark-util-types').CompileOptions} CompileOptions
  * @typedef {import('micromark-util-types').CompileData} CompileData
  * @typedef {import('micromark-util-types').CompileContext} CompileContext
+ * @typedef {import('micromark-util-types').Definition} Definition
  * @typedef {import('micromark-util-types').Compile} Compile
  * @typedef {import('micromark-util-types').Handle} Handle
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
@@ -29,10 +30,6 @@
  * @property {string} [labelId]
  * @property {string} [label]
  * @property {string} [referenceId]
- * @property {string} [destination]
- * @property {string} [title]
- *
- * @typedef Definition
  * @property {string} [destination]
  * @property {string} [title]
  */
@@ -213,7 +210,10 @@ export function compile(options = {}) {
    *
    * @type {CompileData}
    */
-  const data = {tightStack}
+  const data = {
+    tightStack,
+    definitions
+  }
 
   /**
    * The context for handlers references a couple of useful functions.
