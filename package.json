@@ -55,9 +55,9 @@
     "packages/micromark"
   ],
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-node-resolve": "^14.0.0",
     "@types/concat-stream": "^2.0.0",
-    "@types/glob": "^7.0.0",
+    "@types/glob": "^8.0.0",
     "@types/ms": "^0.7.0",
     "@types/regenerate": "^1.0.0",
     "@types/tape": "^4.0.0",
@@ -66,7 +66,7 @@
     "character-entities": "^2.0.0",
     "commonmark.json": "^0.30.0",
     "concat-stream": "^2.0.0",
-    "esbuild": "^0.14.0",
+    "esbuild": "^0.15.0",
     "eslint-plugin-es": "^4.0.0",
     "eslint-plugin-security": "^1.0.0",
     "gzip-size-cli": "^5.0.0",
@@ -83,7 +83,7 @@
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^4.0.0",
-    "xo": "^0.51.0"
+    "xo": "^0.52.0"
   },
   "scripts": {
     "build-workspace": "npm run build --workspaces && cp readme.md packages/micromark/readme.md",
