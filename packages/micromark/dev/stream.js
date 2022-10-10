@@ -62,7 +62,7 @@ export function stream(options) {
           callback()
         }
 
-        // Signal succesful write.
+        // Signal successful write.
         return true
       }
     )
