@@ -23,14 +23,12 @@ test('commonmark', function (t) {
   for (key in sections) {
     if (!hasOwnProperty.call(sections, key)) continue
 
+    const section = sections[key]
     t.test(key, function (t) {
       let index = -1
 
-      while (++index < sections[key].length) {
-        t.equal(
-          micromark(sections[key][index].input, options),
-          sections[key][index].output
-        )
+      while (++index < section.length) {
+        t.equal(micromark(section[index].input, options), section[index].output)
       }
 
       t.end()
