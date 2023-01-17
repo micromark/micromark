@@ -478,7 +478,10 @@ export function compile(options = {}) {
   // Handlers.
   //
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterlistordered(token) {
     tightStack.push(!token._loose)
     lineEndingIfNeeded()
@@ -486,7 +489,10 @@ export function compile(options = {}) {
     setData('expectFirstItem', true)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterlistunordered(token) {
     tightStack.push(!token._loose)
     lineEndingIfNeeded()
@@ -494,7 +500,10 @@ export function compile(options = {}) {
     setData('expectFirstItem', true)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterlistitemvalue(token) {
     if (getData('expectFirstItem')) {
       const value = Number.parseInt(
@@ -508,7 +517,10 @@ export function compile(options = {}) {
     }
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterlistitemmarker() {
     if (getData('expectFirstItem')) {
       tag('>')
@@ -523,7 +535,10 @@ export function compile(options = {}) {
     setData('lastWasTag')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitlistordered() {
     onexitlistitem()
     tightStack.pop()
@@ -531,7 +546,10 @@ export function compile(options = {}) {
     tag('</ol>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitlistunordered() {
     onexitlistitem()
     tightStack.pop()
@@ -539,7 +557,10 @@ export function compile(options = {}) {
     tag('</ul>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitlistitem() {
     if (getData('lastWasTag') && !getData('slurpAllLineEndings')) {
       lineEndingIfNeeded()
@@ -549,14 +570,20 @@ export function compile(options = {}) {
     setData('slurpAllLineEndings')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterblockquote() {
     tightStack.push(false)
     lineEndingIfNeeded()
     tag('<blockquote>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitblockquote() {
     tightStack.pop()
     lineEndingIfNeeded()
@@ -564,7 +591,10 @@ export function compile(options = {}) {
     setData('slurpAllLineEndings')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterparagraph() {
     if (!tightStack[tightStack.length - 1]) {
       lineEndingIfNeeded()
@@ -574,7 +604,10 @@ export function compile(options = {}) {
     setData('slurpAllLineEndings')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitparagraph() {
     if (tightStack[tightStack.length - 1]) {
       setData('slurpAllLineEndings', true)
@@ -583,20 +616,29 @@ export function compile(options = {}) {
     }
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onentercodefenced() {
     lineEndingIfNeeded()
     tag('<pre><code')
     setData('fencesCount', 0)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitcodefencedfenceinfo() {
     const value = resume()
     tag(' class="language-' + value + '"')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitcodefencedfence() {
     const count = getData('fencesCount') || 0
 
@@ -608,13 +650,19 @@ export function compile(options = {}) {
     setData('fencesCount', count + 1)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onentercodeindented() {
     lineEndingIfNeeded()
     tag('<pre><code>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitflowcode() {
     const count = getData('fencesCount')
 
@@ -646,39 +694,60 @@ export function compile(options = {}) {
     setData('slurpOneLineEnding')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterimage() {
     mediaStack.push({image: true})
     tags = undefined // Disallow tags.
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterlink() {
     mediaStack.push({})
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitlabeltext(token) {
     mediaStack[mediaStack.length - 1].labelId = this.sliceSerialize(token)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitlabel() {
     mediaStack[mediaStack.length - 1].label = resume()
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitreferencestring(token) {
     mediaStack[mediaStack.length - 1].referenceId = this.sliceSerialize(token)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterresource() {
     buffer() // We can have line endings in the resource, ignore them.
     mediaStack[mediaStack.length - 1].destination = ''
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterresourcedestinationstring() {
     buffer()
     // Ignore encoding the result, as we’ll first percent encode the url and
@@ -686,18 +755,27 @@ export function compile(options = {}) {
     setData('ignoreEncode', true)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitresourcedestinationstring() {
     mediaStack[mediaStack.length - 1].destination = resume()
     setData('ignoreEncode')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitresourcetitlestring() {
     mediaStack[mediaStack.length - 1].title = resume()
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitmedia() {
     let index = mediaStack.length - 1 // Skip current.
     const media = mediaStack[index]
@@ -753,37 +831,55 @@ export function compile(options = {}) {
     mediaStack.pop()
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterdefinition() {
     buffer()
     mediaStack.push({})
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitdefinitionlabelstring(token) {
     // Discard label, use the source content instead.
     resume()
     mediaStack[mediaStack.length - 1].labelId = this.sliceSerialize(token)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterdefinitiondestinationstring() {
     buffer()
     setData('ignoreEncode', true)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitdefinitiondestinationstring() {
     mediaStack[mediaStack.length - 1].destination = resume()
     setData('ignoreEncode')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitdefinitiontitlestring() {
     mediaStack[mediaStack.length - 1].title = resume()
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitdefinition() {
     const media = mediaStack[mediaStack.length - 1]
     assert(media.labelId !== undefined, 'media should have `labelId`')
@@ -798,12 +894,18 @@ export function compile(options = {}) {
     mediaStack.pop()
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onentercontent() {
     setData('slurpAllLineEndings', true)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitatxheadingsequence(token) {
     // Exit for further sequences.
     if (getData('headingRank')) return
@@ -812,24 +914,36 @@ export function compile(options = {}) {
     tag('<h' + getData('headingRank') + '>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onentersetextheading() {
     buffer()
     setData('slurpAllLineEndings')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitsetextheadingtext() {
     setData('slurpAllLineEndings', true)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitatxheading() {
     tag('</h' + getData('headingRank') + '>')
     setData('headingRank')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitsetextheadinglinesequence(token) {
     setData(
       'headingRank',
@@ -837,7 +951,10 @@ export function compile(options = {}) {
     )
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitsetextheading() {
     const value = resume()
     lineEndingIfNeeded()
@@ -848,12 +965,18 @@ export function compile(options = {}) {
     setData('headingRank')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitdata(token) {
     raw(encode(this.sliceSerialize(token)))
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitlineending(token) {
     if (getData('slurpAllLineEndings')) {
       return
@@ -872,79 +995,121 @@ export function compile(options = {}) {
     raw(encode(this.sliceSerialize(token)))
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitcodeflowvalue(token) {
     raw(encode(this.sliceSerialize(token)))
     setData('flowCodeSeenData', true)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexithardbreak() {
     tag('<br />')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterhtmlflow() {
     lineEndingIfNeeded()
     onenterhtml()
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexithtml() {
     setData('ignoreEncode')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterhtml() {
     if (options.allowDangerousHtml) {
       setData('ignoreEncode', true)
     }
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenteremphasis() {
     tag('<em>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onenterstrong() {
     tag('<strong>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onentercodetext() {
     setData('inCodeText', true)
     tag('<code>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitcodetext() {
     setData('inCodeText')
     tag('</code>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitemphasis() {
     tag('</em>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitstrong() {
     tag('</strong>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitthematicbreak() {
     lineEndingIfNeeded()
     tag('<hr />')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitcharacterreferencemarker(token) {
     setData('characterReferenceType', token.type)
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitcharacterreferencevalue(token) {
     let value = this.sliceSerialize(token)
 
@@ -965,7 +1130,10 @@ export function compile(options = {}) {
     setData('characterReferenceType')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitautolinkprotocol(token) {
     const uri = this.sliceSerialize(token)
     tag(
@@ -980,7 +1148,10 @@ export function compile(options = {}) {
     tag('</a>')
   }
 
-  /** @type {Handle} */
+  /**
+   * @this {CompileContext}
+   * @type {Handle}
+   */
   function onexitautolinkemail(token) {
     const uri = this.sliceSerialize(token)
     tag('<a href="' + sanitizeUri('mailto:' + uri) + '">')

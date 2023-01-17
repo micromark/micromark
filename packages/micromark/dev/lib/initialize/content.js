@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
  * @typedef {import('micromark-util-types').Initializer} Initializer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Token} Token
  * @typedef {import('micromark-util-types').State} State
  */
@@ -15,7 +16,10 @@ import {types} from 'micromark-util-symbol/types.js'
 /** @type {InitialConstruct} */
 export const content = {tokenize: initializeContent}
 
-/** @type {Initializer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Initializer}
+ */
 function initializeContent(effects) {
   const contentStart = effects.attempt(
     this.parser.constructs.contentInitial,

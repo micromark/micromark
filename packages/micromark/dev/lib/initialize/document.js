@@ -28,7 +28,10 @@ export const document = {tokenize: initializeDocument}
 /** @type {Construct} */
 const containerConstruct = {tokenize: tokenizeContainer}
 
-/** @type {Initializer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Initializer}
+ */
 function initializeDocument(effects) {
   const self = this
   /** @type {Array<StackItem>} */
@@ -409,7 +412,10 @@ function initializeDocument(effects) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeContainer(effects, ok, nok) {
   return factorySpace(
     effects,

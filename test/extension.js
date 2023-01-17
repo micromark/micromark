@@ -280,23 +280,35 @@ function tokenizeJustALessThan(effects, ok, nok) {
   }
 }
 
-/** @type {Handle} */
+/**
+ * @this {CompileContext}
+ * @type {Handle}
+ */
 function enterComment() {
   this.buffer()
 }
 
-/** @type {Handle} */
+/**
+ * @this {CompileContext}
+ * @type {Handle}
+ */
 function exitComment() {
   this.resume()
   this.setData('slurpOneLineEnding', true)
 }
 
-/** @type {Handle} */
+/**
+ * @this {CompileContext}
+ * @type {Handle}
+ */
 function enterDocument() {
   this.raw('+')
 }
 
-/** @type {Handle} */
+/**
+ * @this {CompileContext}
+ * @type {Handle}
+ */
 function exitDocument() {
   this.raw('-')
 }
