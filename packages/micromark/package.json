@@ -53,46 +53,57 @@
   ],
   "exports": {
     ".": {
+      "types": "./dev/index.d.ts",
       "development": "./dev/index.js",
       "default": "./index.js"
     },
     "./stream": {
+      "types": "./dev/stream.d.ts",
       "development": "./dev/stream.js",
       "default": "./stream.js"
     },
     "./stream.js": {
+      "types": "./dev/stream.d.ts",
       "development": "./dev/stream.js",
       "default": "./stream.js"
     },
     "./lib/compile": {
+      "types": "./dev/lib/compile.d.ts",
       "development": "./dev/lib/compile.js",
       "default": "./lib/compile.js"
     },
     "./lib/compile.js": {
+      "types": "./dev/lib/compile.d.ts",
       "development": "./dev/lib/compile.js",
       "default": "./lib/compile.js"
     },
     "./lib/parse": {
+      "types": "./dev/lib/parse.d.ts",
       "development": "./dev/lib/parse.js",
       "default": "./lib/parse.js"
     },
     "./lib/parse.js": {
+      "types": "./dev/lib/parse.d.ts",
       "development": "./dev/lib/parse.js",
       "default": "./lib/parse.js"
     },
     "./lib/postprocess": {
+      "types": "./dev/lib/postprocess.d.ts",
       "development": "./dev/lib/postprocess.js",
       "default": "./lib/postprocess.js"
     },
     "./lib/postprocess.js": {
+      "types": "./dev/lib/postprocess.d.ts",
       "development": "./dev/lib/postprocess.js",
       "default": "./lib/postprocess.js"
     },
     "./lib/preprocess": {
+      "types": "./dev/lib/preprocess.d.ts",
       "development": "./dev/lib/preprocess.js",
       "default": "./lib/preprocess.js"
     },
     "./lib/preprocess.js": {
+      "types": "./dev/lib/preprocess.d.ts",
       "development": "./dev/lib/preprocess.js",
       "default": "./lib/preprocess.js"
     }
