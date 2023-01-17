@@ -2,6 +2,7 @@
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Resolver} Resolver
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Code} Code
  */
@@ -56,7 +57,10 @@ function resolveToHtmlFlow(events) {
   return events
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeHtmlFlow(effects, ok, nok) {
   const self = this
   /** @type {number} */
@@ -454,7 +458,10 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     return continuation(code)
   }
 
-  /** @type {Tokenizer} */
+  /**
+   * @this {TokenizeContext}
+   * @type {Tokenizer}
+   */
   function htmlLineEnd(effects, ok, nok) {
     return start
 
@@ -557,7 +564,10 @@ function tokenizeHtmlFlow(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeNextBlank(effects, ok, nok) {
   return start
 

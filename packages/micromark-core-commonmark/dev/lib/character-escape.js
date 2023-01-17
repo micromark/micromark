@@ -15,7 +15,10 @@ export const characterEscape = {
   tokenize: tokenizeCharacterEscape
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeCharacterEscape(effects, ok, nok) {
   return start
 

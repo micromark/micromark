@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Exiter} Exiter
  * @typedef {import('micromark-util-types').State} State
  */
@@ -20,7 +21,10 @@ export const blockQuote = {
   exit
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeBlockQuoteStart(effects, ok, nok) {
   const self = this
 
@@ -63,7 +67,10 @@ function tokenizeBlockQuoteStart(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeBlockQuoteContinuation(effects, ok, nok) {
   return factorySpace(
     effects,

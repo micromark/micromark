@@ -15,7 +15,10 @@ export const hardBreakEscape = {
   tokenize: tokenizeHardBreakEscape
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeHardBreakEscape(effects, ok, nok) {
   return start
 

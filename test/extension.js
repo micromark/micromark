@@ -141,7 +141,10 @@ test('html extension', function (t) {
 function createFunkyThematicBreak(marker) {
   return {tokenize: tokenizeFunkyThematicBreak}
 
-  /** @type {Tokenizer} */
+  /**
+   * @this {TokenizeContext}
+   * @type {Tokenizer}
+   */
   function tokenizeFunkyThematicBreak(effects, ok, nok) {
     let size = 0
 
@@ -208,7 +211,10 @@ function createFunkyThematicBreak(marker) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeCommentLine(effects, ok, nok) {
   return start
 
@@ -263,7 +269,10 @@ function tokenizeCommentLine(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeJustALessThan(effects, ok, nok) {
   return start
 

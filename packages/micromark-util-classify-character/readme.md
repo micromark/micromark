@@ -46,7 +46,10 @@ In browsers with [`esm.sh`][esmsh]:
 ## Use
 
 ```js
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeAttention(effects, ok) {
   return start
 

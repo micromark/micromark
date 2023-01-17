@@ -12,7 +12,10 @@ import {types} from 'micromark-util-symbol/types.js'
 /** @type {Construct} */
 export const blankLine = {tokenize: tokenizeBlankLine, partial: true}
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeBlankLine(effects, ok, nok) {
   return factorySpace(effects, afterWhitespace, types.linePrefix)
 
