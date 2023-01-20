@@ -22,6 +22,7 @@
  * @typedef {import('micromark-util-types').Handle} Handle
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
  * @typedef {import('micromark-util-types').NormalizedHtmlExtension} NormalizedHtmlExtension
+ * @typedef {import('micromark-util-types').Token} Token
  */
 
 /**
@@ -517,10 +518,6 @@ export function compile(options = {}) {
     }
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onenterlistitemmarker() {
     if (getData('expectFirstItem')) {
       tag('>')
@@ -535,10 +532,6 @@ export function compile(options = {}) {
     setData('lastWasTag')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onexitlistordered() {
     onexitlistitem()
     tightStack.pop()
@@ -546,10 +539,6 @@ export function compile(options = {}) {
     tag('</ol>')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onexitlistunordered() {
     onexitlistitem()
     tightStack.pop()
@@ -557,10 +546,6 @@ export function compile(options = {}) {
     tag('</ul>')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onexitlistitem() {
     if (getData('lastWasTag') && !getData('slurpAllLineEndings')) {
       lineEndingIfNeeded()
@@ -1012,87 +997,47 @@ export function compile(options = {}) {
     tag('<br />')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onenterhtmlflow() {
     lineEndingIfNeeded()
     onenterhtml()
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onexithtml() {
     setData('ignoreEncode')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onenterhtml() {
     if (options.allowDangerousHtml) {
       setData('ignoreEncode', true)
     }
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onenteremphasis() {
     tag('<em>')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onenterstrong() {
     tag('<strong>')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onentercodetext() {
     setData('inCodeText', true)
     tag('<code>')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onexitcodetext() {
     setData('inCodeText')
     tag('</code>')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onexitemphasis() {
     tag('</em>')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onexitstrong() {
     tag('</strong>')
   }
 
-  /**
-   * @this {CompileContext}
-   * @type {Handle}
-   */
   function onexitthematicbreak() {
     lineEndingIfNeeded()
     tag('<hr />')
@@ -1100,7 +1045,7 @@ export function compile(options = {}) {
 
   /**
    * @this {CompileContext}
-   * @type {Handle}
+   * @param {Token} token
    */
   function onexitcharacterreferencemarker(token) {
     setData('characterReferenceType', token.type)

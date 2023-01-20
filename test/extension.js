@@ -6,6 +6,7 @@
  * @typedef {import('micromark-util-types').Handle} Handle
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
  * @typedef {import('micromark-util-types').Extension} Extension
+ * @typedef {import('micromark-util-types').CompileContext} CompileContext
  */
 
 import test from 'tape'
@@ -291,7 +292,6 @@ function tokenizeJustALessThan(effects, ok, nok) {
 
 /**
  * @this {CompileContext}
- * @type {Handle}
  */
 function enterComment() {
   this.buffer()
@@ -299,7 +299,6 @@ function enterComment() {
 
 /**
  * @this {CompileContext}
- * @type {Handle}
  */
 function exitComment() {
   this.resume()
@@ -308,7 +307,6 @@ function exitComment() {
 
 /**
  * @this {CompileContext}
- * @type {Handle}
  */
 function enterDocument() {
   this.raw('+')
@@ -316,7 +314,6 @@ function enterDocument() {
 
 /**
  * @this {CompileContext}
- * @type {Handle}
  */
 function exitDocument() {
   this.raw('-')

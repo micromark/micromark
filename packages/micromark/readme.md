@@ -526,7 +526,7 @@ For this case, I can see the following:
 To keep things as simple as possible, let’s not support a block syntax, see
 spaces as special, support line endings, or support nested braces.
 But to learn interesting things, we *will* support character escapes and
-\-references.
+-references.
 
 Note that this particular case is already solved quite nicely by
 [`micromark-extension-mdx-expression`][mdx-expression].
