@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
  * @typedef {import('micromark-util-types').Initializer} Initializer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
  */
 
@@ -14,7 +15,10 @@ import {types} from 'micromark-util-symbol/types.js'
 /** @type {InitialConstruct} */
 export const flow = {tokenize: initializeFlow}
 
-/** @type {Initializer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Initializer}
+ */
 function initializeFlow(effects) {
   const self = this
   const initial = effects.attempt(

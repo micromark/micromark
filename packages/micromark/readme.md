@@ -340,7 +340,7 @@ Some exemplary goals are:
 8.  I want to support our legacy flavor of markdown-like syntax
 
 These can be solved in different ways and which solution is best is both
-subjective and dependant on unique needs.
+subjective and dependent on unique needs.
 Often, there is already a solution in the form of an existing remark or rehype
 plugin.
 Respectively, their solutions are:
@@ -382,7 +382,7 @@ Looking at these from a higher level, they can be categorized:
     trees*, but adds a new meaning to certain things which already have
     semantics in markdown.
 
-    Some examples in pseudo code:
+    Some examples in pseudocode:
 
     ````markdown
     *   **A list item with the first paragraph bold**
@@ -526,7 +526,7 @@ For this case, I can see the following:
 To keep things as simple as possible, let’s not support a block syntax, see
 spaces as special, support line endings, or support nested braces.
 But to learn interesting things, we *will* support character escapes and
-\-references.
+-references.
 
 Note that this particular case is already solved quite nicely by
 [`micromark-extension-mdx-expression`][mdx-expression].

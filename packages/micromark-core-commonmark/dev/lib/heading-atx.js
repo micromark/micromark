@@ -2,6 +2,7 @@
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Resolver} Resolver
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Token} Token
  * @typedef {import('micromark-util-types').State} State
  */
@@ -81,7 +82,10 @@ function resolveHeadingAtx(events, context) {
   return events
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeHeadingAtx(effects, ok, nok) {
   const self = this
   let size = 0

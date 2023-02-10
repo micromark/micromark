@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
  */
 
@@ -24,7 +25,10 @@ export const definition = {name: 'definition', tokenize: tokenizeDefinition}
 /** @type {Construct} */
 const titleConstruct = {tokenize: tokenizeTitle, partial: true}
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeDefinition(effects, ok, nok) {
   const self = this
   /** @type {string} */
@@ -97,7 +101,10 @@ function tokenizeDefinition(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeTitle(effects, ok, nok) {
   return start
 

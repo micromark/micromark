@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Code} Code
  */
@@ -22,7 +23,10 @@ export const codeFenced = {
   concrete: true
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeCodeFenced(effects, ok, nok) {
   const self = this
   /** @type {Construct} */
@@ -167,7 +171,10 @@ function tokenizeCodeFenced(effects, ok, nok) {
     return ok(code)
   }
 
-  /** @type {Tokenizer} */
+  /**
+   * @this {TokenizeContext}
+   * @type {Tokenizer}
+   */
   function tokenizeNonLazyLine(effects, ok, nok) {
     const self = this
 
@@ -188,7 +195,10 @@ function tokenizeCodeFenced(effects, ok, nok) {
     }
   }
 
-  /** @type {Tokenizer} */
+  /**
+   * @this {TokenizeContext}
+   * @type {Tokenizer}
+   */
   function tokenizeClosingFence(effects, ok, nok) {
     let size = 0
 
