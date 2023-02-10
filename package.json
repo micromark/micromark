@@ -56,7 +56,7 @@
   ],
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-terser": "^0.3.0",
+    "@rollup/plugin-terser": "^0.4.0",
     "@types/concat-stream": "^2.0.0",
     "@types/glob": "^8.0.0",
     "@types/ms": "^0.7.0",
