@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Resolver} Resolver
  * @typedef {import('micromark-util-types').Initializer} Initializer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
  * @typedef {import('micromark-util-types').State} State
@@ -27,7 +28,10 @@ function initializeFactory(field) {
     )
   }
 
-  /** @type {Initializer} */
+  /**
+   * @this {TokenizeContext}
+   * @type {Initializer}
+   */
   function initializeText(effects) {
     const self = this
     const constructs = this.parser.constructs[field]

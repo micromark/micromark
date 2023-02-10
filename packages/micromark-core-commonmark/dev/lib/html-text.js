@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Code} Code
  */
@@ -21,7 +22,10 @@ import {types} from 'micromark-util-symbol/types.js'
 /** @type {Construct} */
 export const htmlText = {name: 'htmlText', tokenize: tokenizeHtmlText}
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeHtmlText(effects, ok, nok) {
   const self = this
   /** @type {NonNullable<Code>|undefined} */

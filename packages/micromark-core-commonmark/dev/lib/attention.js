@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Resolver} Resolver
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Token} Token
@@ -194,7 +195,10 @@ function resolveAllAttention(events, context) {
   return events
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeAttention(effects, ok) {
   const attentionMarkers = this.parser.constructs.attentionMarkers.null
   const previous = this.previous

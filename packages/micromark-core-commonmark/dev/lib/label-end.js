@@ -2,6 +2,7 @@
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Resolver} Resolver
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Event} Event
  * @typedef {import('micromark-util-types').Token} Token
  * @typedef {import('micromark-util-types').State} State
@@ -167,7 +168,10 @@ function resolveToLabelEnd(events, context) {
   return events
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeLabelEnd(effects, ok, nok) {
   const self = this
   let index = self.events.length
@@ -291,7 +295,10 @@ function tokenizeLabelEnd(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeResource(effects, ok, nok) {
   return start
 
@@ -410,7 +417,10 @@ function tokenizeResource(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeFullReference(effects, ok, nok) {
   const self = this
 
@@ -460,7 +470,10 @@ function tokenizeFullReference(effects, ok, nok) {
   }
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeCollapsedReference(effects, ok, nok) {
   return start
 

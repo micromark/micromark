@@ -12,7 +12,10 @@ import {types} from 'micromark-util-symbol/types.js'
 /** @type {Construct} */
 export const lineEnding = {name: 'lineEnding', tokenize: tokenizeLineEnding}
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeLineEnding(effects, ok) {
   return start
 

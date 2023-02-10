@@ -18,7 +18,10 @@ export const thematicBreak = {
   tokenize: tokenizeThematicBreak
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeThematicBreak(effects, ok, nok) {
   let size = 0
   /** @type {NonNullable<Code>} */

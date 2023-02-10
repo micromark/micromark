@@ -18,7 +18,10 @@ import {types} from 'micromark-util-symbol/types.js'
 /** @type {Construct} */
 export const autolink = {name: 'autolink', tokenize: tokenizeAutolink}
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeAutolink(effects, ok, nok) {
   let size = 1
 

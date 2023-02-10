@@ -51,7 +51,10 @@ import {codes} from 'micromark-util-symbol/codes'
 import {types} from 'micromark-util-symbol/types'
 
 // A micromark tokenizer that uses the factory:
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeResource(effects, ok, nok) {
   return start
 

@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Code} Code
  */
@@ -22,7 +23,10 @@ export const characterReference = {
   tokenize: tokenizeCharacterReference
 }
 
-/** @type {Tokenizer} */
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
 function tokenizeCharacterReference(effects, ok, nok) {
   const self = this
   let size = 0
