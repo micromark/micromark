@@ -572,8 +572,13 @@ function sliceChunks(chunks, token) {
     view = chunks.slice(startIndex, endIndex)
 
     if (startBufferIndex > -1) {
-      // @ts-expect-error `_bufferIndex` is used on string chunks.
-      view[0] = view[0].slice(startBufferIndex)
+      const head = view[0]
+      if (typeof head === 'string') {
+        view[0] = head.slice(startBufferIndex)
+      } else {
+        assert(startBufferIndex === 0, 'expected `startBufferIndex` to be `0`')
+        view.shift()
+      }
     }
 
     if (endBufferIndex > 0) {
