@@ -152,7 +152,9 @@ export function createTokenizer(parser, initialize, from) {
 
   /** @type {TokenizeContext['now']} */
   function now() {
-    return Object.assign({}, point)
+    // This is a hot path, so we clone manually instead of `Object.assign({}, point)`
+    const {line, column, offset, _index, _bufferIndex} = point
+    return {line, column, offset, _index, _bufferIndex}
   }
 
   /** @type {TokenizeContext['defineSkip']} */
