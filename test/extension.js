@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Code} Code
  * @typedef {import('micromark-util-types').Handle} Handle
@@ -103,7 +104,8 @@ test('html extension', function (t) {
   t.deepEqual(
     micromark('!', {
       htmlExtensions: [
-        {enter: {null: enterDocument}, exit: {null: exitDocument}}
+        /** @type {import('micromark-util-types').NormalizedHtmlExtension} */
+        ({enter: {null: enterDocument}, exit: {null: exitDocument}})
       ]
     }),
     '+\n<p>!</p>-',
@@ -113,7 +115,8 @@ test('html extension', function (t) {
   t.deepEqual(
     micromark('', {
       htmlExtensions: [
-        {enter: {null: enterDocument}, exit: {null: exitDocument}}
+        /** @type {import('micromark-util-types').NormalizedHtmlExtension} */
+        ({enter: {null: enterDocument}, exit: {null: exitDocument}})
       ]
     }),
     '+-',
