@@ -112,13 +112,13 @@
  * @property {string} type
  * @property {Point} start
  * @property {Point} end
- * @property {Token} [previous]
+ * @property {Token | undefined} [previous]
  *   The previous token in a list of linked tokens.
  * @property {Token} [next]
  *   The next token in a list of linked tokens
  * @property {ContentType} [contentType]
  *   Declares a token as having content of a certain type.
- * @property {TokenizeContext} [_tokenizer]
+ * @property {TokenizeContext | undefined} [_tokenizer]
  *   Used when dealing with linked tokens.
  *   A child tokenizer is needed to tokenize them, which is stored on those
  *   tokens.
@@ -237,7 +237,7 @@
  *   characters, this is a speedy way to reduce that.
  *
  * @typedef Construct
- *   An object descibing how to parse a markdown construct.
+ *   An object describing how to parse a markdown construct.
  * @property {Tokenizer} tokenize
  * @property {Previous} [previous]
  *   Guard whether the previous character can come before the construct
@@ -266,7 +266,7 @@
  *   parses character references, then `resolveTo` is called with the events
  *   ranging from the start of the link title to the end of a character
  *   reference each time one is found.
- * @property {Resolver} [resolveAll]
+ * @property {Resolver | undefined} [resolveAll]
  *   Resolve all events when the content is complete, from the start to the end.
  *   Only used if `tokenize` is successful once in the content.
  *
@@ -313,7 +313,7 @@
  *   The previous code.
  * @property {Code} code
  *   Current code.
- * @property {boolean} [interrupt]
+ * @property {boolean | undefined} [interrupt]
  *   Whether we’re currently interrupting.
  *   Take for example:
  *
@@ -323,10 +323,10 @@
  *   ```
  *
  *   At 2:1, we’re “interrupting”.
- * @property {Construct} [currentConstruct]
+ * @property {Construct | undefined} [currentConstruct]
  *   The current construct.
  *   Constructs that are not `partial` are set here.
- * @property {Record<string, unknown> & {_closeFlow?: boolean}} [containerState]
+ * @property {Record<string, unknown> & {_closeFlow?: boolean | undefined}} [containerState]
  *   Info set when parsing containers.
  *   Containers are parsed in separate phases: their first line (`tokenize`),
  *   continued lines (`continuation.tokenize`), and finally `exit`.
@@ -350,7 +350,7 @@
  * @property {(slice: Array<Chunk>) => Array<Event>} write
  *   Write a slice of chunks.
  *   The eof code (`null`) can be used to signal the end of the stream.
- * @property {boolean} [_gfmTasklistFirstContentOfListItem]
+ * @property {boolean | undefined} [_gfmTasklistFirstContentOfListItem]
  *   Internal boolean shared with `micromark-extension-gfm-task-list-item` to
  *   signal whether the tokenizer is tokenizing the first content of a list item
  *   construct.

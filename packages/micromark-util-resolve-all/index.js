@@ -7,7 +7,7 @@
 /**
  * Call all `resolveAll`s.
  *
- * @param {Array<{resolveAll?: Resolver}>} constructs
+ * @param {Array<{resolveAll?: Resolver | undefined}>} constructs
  * @param {Array<Event>} events
  * @param {TokenizeContext} context
  * @returns {Array<Event>}
