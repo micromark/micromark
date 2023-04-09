@@ -55,6 +55,7 @@
     "packages/micromark"
   ],
   "devDependencies": {
+    "@jazzer.js/core": "^1.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-terser": "^0.4.0",
     "@types/concat-stream": "^2.0.0",
@@ -71,9 +72,7 @@
     "eslint-plugin-es": "^4.0.0",
     "eslint-plugin-security": "^1.0.0",
     "gzip-size-cli": "^5.0.0",
-    "jsfuzz": "1.0.14",
     "ms": "^2.0.0",
-    "patch-package": "^6.0.0",
     "prettier": "^2.0.0",
     "regenerate": "^1.0.0",
     "remark-cli": "^11.0.0",
@@ -91,8 +90,8 @@
     "build-size": "rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "build": "npm run build-workspace && npm run build-monorepo && npm run build-size",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
-    "pretest-fuzz": "patch-package --patch-dir script/patches && esbuild micromark --format=cjs --platform=node --bundle > test/fuzz-bundle.cjs && node script/generate-fixtures.js",
-    "test-fuzz": "timeout 30m jsfuzz test/fuzz.cjs test/fixtures",
+    "pretest-fuzz": "esbuild micromark --format=cjs --platform=node --bundle > test/fuzz-bundle.cjs && node script/generate-fixtures.js",
+    "test-fuzz": "jazzer test/fuzz.cjs test/fixtures -- -max_total_time=1800",
     "test-api": "node --conditions development test/index.js",
     "test-coverage": "c8 --check-coverage --lines 100 --functions 100 --branches 100 --reporter lcov node --conditions development test/index.js",
     "test": "npm run build && npm run format && npm run test-coverage"
