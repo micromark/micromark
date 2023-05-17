@@ -77,7 +77,6 @@
     "regenerate": "^1.0.0",
     "remark-cli": "^11.0.0",
     "remark-preset-wooorm": "^9.0.0",
-    "rimraf": "^3.0.0",
     "rollup": "^3.0.0",
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
