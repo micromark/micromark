@@ -1,5 +1,5 @@
-import test from 'tape'
 import {micromark} from 'micromark'
+import test from 'tape'
 
 test('heading-setext', function (t) {
   t.equal(

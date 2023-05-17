@@ -1,5 +1,5 @@
-import test from 'tape'
 import {micromark} from 'micromark'
+import test from 'tape'
 
 // Note: `nul` doesn’t work on Windows as a file name 🤷‍♂️
 test('nul', function (t) {

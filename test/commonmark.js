@@ -1,6 +1,6 @@
-import test from 'tape'
 import {commonmark} from 'commonmark.json'
 import {micromark} from 'micromark'
+import test from 'tape'
 
 const hasOwnProperty = {}.hasOwnProperty
 
@@ -10,6 +10,7 @@ const options = {allowDangerousHtml: true, allowDangerousProtocol: true}
 const sections = {}
 let index = -1
 
+// To do: what was this again?
 const ignore = new Set([623, 624])
 
 while (++index < commonmark.length) {

@@ -1,17 +1,17 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').Resolver} Resolver
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Previous} Previous
- * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').Resolver} Resolver
  * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  */
 
-import {ok as assert} from 'uvu/assert'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {ok as assert} from 'uvu/assert'
 
 /** @type {Construct} */
 export const codeText = {
@@ -27,7 +27,7 @@ function resolveCodeText(events) {
   let headEnterIndex = 3
   /** @type {number} */
   let index
-  /** @type {number|undefined} */
+  /** @type {number | undefined} */
   let enter
 
   // If we start and end with an EOL or a space.

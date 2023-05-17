@@ -1,9 +1,9 @@
 /**
- * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
- * @typedef {import('micromark-util-types').FullNormalizedExtension} FullNormalizedExtension
- * @typedef {import('micromark-util-types').ParseOptions} ParseOptions
- * @typedef {import('micromark-util-types').ParseContext} ParseContext
  * @typedef {import('micromark-util-types').Create} Create
+ * @typedef {import('micromark-util-types').FullNormalizedExtension} FullNormalizedExtension
+ * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
+ * @typedef {import('micromark-util-types').ParseContext} ParseContext
+ * @typedef {import('micromark-util-types').ParseOptions} ParseOptions
  */
 
 import {combineExtensions} from 'micromark-util-combine-extensions'
@@ -15,15 +15,16 @@ import {createTokenizer} from './create-tokenizer.js'
 import * as defaultConstructs from './constructs.js'
 
 /**
- * @param {ParseOptions} [options]
+ * @param {ParseOptions | null | undefined} [options]
  * @returns {ParseContext}
  */
-export function parse(options = {}) {
+export function parse(options) {
+  const settings = options || {}
   /** @type {FullNormalizedExtension} */
   // @ts-expect-error `defaultConstructs` is full, so the result will be too.
   const constructs = combineExtensions(
     // @ts-expect-error Same as above.
-    [defaultConstructs].concat(options.extensions || [])
+    [defaultConstructs].concat(settings.extensions || [])
   )
   /** @type {ParseContext} */
   const parser = {

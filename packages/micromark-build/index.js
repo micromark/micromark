@@ -4,11 +4,11 @@
 // production, and place them a directory higher.
 
 import {promises as fs} from 'fs'
-import url from 'url'
 import path from 'path'
-import glob from 'glob'
-import {moduleResolve} from 'import-meta-resolve'
+import url from 'url'
 import {transformAsync as babel} from '@babel/core'
+import {moduleResolve} from 'import-meta-resolve'
+import glob from 'glob'
 
 main()
 

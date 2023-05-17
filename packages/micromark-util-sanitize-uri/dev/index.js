@@ -18,8 +18,8 @@ import {values} from 'micromark-util-symbol/values.js'
  * If the URL includes an unknown protocol (one not matched by `protocol`, such
  * as a dangerous example, `javascript:`), the value is ignored.
  *
- * @param {string|undefined} url
- * @param {RegExp} [protocol]
+ * @param {string | undefined} url
+ * @param {RegExp | null | undefined} [protocol]
  * @returns {string}
  */
 export function sanitizeUri(url, protocol) {

@@ -5,8 +5,11 @@
  */
 
 /**
- * @typedef {((error?: Error) => void)} Callback
- * @typedef {Omit<NodeJS.ReadableStream & NodeJS.WritableStream, 'read'|'setEncoding'|'pause'|'resume'|'isPaused'|'unpipe'|'unshift'|'wrap'>} MinimalDuplex
+ * @callback Callback
+ * @param {Error | undefined} [Error]
+ * @returns {void}
+ *
+ * @typedef {Omit<NodeJS.ReadableStream & NodeJS.WritableStream, 'isPaused' | 'pause' | 'read' | 'resume' | 'setEncoding' | 'unpipe' | 'unshift' | 'wrap'>} MinimalDuplex
  */
 
 import {EventEmitter} from 'events'
@@ -16,7 +19,7 @@ import {postprocess} from './lib/postprocess.js'
 import {preprocess} from './lib/preprocess.js'
 
 /**
- * @param {Options} [options]
+ * @param {Options | null | undefined} [options]
  * @returns {MinimalDuplex}
  */
 export function stream(options) {
@@ -29,22 +32,22 @@ export function stream(options) {
   /**
    * Write a chunk into memory.
    *
-   * @param {Value} chunk
-   * @param {Encoding} encoding
-   * @param {Callback} callback
+   * @param chunk
+   * @param encoding
+   * @param callback
    */
   const write =
     /**
      * @type {(
-     *   ((value?: Value, encoding?: Encoding, callback?: Callback) => boolean) &
-     *   ((value: Value, callback?: Callback) => boolean)
+     *   ((value?: Value | null | undefined, encoding?: Encoding | null | undefined, callback?: Callback | null | undefined) => boolean) &
+     *   ((value?: Value | null | undefined, callback?: Callback | null | undefined) => boolean)
      * )}
      */
     (
       /**
-       * @param {Value} [chunk]
-       * @param {Encoding} [encoding]
-       * @param {Callback} [callback]
+       * @param {Value | null | undefined} [chunk]
+       * @param {Encoding | null | undefined} [encoding]
+       * @param {Callback | null | undefined} [callback]
        */
       function (chunk, encoding, callback) {
         if (typeof encoding === 'function') {
@@ -71,22 +74,22 @@ export function stream(options) {
    * End the writing.
    * Passes all arguments to a final `write`.
    *
-   * @param {Value} chunk
-   * @param {Encoding} encoding
-   * @param {Callback} callback
+   * @param chunk
+   * @param encoding
+   * @param callback
    */
   const end =
     /**
      * @type {(
-     *   ((value?: Value, encoding?: Encoding, callback?: Callback) => boolean) &
-     *   ((value: Value, callback?: Callback) => boolean)
+     *   ((value?: Value | null | undefined, encoding?: Encoding | null | undefined, callback?: Callback | null | undefined) => boolean) &
+     *   ((value?: Value | null | undefined, callback?: Callback | null | undefined) => boolean)
      * )}
      */
     (
       /**
-       * @param {Value} [chunk]
-       * @param {Encoding} [encoding]
-       * @param {Callback} [callback]
+       * @param {Value | null | undefined} [chunk]
+       * @param {Encoding | null | undefined} [encoding]
+       * @param {Callback | null | undefined} [callback]
        */
       function (chunk, encoding, callback) {
         if (typeof chunk === 'function') {
@@ -125,10 +128,10 @@ export function stream(options) {
    * size down.
    * See: <https://github.com/nodejs/node/blob/43a5170/lib/internal/streams/legacy.js#L13>.
    *
-   * @template {NodeJS.WritableStream} T
-   * @param {T} dest
+   * @template {NodeJS.WritableStream} Stream
+   * @param {Stream} dest
    * @param {{end?: boolean}} [options]
-   * @returns {T}
+   * @returns {Stream}
    */
   function pipe(dest, options) {
     emitter.on('data', ondata)

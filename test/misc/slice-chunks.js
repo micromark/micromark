@@ -1,7 +1,7 @@
-import test from 'tape'
 import {parse} from 'micromark/lib/parse'
 import {postprocess} from 'micromark/lib/postprocess'
 import {preprocess} from 'micromark/lib/preprocess'
+import test from 'tape'
 
 test('sliceSerialize', (t) => {
   t.deepEqual(

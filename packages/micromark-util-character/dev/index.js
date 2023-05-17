@@ -20,29 +20,6 @@ import {unicodePunctuationRegex} from './lib/unicode-punctuation-regex.js'
 export const asciiAlpha = regexCheck(/[A-Za-z]/)
 
 /**
- * Check whether the character code represents an ASCII digit (`0` through `9`).
- *
- * An **ASCII digit** is a character in the inclusive range U+0030 (`0`) to
- * U+0039 (`9`).
- */
-export const asciiDigit = regexCheck(/\d/)
-
-/**
- * Check whether the character code represents an ASCII hex digit (`a` through
- * `f`, case insensitive, or `0` through `9`).
- *
- * An **ASCII hex digit** is an ASCII digit (see `asciiDigit`), ASCII upper hex
- * digit, or an ASCII lower hex digit.
- *
- * An **ASCII upper hex digit** is a character in the inclusive range U+0041
- * (`A`) to U+0046 (`F`).
- *
- * An **ASCII lower hex digit** is a character in the inclusive range U+0061
- * (`a`) to U+0066 (`f`).
- */
-export const asciiHexDigit = regexCheck(/[\dA-Fa-f]/)
-
-/**
  * Check whether the character code represents an ASCII alphanumeric (`a`
  * through `z`, case insensitive, or `0` through `9`).
  *
@@ -50,16 +27,6 @@ export const asciiHexDigit = regexCheck(/[\dA-Fa-f]/)
  * (see `asciiAlpha`).
  */
 export const asciiAlphanumeric = regexCheck(/[\dA-Za-z]/)
-
-/**
- * Check whether the character code represents ASCII punctuation.
- *
- * An **ASCII punctuation** is a character in the inclusive ranges U+0021
- * EXCLAMATION MARK (`!`) to U+002F SLASH (`/`), U+003A COLON (`:`) to U+0040 AT
- * SIGN (`@`), U+005B LEFT SQUARE BRACKET (`[`) to U+0060 GRAVE ACCENT
- * (`` ` ``), or U+007B LEFT CURLY BRACE (`{`) to U+007E TILDE (`~`).
- */
-export const asciiPunctuation = regexCheck(/[!-/:-@[-`{-~]/)
 
 /**
  * Check whether the character code represents an ASCII atext.
@@ -86,7 +53,7 @@ export const asciiAtext = regexCheck(/[#-'*+\--9=?A-Z^-~]/)
  * to U+001F (US), or U+007F (DEL).
  *
  * @param {Code} code
- * @returns {code is number}
+ * @returns {boolean}
  */
 export function asciiControl(code) {
   return (
@@ -97,15 +64,37 @@ export function asciiControl(code) {
 }
 
 /**
- * Check whether a character code is a markdown line ending (see
- * `markdownLineEnding`) or markdown space (see `markdownSpace`).
+ * Check whether the character code represents an ASCII digit (`0` through `9`).
  *
- * @param {Code} code
- * @returns {code is number}
+ * An **ASCII digit** is a character in the inclusive range U+0030 (`0`) to
+ * U+0039 (`9`).
  */
-export function markdownLineEndingOrSpace(code) {
-  return code !== null && (code < codes.nul || code === codes.space)
-}
+export const asciiDigit = regexCheck(/\d/)
+
+/**
+ * Check whether the character code represents an ASCII hex digit (`a` through
+ * `f`, case insensitive, or `0` through `9`).
+ *
+ * An **ASCII hex digit** is an ASCII digit (see `asciiDigit`), ASCII upper hex
+ * digit, or an ASCII lower hex digit.
+ *
+ * An **ASCII upper hex digit** is a character in the inclusive range U+0041
+ * (`A`) to U+0046 (`F`).
+ *
+ * An **ASCII lower hex digit** is a character in the inclusive range U+0061
+ * (`a`) to U+0066 (`f`).
+ */
+export const asciiHexDigit = regexCheck(/[\dA-Fa-f]/)
+
+/**
+ * Check whether the character code represents ASCII punctuation.
+ *
+ * An **ASCII punctuation** is a character in the inclusive ranges U+0021
+ * EXCLAMATION MARK (`!`) to U+002F SLASH (`/`), U+003A COLON (`:`) to U+0040 AT
+ * SIGN (`@`), U+005B LEFT SQUARE BRACKET (`[`) to U+0060 GRAVE ACCENT
+ * (`` ` ``), or U+007B LEFT CURLY BRACE (`{`) to U+007E TILDE (`~`).
+ */
+export const asciiPunctuation = regexCheck(/[!-/:-@[-`{-~]/)
 
 /**
  * Check whether a character code is a markdown line ending.
@@ -118,10 +107,21 @@ export function markdownLineEndingOrSpace(code) {
  * they occurred together.
  *
  * @param {Code} code
- * @returns {code is number}
+ * @returns {boolean}
  */
 export function markdownLineEnding(code) {
   return code !== null && code < codes.horizontalTab
+}
+
+/**
+ * Check whether a character code is a markdown line ending (see
+ * `markdownLineEnding`) or markdown space (see `markdownSpace`).
+ *
+ * @param {Code} code
+ * @returns {boolean}
+ */
+export function markdownLineEndingOrSpace(code) {
+  return code !== null && (code < codes.nul || code === codes.space)
 }
 
 /**
@@ -135,7 +135,7 @@ export function markdownLineEnding(code) {
  * SPACE (VS) characters, depending on the column at which the tab occurred.
  *
  * @param {Code} code
- * @returns {code is number}
+ * @returns {boolean}
  */
 export function markdownSpace(code) {
   return (
@@ -144,23 +144,6 @@ export function markdownSpace(code) {
     code === codes.space
   )
 }
-
-/**
- * Check whether the character code represents Unicode whitespace.
- *
- * Note that this does handle micromark specific markdown whitespace characters.
- * See `markdownLineEndingOrSpace` to check that.
- *
- * A **Unicode whitespace** is a character in the Unicode `Zs` (Separator,
- * Space) category, or U+0009 CHARACTER TABULATION (HT), U+000A LINE FEED (LF),
- * U+000C (FF), or U+000D CARRIAGE RETURN (CR) (**\[UNICODE]**).
- *
- * See:
- * **\[UNICODE]**:
- * [The Unicode Standard](https://www.unicode.org/versions/).
- * Unicode Consortium.
- */
-export const unicodeWhitespace = regexCheck(/\s/)
 
 /**
  * Check whether the character code represents Unicode punctuation.
@@ -181,10 +164,27 @@ export const unicodeWhitespace = regexCheck(/\s/)
 export const unicodePunctuation = regexCheck(unicodePunctuationRegex)
 
 /**
+ * Check whether the character code represents Unicode whitespace.
+ *
+ * Note that this does handle micromark specific markdown whitespace characters.
+ * See `markdownLineEndingOrSpace` to check that.
+ *
+ * A **Unicode whitespace** is a character in the Unicode `Zs` (Separator,
+ * Space) category, or U+0009 CHARACTER TABULATION (HT), U+000A LINE FEED (LF),
+ * U+000C (FF), or U+000D CARRIAGE RETURN (CR) (**\[UNICODE]**).
+ *
+ * See:
+ * **\[UNICODE]**:
+ * [The Unicode Standard](https://www.unicode.org/versions/).
+ * Unicode Consortium.
+ */
+export const unicodeWhitespace = regexCheck(/\s/)
+
+/**
  * Create a code check from a regex.
  *
  * @param {RegExp} regex
- * @returns {(code: Code) => code is number}
+ * @returns {(code: Code) => boolean}
  */
 function regexCheck(regex) {
   return check
@@ -192,8 +192,10 @@ function regexCheck(regex) {
   /**
    * Check whether a code matches the bound regex.
    *
-   * @param {Code} code Character code
-   * @returns {code is number} Whether the character code matches the bound regex
+   * @param {Code} code
+   *   Character code
+   * @returns {boolean}
+   *   Whether the character code matches the bound regex
    */
   function check(code) {
     return code !== null && regex.test(String.fromCharCode(code))

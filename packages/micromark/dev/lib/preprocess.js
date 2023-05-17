@@ -1,15 +1,15 @@
 /**
- * @typedef {import('micromark-util-types').Encoding} Encoding
- * @typedef {import('micromark-util-types').Value} Value
  * @typedef {import('micromark-util-types').Chunk} Chunk
  * @typedef {import('micromark-util-types').Code} Code
+ * @typedef {import('micromark-util-types').Encoding} Encoding
+ * @typedef {import('micromark-util-types').Value} Value
  */
 
 /**
  * @callback Preprocessor
  * @param {Value} value
- * @param {Encoding} [encoding]
- * @param {boolean} [end=false]
+ * @param {Encoding | null | undefined} [encoding]
+ * @param {boolean | null | undefined} [end=false]
  * @returns {Array<Chunk>}
  */
 
@@ -24,9 +24,9 @@ const search = /[\0\t\n\r]/g
 export function preprocess() {
   let column = 1
   let buffer = ''
-  /** @type {boolean|undefined} */
+  /** @type {boolean | undefined} */
   let start = true
-  /** @type {boolean|undefined} */
+  /** @type {boolean | undefined} */
   let atCarriageReturn
 
   return preprocessor
@@ -35,7 +35,7 @@ export function preprocess() {
   function preprocessor(value, encoding, end) {
     /** @type {Array<Chunk>} */
     const chunks = []
-    /** @type {RegExpMatchArray|null} */
+    /** @type {RegExpMatchArray | null} */
     let match
     /** @type {number} */
     let next

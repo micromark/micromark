@@ -9,7 +9,7 @@ import {markdownSpace} from 'micromark-util-character'
  * @param {Effects} effects
  * @param {State} ok
  * @param {string} type
- * @param {number} [max=Infinity]
+ * @param {number | undefined} [max=Infinity]
  * @returns {State}
  */
 export function factorySpace(effects, ok, type, max) {

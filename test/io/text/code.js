@@ -1,5 +1,5 @@
-import test from 'tape'
 import {micromark} from 'micromark'
+import test from 'tape'
 
 test('code', function (t) {
   t.equal(micromark('`foo`'), '<p><code>foo</code></p>', 'should support code')

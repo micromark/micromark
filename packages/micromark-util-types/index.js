@@ -1,5 +1,5 @@
 /**
- * @typedef {number|null} Code
+ * @typedef {number | null} Code
  *   A character code.
  *
  *   This is often the same as what `String#charCodeAt()` yields but micromark
@@ -9,14 +9,14 @@
  *   Negative integers are used instead of certain sequences of characters (such
  *   as line endings and tabs).
  *
- * @typedef {Code|string} Chunk
+ * @typedef {Code | string} Chunk
  *   A chunk is either a character code or a slice of a buffer in the form of a
  *   string.
  *
  *   Chunks are used because strings are more efficient storage that character
  *   codes, but limited in what they can represent.
  *
- * @typedef {'document'|'flow'|'content'|'text'|'string'} ContentType
+ * @typedef {'content' | 'document' | 'flow' | 'string' | 'text'} ContentType
  *   Enumeration of the content types.
  *
  *   Technically `document` is also a content type, which includes containers
@@ -142,7 +142,7 @@
  *   A boolean used internally to figure out if a link opening is balanced: it’s
  *   not a link opening but has a balanced closing.
  *
- * @typedef {['enter'|'exit', Token, TokenizeContext]} Event
+ * @typedef {['enter' | 'exit', Token, TokenizeContext]} Event
  *   An event is the start or end of a token amongst other events.
  *   Tokens can “contain” other tokens, even though they are stored in a flat
  *   list, through `enter`ing before them, and `exit`ing after them.
@@ -175,7 +175,7 @@
  *   and `returnState` is switched to.
  *   If the result is `nok`, the attempt failed, so we revert to the original
  *   state, and `bogusState` is used.
- * @param {Construct|Array<Construct>|ConstructRecord} construct
+ * @param {Array<Construct> | Construct | ConstructRecord} construct
  * @param {State} returnState
  * @param {State} [bogusState]
  * @returns {(code: Code) => void}
@@ -210,7 +210,7 @@
  *   an exception is throw because there is no next function, meaning it
  *   surfaces early.
  * @param {Code} code
- * @returns {State|void}
+ * @returns {State | void}
  *
  * @callback Resolver
  *   A resolver handles and cleans events coming from `tokenize`.
@@ -296,7 +296,7 @@
  *   ````
  *
  *   …`b` is not part of the table.
- * @property {'before'|'after'} [add='before']
+ * @property {'after' | 'before'} [add='before']
  *   Whether the construct, when in a `ConstructRecord`, precedes over existing
  *   constructs for the same character code when merged
  *   The default is that new constructs precede over existing ones.
@@ -304,7 +304,7 @@
  * @typedef {Construct & {tokenize: Initializer}} InitialConstruct
  *   Like a construct, but `tokenize` does not accept `ok` or `nok`.
  *
- * @typedef {Record<string, undefined|Construct|Array<Construct>>} ConstructRecord
+ * @typedef {Record<string, Array<Construct> | Construct | undefined>} ConstructRecord
  *   Several constructs, mapped from their initial codes.
  *
  * @typedef TokenizeContext
@@ -335,9 +335,9 @@
  *   Current list of events.
  * @property {ParseContext} parser
  *   The relevant parsing context.
- * @property {(token: Pick<Token, 'start'|'end'>) => Array<Chunk>} sliceStream
+ * @property {(token: Pick<Token, 'end' | 'start'>) => Array<Chunk>} sliceStream
  *   Get the chunks that span a token (or location).
- * @property {(token: Pick<Token, 'start'|'end'>, expandTabs?: boolean) => string} sliceSerialize
+ * @property {(token: Pick<Token, 'end' | 'start'>, expandTabs?: boolean) => string} sliceSerialize
  *   Get the source text that spans a token (or location).
  * @property {() => Point} now
  *   Get the current place.
@@ -377,13 +377,13 @@
  */
 
 /**
- * @typedef {'ascii'|'utf8'|'utf-8'|'utf16le'|'ucs2'|'ucs-2'|'base64'|'latin1'|'binary'|'hex'} Encoding
+ * @typedef {'ascii' | 'base64' | 'binary' | 'hex' | 'latin1' | 'ucs-2' | 'ucs2' | 'utf-8' | 'utf16le' | 'utf8'} Encoding
  *   Encodings supported by the buffer class.
  *   This is a copy of the typing from Node, copied to prevent Node globals from
  *   being needed.
  *   Copied from: <https://github.com/DefinitelyTyped/DefinitelyTyped/blob/a2bc1d8/types/node/globals.d.ts#L174>
  *
- * @typedef {string|Uint8Array} Value
+ * @typedef {Uint8Array | string} Value
  *   Contents of the file.
  *   Can either be text, or a `Buffer` like structure.
  *   This does not directly use type `Buffer`, because it can also be used in a
@@ -420,16 +420,16 @@
  *   See: <https://github.com/micromark/micromark#syntaxextension>
  *
  * @typedef {Record<string, Record<string, Array<unknown>>> & _NormalizedExtensionFields} FullNormalizedExtension
- * @typedef {Record<string, Record<string, Array<unknown>|undefined>> & Partial<_NormalizedExtensionFields>} NormalizedExtension
+ * @typedef {Record<string, Record<string, Array<unknown> | undefined>> & Partial<_NormalizedExtensionFields>} NormalizedExtension
  *
  * @callback Create
  *   Set up a tokenizer for a content type.
- * @param {Omit<Point, '_index'|'_bufferIndex'>} [from]
+ * @param {Omit<Point, '_bufferIndex' | '_index'> | undefined} [from]
  * @returns {TokenizeContext}
  *
  * @typedef ParseOptions
  *   Parse options.
- * @property {Array<Extension>} [extensions] Array of syntax extensions
+ * @property {Array<Extension> | null | undefined} [extensions] Array of syntax extensions
  *
  * @typedef ParseContext
  *   A context object that helps w/ parsing markdown.
@@ -439,7 +439,8 @@
  * @property {Create} flow
  * @property {Create} string
  * @property {Create} text
- * @property {Array<string>} defined List of defined identifiers.
+ * @property {Array<string>} defined
+ *   List of defined identifiers.
  * @property {Record<number, boolean>} lazy
  *   Map of line numbers to whether they are lazy (as opposed to the line before
  *   them).
@@ -519,7 +520,7 @@
  *
  * @typedef CompileOptions
  *   Compile options
- * @property {'\r'|'\n'|'\r\n'} [defaultLineEnding]
+ * @property {'\r' | '\n' | '\r\n'} [defaultLineEnding]
  *   Value to use for line endings not in `doc` (`string`, default: first line
  *   ending or `'\n'`).
  *

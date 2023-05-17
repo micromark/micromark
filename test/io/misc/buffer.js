@@ -1,6 +1,6 @@
 import {Buffer} from 'node:buffer'
-import test from 'tape'
 import {micromark} from 'micromark'
+import test from 'tape'
 
 test('buffer', function (t) {
   t.equal(micromark(Buffer.from('')), '', 'should support empty buffers')

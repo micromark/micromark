@@ -1,17 +1,17 @@
 /**
+ * @typedef {import('micromark-util-types').Code} Code
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Resolver} Resolver
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').Code} Code
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  */
 
-import {ok as assert} from 'uvu/assert'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {ok as assert} from 'uvu/assert'
 
 /** @type {Construct} */
 export const setextUnderline = {
@@ -23,11 +23,11 @@ export const setextUnderline = {
 /** @type {Resolver} */
 function resolveToSetextUnderline(events, context) {
   let index = events.length
-  /** @type {number|undefined} */
+  /** @type {number | undefined} */
   let content
-  /** @type {number|undefined} */
+  /** @type {number | undefined} */
   let text
-  /** @type {number|undefined} */
+  /** @type {number | undefined} */
   let definition
 
   // Find the opening of the content.

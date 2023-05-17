@@ -1,5 +1,5 @@
-import test from 'tape'
 import {decodeString} from 'micromark-util-decode-string'
+import test from 'tape'
 
 test('decodeString', function (t) {
   t.equal(

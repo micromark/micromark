@@ -13,12 +13,12 @@
  */
 
 /**
- * @typedef {import('micromark-util-types').Event} Event
- * @typedef {import('micromark-util-types').CompileOptions} CompileOptions
- * @typedef {import('micromark-util-types').CompileData} CompileData
- * @typedef {import('micromark-util-types').CompileContext} CompileContext
- * @typedef {import('micromark-util-types').Definition} Definition
  * @typedef {import('micromark-util-types').Compile} Compile
+ * @typedef {import('micromark-util-types').CompileContext} CompileContext
+ * @typedef {import('micromark-util-types').CompileData} CompileData
+ * @typedef {import('micromark-util-types').CompileOptions} CompileOptions
+ * @typedef {import('micromark-util-types').Definition} Definition
+ * @typedef {import('micromark-util-types').Event} Event
  * @typedef {import('micromark-util-types').Handle} Handle
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
  * @typedef {import('micromark-util-types').NormalizedHtmlExtension} NormalizedHtmlExtension
@@ -35,10 +35,9 @@
  * @property {string} [title]
  */
 
-import {ok as assert} from 'uvu/assert'
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'
-import {combineHtmlExtensions} from 'micromark-util-combine-extensions'
 import {push} from 'micromark-util-chunked'
+import {combineHtmlExtensions} from 'micromark-util-combine-extensions'
 import {decodeNumericCharacterReference} from 'micromark-util-decode-numeric-character-reference'
 import {encode as _encode} from 'micromark-util-encode'
 import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
@@ -46,6 +45,7 @@ import {sanitizeUri} from 'micromark-util-sanitize-uri'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {ok as assert} from 'uvu/assert'
 
 const hasOwnProperty = {}.hasOwnProperty
 
@@ -59,17 +59,19 @@ const protocolHref = /^(https?|ircs?|mailto|xmpp)$/i
 const protocolSrc = /^https?$/i
 
 /**
- * @param {CompileOptions} [options]
+ * @param {CompileOptions | null | undefined} [options]
  * @returns {Compile}
  */
-export function compile(options = {}) {
+export function compile(options) {
+  const settings = options || {}
+
   /**
    * Tags is needed because according to markdown, links and emphasis and
    * whatnot can exist in images, however, as HTML doesn’t allow content in
    * images, the tags are ignored in the `alt` attribute, but the content
    * remains.
    *
-   * @type {boolean|undefined}
+   * @type {boolean | undefined}
    */
   let tags = true
 
@@ -202,7 +204,7 @@ export function compile(options = {}) {
    */
   // @ts-expect-error `defaultHandlers` is full, so the result will be too.
   const handlers = combineHtmlExtensions(
-    [defaultHandlers].concat(options.htmlExtensions || [])
+    [defaultHandlers].concat(settings.htmlExtensions || [])
   )
 
   /**
@@ -225,7 +227,7 @@ export function compile(options = {}) {
    */
   const context = {
     lineEndingIfNeeded,
-    options,
+    options: settings,
     encode,
     raw,
     tag,
@@ -244,7 +246,7 @@ export function compile(options = {}) {
    * and in the latter case will be updated to the first found line ending if
    * there is one.
    */
-  let lineEndingStyle = options.defaultLineEnding
+  let lineEndingStyle = settings.defaultLineEnding
 
   // Return the function that handles a slice of events.
   return compile
@@ -350,7 +352,7 @@ export function compile(options = {}) {
     let index = 0 // Skip open.
     let containerBalance = 0
     let loose = false
-    /** @type {boolean|undefined} */
+    /** @type {boolean | undefined} */
     let atMarker
 
     while (++index < length) {
@@ -786,7 +788,7 @@ export function compile(options = {}) {
         '<img src="' +
           sanitizeUri(
             context.destination,
-            options.allowDangerousProtocol ? undefined : protocolSrc
+            settings.allowDangerousProtocol ? undefined : protocolSrc
           ) +
           '" alt="'
       )
@@ -797,7 +799,7 @@ export function compile(options = {}) {
         '<a href="' +
           sanitizeUri(
             context.destination,
-            options.allowDangerousProtocol ? undefined : protocolHref
+            settings.allowDangerousProtocol ? undefined : protocolHref
           ) +
           '"'
       )
@@ -1007,7 +1009,7 @@ export function compile(options = {}) {
   }
 
   function onenterhtml() {
-    if (options.allowDangerousHtml) {
+    if (settings.allowDangerousHtml) {
       setData('ignoreEncode', true)
     }
   }
@@ -1085,7 +1087,7 @@ export function compile(options = {}) {
       '<a href="' +
         sanitizeUri(
           uri,
-          options.allowDangerousProtocol ? undefined : protocolHref
+          settings.allowDangerousProtocol ? undefined : protocolHref
         ) +
         '">'
     )

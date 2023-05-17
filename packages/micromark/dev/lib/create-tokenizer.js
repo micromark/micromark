@@ -1,20 +1,23 @@
 /**
- * @typedef {import('micromark-util-types').Code} Code
  * @typedef {import('micromark-util-types').Chunk} Chunk
- * @typedef {import('micromark-util-types').Point} Point
- * @typedef {import('micromark-util-types').Token} Token
- * @typedef {import('micromark-util-types').Effects} Effects
- * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Code} Code
  * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
  * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Effects} Effects
+ * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
  * @typedef {import('micromark-util-types').ParseContext} ParseContext
+ * @typedef {import('micromark-util-types').Point} Point
+ * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  */
 
 /**
+ * @callback Restore
+ * @returns {void}
+ *
  * @typedef Info
- * @property {() => void} restore
+ * @property {Restore} restore
  * @property {number} from
  *
  * @callback ReturnHandle
@@ -24,13 +27,13 @@
  * @returns {void}
  */
 
-import {ok as assert} from 'uvu/assert'
 import createDebug from 'debug'
 import {markdownLineEnding} from 'micromark-util-character'
 import {push, splice} from 'micromark-util-chunked'
 import {resolveAll} from 'micromark-util-resolve-all'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {values} from 'micromark-util-symbol/values.js'
+import {ok as assert} from 'uvu/assert'
 
 const debug = createDebug('micromark')
 
@@ -45,7 +48,7 @@ const debug = createDebug('micromark')
  *
  * @param {ParseContext} parser
  * @param {InitialConstruct} initialize
- * @param {Omit<Point, '_index'|'_bufferIndex'>} [from]
+ * @param {Omit<Point, '_bufferIndex' | '_index'>} [from]
  * @returns {TokenizeContext}
  */
 export function createTokenizer(parser, initialize, from) {
@@ -62,7 +65,7 @@ export function createTokenizer(parser, initialize, from) {
   let chunks = []
   /** @type {Array<Token>} */
   let stack = []
-  /** @type {boolean|undefined} */
+  /** @type {boolean | undefined} */
   let consumed = true
 
   /**
@@ -100,7 +103,7 @@ export function createTokenizer(parser, initialize, from) {
   /**
    * The state function.
    *
-   * @type {State|void}
+   * @type {State | void}
    */
   let state = initialize.tokenize.call(context, effects)
 
@@ -346,7 +349,7 @@ export function createTokenizer(parser, initialize, from) {
      * Handle either an object mapping codes to constructs, a list of
      * constructs, or a single construct.
      *
-     * @param {Construct|Array<Construct>|ConstructRecord} constructs
+     * @param {Array<Construct> | Construct | ConstructRecord} constructs
      * @param {State} returnState
      * @param {State} [bogusState]
      * @returns {State}
@@ -554,7 +557,7 @@ export function createTokenizer(parser, initialize, from) {
  * Get the chunks from a slice of chunks in the range of a token.
  *
  * @param {Array<Chunk>} chunks
- * @param {Pick<Token, 'start'|'end'>} token
+ * @param {Pick<Token, 'end' | 'start'>} token
  * @returns {Array<Chunk>}
  */
 function sliceChunks(chunks, token) {
@@ -603,7 +606,7 @@ function serializeChunks(chunks, expandTabs) {
   let index = -1
   /** @type {Array<string>} */
   const result = []
-  /** @type {boolean|undefined} */
+  /** @type {boolean | undefined} */
   let atTab
 
   while (++index < chunks.length) {

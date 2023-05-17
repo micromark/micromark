@@ -17,15 +17,15 @@ import {preprocess} from './lib/preprocess.js'
 export const micromark =
   /**
    * @type {(
-   *   ((value: Value, encoding: Encoding, options?: Options) => string) &
-   *   ((value: Value, options?: Options) => string)
+   *   ((value: Value, encoding: Encoding, options?: Options | null | undefined) => string) &
+   *   ((value: Value, options?: Options | null | undefined) => string)
    * )}
    */
   (
     /**
      * @param {Value} value
-     * @param {Encoding} [encoding]
-     * @param {Options} [options]
+     * @param {Encoding | null | undefined} [encoding]
+     * @param {Options | null | undefined} [options]
      */
     function (value, encoding, options) {
       if (typeof encoding !== 'string') {

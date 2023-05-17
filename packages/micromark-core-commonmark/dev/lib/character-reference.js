@@ -1,12 +1,11 @@
 /**
- * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Code} Code
+ * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  */
 
-import {ok as assert} from 'uvu/assert'
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {
   asciiAlphanumeric,
@@ -16,6 +15,7 @@ import {
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {ok as assert} from 'uvu/assert'
 
 /** @type {Construct} */
 export const characterReference = {
@@ -32,7 +32,7 @@ function tokenizeCharacterReference(effects, ok, nok) {
   let size = 0
   /** @type {number} */
   let max
-  /** @type {(code: Code) => code is number} */
+  /** @type {(code: Code) => boolean} */
   let test
 
   return start

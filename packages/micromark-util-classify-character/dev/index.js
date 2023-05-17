@@ -20,7 +20,7 @@ import {constants} from 'micromark-util-symbol/constants.js'
  * Note that eof (`null`) is seen as whitespace.
  *
  * @param {Code} code
- * @returns {number|undefined}
+ * @returns {number | undefined}
  */
 export function classifyCharacter(code) {
   if (

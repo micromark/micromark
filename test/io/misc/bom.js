@@ -1,8 +1,8 @@
 import {Buffer} from 'node:buffer'
-import test from 'tape'
 import concat from 'concat-stream'
 import {micromark} from 'micromark'
 import {stream} from 'micromark/stream.js'
+import test from 'tape'
 import {slowStream} from '../../util/slow-stream.js'
 
 test('bom (byte order marker)', function (t) {

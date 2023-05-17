@@ -1,5 +1,5 @@
-import test from 'tape'
 import {micromark} from 'micromark'
+import test from 'tape'
 
 test('dangerous-html', function (t) {
   t.equal(micromark('<x>'), '&lt;x&gt;', 'should be safe by default for flow')

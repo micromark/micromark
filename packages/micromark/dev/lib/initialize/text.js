@@ -1,11 +1,10 @@
 /**
- * @typedef {import('micromark-util-types').Resolver} Resolver
- * @typedef {import('micromark-util-types').Initializer} Initializer
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
- * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Code} Code
+ * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
+ * @typedef {import('micromark-util-types').Initializer} Initializer
+ * @typedef {import('micromark-util-types').Resolver} Resolver
+ * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  */
 
 import {codes} from 'micromark-util-symbol/codes.js'
@@ -17,7 +16,7 @@ export const string = initializeFactory('string')
 export const text = initializeFactory('text')
 
 /**
- * @param {'string'|'text'} field
+ * @param {'string' | 'text'} field
  * @returns {InitialConstruct}
  */
 function initializeFactory(field) {
@@ -95,7 +94,7 @@ function initializeFactory(field) {
 }
 
 /**
- * @param {Resolver} [extraResolver]
+ * @param {Resolver | undefined} [extraResolver]
  * @returns {Resolver}
  */
 function createResolver(extraResolver) {
@@ -104,7 +103,7 @@ function createResolver(extraResolver) {
   /** @type {Resolver} */
   function resolveAllText(events, context) {
     let index = -1
-    /** @type {number|undefined} */
+    /** @type {number | undefined} */
     let enter
 
     // A rather boring computation (to merge adjacent `data` events) which
@@ -156,7 +155,7 @@ function resolveAllLineSuffixes(events, context) {
       let index = chunks.length
       let bufferIndex = -1
       let size = 0
-      /** @type {boolean|undefined} */
+      /** @type {boolean | undefined} */
       let tabs
 
       while (index--) {

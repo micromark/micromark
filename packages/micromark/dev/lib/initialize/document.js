@@ -1,26 +1,26 @@
 /**
+ * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
  * @typedef {import('micromark-util-types').Initializer} Initializer
- * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').Point} Point
+ * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').Token} Token
  * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').Token} Token
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').Point} Point
  */
 
 /**
- * @typedef {Record<string, unknown>} StackState
  * @typedef {[Construct, StackState]} StackItem
+ * @typedef {Record<string, unknown>} StackState
  */
 
-import {ok as assert} from 'uvu/assert'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
+import {splice} from 'micromark-util-chunked'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 import {types} from 'micromark-util-symbol/types.js'
-import {splice} from 'micromark-util-chunked'
+import {ok as assert} from 'uvu/assert'
 
 /** @type {InitialConstruct} */
 export const document = {tokenize: initializeDocument}
@@ -37,9 +37,9 @@ function initializeDocument(effects) {
   /** @type {Array<StackItem>} */
   const stack = []
   let continued = 0
-  /** @type {TokenizeContext|undefined} */
+  /** @type {TokenizeContext | undefined} */
   let childFlow
-  /** @type {Token|undefined} */
+  /** @type {Token | undefined} */
   let childToken
   /** @type {number} */
   let lineStartOffset
@@ -99,7 +99,7 @@ function initializeDocument(effects) {
       // algorithm when dealing with lazy lines in `writeToChild`.
       const indexBeforeExits = self.events.length
       let indexBeforeFlow = indexBeforeExits
-      /** @type {Point|undefined} */
+      /** @type {Point | undefined} */
       let point
 
       // Find the flow chunk.
@@ -333,9 +333,9 @@ function initializeDocument(effects) {
       // algorithm when closing flow in `documentContinue`.
       const indexBeforeExits = self.events.length
       let indexBeforeFlow = indexBeforeExits
-      /** @type {boolean|undefined} */
+      /** @type {boolean | undefined} */
       let seen
-      /** @type {Point|undefined} */
+      /** @type {Point | undefined} */
       let point
 
       // Find the previous chunk (the one before the lazy line).

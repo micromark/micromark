@@ -1,6 +1,6 @@
 import {readFile} from 'node:fs/promises'
-import ms from 'ms'
 import {micromark} from 'micromark'
+import ms from 'ms'
 
 const readme = await readFile('readme.md', 'utf8')
 

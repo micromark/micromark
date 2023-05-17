@@ -1,6 +1,5 @@
 import {promises as fs} from 'node:fs'
 import path from 'node:path'
-import regenerate from 'regenerate'
 // @ts-expect-error untyped.
 import ConnectorPunctuation from '@unicode/unicode-14.0.0/General_Category/Connector_Punctuation/code-points.js'
 // @ts-expect-error untyped.
@@ -16,6 +15,7 @@ import OtherPunctuation from '@unicode/unicode-14.0.0/General_Category/Other_Pun
 // @ts-expect-error untyped.
 import OpenPunctuation from '@unicode/unicode-14.0.0/General_Category/Open_Punctuation/code-points.js'
 import {codes} from 'micromark-util-symbol/codes.js'
+import regenerate from 'regenerate'
 
 // To do: after TS update, use TLA
 // eslint-disable-next-line unicorn/prefer-top-level-await

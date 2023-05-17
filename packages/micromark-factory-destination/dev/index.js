@@ -21,7 +21,7 @@ import {types} from 'micromark-util-symbol/types.js'
  * @param {string} literalMarkerType
  * @param {string} rawType
  * @param {string} stringType
- * @param {number} [max=Infinity]
+ * @param {number | undefined} [max=Infinity]
  * @returns {State}
  */
 // eslint-disable-next-line max-params

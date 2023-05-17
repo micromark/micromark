@@ -1,23 +1,23 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  */
 
-import {ok as assert} from 'uvu/assert'
 import {factoryDestination} from 'micromark-factory-destination'
 import {factoryLabel} from 'micromark-factory-label'
 import {factorySpace} from 'micromark-factory-space'
 import {factoryTitle} from 'micromark-factory-title'
 import {factoryWhitespace} from 'micromark-factory-whitespace'
-import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
 import {
   markdownLineEnding,
   markdownLineEndingOrSpace
 } from 'micromark-util-character'
+import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {ok as assert} from 'uvu/assert'
 
 /** @type {Construct} */
 export const definition = {name: 'definition', tokenize: tokenizeDefinition}

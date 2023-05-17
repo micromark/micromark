@@ -1,13 +1,12 @@
 /**
+ * @typedef {import('micromark-util-types').Code} Code
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Resolver} Resolver
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').Code} Code
+ * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  */
 
-import {ok as assert} from 'uvu/assert'
 import {
   asciiAlpha,
   asciiAlphanumeric,
@@ -19,6 +18,7 @@ import {htmlBlockNames, htmlRawNames} from 'micromark-util-html-tag-name'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {ok as assert} from 'uvu/assert'
 import {blankLine} from './blank-line.js'
 
 /** @type {Construct} */
@@ -107,6 +107,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
 
     if (asciiAlpha(code)) {
       effects.consume(code)
+      // @ts-expect-error: not null.
       buffer = String.fromCharCode(code)
       startTag = true
       return tagName
@@ -168,6 +169,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
   function tagCloseStart(code) {
     if (asciiAlpha(code)) {
       effects.consume(code)
+      // @ts-expect-error: not null.
       buffer = String.fromCharCode(code)
       return tagName
     }
@@ -513,6 +515,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
 
     if (asciiAlpha(code) && buffer.length < constants.htmlRawSizeMax) {
       effects.consume(code)
+      // @ts-expect-error: not null.
       buffer += String.fromCharCode(code)
       return continuationRawEndTag
     }

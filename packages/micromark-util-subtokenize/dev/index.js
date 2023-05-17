@@ -1,13 +1,13 @@
 /**
- * @typedef {import('micromark-util-types').Token} Token
  * @typedef {import('micromark-util-types').Chunk} Chunk
  * @typedef {import('micromark-util-types').Event} Event
+ * @typedef {import('micromark-util-types').Token} Token
  */
 
-import {ok as assert} from 'uvu/assert'
 import {splice} from 'micromark-util-chunked'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {ok as assert} from 'uvu/assert'
 
 /**
  * Tokenize subcontent.
@@ -21,7 +21,7 @@ export function subtokenize(events) {
   let index = -1
   /** @type {Event} */
   let event
-  /** @type {number|undefined} */
+  /** @type {number | undefined} */
   let lineIndex
   /** @type {number} */
   let otherIndex
@@ -31,7 +31,7 @@ export function subtokenize(events) {
   let parameters
   /** @type {Array<Event>} */
   let subevents
-  /** @type {boolean|undefined} */
+  /** @type {boolean | undefined} */
   let more
 
   while (++index < events.length) {
@@ -147,10 +147,10 @@ function subcontent(events, eventIndex) {
   const gaps = {}
   /** @type {Array<Chunk>} */
   let stream
-  /** @type {Token|undefined} */
+  /** @type {Token | undefined} */
   let previous
   let index = -1
-  /** @type {Token|undefined} */
+  /** @type {Token | undefined} */
   let current = token
   let adjust = 0
   let start = 0

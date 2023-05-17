@@ -1,8 +1,8 @@
 /**
- * @typedef {import('micromark-util-types').NormalizedExtension} NormalizedExtension
- * @typedef {import('micromark-util-types').Extension} Extension
  * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').Extension} Extension
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
+ * @typedef {import('micromark-util-types').NormalizedExtension} NormalizedExtension
  */
 
 import {splice} from 'micromark-util-chunked'
@@ -12,8 +12,10 @@ const hasOwnProperty = {}.hasOwnProperty
 /**
  * Combine several syntax extensions into one.
  *
- * @param {Array<Extension>} extensions List of syntax extensions.
- * @returns {NormalizedExtension} A single combined extension.
+ * @param {Array<Extension>} extensions
+ *   List of syntax extensions.
+ * @returns {NormalizedExtension}
+ *   A single combined extension.
  */
 export function combineExtensions(extensions) {
   /** @type {NormalizedExtension} */
@@ -30,8 +32,10 @@ export function combineExtensions(extensions) {
 /**
  * Merge `extension` into `all`.
  *
- * @param {NormalizedExtension} all Extension to merge into.
- * @param {Extension} extension Extension to merge.
+ * @param {NormalizedExtension} all
+ *   Extension to merge into.
+ * @param {Extension} extension
+ *   Extension to merge.
  * @returns {void}
  */
 function syntaxExtension(all, extension) {
@@ -81,8 +85,10 @@ function constructs(existing, list) {
 /**
  * Combine several HTML extensions into one.
  *
- * @param {Array<HtmlExtension>} htmlExtensions List of HTML extensions.
- * @returns {HtmlExtension} A single combined extension.
+ * @param {Array<HtmlExtension>} htmlExtensions
+ *   List of HTML extensions.
+ * @returns {HtmlExtension}
+ *   A single combined extension.
  */
 export function combineHtmlExtensions(htmlExtensions) {
   /** @type {HtmlExtension} */
@@ -99,8 +105,10 @@ export function combineHtmlExtensions(htmlExtensions) {
 /**
  * Merge `extension` into `all`.
  *
- * @param {HtmlExtension} all Extension to merge into.
- * @param {HtmlExtension} extension Extension to merge.
+ * @param {HtmlExtension} all
+ *   Extension to merge into.
+ * @param {HtmlExtension} extension
+ *   Extension to merge.
  * @returns {void}
  */
 function htmlExtension(all, extension) {
