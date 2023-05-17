@@ -58,6 +58,7 @@ export const htmlBlockNames = [
   'option',
   'p',
   'param',
+  'search',
   'section',
   'summary',
   'table',
