@@ -1,5 +1,5 @@
 import {Buffer} from 'node:buffer'
-import fs from 'node:fs'
+import {promises as fs, createReadStream, createWriteStream} from 'node:fs'
 import stream from 'node:stream'
 import concat from 'concat-stream'
 import {stream as micromark} from 'micromark/stream.js'
@@ -97,21 +97,32 @@ test('stream', function (t) {
       )
   })
 
-  t.test('should integrate w/ `fs.create{Read,Write}Stream`', function (t) {
-    t.plan(1)
+  t.test(
+    'should integrate w/ `fs.create{Read,Write}Stream`',
+    async function (t) {
+      t.plan(1)
 
-    fs.writeFileSync('integrate-input', '&because;')
+      await fs.writeFile('integrate-input', '&because;')
 
-    fs.createReadStream('integrate-input')
-      .pipe(micromark())
-      .pipe(fs.createWriteStream('integrate-output'))
-      .on('close', function () {
-        t.equal(String(fs.readFileSync('integrate-output')), '<p>∵</p>', 'pass')
+      return new Promise((resolve) => {
+        createReadStream('integrate-input')
+          .pipe(micromark())
+          .pipe(createWriteStream('integrate-output'))
+          .on('close', async function () {
+            t.equal(
+              String(await fs.readFile('integrate-output')),
+              '<p>∵</p>',
+              'pass'
+            )
 
-        fs.unlinkSync('integrate-input')
-        fs.unlinkSync('integrate-output')
+            await fs.unlink('integrate-input')
+            await fs.unlink('integrate-output')
+
+            resolve()
+          })
       })
-  })
+    }
+  )
 
   t.test('should be safe by default', function (t) {
     t.plan(1)
@@ -137,7 +148,7 @@ test('stream', function (t) {
       )
   })
 
-  t.test('should stream in non-UTF8', function (t) {
+  t.test('should stream in non-UTF8', async function (t) {
     const encoding = 'utf16le'
     const doc = [
       'A bit of arabic: الإعلان العالمي لحقوق الإنسان',
@@ -148,24 +159,28 @@ test('stream', function (t) {
 
     t.plan(1)
 
-    fs.writeFileSync('non-utf8-input', doc, encoding)
+    await fs.writeFile('non-utf8-input', doc, encoding)
 
-    fs.createReadStream('non-utf8-input', {
-      encoding,
-      highWaterMark: 1
-    })
-      .pipe(micromark())
-      .pipe(fs.createWriteStream('non-utf8-output'))
-      .on('close', function () {
-        t.equal(
-          String(fs.readFileSync('non-utf8-output')),
-          '<p>' + doc + '</p>',
-          'pass'
-        )
-
-        fs.unlinkSync('non-utf8-input')
-        fs.unlinkSync('non-utf8-output')
+    return new Promise((resolve) => {
+      createReadStream('non-utf8-input', {
+        encoding,
+        highWaterMark: 1
       })
+        .pipe(micromark())
+        .pipe(createWriteStream('non-utf8-output'))
+        .on('close', async function () {
+          t.equal(
+            String(await fs.readFile('non-utf8-output')),
+            '<p>' + doc + '</p>',
+            'pass'
+          )
+
+          await fs.unlink('non-utf8-input')
+          await fs.unlink('non-utf8-output')
+
+          resolve()
+        })
+    })
   })
 
   t.test('#end and #write', function (t) {

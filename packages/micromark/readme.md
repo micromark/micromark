@@ -150,10 +150,10 @@ Yields:
 Streaming interface:
 
 ```js
-import fs from 'fs'
+import {createReadStream} from 'node:fs'
 import {stream} from 'micromark/stream'
 
-fs.createReadStream('example.md')
+createReadStream('example.md')
   .on('error', handleError)
   .pipe(stream())
   .pipe(process.stdout)
@@ -568,17 +568,13 @@ To check if our extension works, add an `example.js` module, with the following
 code:
 
 ```js
-import {promises as fs} from 'node:fs'
+import fs from 'node:fs/promises'
 import {micromark} from 'micromark'
 import {variables} from './index.js'
 
-main()
-
-async function main() {
-  const buf = await fs.readFile('example.md')
-  const out = micromark(buf, {extensions: [variables]})
-  console.log(out)
-}
+const buf = await fs.readFile('example.md')
+const out = micromark(buf, {extensions: [variables]})
+console.log(out)
 ```
 
 While working on the extension, run `node example` to see whether things work.
@@ -793,20 +789,16 @@ Change `example.js` to use one like so:
 
 ```diff
 @@ -1,11 +1,12 @@
- import {promises as fs} from 'node:fs'
+ import fs from 'node:fs/promises'
  import {micromark} from 'micromark'
 -import {variables} from './index.js'
 +import {variables, variablesHtml} from './index.js'
 
- main()
-
- async function main() {
-   const buf = await fs.readFile('example.md')
--  const out = micromark(buf, {extensions: [variables]})
-+  const html = variablesHtml({planet: '1', 'pla}net': '2'})
-+  const out = micromark(buf, {extensions: [variables], htmlExtensions: [html]})
-   console.log(out)
- }
+ const buf = await fs.readFile('example.md')
+-const out = micromark(buf, {extensions: [variables]})
++const html = variablesHtml({planet: '1', 'pla}net': '2'})
++const out = micromark(buf, {extensions: [variables], htmlExtensions: [html]})
+ console.log(out)
 ```
 
 And add the HTML extension, `variablesHtml`, to `index.js` like so:
@@ -1133,11 +1125,11 @@ A note[^1]
 Then do something like this:
 
 ```js
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import {micromark} from 'micromark'
 import {gfm, gfmHtml} from 'micromark-extension-gfm'
 
-const doc = fs.readFileSync('example.md')
+const doc = await fs.readFile('example.md')
 
 console.log(micromark(doc, {extensions: [gfm()], htmlExtensions: [gfmHtml()]}))
 ```
@@ -1198,11 +1190,11 @@ $$
 Then do something like this:
 
 ```js
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import {micromark} from 'micromark'
 import {math, mathHtml} from 'micromark-extension-math'
 
-const doc = fs.readFileSync('example.md')
+const doc = await fs.readFile('example.md')
 
 console.log(micromark(doc, {extensions: [math], htmlExtensions: [mathHtml()]}))
 ```
