@@ -4,14 +4,13 @@ on:
   - push
 jobs:
   test:
-    name: test / micromark / ${{matrix.node}} on ${{matrix.os}}
+    name: ${{matrix.node}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: ${{matrix.node}}
-      - run: npm install -g npm
       - run: npm install
       - run: npm test
       - uses: codecov/codecov-action@v3
@@ -57,7 +56,7 @@ jobs:
         os:
           - ubuntu-latest
         node:
-          - lts/gallium
+          - node
         package:
           - micromark/micromark-extension-gfm
           - micromark/micromark-extension-directive
