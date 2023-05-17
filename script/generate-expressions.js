@@ -1,19 +1,19 @@
 import {promises as fs} from 'node:fs'
 import path from 'node:path'
 // @ts-expect-error untyped.
-import ConnectorPunctuation from '@unicode/unicode-14.0.0/General_Category/Connector_Punctuation/code-points.js'
+import ConnectorPunctuation from '@unicode/unicode-15.0.0/General_Category/Connector_Punctuation/code-points.js'
 // @ts-expect-error untyped.
-import DashPunctuation from '@unicode/unicode-14.0.0/General_Category/Dash_Punctuation/code-points.js'
+import DashPunctuation from '@unicode/unicode-15.0.0/General_Category/Dash_Punctuation/code-points.js'
 // @ts-expect-error untyped.
-import ClosePunctuation from '@unicode/unicode-14.0.0/General_Category/Close_Punctuation/code-points.js'
+import ClosePunctuation from '@unicode/unicode-15.0.0/General_Category/Close_Punctuation/code-points.js'
 // @ts-expect-error untyped.
-import FinalPunctuation from '@unicode/unicode-14.0.0/General_Category/Final_Punctuation/code-points.js'
+import FinalPunctuation from '@unicode/unicode-15.0.0/General_Category/Final_Punctuation/code-points.js'
 // @ts-expect-error untyped.
-import InitialPunctuation from '@unicode/unicode-14.0.0/General_Category/Initial_Punctuation/code-points.js'
+import InitialPunctuation from '@unicode/unicode-15.0.0/General_Category/Initial_Punctuation/code-points.js'
 // @ts-expect-error untyped.
-import OtherPunctuation from '@unicode/unicode-14.0.0/General_Category/Other_Punctuation/code-points.js'
+import OtherPunctuation from '@unicode/unicode-15.0.0/General_Category/Other_Punctuation/code-points.js'
 // @ts-expect-error untyped.
-import OpenPunctuation from '@unicode/unicode-14.0.0/General_Category/Open_Punctuation/code-points.js'
+import OpenPunctuation from '@unicode/unicode-15.0.0/General_Category/Open_Punctuation/code-points.js'
 import {codes} from 'micromark-util-symbol/codes.js'
 import regenerate from 'regenerate'
 
