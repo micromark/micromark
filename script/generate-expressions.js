@@ -17,6 +17,8 @@ import OtherPunctuation from '@unicode/unicode-14.0.0/General_Category/Other_Pun
 import OpenPunctuation from '@unicode/unicode-14.0.0/General_Category/Open_Punctuation/code-points.js'
 import {codes} from 'micromark-util-symbol/codes.js'
 
+// To do: after TS update, use TLA
+// eslint-disable-next-line unicorn/prefer-top-level-await
 main()
 
 async function main() {

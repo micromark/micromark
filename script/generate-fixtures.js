@@ -10,6 +10,8 @@ import {promises as fs} from 'node:fs'
 import path from 'node:path'
 import cp from 'node:child_process'
 
+// To do: after TS update, use TLA
+// eslint-disable-next-line unicorn/prefer-top-level-await
 main()
 
 async function main() {

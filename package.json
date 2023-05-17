@@ -82,7 +82,7 @@
     "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^5.0.0",
-    "xo": "^0.52.0"
+    "xo": "^0.54.0"
   },
   "scripts": {
     "build-workspace": "npm run build --workspaces && cp readme.md packages/micromark/readme.md",
