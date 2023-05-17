@@ -5,56 +5,48 @@
 // Finally, it writes those given strings to `test/fixtures/` as separate files.
 // This can then be used to feed the fuzz tester.
 
-import cp from 'node:child_process'
-import {promises as fs} from 'node:fs'
-import path from 'node:path'
-import process from 'node:process'
+import childProcess from 'node:child_process'
+import fs from 'node:fs/promises'
+import util from 'node:util'
 
-// To do: after TS update, use TLA
-// eslint-disable-next-line unicorn/prefer-top-level-await
-main()
+const exec = util.promisify(childProcess.exec)
 
-async function main() {
-  await fs.rename(
-    path.join('packages', 'micromark', 'index.js'),
-    path.join('packages', 'micromark', 'index.bak.js')
-  )
-  await fs.writeFile(
-    path.join('packages', 'micromark', 'index.js'),
-    [
-      'export {micromark}',
-      'import fs from "fs"',
-      'import path from "path"',
-      'import {micromark as core} from "./index.bak.js"',
-      'const captured = []',
-      'const base = path.join("test", "fixtures")',
-      'process.on("exit", onexit)',
-      'fs.mkdirSync(base, {recursive: true})',
-      'function micromark(value) {',
-      '  console.log(...arguments)',
-      '  if (typeof value === "string") captured.push(value)',
-      '  return core(...arguments)',
-      '}',
-      'function onexit() {',
-      '  captured',
-      '    .sort()',
-      '    .filter((d, i, a) => a.indexOf(d) === i)',
-      '    .forEach((d, i) => fs.writeFileSync(',
-      '      path.join(base, String(i)),',
-      '      d',
-      '    ))',
-      '}'
-    ].join('\n')
-  )
+await fs.rename(
+  new URL('../packages/micromark/index.js', import.meta.url),
+  new URL('../packages/micromark/index.bak.js', import.meta.url)
+)
 
-  cp.execSync('node test/index.js')
+await fs.writeFile(
+  new URL('../packages/micromark/index.js', import.meta.url),
+  [
+    'export {micromark}',
+    'import fs from "fs"',
+    'import path from "path"',
+    'import {micromark as core} from "./index.bak.js"',
+    'const captured = []',
+    'const base = path.join("test", "fixtures")',
+    'process.on("exit", onexit)',
+    'fs.mkdirSync(base, {recursive: true})',
+    'function micromark(value) {',
+    '  console.log(...arguments)',
+    '  if (typeof value === "string") captured.push(value)',
+    '  return core(...arguments)',
+    '}',
+    'function onexit() {',
+    '  captured',
+    '    .sort()',
+    '    .filter((d, i, a) => a.indexOf(d) === i)',
+    '    .forEach((d, i) => fs.writeFileSync(',
+    '      path.join(base, String(i)),',
+    '      d',
+    '    ))',
+    '}'
+  ].join('\n')
+)
 
-  process.on('exit', onexit)
+await exec('node test/index.js')
 
-  async function onexit() {
-    await fs.rename(
-      path.join('packages', 'micromark', 'index.bak.js'),
-      path.join('packages', 'micromark', 'index.js')
-    )
-  }
-}
+await fs.rename(
+  new URL('../packages/micromark/index.bak.js', import.meta.url),
+  new URL('../packages/micromark/index.js', import.meta.url)
+)
