@@ -87,8 +87,10 @@
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "pretest-fuzz": "esbuild micromark --format=cjs --platform=node --bundle > test/fuzz-bundle.cjs && node script/generate-fixtures.js",
     "test-fuzz": "jazzer test/fuzz.cjs test/fixtures -- -max_total_time=1800",
-    "test-api": "node --conditions development test/index.js",
-    "test-coverage": "c8 --100 --reporter lcov npm run test-api",
+    "test-api-dev": "node --conditions development test/index.js",
+    "test-api-prod": "node --conditions production test/index.js",
+    "test-api": "npm run test-api-dev && npm run test-api-prod",
+    "test-coverage": "c8 --100 --reporter lcov npm run test-api-dev",
     "test": "npm run build && npm run format && npm run test-coverage"
   },
   "prettier": {
@@ -160,9 +162,9 @@
   },
   "remarkConfig": {
     "plugins": [
-      "preset-wooorm",
+      "remark-preset-wooorm",
       [
-        "lint-no-html",
+        "remark-lint-no-html",
         false
       ]
     ]
