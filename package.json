@@ -61,8 +61,8 @@
     "@types/concat-stream": "^2.0.0",
     "@types/glob": "^8.0.0",
     "@types/ms": "^0.7.0",
+    "@types/node": "^20.0.0",
     "@types/regenerate": "^1.0.0",
-    "@types/tape": "^4.0.0",
     "@unicode/unicode-15.0.0": "^1.0.0",
     "c8": "^7.0.0",
     "character-entities": "^2.0.0",
@@ -78,7 +78,6 @@
     "remark-cli": "^11.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "rollup": "^3.0.0",
-    "tape": "^5.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^5.0.0",
     "xo": "^0.54.0"

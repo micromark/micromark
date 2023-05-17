@@ -1,107 +1,121 @@
+import assert from 'node:assert/strict'
 import {Buffer} from 'node:buffer'
 import {promises as fs, createReadStream, createWriteStream} from 'node:fs'
 import stream from 'node:stream'
+import test from 'node:test'
 import concat from 'concat-stream'
 import {stream as micromark} from 'micromark/stream.js'
-import test from 'tape'
 import {slowStream} from './util/slow-stream.js'
 
-test('stream', function (t) {
-  t.test('should support streaming', function (t) {
-    t.plan(1)
+test('stream', async function (t) {
+  await t.test('should support streaming', function () {
+    return new Promise(function (resolve) {
+      slowStream(
+        '`` some code? No, not code! A link though: <http://example.com>'
+      )
+        .pipe(micromark())
+        .pipe(
+          concat(function (result) {
+            assert.equal(
+              result,
+              '<p>`` some code? No, not code! A link though: <a href="http://example.com">http://example.com</a></p>',
+              'pass'
+            )
 
-    slowStream(
-      '`` some code? No, not code! A link though: <http://example.com>'
-    )
-      .pipe(micromark())
-      .pipe(
-        concat(function (result) {
-          t.equal(
-            result,
-            '<p>`` some code? No, not code! A link though: <a href="http://example.com">http://example.com</a></p>',
-            'pass'
+            resolve(undefined)
+          })
+        )
+    })
+  })
+
+  await t.test('should support streaming buffers', function () {
+    return new Promise(function (resolve) {
+      slowStream(Buffer.from('<admin@example.com>'))
+        .pipe(micromark())
+        .pipe(
+          concat(function (result) {
+            assert.equal(
+              result,
+              '<p><a href="mailto:admin@example.com">admin@example.com</a></p>',
+              'pass'
+            )
+
+            resolve(undefined)
+          })
+        )
+    })
+  })
+
+  await t.test('should support reference-first definition-later', function () {
+    return new Promise(function (resolve) {
+      slowStream('[x]\n\n[x]: y')
+        .pipe(micromark())
+        .pipe(
+          concat(function (result) {
+            assert.equal(result, '<p><a href="y">x</a></p>\n', 'pass')
+
+            resolve(undefined)
+          })
+        )
+    })
+  })
+
+  await t.test('should support emphasis and strong', function () {
+    return new Promise(function (resolve) {
+      slowStream('***x**y**')
+        .pipe(micromark())
+        .pipe(
+          concat(function (result) {
+            assert.equal(result, '<p><em><strong>x</strong>y</em>*</p>', 'pass')
+
+            resolve(undefined)
+          })
+        )
+    })
+  })
+
+  await t.test('should support carriage returns between flow', function () {
+    return new Promise(function (resolve) {
+      slowStream('***\r\r    fn()\r\r### Heading\r\r')
+        .pipe(micromark())
+        .pipe(
+          concat(function (result) {
+            assert.equal(
+              result,
+              '<hr />\r<pre><code>fn()\r</code></pre>\r<h3>Heading</h3>\r',
+              'pass'
+            )
+
+            resolve(undefined)
+          })
+        )
+    })
+  })
+
+  await t.test(
+    'should support carriage return + line feeds in flow',
+    function () {
+      return new Promise(function (resolve) {
+        slowStream('***\r\n\r\n    fn()\r\n\r\n### Heading\r\n\r\n')
+          .pipe(micromark())
+          .pipe(
+            concat(function (result) {
+              assert.equal(
+                result,
+                '<hr />\r\n<pre><code>fn()\r\n</code></pre>\r\n<h3>Heading</h3>\r\n',
+                'pass'
+              )
+
+              resolve(undefined)
+            })
           )
-        })
-      )
-  })
+      })
+    }
+  )
 
-  t.test('should support streaming buffers', function (t) {
-    t.plan(1)
-
-    slowStream(Buffer.from('<admin@example.com>'))
-      .pipe(micromark())
-      .pipe(
-        concat(function (result) {
-          t.equal(
-            result,
-            '<p><a href="mailto:admin@example.com">admin@example.com</a></p>',
-            'pass'
-          )
-        })
-      )
-  })
-
-  t.test('should support reference-first definition-later', function (t) {
-    t.plan(1)
-
-    slowStream('[x]\n\n[x]: y')
-      .pipe(micromark())
-      .pipe(
-        concat(function (result) {
-          t.equal(result, '<p><a href="y">x</a></p>\n', 'pass')
-        })
-      )
-  })
-
-  t.test('should support emphasis and strong', function (t) {
-    t.plan(1)
-
-    slowStream('***x**y**')
-      .pipe(micromark())
-      .pipe(
-        concat(function (result) {
-          t.equal(result, '<p><em><strong>x</strong>y</em>*</p>', 'pass')
-        })
-      )
-  })
-
-  t.test('should support carriage returns between flow', function (t) {
-    t.plan(1)
-
-    slowStream('***\r\r    fn()\r\r### Heading\r\r')
-      .pipe(micromark())
-      .pipe(
-        concat(function (result) {
-          t.equal(
-            result,
-            '<hr />\r<pre><code>fn()\r</code></pre>\r<h3>Heading</h3>\r',
-            'pass'
-          )
-        })
-      )
-  })
-
-  t.test('should support carriage return + line feeds in flow', function (t) {
-    t.plan(1)
-
-    slowStream('***\r\n\r\n    fn()\r\n\r\n### Heading\r\n\r\n')
-      .pipe(micromark())
-      .pipe(
-        concat(function (result) {
-          t.equal(
-            result,
-            '<hr />\r\n<pre><code>fn()\r\n</code></pre>\r\n<h3>Heading</h3>\r\n',
-            'pass'
-          )
-        })
-      )
-  })
-
-  t.test(
+  await t.test(
     'should integrate w/ `fs.create{Read,Write}Stream`',
-    async function (t) {
-      t.plan(1)
-
+    async function () {
       await fs.writeFile('integrate-input', '&because;')
 
       return new Promise((resolve) => {
@@ -109,7 +123,7 @@ test('stream', function (t) {
           .pipe(micromark())
           .pipe(createWriteStream('integrate-output'))
           .on('close', async function () {
-            t.equal(
+            assert.equal(
               String(await fs.readFile('integrate-output')),
               '<p>∵</p>',
               'pass'
@@ -118,37 +132,36 @@ test('stream', function (t) {
             await fs.unlink('integrate-input')
             await fs.unlink('integrate-output')
 
-            resolve()
+            resolve(undefined)
           })
       })
     }
   )
 
-  t.test('should be safe by default', function (t) {
-    t.plan(1)
-
-    slowStream('<x>')
-      .pipe(micromark())
-      .pipe(
-        concat(function (result) {
-          t.equal(result, '&lt;x&gt;', 'pass')
-        })
-      )
+  await t.test('should be safe by default', function () {
+    return new Promise((resolve) => {
+      slowStream('<x>')
+        .pipe(micromark())
+        .pipe(
+          concat(function (result) {
+            assert.equal(result, '&lt;x&gt;', 'pass')
+            resolve(undefined)
+          })
+        )
+    })
   })
 
-  t.test('should be unsafe w/ `allowDangerousHtml`', function (t) {
-    t.plan(1)
-
+  await t.test('should be unsafe w/ `allowDangerousHtml`', function () {
     slowStream('<x>')
       .pipe(micromark({allowDangerousHtml: true}))
       .pipe(
         concat(function (result) {
-          t.equal(result, '<x>', 'pass')
+          assert.equal(result, '<x>', 'pass')
         })
       )
   })
 
-  t.test('should stream in non-UTF8', async function (t) {
+  await t.test('should stream in non-UTF8', async function () {
     const encoding = 'utf16le'
     const doc = [
       'A bit of arabic: الإعلان العالمي لحقوق الإنسان',
@@ -156,8 +169,6 @@ test('stream', function (t) {
       'Mongolian (Halh, Mongolian script): ᠬᠦᠮᠦᠨ ᠪᠦᠷ ᠲᠥᠷᠥᠵᠦ ᠮᠡᠨᠳᠡᠯᠡᠬᠦ ᠡᠷᠬᠡ ᠴᠢᠯᠥᠭᠡ ᠲᠡᠢ᠂ ᠠᠳᠠᠯᠢᠬᠠᠨ ᠨᠡᠷ',
       'And some happy families: 🎊👩‍👩‍👦‍👦👨‍👨‍👧‍👦🌈'
     ].join('\n')
-
-    t.plan(1)
 
     await fs.writeFile('non-utf8-input', doc, encoding)
 
@@ -169,7 +180,7 @@ test('stream', function (t) {
         .pipe(micromark())
         .pipe(createWriteStream('non-utf8-output'))
         .on('close', async function () {
-          t.equal(
+          assert.equal(
             String(await fs.readFile('non-utf8-output')),
             '<p>' + doc + '</p>',
             'pass'
@@ -178,22 +189,20 @@ test('stream', function (t) {
           await fs.unlink('non-utf8-input')
           await fs.unlink('non-utf8-output')
 
-          resolve()
+          resolve(undefined)
         })
     })
   })
 
-  t.test('#end and #write', function (t) {
+  await t.test('#end and #write', function () {
     /** @type {ReturnType<micromark>} */
     let s
     /** @type {number} */
     let phase
 
-    t.plan(9)
+    assert.equal(micromark().end(), true, 'should return true for `end`')
 
-    t.equal(micromark().end(), true, 'should return true for `end`')
-
-    t.throws(
+    assert.throws(
       function () {
         const tr = micromark()
         tr.end()
@@ -206,7 +215,7 @@ test('stream', function (t) {
     s = micromark()
     s.pipe(
       concat(function (value) {
-        t.equal(String(value), '', 'should end w/o ever receiving data')
+        assert.equal(String(value), '', 'should end w/o ever receiving data')
       })
     )
     s.end()
@@ -214,7 +223,7 @@ test('stream', function (t) {
     s = micromark()
     s.pipe(
       concat(function (value) {
-        t.equal(String(value), '<p>x</p>', 'should end')
+        assert.equal(String(value), '<p>x</p>', 'should end')
       }),
       {end: true}
     )
@@ -223,7 +232,7 @@ test('stream', function (t) {
     s = micromark()
     s.pipe(
       concat(function (value) {
-        t.equal(
+        assert.equal(
           String(value),
           '<p>alpha</p>',
           'should receive final data from `end`'
@@ -235,7 +244,7 @@ test('stream', function (t) {
     s = micromark()
     s.pipe(
       concat(function (value) {
-        t.equal(String(value), '<p>brC!vo</p>', 'should honour encoding')
+        assert.equal(String(value), '<p>brC!vo</p>', 'should honour encoding')
       })
     )
     // @ts-expect-error Types for `WritableStream#end` are wrong: buffers are
@@ -247,12 +256,12 @@ test('stream', function (t) {
     s = micromark()
     s.pipe(
       concat(function () {
-        t.equal(phase, 1, 'should trigger data after callback')
+        assert.equal(phase, 1, 'should trigger data after callback')
         phase++
       })
     )
     s.end('charlie', function () {
-      t.equal(phase, 0, 'should trigger callback before data')
+      assert.equal(phase, 0, 'should trigger callback before data')
       phase++
     })
 
@@ -262,16 +271,18 @@ test('stream', function (t) {
       phase++
     })
 
-    t.equal(phase, 1, 'should trigger callback when it’s the only argument')
+    assert.equal(
+      phase,
+      1,
+      'should trigger callback when it’s the only argument'
+    )
   })
 
-  t.test('#pipe', function (st) {
+  await t.test('#pipe', function () {
     /** @type {ReturnType<micromark>} */
     let tr
 
-    st.plan(5)
-
-    st.doesNotThrow(function () {
+    assert.doesNotThrow(function () {
       // Not writable.
       const tr = micromark()
       // @ts-expect-error Runtime.
@@ -290,12 +301,12 @@ test('stream', function (t) {
     tr.write('bravo')
     tr.end('charlie')
 
-    st.doesNotThrow(function () {
+    assert.doesNotThrow(function () {
       s.write('delta')
     }, 'should not `end` stdio streams')
 
     tr = micromark().on('error', function (/** @type {Error} */ error) {
-      st.equal(error.message, 'Whoops!', 'should pass errors')
+      assert.equal(error.message, 'Whoops!', 'should pass errors')
     })
 
     tr.pipe(new stream.PassThrough())
@@ -304,7 +315,7 @@ test('stream', function (t) {
     tr = micromark()
     tr.pipe(new stream.PassThrough())
 
-    st.throws(
+    assert.throws(
       function () {
         tr.emit('error', new Error('Whoops!'))
       },
@@ -316,20 +327,18 @@ test('stream', function (t) {
 
     tr.pipe(
       concat(function (buf) {
-        st.equal(
+        assert.equal(
           String(buf),
           '<p>alphabravocharlie</p>',
           'should pipe the processed result'
         )
       })
     ).on('error', function () {
-      st.fail('should not trigger `error`')
+      assert.fail('should not trigger `error`')
     })
 
     tr.write('alpha')
     tr.write('bravo')
     tr.end('charlie')
   })
-
-  t.end()
 })

@@ -1,12 +1,13 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {splice} from 'micromark-util-chunked'
-import test from 'tape'
 
-test('splice', function (t) {
+test('splice', function () {
   /** @type {Array<number>} */
   let list = []
   const lots = [...Array.from({length: 140_000}).keys()]
 
-  t.throws(
+  assert.throws(
     () => list.splice(0, 0, ...lots),
     'baseline: `[].slice` should crash on lots of items'
   )
@@ -15,7 +16,7 @@ test('splice', function (t) {
 
   splice(list, 0, 0, [])
 
-  t.deepEqual(
+  assert.deepEqual(
     list,
     [5, 4, 3, 2, 1],
     'should not mutate the array for no deletes, no inserts'
@@ -25,13 +26,17 @@ test('splice', function (t) {
 
   splice(list, 1, 2, [9, 99, 999])
 
-  t.deepEqual(list, [5, 9, 99, 999, 2, 1], 'should mutatefor deletes, inserts')
+  assert.deepEqual(
+    list,
+    [5, 9, 99, 999, 2, 1],
+    'should mutatefor deletes, inserts'
+  )
 
   list = [5, 4, 3, 2, 1]
 
   splice(list, -3, 2, [9, 99, 999])
 
-  t.deepEqual(
+  assert.deepEqual(
     list,
     [5, 4, 9, 99, 999, 1],
     'should mutate the list w/ a negative start'
@@ -39,7 +44,7 @@ test('splice', function (t) {
 
   splice(list, 100, 3, [10, 11, 12])
 
-  t.deepEqual(
+  assert.deepEqual(
     list,
     [5, 4, 9, 99, 999, 1, 10, 11, 12],
     'should delete items for a too big start'
@@ -47,7 +52,7 @@ test('splice', function (t) {
 
   splice(list, -100, 3, [6])
 
-  t.deepEqual(
+  assert.deepEqual(
     list,
     [6, 99, 999, 1, 10, 11, 12],
     'should delete items w/ a negative start'
@@ -57,7 +62,7 @@ test('splice', function (t) {
 
   splice(list, 1, 0, lots)
 
-  t.deepEqual(
+  assert.deepEqual(
     list,
     [42, ...lots, 10, 11, 12, 13, 43],
     'should handle lots of inserts just fine'
@@ -67,11 +72,9 @@ test('splice', function (t) {
 
   splice(list, 1, 4, lots)
 
-  t.deepEqual(
+  assert.deepEqual(
     list,
     [42, ...lots, 43],
     'should remove and still handle lots of inserts just fine'
   )
-
-  t.end()
 })

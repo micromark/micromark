@@ -1,10 +1,11 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {parse} from 'micromark/lib/parse'
 import {postprocess} from 'micromark/lib/postprocess'
 import {preprocess} from 'micromark/lib/preprocess'
-import test from 'tape'
 
-test('sliceSerialize', (t) => {
-  t.deepEqual(
+test('sliceSerialize', () => {
+  assert.deepEqual(
     parseAndSlice('Heading\n======='),
     [
       ['enter', 'setextHeading', 'Heading\n======='],
@@ -24,7 +25,7 @@ test('sliceSerialize', (t) => {
   )
 
   // This used to crash: <https://github.com/micromark/micromark/issues/131>.
-  t.deepEqual(
+  assert.deepEqual(
     parseAndSlice('\nHeading\n======='),
     [
       ['enter', 'lineEndingBlank', '\n'],
@@ -44,8 +45,6 @@ test('sliceSerialize', (t) => {
     ],
     'should support `sliceSerialize` on a setext heading (#2)'
   )
-
-  t.end()
 })
 
 /**

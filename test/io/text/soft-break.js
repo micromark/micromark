@@ -1,18 +1,17 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {micromark} from 'micromark'
-import test from 'tape'
 
-test('soft-break', function (t) {
-  t.equal(
+test('soft-break', function () {
+  assert.equal(
     micromark('foo\nbaz'),
     '<p>foo\nbaz</p>',
     'should support line endings'
   )
 
-  t.equal(
+  assert.equal(
     micromark('foo \n baz'),
     '<p>foo\nbaz</p>',
     'should trim spaces around line endings'
   )
-
-  t.end()
 })

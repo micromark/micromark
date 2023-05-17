@@ -1,34 +1,33 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {characterEntities} from 'character-entities'
 import {htmlRawNames} from 'micromark-util-html-tag-name'
 import {constants} from 'micromark-util-symbol/constants.js'
-import test from 'tape'
 
-test('constants', function (t) {
-  t.equal(
+test('constants', function () {
+  assert.equal(
     constants.characterReferenceDecimalSizeMax,
     (0x10_ff_ff).toString(10).length,
     '`characterReferenceDecimalSizeMax`'
   )
 
-  t.equal(
+  assert.equal(
     constants.characterReferenceHexadecimalSizeMax,
     (0x10_ff_ff).toString(16).length,
     '`characterReferenceHexadecimalSizeMax`'
   )
 
-  t.equal(
+  assert.equal(
     constants.characterReferenceNamedSizeMax,
     longest(Object.keys(characterEntities)).length,
     '`characterReferenceNamedSizeMax`'
   )
 
-  t.equal(
+  assert.equal(
     constants.htmlRawSizeMax,
     longest(htmlRawNames).length,
     '`htmlRawSizeMax`'
   )
-
-  t.end()
 })
 
 /**

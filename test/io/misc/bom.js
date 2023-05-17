@@ -1,54 +1,57 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {Buffer} from 'node:buffer'
 import concat from 'concat-stream'
 import {micromark} from 'micromark'
 import {stream} from 'micromark/stream.js'
-import test from 'tape'
 import {slowStream} from '../../util/slow-stream.js'
 
-test('bom (byte order marker)', function (t) {
-  t.equal(micromark('\uFEFF'), '', 'should ignore just a bom')
+test('bom (byte order marker)', async function () {
+  assert.equal(micromark('\uFEFF'), '', 'should ignore just a bom')
 
-  t.equal(
+  assert.equal(
     micromark('\uFEFF# hea\uFEFFding'),
     '<h1>hea\uFEFFding</h1>',
     'should ignore a bom'
   )
 
-  t.equal(
+  assert.equal(
     micromark(Buffer.from('\uFEFF')),
     '',
     'should ignore just a bom (buffer)'
   )
 
-  t.equal(
+  assert.equal(
     micromark(Buffer.from('\uFEFF# hea\uFEFFding')),
     '<h1>hea\uFEFFding</h1>',
     'should ignore a bom (buffer)'
   )
 
-  t.test('should ignore a bom (stream)', function (t) {
-    t.plan(1)
-
+  await new Promise(function (resolve) {
     slowStream('\uFEFF# hea\uFEFFding')
       .pipe(stream())
       .pipe(
         concat((result) => {
-          t.equal(result, '<h1>hea\uFEFFding</h1>', 'pass')
+          assert.equal(
+            result,
+            '<h1>hea\uFEFFding</h1>',
+            'should ignore a bom (stream)'
+          )
+
+          resolve(undefined)
         })
       )
   })
 
-  t.test('should ignore just a bom (stream)', function (t) {
-    t.plan(1)
-
+  await new Promise(function (resolve) {
     slowStream('\uFEFF')
       .pipe(stream())
       .pipe(
         concat((result) => {
-          t.equal(result, '', 'pass')
+          assert.equal(result, '', 'should ignore just a bom (stream)')
+
+          resolve(undefined)
         })
       )
   })
-
-  t.end()
 })

@@ -7,13 +7,14 @@
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  */
 
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import concat from 'concat-stream'
 import {micromark} from 'micromark'
 import {stream} from 'micromark/stream.js'
-import test from 'tape'
 import {slowStream} from './util/slow-stream.js'
 
-test('syntax extension', function (t) {
+test('syntax extension', function () {
   /** @type {Extension} */
   const syntax = {
     // An unknown key is treated as an existing key, potentially useful for
@@ -29,29 +30,33 @@ test('syntax extension', function (t) {
     }
   }
 
-  t.deepEqual(micromark('///'), '<p>///</p>', 'baseline (slash)')
-  t.deepEqual(micromark('<<<'), '<p>&lt;&lt;&lt;</p>', 'baseline (less than)')
+  assert.deepEqual(micromark('///'), '<p>///</p>', 'baseline (slash)')
+  assert.deepEqual(
+    micromark('<<<'),
+    '<p>&lt;&lt;&lt;</p>',
+    'baseline (less than)'
+  )
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('///', {extensions: [syntax]}),
     '<hr />',
     'should support syntax extensions (slash)'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('<<<', {extensions: [syntax]}),
     '<hr />',
     'should support syntax extensions for an existing hook (less than)'
   )
 
-  t.deepEqual(micromark('///'), '<p>///</p>', 'should not taint (slash)')
-  t.deepEqual(
+  assert.deepEqual(micromark('///'), '<p>///</p>', 'should not taint (slash)')
+  assert.deepEqual(
     micromark('<<<'),
     '<p>&lt;&lt;&lt;</p>',
     'should not taint (less than)'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('a <i> b, 1 < 3', {
       allowDangerousHtml: true,
       extensions: [{text: {60: {tokenize: tokenizeJustALessThan}}}]
@@ -60,7 +65,7 @@ test('syntax extension', function (t) {
     'should precede over previously attached constructs by default'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('a <i> b, 1 < 3', {
       allowDangerousHtml: true,
       extensions: [
@@ -70,11 +75,9 @@ test('syntax extension', function (t) {
     '<p>a <i> b, 1  3</p>',
     'should go after previously attached constructs w/ `add: after`'
   )
-
-  t.end()
 })
 
-test('html extension', function (t) {
+test('html extension', async function (t) {
   const syntax = {flow: {47: {tokenize: tokenizeCommentLine}}}
   const html = {
     // An unknown key is treated as an existing key, probably never useful, but
@@ -84,21 +87,21 @@ test('html extension', function (t) {
     exit: {commentLine: exitComment}
   }
 
-  t.deepEqual(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>', 'baseline')
+  assert.deepEqual(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>', 'baseline')
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('// a\n//\rb', {extensions: [syntax], htmlExtensions: [html]}),
     '<p>b</p>',
     'should support html extensions'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('// a\n//\rb'),
     '<p>// a\n//\rb</p>',
     'should not taint'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('!', {
       htmlExtensions: [
         /** @type {import('micromark-util-types').NormalizedHtmlExtension} */
@@ -109,7 +112,7 @@ test('html extension', function (t) {
     'should support html extensions for documents'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     micromark('', {
       htmlExtensions: [
         /** @type {import('micromark-util-types').NormalizedHtmlExtension} */
@@ -120,19 +123,18 @@ test('html extension', function (t) {
     'should support html extensions for empty documents'
   )
 
-  t.test('stream', function (t) {
-    t.plan(1)
-
-    slowStream('// a\r\nb')
-      .pipe(stream({extensions: [syntax], htmlExtensions: [html]}))
-      .pipe(
-        concat(function (result) {
-          t.equal(result, '<p>b</p>', 'pass')
-        })
-      )
+  await t.test('stream', function () {
+    return new Promise((resolve) => {
+      slowStream('// a\r\nb')
+        .pipe(stream({extensions: [syntax], htmlExtensions: [html]}))
+        .pipe(
+          concat(function (result) {
+            assert.equal(result, '<p>b</p>', 'pass')
+            resolve(undefined)
+          })
+        )
+    })
   })
-
-  t.end()
 })
 
 /**

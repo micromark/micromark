@@ -1,6 +1,7 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {commonmark} from 'commonmark.json'
 import {micromark} from 'micromark'
-import test from 'tape'
 
 const hasOwnProperty = {}.hasOwnProperty
 
@@ -24,7 +25,7 @@ while (++index < commonmark.length) {
   list.push({input: d.markdown, output: d.html})
 }
 
-test('commonmark', function (t) {
+test('commonmark', function () {
   /** @type {string} */
   let key
 
@@ -32,16 +33,13 @@ test('commonmark', function (t) {
     if (!hasOwnProperty.call(sections, key)) continue
 
     const section = sections[key]
-    t.test(key, function (t) {
-      let index = -1
+    let index = -1
 
-      while (++index < section.length) {
-        t.equal(micromark(section[index].input, options), section[index].output)
-      }
-
-      t.end()
-    })
+    while (++index < section.length) {
+      assert.equal(
+        micromark(section[index].input, options),
+        section[index].output
+      )
+    }
   }
-
-  t.end()
 })
