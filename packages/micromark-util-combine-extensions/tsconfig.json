@@ -1,4 +1,7 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["*.js"]
+  "references": [
+    {"path": "../micromark-util-chunked/"},
+    {"path": "../micromark-util-types/"}
+  ]
 }

@@ -1,5 +1,10 @@
 import {nodeResolve} from '@rollup/plugin-node-resolve'
-import terser from '@rollup/plugin-terser'
+import terser_ from '@rollup/plugin-terser'
+
+// Note: `terser` is typed incorrectly.
+const terser = /** @type {import('@rollup/plugin-terser')['default']} */ (
+  /** @type {unknown} */ (terser_)
+)
 
 const configs = [
   {

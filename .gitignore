@@ -1,9 +1,7 @@
-.nyc_output/
 coverage/
-dist/
 node_modules/
-test/fixtures/
 *.log
+*.d.ts
 .DS_Store
 micromark.min.js
 yarn.lock
@@ -26,7 +24,5 @@ packages/micromark-util-decode-string/index.js
 packages/micromark-util-normalize-identifier/index.js
 packages/micromark-util-sanitize-uri/index.js
 packages/micromark-util-subtokenize/index.js
-packages/**/*.d.ts
-script/**/*.d.ts
-test/**/*.d.ts
+test/fixtures/
 test/fuzz-bundle.cjs

@@ -47,7 +47,7 @@
     "micromark-util-types": "^1.0.0"
   },
   "scripts": {
-    "build": "rimraf \"*.d.ts\" \"{dev/,lib/}**/*.d.ts\" && tsc && micromark-build && type-coverage"
+    "build": "micromark-build"
   },
   "xo": false,
   "typeCoverage": {

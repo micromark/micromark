@@ -37,9 +37,7 @@
   "dependencies": {
     "micromark-util-types": "^1.0.0"
   },
-  "scripts": {
-    "build": "rimraf \"*.d.ts\" && tsc && type-coverage"
-  },
+  "scripts": {},
   "xo": false,
   "typeCoverage": {
     "atLeast": 100,

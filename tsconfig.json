@@ -1,13 +1,41 @@
 {
-  "include": ["script/**/*.js", "test/**/*.js"],
   "compilerOptions": {
-    "target": "es2021",
-    "lib": ["es2021"],
-    "module": "node16",
     "checkJs": true,
+    "customConditions": ["development"],
     "declaration": true,
     "emitDeclarationOnly": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2020"],
+    "module": "node16",
+    "newLine": "lf",
+    "skipLibCheck": true,
     "strict": true,
-    "exactOptionalPropertyTypes": true
-  }
+    "target": "es2020"
+  },
+  "include": ["**/*.js"],
+  "exclude": [
+    "**/coverage/",
+    "**/node_modules/",
+    "**/*.min.js",
+    "packages/micromark/lib/",
+    "packages/micromark/index.js",
+    "packages/micromark/stream.js",
+    "packages/micromark-core-commonmark/lib/",
+    "packages/micromark-core-commonmark/index.js",
+    "packages/micromark-factory-destination/index.js",
+    "packages/micromark-factory-label/index.js",
+    "packages/micromark-factory-space/index.js",
+    "packages/micromark-factory-title/index.js",
+    "packages/micromark-factory-whitespace/index.js",
+    "packages/micromark-util-character/lib/",
+    "packages/micromark-util-character/index.js",
+    "packages/micromark-util-chunked/index.js",
+    "packages/micromark-util-classify-character/index.js",
+    "packages/micromark-util-decode-numeric-character-reference/index.js",
+    "packages/micromark-util-decode-string/index.js",
+    "packages/micromark-util-normalize-identifier/index.js",
+    "packages/micromark-util-sanitize-uri/index.js",
+    "packages/micromark-util-subtokenize/index.js"
+  ]
 }

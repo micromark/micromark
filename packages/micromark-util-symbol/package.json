@@ -37,6 +37,7 @@
     "values.d.ts",
     "values.js"
   ],
+  "To do": "next major: remove `.js` suffixes",
   "exports": {
     "./codes": "./codes.js",
     "./codes.js": "./codes.js",
@@ -47,9 +48,7 @@
     "./values": "./values.js",
     "./values.js": "./values.js"
   },
-  "scripts": {
-    "build": "rimraf \"*.d.ts\" && tsc && type-coverage"
-  },
+  "scripts": {},
   "xo": false,
   "typeCoverage": {
     "atLeast": 100,

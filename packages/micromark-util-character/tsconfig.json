@@ -1,4 +1,7 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["dev/**/*.js"]
+  "references": [
+    {"path": "../micromark-util-symbol/"},
+    {"path": "../micromark-util-types/"}
+  ]
 }

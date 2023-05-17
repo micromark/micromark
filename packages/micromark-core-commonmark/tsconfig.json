@@ -1,4 +1,19 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["dev/**/*.js"]
+  "references": [
+    {"path": "../micromark-factory-destination/"},
+    {"path": "../micromark-factory-label/"},
+    {"path": "../micromark-factory-space/"},
+    {"path": "../micromark-factory-title/"},
+    {"path": "../micromark-factory-whitespace/"},
+    {"path": "../micromark-util-character/"},
+    {"path": "../micromark-util-chunked/"},
+    {"path": "../micromark-util-classify-character/"},
+    {"path": "../micromark-util-html-tag-name/"},
+    {"path": "../micromark-util-normalize-identifier/"},
+    {"path": "../micromark-util-resolve-all/"},
+    {"path": "../micromark-util-subtokenize/"},
+    {"path": "../micromark-util-symbol/"},
+    {"path": "../micromark-util-types/"}
+  ]
 }

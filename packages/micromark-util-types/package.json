@@ -35,8 +35,6 @@
     "index.js"
   ],
   "exports": "./index.js",
-  "scripts": {
-    "build": "rimraf \"*.d.ts\" && tsc"
-  },
+  "scripts": {},
   "xo": false
 }
