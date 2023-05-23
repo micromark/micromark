@@ -32,9 +32,9 @@ export const labelEnd = {
 /** @type {Construct} */
 const resourceConstruct = {tokenize: tokenizeResource}
 /** @type {Construct} */
-const fullReferenceConstruct = {tokenize: tokenizeFullReference}
+const referenceFullConstruct = {tokenize: tokenizeReferenceFull}
 /** @type {Construct} */
-const collapsedReferenceConstruct = {tokenize: tokenizeCollapsedReference}
+const referenceCollapsedConstruct = {tokenize: tokenizeReferenceCollapsed}
 
 /** @type {Resolver} */
 function resolveAllLabelEnd(events) {
@@ -212,12 +212,23 @@ function tokenizeLabelEnd(effects, ok, nok) {
   function start(code) {
     assert(code === codes.rightSquareBracket, 'expected `]`')
 
+    // If there is not an okay opening.
     if (!labelStart) {
       return nok(code)
     }
 
-    // It’s a balanced bracket, but contains a link.
-    if (labelStart._inactive) return balanced(code)
+    // If the corresponding label (link) start is marked as inactive,
+    // it means we’d be wrapping a link, like this:
+    //
+    // ```markdown
+    // > | a [b [c](d) e](f) g.
+    //                  ^
+    // ```
+    //
+    // We can’t have that, so it’s just balanced brackets.
+    if (labelStart._inactive) {
+      return labelEndNok(code)
+    }
 
     defined = self.parser.defined.includes(
       normalizeIdentifier(
@@ -229,7 +240,7 @@ function tokenizeLabelEnd(effects, ok, nok) {
     effects.consume(code)
     effects.exit(types.labelMarker)
     effects.exit(types.labelEnd)
-    return afterLabelEnd
+    return after
   }
 
   /**
@@ -248,29 +259,73 @@ function tokenizeLabelEnd(effects, ok, nok) {
    *
    * @type {State}
    */
-  function afterLabelEnd(code) {
+  function after(code) {
+    // Note: `markdown-rs` also parses GFM footnotes here, which for us is in
+    // an extension.
+
     // Resource (`[asd](fgh)`)?
     if (code === codes.leftParenthesis) {
       return effects.attempt(
         resourceConstruct,
-        ok,
-        defined ? ok : balanced
+        labelEndOk,
+        defined ? labelEndOk : labelEndNok
       )(code)
     }
 
     // Full (`[asd][fgh]`) or collapsed (`[asd][]`) reference?
     if (code === codes.leftSquareBracket) {
       return effects.attempt(
-        fullReferenceConstruct,
-        ok,
-        defined
-          ? effects.attempt(collapsedReferenceConstruct, ok, balanced)
-          : balanced
+        referenceFullConstruct,
+        labelEndOk,
+        defined ? referenceNotFull : labelEndNok
       )(code)
     }
 
     // Shortcut (`[asd]`) reference?
-    return defined ? ok(code) : balanced(code)
+    return defined ? labelEndOk(code) : labelEndNok(code)
+  }
+
+  /**
+   * After `]`, at `[`, but not at a full reference.
+   *
+   * > 👉 **Note**: we only get here if the label is defined.
+   *
+   * ```markdown
+   * > | [a][] b
+   *        ^
+   * > | [a] b
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
+  function referenceNotFull(code) {
+    return effects.attempt(
+      referenceCollapsedConstruct,
+      labelEndOk,
+      labelEndNok
+    )(code)
+  }
+
+  /**
+   * Done, we found something.
+   *
+   * ```markdown
+   * > | [a](b) c
+   *           ^
+   * > | [a][b] c
+   *           ^
+   * > | [a][] b
+   *          ^
+   * > | [a] b
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
+  function labelEndOk(code) {
+    // Note: `markdown-rs` does a bunch of stuff here.
+    return ok(code)
   }
 
   /**
@@ -289,7 +344,7 @@ function tokenizeLabelEnd(effects, ok, nok) {
    *
    * @type {State}
    */
-  function balanced(code) {
+  function labelEndNok(code) {
     labelStart._balanced = true
     return nok(code)
   }
@@ -300,10 +355,10 @@ function tokenizeLabelEnd(effects, ok, nok) {
  * @type {Tokenizer}
  */
 function tokenizeResource(effects, ok, nok) {
-  return start
+  return resourceStart
 
   /**
-   * Before a resource, at `(`.
+   * At a resource.
    *
    * ```markdown
    * > | [a](b) c
@@ -312,17 +367,17 @@ function tokenizeResource(effects, ok, nok) {
    *
    * @type {State}
    */
-  function start(code) {
+  function resourceStart(code) {
     assert(code === codes.leftParenthesis, 'expected left paren')
     effects.enter(types.resource)
     effects.enter(types.resourceMarker)
     effects.consume(code)
     effects.exit(types.resourceMarker)
-    return factoryWhitespace(effects, open)
+    return resourceBefore
   }
 
   /**
-   * At the start of a resource, after optional whitespace.
+   * In resource, after `(`, at optional whitespace.
    *
    * ```markdown
    * > | [a](b) c
@@ -331,15 +386,31 @@ function tokenizeResource(effects, ok, nok) {
    *
    * @type {State}
    */
-  function open(code) {
+  function resourceBefore(code) {
+    return markdownLineEndingOrSpace(code)
+      ? factoryWhitespace(effects, resourceOpen)(code)
+      : resourceOpen(code)
+  }
+
+  /**
+   * In resource, after optional whitespace, at `)` or a destination.
+   *
+   * ```markdown
+   * > | [a](b) c
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
+  function resourceOpen(code) {
     if (code === codes.rightParenthesis) {
-      return end(code)
+      return resourceEnd(code)
     }
 
     return factoryDestination(
       effects,
-      destinationAfter,
-      nok,
+      resourceDestinationAfter,
+      resourceDestinationMissing,
       types.resourceDestination,
       types.resourceDestinationLiteral,
       types.resourceDestinationLiteralMarker,
@@ -350,7 +421,7 @@ function tokenizeResource(effects, ok, nok) {
   }
 
   /**
-   * In a resource, after a destination, before optional whitespace.
+   * In resource, after destination, at optional whitespace.
    *
    * ```markdown
    * > | [a](b) c
@@ -359,14 +430,28 @@ function tokenizeResource(effects, ok, nok) {
    *
    * @type {State}
    */
-  function destinationAfter(code) {
+  function resourceDestinationAfter(code) {
     return markdownLineEndingOrSpace(code)
-      ? factoryWhitespace(effects, between)(code)
-      : end(code)
+      ? factoryWhitespace(effects, resourceBetween)(code)
+      : resourceEnd(code)
   }
 
   /**
-   * In a resource, after a destination, after whitespace.
+   * At invalid destination.
+   *
+   * ```markdown
+   * > | [a](<<) b
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
+  function resourceDestinationMissing(code) {
+    return nok(code)
+  }
+
+  /**
+   * In resource, after destination and whitespace, at `(` or title.
    *
    * ```markdown
    * > | [a](b ) c
@@ -375,7 +460,7 @@ function tokenizeResource(effects, ok, nok) {
    *
    * @type {State}
    */
-  function between(code) {
+  function resourceBetween(code) {
     if (
       code === codes.quotationMark ||
       code === codes.apostrophe ||
@@ -383,7 +468,7 @@ function tokenizeResource(effects, ok, nok) {
     ) {
       return factoryTitle(
         effects,
-        factoryWhitespace(effects, end),
+        resourceTitleAfter,
         nok,
         types.resourceTitle,
         types.resourceTitleMarker,
@@ -391,11 +476,27 @@ function tokenizeResource(effects, ok, nok) {
       )(code)
     }
 
-    return end(code)
+    return resourceEnd(code)
   }
 
   /**
-   * In a resource, at the `)`.
+   * In resource, after title, at optional whitespace.
+   *
+   * ```markdown
+   * > | [a](b "c") d
+   *              ^
+   * ```
+   *
+   * @type {State}
+   */
+  function resourceTitleAfter(code) {
+    return markdownLineEndingOrSpace(code)
+      ? factoryWhitespace(effects, resourceEnd)(code)
+      : resourceEnd(code)
+  }
+
+  /**
+   * In resource, at `)`.
    *
    * ```markdown
    * > | [a](b) d
@@ -404,7 +505,7 @@ function tokenizeResource(effects, ok, nok) {
    *
    * @type {State}
    */
-  function end(code) {
+  function resourceEnd(code) {
     if (code === codes.rightParenthesis) {
       effects.enter(types.resourceMarker)
       effects.consume(code)
@@ -421,10 +522,10 @@ function tokenizeResource(effects, ok, nok) {
  * @this {TokenizeContext}
  * @type {Tokenizer}
  */
-function tokenizeFullReference(effects, ok, nok) {
+function tokenizeReferenceFull(effects, ok, nok) {
   const self = this
 
-  return start
+  return referenceFull
 
   /**
    * In a reference (full), at the `[`.
@@ -436,13 +537,13 @@ function tokenizeFullReference(effects, ok, nok) {
    *
    * @type {State}
    */
-  function start(code) {
+  function referenceFull(code) {
     assert(code === codes.leftSquareBracket, 'expected left bracket')
     return factoryLabel.call(
       self,
       effects,
-      afterLabel,
-      nok,
+      referenceFullAfter,
+      referenceFullMissing,
       types.reference,
       types.referenceMarker,
       types.referenceString
@@ -459,7 +560,7 @@ function tokenizeFullReference(effects, ok, nok) {
    *
    * @type {State}
    */
-  function afterLabel(code) {
+  function referenceFullAfter(code) {
     return self.parser.defined.includes(
       normalizeIdentifier(
         self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1)
@@ -468,17 +569,31 @@ function tokenizeFullReference(effects, ok, nok) {
       ? ok(code)
       : nok(code)
   }
+
+  /**
+   * In reference (full) that was missing.
+   *
+   * ```markdown
+   * > | [a][b d
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
+  function referenceFullMissing(code) {
+    return nok(code)
+  }
 }
 
 /**
  * @this {TokenizeContext}
  * @type {Tokenizer}
  */
-function tokenizeCollapsedReference(effects, ok, nok) {
-  return start
+function tokenizeReferenceCollapsed(effects, ok, nok) {
+  return referenceCollapsedStart
 
   /**
-   * In a reference (collapsed), at the `[`.
+   * In reference (collapsed), at `[`.
    *
    * > 👉 **Note**: we only get here if the label is defined.
    *
@@ -489,17 +604,18 @@ function tokenizeCollapsedReference(effects, ok, nok) {
    *
    * @type {State}
    */
-  function start(code) {
+  function referenceCollapsedStart(code) {
+    // We only attempt a collapsed label if there’s a `[`.
     assert(code === codes.leftSquareBracket, 'expected left bracket')
     effects.enter(types.reference)
     effects.enter(types.referenceMarker)
     effects.consume(code)
     effects.exit(types.referenceMarker)
-    return open
+    return referenceCollapsedOpen
   }
 
   /**
-   * In a reference (collapsed), at the `]`.
+   * In reference (collapsed), at `]`.
    *
    * > 👉 **Note**: we only get here if the label is defined.
    *
@@ -510,7 +626,7 @@ function tokenizeCollapsedReference(effects, ok, nok) {
    *
    *  @type {State}
    */
-  function open(code) {
+  function referenceCollapsedOpen(code) {
     if (code === codes.rightSquareBracket) {
       effects.enter(types.referenceMarker)
       effects.consume(code)

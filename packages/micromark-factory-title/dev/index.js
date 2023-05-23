@@ -9,7 +9,6 @@ import {markdownLineEnding} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 import {types} from 'micromark-util-symbol/types.js'
-import {ok as assert} from 'uvu/assert'
 
 /**
  * @param {Effects} effects
@@ -27,24 +26,46 @@ export function factoryTitle(effects, ok, nok, type, markerType, stringType) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of title.
+   *
+   * ```markdown
+   * > | "a"
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
-    assert(
+    if (
       code === codes.quotationMark ||
-        code === codes.apostrophe ||
-        code === codes.leftParenthesis,
-      'expected `"`, `\'`, or `(`'
-    )
-    effects.enter(type)
-    effects.enter(markerType)
-    effects.consume(code)
-    effects.exit(markerType)
-    marker = code === codes.leftParenthesis ? codes.rightParenthesis : code
-    return atFirstTitleBreak
+      code === codes.apostrophe ||
+      code === codes.leftParenthesis
+    ) {
+      effects.enter(type)
+      effects.enter(markerType)
+      effects.consume(code)
+      effects.exit(markerType)
+      marker = code === codes.leftParenthesis ? codes.rightParenthesis : code
+      return begin
+    }
+
+    return nok(code)
   }
 
-  /** @type {State} */
-  function atFirstTitleBreak(code) {
+  /**
+   * After opening marker.
+   *
+   * This is also used at the closing marker.
+   *
+   * ```markdown
+   * > | "a"
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
+  function begin(code) {
     if (code === marker) {
       effects.enter(markerType)
       effects.consume(code)
@@ -54,14 +75,23 @@ export function factoryTitle(effects, ok, nok, type, markerType, stringType) {
     }
 
     effects.enter(stringType)
-    return atTitleBreak(code)
+    return atBreak(code)
   }
 
-  /** @type {State} */
-  function atTitleBreak(code) {
+  /**
+   * At something, before something else.
+   *
+   * ```markdown
+   * > | "a"
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
+  function atBreak(code) {
     if (code === marker) {
       effects.exit(stringType)
-      return atFirstTitleBreak(marker)
+      return begin(marker)
     }
 
     if (code === codes.eof) {
@@ -70,34 +100,48 @@ export function factoryTitle(effects, ok, nok, type, markerType, stringType) {
 
     // Note: blank lines can’t exist in content.
     if (markdownLineEnding(code)) {
+      // To do: use `space_or_tab_eol_with_options`, connect.
       effects.enter(types.lineEnding)
       effects.consume(code)
       effects.exit(types.lineEnding)
-      return factorySpace(effects, atTitleBreak, types.linePrefix)
+      return factorySpace(effects, atBreak, types.linePrefix)
     }
 
     effects.enter(types.chunkString, {contentType: constants.contentTypeString})
-    return title(code)
+    return inside(code)
   }
 
-  /** @type {State} */
-  function title(code) {
+  /**
+   *
+   *
+   * @type {State}
+   */
+  function inside(code) {
     if (code === marker || code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.chunkString)
-      return atTitleBreak(code)
+      return atBreak(code)
     }
 
     effects.consume(code)
-    return code === codes.backslash ? titleEscape : title
+    return code === codes.backslash ? escape : inside
   }
 
-  /** @type {State} */
-  function titleEscape(code) {
+  /**
+   * After `\`, at a special character.
+   *
+   * ```markdown
+   * > | "a\*b"
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
+  function escape(code) {
     if (code === marker || code === codes.backslash) {
       effects.consume(code)
-      return title
+      return inside
     }
 
-    return title(code)
+    return inside(code)
   }
 }

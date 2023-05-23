@@ -8,3 +8,49 @@ Things to check:
   2. On a successful interrupt, close content and use the events from interrupting
 - [ ] Perf: more tests: <https://github.com/commonmark/commonmark.js/issues/129>
 - [ ] Tests: https://github.com/commonmark/commonmark.js/blob/master/test/regression.txt
+
+Go through:
+- Probably also update `micromark-extension-math`?
+- Probably also update `micromark-extension-directive`?
+
+Future:
+
+- Remove `code-text` resolver
+- Remove use of all resolvers except for “whole” resolvers
+- Remove support for passing events back from resolver
+- Add support for, in development mode, deprecation warnings
+- Change attention resolver completely
+- Change label resolvers, completely (to do: micromark-rs improvement first, if possible?)
+- Remove `to do: remove`s (e.g., end of `label-start-image` and `label-start-link` for `_hiddenFootnoteSupport`)
+
+Attachments:
+
+## Remove `code-text` resolver
+
+*   Remove `function resolveCodeText` in `code-text.js`
+*   Remove `if (code === codes.space) {` case from `between`
+*   Remove `code === codes.space` case from `data`
+*   Remove `codeTextPadding` from `types.js`
+*   Add `buffer()` at the end of `function onentercodetext` in `micromark/dev/lib/compile.js`
+*   Add the following at the start of `function onexitcodetext`:
+
+```js
+const result = resume()
+let trim = false
+let index = 0
+
+// Note: line endings have already been turned into spaces.
+if (
+  result.length > 2 &&
+  result.charCodeAt(index) === codes.space &&
+  result.charCodeAt(result.length - 1) === codes.space
+) {
+  while (++index < result.length - 1 && !trim) {
+    if (result.charCodeAt(index) !== codes.space) {
+        trim = true
+    }
+  }
+}
+
+raw(trim ? result.slice(1, -1) : result)
+```

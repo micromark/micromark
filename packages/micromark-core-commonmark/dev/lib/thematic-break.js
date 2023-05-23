@@ -30,43 +30,80 @@ function tokenizeThematicBreak(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of thematic break.
+   *
+   * ```markdown
+   * > | ***
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
+    effects.enter(types.thematicBreak)
+    // To do: parse indent like `markdown-rs`.
+    return before(code)
+  }
+
+  /**
+   * After optional whitespace, at marker.
+   *
+   * ```markdown
+   * > | ***
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function before(code) {
     assert(
       code === codes.asterisk ||
         code === codes.dash ||
         code === codes.underscore,
       'expected `*`, `-`, or `_`'
     )
-
-    effects.enter(types.thematicBreak)
     marker = code
     return atBreak(code)
   }
 
-  /** @type {State} */
+  /**
+   * After something, before something else.
+   *
+   * ```markdown
+   * > | ***
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function atBreak(code) {
     if (code === marker) {
       effects.enter(types.thematicBreakSequence)
       return sequence(code)
     }
 
-    if (markdownSpace(code)) {
-      return factorySpace(effects, atBreak, types.whitespace)(code)
-    }
-
     if (
-      size < constants.thematicBreakMarkerCountMin ||
-      (code !== codes.eof && !markdownLineEnding(code))
+      size >= constants.thematicBreakMarkerCountMin &&
+      (code === codes.eof || markdownLineEnding(code))
     ) {
-      return nok(code)
+      effects.exit(types.thematicBreak)
+      return ok(code)
     }
 
-    effects.exit(types.thematicBreak)
-    return ok(code)
+    return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * In sequence.
+   *
+   * ```markdown
+   * > | ***
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function sequence(code) {
     if (code === marker) {
       effects.consume(code)
@@ -75,6 +112,8 @@ function tokenizeThematicBreak(effects, ok, nok) {
     }
 
     effects.exit(types.thematicBreakSequence)
-    return atBreak(code)
+    return markdownSpace(code)
+      ? factorySpace(effects, atBreak, types.whitespace)(code)
+      : atBreak(code)
   }
 }

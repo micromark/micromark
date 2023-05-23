@@ -41,7 +41,18 @@ export function factoryDestination(
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of destination.
+   *
+   * ```markdown
+   * > | <aa>
+   *     ^
+   * > | aa
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     if (code === codes.lessThan) {
       effects.enter(type)
@@ -49,11 +60,13 @@ export function factoryDestination(
       effects.enter(literalMarkerType)
       effects.consume(code)
       effects.exit(literalMarkerType)
-      return destinationEnclosedBefore
+      return enclosedBefore
     }
 
+    // ASCII control, space, closing paren.
     if (
       code === codes.eof ||
+      code === codes.space ||
       code === codes.rightParenthesis ||
       asciiControl(code)
     ) {
@@ -64,11 +77,20 @@ export function factoryDestination(
     effects.enter(rawType)
     effects.enter(stringType)
     effects.enter(types.chunkString, {contentType: constants.contentTypeString})
-    return destinationRaw(code)
+    return raw(code)
   }
 
-  /** @type {State} */
-  function destinationEnclosedBefore(code) {
+  /**
+   * After `<`, at an enclosed destination.
+   *
+   * ```markdown
+   * > | <aa>
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
+  function enclosedBefore(code) {
     if (code === codes.greaterThan) {
       effects.enter(literalMarkerType)
       effects.consume(code)
@@ -80,15 +102,24 @@ export function factoryDestination(
 
     effects.enter(stringType)
     effects.enter(types.chunkString, {contentType: constants.contentTypeString})
-    return destinationEnclosed(code)
+    return enclosed(code)
   }
 
-  /** @type {State} */
-  function destinationEnclosed(code) {
+  /**
+   * In enclosed destination.
+   *
+   * ```markdown
+   * > | <aa>
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
+  function enclosed(code) {
     if (code === codes.greaterThan) {
       effects.exit(types.chunkString)
       effects.exit(stringType)
-      return destinationEnclosedBefore(code)
+      return enclosedBefore(code)
     }
 
     if (
@@ -100,48 +131,49 @@ export function factoryDestination(
     }
 
     effects.consume(code)
-    return code === codes.backslash
-      ? destinationEnclosedEscape
-      : destinationEnclosed
+    return code === codes.backslash ? enclosedEscape : enclosed
   }
 
-  /** @type {State} */
-  function destinationEnclosedEscape(code) {
+  /**
+   * After `\`, at a special character.
+   *
+   * ```markdown
+   * > | <a\*a>
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
+  function enclosedEscape(code) {
     if (
       code === codes.lessThan ||
       code === codes.greaterThan ||
       code === codes.backslash
     ) {
       effects.consume(code)
-      return destinationEnclosed
+      return enclosed
     }
 
-    return destinationEnclosed(code)
+    return enclosed(code)
   }
 
-  /** @type {State} */
-  function destinationRaw(code) {
-    if (code === codes.leftParenthesis) {
-      if (++balance > limit) return nok(code)
-      effects.consume(code)
-      return destinationRaw
-    }
-
-    if (code === codes.rightParenthesis) {
-      if (!balance--) {
-        effects.exit(types.chunkString)
-        effects.exit(stringType)
-        effects.exit(rawType)
-        effects.exit(type)
-        return ok(code)
-      }
-
-      effects.consume(code)
-      return destinationRaw
-    }
-
-    if (code === codes.eof || markdownLineEndingOrSpace(code)) {
-      if (balance) return nok(code)
+  /**
+   * In raw destination.
+   *
+   * ```markdown
+   * > | aa
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function raw(code) {
+    if (
+      !balance &&
+      (code === codes.eof ||
+        code === codes.rightParenthesis ||
+        markdownLineEndingOrSpace(code))
+    ) {
       effects.exit(types.chunkString)
       effects.exit(stringType)
       effects.exit(rawType)
@@ -149,22 +181,54 @@ export function factoryDestination(
       return ok(code)
     }
 
-    if (asciiControl(code)) return nok(code)
+    if (balance < limit && code === codes.leftParenthesis) {
+      effects.consume(code)
+      balance++
+      return raw
+    }
+
+    if (code === codes.rightParenthesis) {
+      effects.consume(code)
+      balance--
+      return raw
+    }
+
+    // ASCII control (but *not* `\0`) and space and `(`.
+    // Note: in `markdown-rs`, `\0` exists in codes, in `micromark-js` it
+    // doesn’t.
+    if (
+      code === codes.eof ||
+      code === codes.space ||
+      code === codes.leftParenthesis ||
+      asciiControl(code)
+    ) {
+      return nok(code)
+    }
+
     effects.consume(code)
-    return code === codes.backslash ? destinationRawEscape : destinationRaw
+    return code === codes.backslash ? rawEscape : raw
   }
 
-  /** @type {State} */
-  function destinationRawEscape(code) {
+  /**
+   * After `\`, at special character.
+   *
+   * ```markdown
+   * > | a\*a
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
+  function rawEscape(code) {
     if (
       code === codes.leftParenthesis ||
       code === codes.rightParenthesis ||
       code === codes.backslash
     ) {
       effects.consume(code)
-      return destinationRaw
+      return raw
     }
 
-    return destinationRaw(code)
+    return raw(code)
   }
 }

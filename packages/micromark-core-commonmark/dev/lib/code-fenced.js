@@ -7,14 +7,17 @@
  */
 
 import {factorySpace} from 'micromark-factory-space'
-import {
-  markdownLineEnding,
-  markdownLineEndingOrSpace
-} from 'micromark-util-character'
+import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 import {types} from 'micromark-util-symbol/types.js'
 import {ok as assert} from 'uvu/assert'
+
+/** @type {Construct} */
+const nonLazyContinuation = {
+  tokenize: tokenizeNonLazyContinuation,
+  partial: true
+}
 
 /** @type {Construct} */
 export const codeFenced = {
@@ -30,51 +33,109 @@ export const codeFenced = {
 function tokenizeCodeFenced(effects, ok, nok) {
   const self = this
   /** @type {Construct} */
-  const closingFenceConstruct = {tokenize: tokenizeClosingFence, partial: true}
-  /** @type {Construct} */
-  const nonLazyLine = {tokenize: tokenizeNonLazyLine, partial: true}
-  const tail = this.events[this.events.length - 1]
-  const initialPrefix =
-    tail && tail[1].type === types.linePrefix
-      ? tail[2].sliceSerialize(tail[1], true).length
-      : 0
+  const closeStart = {tokenize: tokenizeCloseStart, partial: true}
+  let initialPrefix = 0
   let sizeOpen = 0
   /** @type {NonNullable<Code>} */
   let marker
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of code.
+   *
+   * ```markdown
+   * > | ~~~js
+   *     ^
+   *   | alert(1)
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
+    // To do: parse whitespace like `markdown-rs`.
+    return beforeSequenceOpen(code)
+  }
+
+  /**
+   * In opening fence, after prefix, at sequence.
+   *
+   * ```markdown
+   * > | ~~~js
+   *     ^
+   *   | alert(1)
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
+  function beforeSequenceOpen(code) {
     assert(
       code === codes.graveAccent || code === codes.tilde,
       'expected `` ` `` or `~`'
     )
+
+    const tail = self.events[self.events.length - 1]
+    initialPrefix =
+      tail && tail[1].type === types.linePrefix
+        ? tail[2].sliceSerialize(tail[1], true).length
+        : 0
+
+    marker = code
     effects.enter(types.codeFenced)
     effects.enter(types.codeFencedFence)
     effects.enter(types.codeFencedFenceSequence)
-    marker = code
     return sequenceOpen(code)
   }
 
-  /** @type {State} */
+  /**
+   * In opening fence sequence.
+   *
+   * ```markdown
+   * > | ~~~js
+   *      ^
+   *   | alert(1)
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
   function sequenceOpen(code) {
     if (code === marker) {
-      effects.consume(code)
       sizeOpen++
+      effects.consume(code)
       return sequenceOpen
     }
 
+    if (sizeOpen < constants.codeFencedSequenceSizeMin) {
+      return nok(code)
+    }
+
     effects.exit(types.codeFencedFenceSequence)
-    return sizeOpen < constants.codeFencedSequenceSizeMin
-      ? nok(code)
-      : factorySpace(effects, infoOpen, types.whitespace)(code)
+    return markdownSpace(code)
+      ? factorySpace(effects, infoBefore, types.whitespace)(code)
+      : infoBefore(code)
   }
 
-  /** @type {State} */
-  function infoOpen(code) {
+  /**
+   * In opening fence, after the sequence (and optional whitespace), before info.
+   *
+   * ```markdown
+   * > | ~~~js
+   *        ^
+   *   | alert(1)
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
+  function infoBefore(code) {
     if (code === codes.eof || markdownLineEnding(code)) {
-      return openAfter(code)
+      effects.exit(types.codeFencedFence)
+      return self.interrupt
+        ? ok(code)
+        : effects.check(nonLazyContinuation, atNonLazyBreak, after)(code)
     }
 
     effects.enter(types.codeFencedFenceInfo)
@@ -82,23 +143,54 @@ function tokenizeCodeFenced(effects, ok, nok) {
     return info(code)
   }
 
-  /** @type {State} */
+  /**
+   * In info.
+   *
+   * ```markdown
+   * > | ~~~js
+   *        ^
+   *   | alert(1)
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
   function info(code) {
-    if (code === codes.eof || markdownLineEndingOrSpace(code)) {
+    if (code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.chunkString)
       effects.exit(types.codeFencedFenceInfo)
-      return factorySpace(effects, infoAfter, types.whitespace)(code)
+      return infoBefore(code)
     }
 
-    if (code === codes.graveAccent && code === marker) return nok(code)
+    if (markdownSpace(code)) {
+      effects.exit(types.chunkString)
+      effects.exit(types.codeFencedFenceInfo)
+      return factorySpace(effects, metaBefore, types.whitespace)(code)
+    }
+
+    if (code === codes.graveAccent && code === marker) {
+      return nok(code)
+    }
+
     effects.consume(code)
     return info
   }
 
-  /** @type {State} */
-  function infoAfter(code) {
+  /**
+   * In opening fence, after info and whitespace, before meta.
+   *
+   * ```markdown
+   * > | ~~~js eval
+   *           ^
+   *   | alert(1)
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
+  function metaBefore(code) {
     if (code === codes.eof || markdownLineEnding(code)) {
-      return openAfter(code)
+      return infoBefore(code)
     }
 
     effects.enter(types.codeFencedFenceMeta)
@@ -106,66 +198,149 @@ function tokenizeCodeFenced(effects, ok, nok) {
     return meta(code)
   }
 
-  /** @type {State} */
+  /**
+   * In meta.
+   *
+   * ```markdown
+   * > | ~~~js eval
+   *           ^
+   *   | alert(1)
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
   function meta(code) {
     if (code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.chunkString)
       effects.exit(types.codeFencedFenceMeta)
-      return openAfter(code)
+      return infoBefore(code)
     }
 
-    if (code === codes.graveAccent && code === marker) return nok(code)
+    if (code === codes.graveAccent && code === marker) {
+      return nok(code)
+    }
+
     effects.consume(code)
     return meta
   }
 
-  /** @type {State} */
-  function openAfter(code) {
-    effects.exit(types.codeFencedFence)
-    return self.interrupt ? ok(code) : contentStart(code)
+  /**
+   * At eol/eof in code, before a non-lazy closing fence or content.
+   *
+   * ```markdown
+   * > | ~~~js
+   *          ^
+   * > | alert(1)
+   *             ^
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
+  function atNonLazyBreak(code) {
+    assert(markdownLineEnding(code), 'expected eol')
+    return effects.attempt(closeStart, after, contentBefore)(code)
   }
 
-  /** @type {State} */
-  function contentStart(code) {
-    if (code === codes.eof) {
-      return after(code)
-    }
+  /**
+   * Before code content, not a closing fence, at eol.
+   *
+   * ```markdown
+   *   | ~~~js
+   * > | alert(1)
+   *             ^
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
+  function contentBefore(code) {
+    assert(markdownLineEnding(code), 'expected eol')
+    effects.enter(types.lineEnding)
+    effects.consume(code)
+    effects.exit(types.lineEnding)
+    return contentStart
+  }
 
-    if (markdownLineEnding(code)) {
-      return effects.attempt(
-        nonLazyLine,
-        effects.attempt(
-          closingFenceConstruct,
-          after,
-          initialPrefix
-            ? factorySpace(
-                effects,
-                contentStart,
-                types.linePrefix,
-                initialPrefix + 1
-              )
-            : contentStart
-        ),
-        after
-      )(code)
+  /**
+   * Before code content, not a closing fence.
+   *
+   * ```markdown
+   *   | ~~~js
+   * > | alert(1)
+   *     ^
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
+  function contentStart(code) {
+    return initialPrefix > 0 && markdownSpace(code)
+      ? factorySpace(
+          effects,
+          beforeContentChunk,
+          types.linePrefix,
+          initialPrefix + 1
+        )(code)
+      : beforeContentChunk(code)
+  }
+
+  /**
+   * Before code content, after optional prefix.
+   *
+   * ```markdown
+   *   | ~~~js
+   * > | alert(1)
+   *     ^
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
+  function beforeContentChunk(code) {
+    if (code === codes.eof || markdownLineEnding(code)) {
+      return effects.check(nonLazyContinuation, atNonLazyBreak, after)(code)
     }
 
     effects.enter(types.codeFlowValue)
-    return contentContinue(code)
+    return contentChunk(code)
   }
 
-  /** @type {State} */
-  function contentContinue(code) {
+  /**
+   * In code content.
+   *
+   * ```markdown
+   *   | ~~~js
+   * > | alert(1)
+   *     ^^^^^^^^
+   *   | ~~~
+   * ```
+   *
+   * @type {State}
+   */
+  function contentChunk(code) {
     if (code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.codeFlowValue)
-      return contentStart(code)
+      return beforeContentChunk(code)
     }
 
     effects.consume(code)
-    return contentContinue
+    return contentChunk
   }
 
-  /** @type {State} */
+  /**
+   * After code.
+   *
+   * ```markdown
+   *   | ~~~js
+   *   | alert(1)
+   * > | ~~~
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function after(code) {
     effects.exit(types.codeFenced)
     return ok(code)
@@ -175,64 +350,114 @@ function tokenizeCodeFenced(effects, ok, nok) {
    * @this {TokenizeContext}
    * @type {Tokenizer}
    */
-  function tokenizeNonLazyLine(effects, ok, nok) {
-    const self = this
+  function tokenizeCloseStart(effects, ok, nok) {
+    let size = 0
 
-    return start
+    return startBefore
 
-    /** @type {State} */
-    function start(code) {
+    /**
+     *
+     *
+     * @type {State}
+     */
+    function startBefore(code) {
       assert(markdownLineEnding(code), 'expected eol')
       effects.enter(types.lineEnding)
       effects.consume(code)
       effects.exit(types.lineEnding)
-      return lineStart
+      return start
     }
 
-    /** @type {State} */
-    function lineStart(code) {
-      return self.parser.lazy[self.now().line] ? nok(code) : ok(code)
-    }
-  }
-
-  /**
-   * @this {TokenizeContext}
-   * @type {Tokenizer}
-   */
-  function tokenizeClosingFence(effects, ok, nok) {
-    let size = 0
-
-    return factorySpace(
-      effects,
-      closingSequenceStart,
-      types.linePrefix,
-      this.parser.constructs.disable.null.includes('codeIndented')
-        ? undefined
-        : constants.tabSize
-    )
-
-    /** @type {State} */
-    function closingSequenceStart(code) {
+    /**
+     * Before closing fence, at optional whitespace.
+     *
+     * ```markdown
+     *   | ~~~js
+     *   | alert(1)
+     * > | ~~~
+     *     ^
+     * ```
+     *
+     * @type {State}
+     */
+    function start(code) {
+      // To do: `enter` here or in next state?
       effects.enter(types.codeFencedFence)
-      effects.enter(types.codeFencedFenceSequence)
-      return closingSequence(code)
+      return markdownSpace(code)
+        ? factorySpace(
+            effects,
+            beforeSequenceClose,
+            types.linePrefix,
+            self.parser.constructs.disable.null.includes('codeIndented')
+              ? undefined
+              : constants.tabSize
+          )(code)
+        : beforeSequenceClose(code)
     }
 
-    /** @type {State} */
-    function closingSequence(code) {
+    /**
+     * In closing fence, after optional whitespace, at sequence.
+     *
+     * ```markdown
+     *   | ~~~js
+     *   | alert(1)
+     * > | ~~~
+     *     ^
+     * ```
+     *
+     * @type {State}
+     */
+    function beforeSequenceClose(code) {
       if (code === marker) {
-        effects.consume(code)
-        size++
-        return closingSequence
+        effects.enter(types.codeFencedFenceSequence)
+        return sequenceClose(code)
       }
 
-      if (size < sizeOpen) return nok(code)
-      effects.exit(types.codeFencedFenceSequence)
-      return factorySpace(effects, closingSequenceEnd, types.whitespace)(code)
+      return nok(code)
     }
 
-    /** @type {State} */
-    function closingSequenceEnd(code) {
+    /**
+     * In closing fence sequence.
+     *
+     * ```markdown
+     *   | ~~~js
+     *   | alert(1)
+     * > | ~~~
+     *     ^
+     * ```
+     *
+     * @type {State}
+     */
+    function sequenceClose(code) {
+      if (code === marker) {
+        size++
+        effects.consume(code)
+        return sequenceClose
+      }
+
+      if (size >= sizeOpen) {
+        effects.exit(types.codeFencedFenceSequence)
+        return markdownSpace(code)
+          ? factorySpace(effects, sequenceCloseAfter, types.whitespace)(code)
+          : sequenceCloseAfter(code)
+      }
+
+      return nok(code)
+    }
+
+    /**
+     * After closing fence sequence, after optional whitespace.
+     *
+     * ```markdown
+     *   | ~~~js
+     *   | alert(1)
+     * > | ~~~
+     *        ^
+     * ```
+     *
+     * @type {State}
+     */
+    function sequenceCloseAfter(code) {
       if (code === codes.eof || markdownLineEnding(code)) {
         effects.exit(types.codeFencedFence)
         return ok(code)
@@ -240,5 +465,41 @@ function tokenizeCodeFenced(effects, ok, nok) {
 
       return nok(code)
     }
+  }
+}
+
+/**
+ * @this {TokenizeContext}
+ * @type {Tokenizer}
+ */
+function tokenizeNonLazyContinuation(effects, ok, nok) {
+  const self = this
+
+  return start
+
+  /**
+   *
+   *
+   * @type {State}
+   */
+  function start(code) {
+    if (code === codes.eof) {
+      return nok(code)
+    }
+
+    assert(markdownLineEnding(code), 'expected eol')
+    effects.enter(types.lineEnding)
+    effects.consume(code)
+    effects.exit(types.lineEnding)
+    return lineStart
+  }
+
+  /**
+   *
+   *
+   * @type {State}
+   */
+  function lineStart(code) {
+    return self.parser.lazy[self.now().line] ? nok(code) : ok(code)
   }
 }

@@ -38,11 +38,11 @@ function tokenizeHardBreakEscape(effects, ok, nok) {
     assert(code === codes.backslash, 'expected `\\`')
     effects.enter(types.hardBreakEscape)
     effects.consume(code)
-    return open
+    return after
   }
 
   /**
-   * At the end of a hard break (escape), after `\`.
+   * After `\`, at eol.
    *
    * ```markdown
    * > | a\
@@ -52,7 +52,7 @@ function tokenizeHardBreakEscape(effects, ok, nok) {
    *
    *  @type {State}
    */
-  function open(code) {
+  function after(code) {
     if (markdownLineEnding(code)) {
       effects.exit(types.hardBreakEscape)
       return ok(code)

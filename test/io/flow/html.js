@@ -140,6 +140,18 @@ test('html', async function (t) {
     )
 
     assert.equal(
+      micromark('<textarea>\n# hi!\n</textarea>\n# ?', unsafe),
+      '<textarea>\n# hi!\n</textarea>\n<h1>?</h1>',
+      'should support a textarea'
+    )
+
+    assert.equal(
+      micromark('<textarea>\n# hi!\n</xxxxxxxxx>\n# ?', unsafe),
+      '<textarea>\n# hi!\n</xxxxxxxxx>\n# ?',
+      'should ignore long closing tags (coverage for max size)'
+    )
+
+    assert.equal(
       micromark('<script>a', unsafe),
       '<script>a',
       'should support other characters after a raw opening tag'

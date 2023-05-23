@@ -224,9 +224,9 @@ function tokenizeAttention(effects, ok) {
       code === codes.asterisk || code === codes.underscore,
       'expected asterisk or underscore'
     )
-    effects.enter('attentionSequence')
     marker = code
-    return sequence(code)
+    effects.enter('attentionSequence')
+    return inside(code)
   }
 
   /**
@@ -239,13 +239,15 @@ function tokenizeAttention(effects, ok) {
    *
    * @type {State}
    */
-  function sequence(code) {
+  function inside(code) {
     if (code === marker) {
       effects.consume(code)
-      return sequence
+      return inside
     }
 
     const token = effects.exit('attentionSequence')
+
+    // To do: next major: move this to resolver, just like `markdown-rs`.
     const after = classifyCharacter(code)
 
     const open =

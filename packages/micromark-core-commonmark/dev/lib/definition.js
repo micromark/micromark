@@ -12,7 +12,8 @@ import {factoryTitle} from 'micromark-factory-title'
 import {factoryWhitespace} from 'micromark-factory-whitespace'
 import {
   markdownLineEnding,
-  markdownLineEndingOrSpace
+  markdownLineEndingOrSpace,
+  markdownSpace
 } from 'micromark-util-character'
 import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
 import {codes} from 'micromark-util-symbol/codes.js'
@@ -23,7 +24,7 @@ import {ok as assert} from 'uvu/assert'
 export const definition = {name: 'definition', tokenize: tokenizeDefinition}
 
 /** @type {Construct} */
-const titleConstruct = {tokenize: tokenizeTitle, partial: true}
+const titleBefore = {tokenize: tokenizeTitleBefore, partial: true}
 
 /**
  * @this {TokenizeContext}
@@ -36,14 +37,42 @@ function tokenizeDefinition(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * At start of a definition.
+   *
+   * ```markdown
+   * > | [a]: b "c"
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
-    assert(code === codes.leftSquareBracket, 'expected `[`')
+    // Do not interrupt paragraphs (but do follow definitions).
+    // To do: do `interrupt` the way `markdown-rs` does.
+    // To do: parse whitespace the way `markdown-rs` does.
     effects.enter(types.definition)
+    return before(code)
+  }
+
+  /**
+   * After optional whitespace, at `[`.
+   *
+   * ```markdown
+   * > | [a]: b "c"
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function before(code) {
+    // To do: parse whitespace the way `markdown-rs` does.
+    assert(code === codes.leftSquareBracket, 'expected `[`')
     return factoryLabel.call(
       self,
       effects,
       labelAfter,
+      // Note: we don’t need to reset the way `markdown-rs` does.
       nok,
       types.definitionLabel,
       types.definitionLabelMarker,
@@ -51,7 +80,16 @@ function tokenizeDefinition(effects, ok, nok) {
     )(code)
   }
 
-  /** @type {State} */
+  /**
+   * After label.
+   *
+   * ```markdown
+   * > | [a]: b "c"
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function labelAfter(code) {
     identifier = normalizeIdentifier(
       self.sliceSerialize(self.events[self.events.length - 1][1]).slice(1, -1)
@@ -61,39 +99,109 @@ function tokenizeDefinition(effects, ok, nok) {
       effects.enter(types.definitionMarker)
       effects.consume(code)
       effects.exit(types.definitionMarker)
-
-      // Note: blank lines can’t exist in content.
-      return factoryWhitespace(
-        effects,
-        factoryDestination(
-          effects,
-          effects.attempt(
-            titleConstruct,
-            factorySpace(effects, after, types.whitespace),
-            factorySpace(effects, after, types.whitespace)
-          ),
-          nok,
-          types.definitionDestination,
-          types.definitionDestinationLiteral,
-          types.definitionDestinationLiteralMarker,
-          types.definitionDestinationRaw,
-          types.definitionDestinationString
-        )
-      )
+      return markerAfter
     }
 
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * After marker.
+   *
+   * ```markdown
+   * > | [a]: b "c"
+   *         ^
+   * ```
+   *
+   * @type {State}
+   */
+  function markerAfter(code) {
+    // Note: whitespace is optional.
+    return markdownLineEndingOrSpace(code)
+      ? factoryWhitespace(effects, destinationBefore)(code)
+      : destinationBefore(code)
+  }
+
+  /**
+   * Before destination.
+   *
+   * ```markdown
+   * > | [a]: b "c"
+   *          ^
+   * ```
+   *
+   * @type {State}
+   */
+  function destinationBefore(code) {
+    return factoryDestination(
+      effects,
+      destinationAfter,
+      // Note: we don’t need to reset the way `markdown-rs` does.
+      nok,
+      types.definitionDestination,
+      types.definitionDestinationLiteral,
+      types.definitionDestinationLiteralMarker,
+      types.definitionDestinationRaw,
+      types.definitionDestinationString
+    )(code)
+  }
+
+  /**
+   * After destination.
+   *
+   * ```markdown
+   * > | [a]: b "c"
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
+  function destinationAfter(code) {
+    return effects.attempt(titleBefore, after, after)(code)
+  }
+
+  /**
+   * After definition.
+   *
+   * ```markdown
+   * > | [a]: b
+   *           ^
+   * > | [a]: b "c"
+   *               ^
+   * ```
+   *
+   * @type {State}
+   */
   function after(code) {
+    return markdownSpace(code)
+      ? factorySpace(effects, afterWhitespace, types.whitespace)(code)
+      : afterWhitespace(code)
+  }
+
+  /**
+   * After definition, after optional whitespace.
+   *
+   * ```markdown
+   * > | [a]: b
+   *           ^
+   * > | [a]: b "c"
+   *               ^
+   * ```
+   *
+   * @type {State}
+   */
+  function afterWhitespace(code) {
     if (code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.definition)
 
-      if (!self.parser.defined.includes(identifier)) {
-        self.parser.defined.push(identifier)
-      }
+      // Note: we don’t care about uniqueness.
+      // It’s likely that that doesn’t happen very frequently.
+      // It is more likely that it wastes precious time.
+      self.parser.defined.push(identifier)
 
+      // To do: `markdown-rs` interrupt.
+      // // You’d be interrupting.
+      // tokenizer.interrupt = true
       return ok(code)
     }
 
@@ -105,38 +213,80 @@ function tokenizeDefinition(effects, ok, nok) {
  * @this {TokenizeContext}
  * @type {Tokenizer}
  */
-function tokenizeTitle(effects, ok, nok) {
-  return start
+function tokenizeTitleBefore(effects, ok, nok) {
+  return titleBefore
 
-  /** @type {State} */
-  function start(code) {
+  /**
+   * After destination, at whitespace.
+   *
+   * ```markdown
+   * > | [a]: b
+   *           ^
+   * > | [a]: b "c"
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
+  function titleBefore(code) {
     return markdownLineEndingOrSpace(code)
-      ? factoryWhitespace(effects, before)(code)
+      ? factoryWhitespace(effects, beforeMarker)(code)
       : nok(code)
   }
 
-  /** @type {State} */
-  function before(code) {
-    if (
-      code === codes.quotationMark ||
-      code === codes.apostrophe ||
-      code === codes.leftParenthesis
-    ) {
-      return factoryTitle(
-        effects,
-        factorySpace(effects, after, types.whitespace),
-        nok,
-        types.definitionTitle,
-        types.definitionTitleMarker,
-        types.definitionTitleString
-      )(code)
-    }
-
-    return nok(code)
+  /**
+   * At title.
+   *
+   * ```markdown
+   *   | [a]: b
+   * > | "c"
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function beforeMarker(code) {
+    return factoryTitle(
+      effects,
+      titleAfter,
+      nok,
+      types.definitionTitle,
+      types.definitionTitleMarker,
+      types.definitionTitleString
+    )(code)
   }
 
-  /** @type {State} */
-  function after(code) {
+  /**
+   * After title.
+   *
+   * ```markdown
+   * > | [a]: b "c"
+   *               ^
+   * ```
+   *
+   * @type {State}
+   */
+  function titleAfter(code) {
+    return markdownSpace(code)
+      ? factorySpace(
+          effects,
+          titleAfterOptionalWhitespace,
+          types.whitespace
+        )(code)
+      : titleAfterOptionalWhitespace(code)
+  }
+
+  /**
+   * After title, after optional whitespace.
+   *
+   * ```markdown
+   * > | [a]: b "c"
+   *               ^
+   * ```
+   *
+   * @type {State}
+   */
+  function titleAfterOptionalWhitespace(code) {
     return code === codes.eof || markdownLineEnding(code) ? ok(code) : nok(code)
   }
 }

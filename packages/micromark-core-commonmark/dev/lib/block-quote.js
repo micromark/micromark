@@ -30,7 +30,16 @@ function tokenizeBlockQuoteStart(effects, ok, nok) {
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of block quote.
+   *
+   * ```markdown
+   * > | > a
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     if (code === codes.greaterThan) {
       const state = self.containerState
@@ -52,7 +61,16 @@ function tokenizeBlockQuoteStart(effects, ok, nok) {
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * After `>`, before optional whitespace.
+   *
+   * ```markdown
+   * > | > a
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
   function after(code) {
     if (markdownSpace(code)) {
       effects.enter(types.blockQuotePrefixWhitespace)
@@ -68,18 +86,66 @@ function tokenizeBlockQuoteStart(effects, ok, nok) {
 }
 
 /**
+ * Start of block quote continuation.
+ *
+ * ```markdown
+ *   | > a
+ * > | > b
+ *     ^
+ * ```
+ *
  * @this {TokenizeContext}
  * @type {Tokenizer}
  */
 function tokenizeBlockQuoteContinuation(effects, ok, nok) {
-  return factorySpace(
-    effects,
-    effects.attempt(blockQuote, ok, nok),
-    types.linePrefix,
-    this.parser.constructs.disable.null.includes('codeIndented')
-      ? undefined
-      : constants.tabSize
-  )
+  const self = this
+
+  return contStart
+
+  /**
+   * Start of block quote continuation.
+   *
+   * Also used to parse the first block quote opening.
+   *
+   * ```markdown
+   *   | > a
+   * > | > b
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function contStart(code) {
+    if (markdownSpace(code)) {
+      return factorySpace(
+        effects,
+        contBefore,
+        types.linePrefix,
+        self.parser.constructs.disable.null.includes('codeIndented')
+          ? undefined
+          : constants.tabSize
+      )(code)
+    }
+
+    return contBefore(code)
+  }
+
+  /**
+   * At `>`, after optional whitespace.
+   *
+   * Also used to parse the first block quote opening.
+   *
+   * ```markdown
+   *   | > a
+   * > | > b
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function contBefore(code) {
+    return effects.attempt(blockQuote, ok, nok)(code)
+  }
 }
 
 /** @type {Exiter} */

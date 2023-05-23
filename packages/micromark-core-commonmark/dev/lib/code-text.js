@@ -21,6 +21,7 @@ export const codeText = {
   previous
 }
 
+// To do: next major: don’t resolve, like `markdown-rs`.
 /** @type {Resolver} */
 function resolveCodeText(events) {
   let tailExitIndex = events.length - 4
@@ -131,7 +132,7 @@ function tokenizeCodeText(effects, ok, nok) {
   }
 
   /**
-   * In the opening sequence.
+   * In opening sequence.
    *
    * ```markdown
    * > | `a`
@@ -152,7 +153,7 @@ function tokenizeCodeText(effects, ok, nok) {
   }
 
   /**
-   * Between something and something else
+   * Between something and something else.
    *
    * ```markdown
    * > | `a`
@@ -167,19 +168,21 @@ function tokenizeCodeText(effects, ok, nok) {
       return nok(code)
     }
 
-    // Closing fence? Could also be data.
-    if (code === codes.graveAccent) {
-      token = effects.enter(types.codeTextSequence)
-      size = 0
-      return sequenceClose(code)
-    }
-
+    // To do: next major: don’t do spaces in resolve, but when compiling,
+    // like `markdown-rs`.
     // Tabs don’t work, and virtual spaces don’t make sense.
     if (code === codes.space) {
       effects.enter('space')
       effects.consume(code)
       effects.exit('space')
       return between
+    }
+
+    // Closing fence? Could also be data.
+    if (code === codes.graveAccent) {
+      token = effects.enter(types.codeTextSequence)
+      size = 0
+      return sequenceClose(code)
     }
 
     if (markdownLineEnding(code)) {
@@ -220,7 +223,7 @@ function tokenizeCodeText(effects, ok, nok) {
   }
 
   /**
-   * In the closing sequence.
+   * In closing sequence.
    *
    * ```markdown
    * > | `a`

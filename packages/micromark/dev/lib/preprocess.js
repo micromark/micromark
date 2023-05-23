@@ -52,6 +52,7 @@ export function preprocess() {
     buffer = ''
 
     if (start) {
+      // To do: `markdown-rs` actually parses BOMs (byte order mark).
       if (value.charCodeAt(0) === codes.byteOrderMarker) {
         startPosition++
       }

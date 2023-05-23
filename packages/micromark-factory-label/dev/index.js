@@ -25,11 +25,20 @@ export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
   const self = this
   let size = 0
   /** @type {boolean} */
-  let data
+  let seen
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of label.
+   *
+   * ```markdown
+   * > | [a]
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.leftSquareBracket, 'expected `[`')
     effects.enter(type)
@@ -40,21 +49,30 @@ export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
     return atBreak
   }
 
-  /** @type {State} */
+  /**
+   * In label, at something, before something else.
+   *
+   * ```markdown
+   * > | [a]
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
   function atBreak(code) {
     if (
+      size > constants.linkReferenceSizeMax ||
       code === codes.eof ||
       code === codes.leftSquareBracket ||
-      (code === codes.rightSquareBracket && !data) ||
-      /* To do: remove in the future once we’ve switched from
-       * `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
-       * which doesn’t need this */
-      /* Hidden footnotes hook */
+      (code === codes.rightSquareBracket && !seen) ||
+      // To do: remove in the future once we’ve switched from
+      // `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
+      // which doesn’t need this.
+      // Hidden footnotes hook.
       /* c8 ignore next 3 */
       (code === codes.caret &&
         !size &&
-        '_hiddenFootnoteSupport' in self.parser.constructs) ||
-      size > constants.linkReferenceSizeMax
+        '_hiddenFootnoteSupport' in self.parser.constructs)
     ) {
       return nok(code)
     }
@@ -68,6 +86,7 @@ export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
       return ok
     }
 
+    // To do: indent? Link chunks and EOLs together?
     if (markdownLineEnding(code)) {
       effects.enter(types.lineEnding)
       effects.consume(code)
@@ -76,11 +95,20 @@ export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
     }
 
     effects.enter(types.chunkString, {contentType: constants.contentTypeString})
-    return label(code)
+    return labelInside(code)
   }
 
-  /** @type {State} */
-  function label(code) {
+  /**
+   * In label, in text.
+   *
+   * ```markdown
+   * > | [a]
+   *      ^
+   * ```
+   *
+   * @type {State}
+   */
+  function labelInside(code) {
     if (
       code === codes.eof ||
       code === codes.leftSquareBracket ||
@@ -93,11 +121,20 @@ export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
     }
 
     effects.consume(code)
-    data = data || !markdownSpace(code)
-    return code === codes.backslash ? labelEscape : label
+    if (!seen) seen = !markdownSpace(code)
+    return code === codes.backslash ? labelEscape : labelInside
   }
 
-  /** @type {State} */
+  /**
+   * After `\`, at a special character.
+   *
+   * ```markdown
+   * > | [a\*a]
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function labelEscape(code) {
     if (
       code === codes.leftSquareBracket ||
@@ -106,9 +143,9 @@ export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
     ) {
       effects.consume(code)
       size++
-      return label
+      return labelInside
     }
 
-    return label(code)
+    return labelInside(code)
   }
 }

@@ -24,7 +24,7 @@ export const autolink = {name: 'autolink', tokenize: tokenizeAutolink}
  * @type {Tokenizer}
  */
 function tokenizeAutolink(effects, ok, nok) {
-  let size = 1
+  let size = 0
 
   return start
 
@@ -51,7 +51,7 @@ function tokenizeAutolink(effects, ok, nok) {
   }
 
   /**
-   * After `<`, before the protocol.
+   * After `<`, at protocol or atext.
    *
    * ```markdown
    * > | a<https://example.com>b
@@ -72,7 +72,7 @@ function tokenizeAutolink(effects, ok, nok) {
   }
 
   /**
-   * After the first byte of the protocol or email name.
+   * At second byte of protocol or atext.
    *
    * ```markdown
    * > | a<https://example.com>b
@@ -84,16 +84,23 @@ function tokenizeAutolink(effects, ok, nok) {
    * @type {State}
    */
   function schemeOrEmailAtext(code) {
-    return code === codes.plusSign ||
+    // ASCII alphanumeric and `+`, `-`, and `.`.
+    if (
+      code === codes.plusSign ||
       code === codes.dash ||
       code === codes.dot ||
       asciiAlphanumeric(code)
-      ? schemeInsideOrEmailAtext(code)
-      : emailAtext(code)
+    ) {
+      // Count the previous alphabetical from `open` too.
+      size = 1
+      return schemeInsideOrEmailAtext(code)
+    }
+
+    return emailAtext(code)
   }
 
   /**
-   * Inside an ambiguous protocol or email name.
+   * In ambiguous protocol or atext.
    *
    * ```markdown
    * > | a<https://example.com>b
@@ -107,9 +114,11 @@ function tokenizeAutolink(effects, ok, nok) {
   function schemeInsideOrEmailAtext(code) {
     if (code === codes.colon) {
       effects.consume(code)
+      size = 0
       return urlInside
     }
 
+    // ASCII alphanumeric and `+`, `-`, and `.`.
     if (
       (code === codes.plusSign ||
         code === codes.dash ||
@@ -121,11 +130,12 @@ function tokenizeAutolink(effects, ok, nok) {
       return schemeInsideOrEmailAtext
     }
 
+    size = 0
     return emailAtext(code)
   }
 
   /**
-   * Inside a URL, after the protocol.
+   * After protocol, in URL.
    *
    * ```markdown
    * > | a<https://example.com>b
@@ -137,10 +147,14 @@ function tokenizeAutolink(effects, ok, nok) {
   function urlInside(code) {
     if (code === codes.greaterThan) {
       effects.exit(types.autolinkProtocol)
-      return end(code)
+      effects.enter(types.autolinkMarker)
+      effects.consume(code)
+      effects.exit(types.autolinkMarker)
+      effects.exit(types.autolink)
+      return ok
     }
 
-    // ASCII control or space.
+    // ASCII control, space, or `<`.
     if (
       code === codes.eof ||
       code === codes.space ||
@@ -155,7 +169,7 @@ function tokenizeAutolink(effects, ok, nok) {
   }
 
   /**
-   * Inside email atext.
+   * In email atext.
    *
    * ```markdown
    * > | a<user.name@example.com>b
@@ -167,7 +181,6 @@ function tokenizeAutolink(effects, ok, nok) {
   function emailAtext(code) {
     if (code === codes.atSign) {
       effects.consume(code)
-      size = 0
       return emailAtSignOrDot
     }
 
@@ -180,7 +193,7 @@ function tokenizeAutolink(effects, ok, nok) {
   }
 
   /**
-   * After an at-sign or a dot in the label.
+   * In label, after at-sign or dot.
    *
    * ```markdown
    * > | a<user.name@example.com>b
@@ -194,7 +207,7 @@ function tokenizeAutolink(effects, ok, nok) {
   }
 
   /**
-   * In the label, where `.` and `>` are allowed.
+   * In label, where `.` and `>` are allowed.
    *
    * ```markdown
    * > | a<user.name@example.com>b
@@ -213,16 +226,20 @@ function tokenizeAutolink(effects, ok, nok) {
     if (code === codes.greaterThan) {
       // Exit, then change the token type.
       effects.exit(types.autolinkProtocol).type = types.autolinkEmail
-      return end(code)
+      effects.enter(types.autolinkMarker)
+      effects.consume(code)
+      effects.exit(types.autolinkMarker)
+      effects.exit(types.autolink)
+      return ok
     }
 
     return emailValue(code)
   }
 
   /**
-   * In the label, where `.` and `>` are *not* allowed.
+   * In label, where `.` and `>` are *not* allowed.
    *
-   * Though, this is also used in `email_label` to parse other values.
+   * Though, this is also used in `emailLabel` to parse other values.
    *
    * ```markdown
    * > | a<user.name@ex-ample.com>b
@@ -232,35 +249,16 @@ function tokenizeAutolink(effects, ok, nok) {
    * @type {State}
    */
   function emailValue(code) {
+    // ASCII alphanumeric or `-`.
     if (
       (code === codes.dash || asciiAlphanumeric(code)) &&
       size++ < constants.autolinkDomainSizeMax
     ) {
+      const next = code === codes.dash ? emailValue : emailLabel
       effects.consume(code)
-      return code === codes.dash ? emailValue : emailLabel
+      return next
     }
 
     return nok(code)
-  }
-
-  /**
-   * At the `>`.
-   *
-   * ```markdown
-   * > | a<https://example.com>b
-   *                          ^
-   * > | a<user@example.com>b
-   *                       ^
-   * ```
-   *
-   * @type {State}
-   */
-  function end(code) {
-    assert(code === codes.greaterThan, 'expected `>`')
-    effects.enter(types.autolinkMarker)
-    effects.consume(code)
-    effects.exit(types.autolinkMarker)
-    effects.exit(types.autolink)
-    return ok
   }
 }

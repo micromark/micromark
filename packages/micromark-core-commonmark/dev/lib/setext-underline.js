@@ -8,7 +8,7 @@
  */
 
 import {factorySpace} from 'micromark-factory-space'
-import {markdownLineEnding} from 'micromark-util-character'
+import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
 import {ok as assert} from 'uvu/assert'
@@ -22,6 +22,7 @@ export const setextUnderline = {
 
 /** @type {Resolver} */
 function resolveToSetextUnderline(events, context) {
+  // To do: resolve like `markdown-rs`.
   let index = events.length
   /** @type {number | undefined} */
   let content
@@ -90,58 +91,109 @@ function resolveToSetextUnderline(events, context) {
  */
 function tokenizeSetextUnderline(effects, ok, nok) {
   const self = this
-  let index = self.events.length
   /** @type {NonNullable<Code>} */
   let marker
-  /** @type {boolean} */
-  let paragraph
-
-  // Find an opening.
-  while (index--) {
-    // Skip enter/exit of line ending, line prefix, and content.
-    // We can now either have a definition or a paragraph.
-    if (
-      self.events[index][1].type !== types.lineEnding &&
-      self.events[index][1].type !== types.linePrefix &&
-      self.events[index][1].type !== types.content
-    ) {
-      paragraph = self.events[index][1].type === types.paragraph
-      break
-    }
-  }
 
   return start
 
-  /** @type {State} */
+  /**
+   * At start of heading (setext) underline.
+   *
+   * ```markdown
+   *   | aa
+   * > | ==
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
+    let index = self.events.length
+    /** @type {boolean | undefined} */
+    let paragraph
+
     assert(
       code === codes.dash || code === codes.equalsTo,
       'expected `=` or `-`'
     )
 
+    // Find an opening.
+    while (index--) {
+      // Skip enter/exit of line ending, line prefix, and content.
+      // We can now either have a definition or a paragraph.
+      if (
+        self.events[index][1].type !== types.lineEnding &&
+        self.events[index][1].type !== types.linePrefix &&
+        self.events[index][1].type !== types.content
+      ) {
+        paragraph = self.events[index][1].type === types.paragraph
+        break
+      }
+    }
+
+    // To do: handle lazy/pierce like `markdown-rs`.
+    // To do: parse indent like `markdown-rs`.
     if (!self.parser.lazy[self.now().line] && (self.interrupt || paragraph)) {
       effects.enter(types.setextHeadingLine)
-      effects.enter(types.setextHeadingLineSequence)
       marker = code
-      return closingSequence(code)
+      return before(code)
     }
 
     return nok(code)
   }
 
-  /** @type {State} */
-  function closingSequence(code) {
+  /**
+   * After optional whitespace, at `-` or `=`.
+   *
+   * ```markdown
+   *   | aa
+   * > | ==
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function before(code) {
+    effects.enter(types.setextHeadingLineSequence)
+    return inside(code)
+  }
+
+  /**
+   * In sequence.
+   *
+   * ```markdown
+   *   | aa
+   * > | ==
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function inside(code) {
     if (code === marker) {
       effects.consume(code)
-      return closingSequence
+      return inside
     }
 
     effects.exit(types.setextHeadingLineSequence)
-    return factorySpace(effects, closingSequenceEnd, types.lineSuffix)(code)
+
+    return markdownSpace(code)
+      ? factorySpace(effects, after, types.lineSuffix)(code)
+      : after(code)
   }
 
-  /** @type {State} */
-  function closingSequenceEnd(code) {
+  /**
+   * After sequence, after optional whitespace.
+   *
+   * ```markdown
+   *   | aa
+   * > | ==
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
+  function after(code) {
     if (code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.setextHeadingLine)
       return ok(code)

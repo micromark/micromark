@@ -38,7 +38,7 @@ function tokenizeCharacterReference(effects, ok, nok) {
   return start
 
   /**
-   * Start of a character reference.
+   * Start of character reference.
    *
    * ```markdown
    * > | a&amp;b
@@ -49,7 +49,8 @@ function tokenizeCharacterReference(effects, ok, nok) {
    *      ^
    * ```
    *
-   * @type {State} */
+   * @type {State}
+   */
   function start(code) {
     assert(code === codes.ampersand, 'expected `&`')
     effects.enter(types.characterReference)
@@ -60,8 +61,9 @@ function tokenizeCharacterReference(effects, ok, nok) {
   }
 
   /**
-   * Inside a character reference, after `&`, before `#` for numeric references
-   * or an alphanumeric for named references.
+   * After `&`, at `#` for numeric references or alphanumeric for named
+   * references.
+   *
    * ```markdown
    * > | a&amp;b
    *       ^
@@ -71,7 +73,8 @@ function tokenizeCharacterReference(effects, ok, nok) {
    *       ^
    * ```
    *
-   * @type {State} */
+   * @type {State}
+   */
   function open(code) {
     if (code === codes.numberSign) {
       effects.enter(types.characterReferenceMarkerNumeric)
@@ -87,8 +90,8 @@ function tokenizeCharacterReference(effects, ok, nok) {
   }
 
   /**
-   * Inside a numeric character reference, right before `x` for hexadecimals,
-   * or a digit for decimals.
+   * After `#`, at `x` for hexadecimals or digit for decimals.
+   *
    * ```markdown
    * > | a&#123;b
    *        ^
@@ -96,7 +99,8 @@ function tokenizeCharacterReference(effects, ok, nok) {
    *        ^
    * ```
    *
-   * @type {State} */
+   * @type {State}
+   */
   function numeric(code) {
     if (code === codes.uppercaseX || code === codes.lowercaseX) {
       effects.enter(types.characterReferenceMarkerHexadecimal)
@@ -115,8 +119,7 @@ function tokenizeCharacterReference(effects, ok, nok) {
   }
 
   /**
-   * Inside a character reference value, after the markers (`&#x`, `&#`, or
-   * `&`) that define its kind, but before the `;`.
+   * After markers (`&#x`, `&#`, or `&`), in value, before `;`.
    *
    * The character reference kind defines what and how many characters are
    * allowed.
@@ -130,7 +133,8 @@ function tokenizeCharacterReference(effects, ok, nok) {
    *         ^
    * ```
    *
-   * @type {State} */
+   * @type {State}
+   */
   function value(code) {
     if (code === codes.semicolon && size) {
       const token = effects.exit(types.characterReferenceValue)
@@ -142,6 +146,8 @@ function tokenizeCharacterReference(effects, ok, nok) {
         return nok(code)
       }
 
+      // To do: `markdown-rs` uses a different name:
+      // `CharacterReferenceMarkerSemi`.
       effects.enter(types.characterReferenceMarker)
       effects.consume(code)
       effects.exit(types.characterReferenceMarker)

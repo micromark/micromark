@@ -46,7 +46,7 @@ function tokenizeLabelStartImage(effects, ok, nok) {
   }
 
   /**
-   * After `!`, before a `[`.
+   * After `!`, at `[`.
    *
    * ```markdown
    * > | a ![b] c
@@ -67,12 +67,38 @@ function tokenizeLabelStartImage(effects, ok, nok) {
     return nok(code)
   }
 
-  /** @type {State} */
+  /**
+   * After `![`.
+   *
+   * ```markdown
+   * > | a ![b] c
+   *         ^
+   * ```
+   *
+   * This is needed in because, when GFM footnotes are enabled, images never
+   * form when started with a `^`.
+   * Instead, links form:
+   *
+   * ```markdown
+   * ![^a](b)
+   *
+   * ![^a][b]
+   *
+   * [b]: c
+   * ```
+   *
+   * ```html
+   * <p>!<a href=\"b\">^a</a></p>
+   * <p>!<a href=\"c\">^a</a></p>
+   * ```
+   *
+   * @type {State}
+   */
   function after(code) {
-    /* To do: remove in the future once we’ve switched from
-     * `micromark-extension-footnote` to `micromark-extension-gfm-footnote`,
-     * which doesn’t need this */
-    /* Hidden footnotes hook */
+    // To do: use a new field to do this, this is still needed for
+    // `micromark-extension-gfm-footnote`, but the `label-start-link`
+    // behavior isn’t.
+    // Hidden footnotes hook.
     /* c8 ignore next 3 */
     return code === codes.caret &&
       '_hiddenFootnoteSupport' in self.parser.constructs

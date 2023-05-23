@@ -6,7 +6,7 @@
  */
 
 import {factorySpace} from 'micromark-factory-space'
-import {markdownLineEnding} from 'micromark-util-character'
+import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes.js'
 import {types} from 'micromark-util-symbol/types.js'
 
@@ -18,10 +18,32 @@ export const blankLine = {tokenize: tokenizeBlankLine, partial: true}
  * @type {Tokenizer}
  */
 function tokenizeBlankLine(effects, ok, nok) {
-  return factorySpace(effects, afterWhitespace, types.linePrefix)
+  return start
 
   /**
-   * After zero or more spaces or tabs, before a line ending or EOF.
+   * Start of blank line.
+   *
+   * > 👉 **Note**: `␠` represents a space character.
+   *
+   * ```markdown
+   * > | ␠␠␊
+   *     ^
+   * > | ␊
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function start(code) {
+    return markdownSpace(code)
+      ? factorySpace(effects, after, types.linePrefix)(code)
+      : after(code)
+  }
+
+  /**
+   * At eof/eol, after optional whitespace.
+   *
+   * > 👉 **Note**: `␠` represents a space character.
    *
    * ```markdown
    * > | ␠␠␊
@@ -32,7 +54,7 @@ function tokenizeBlankLine(effects, ok, nok) {
    *
    * @type {State}
    */
-  function afterWhitespace(code) {
+  function after(code) {
     return code === codes.eof || markdownLineEnding(code) ? ok(code) : nok(code)
   }
 }

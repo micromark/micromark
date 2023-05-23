@@ -38,6 +38,9 @@ const listItemPrefixWhitespaceConstruct = {
 /** @type {Construct} */
 const indentConstruct = {tokenize: tokenizeIndent, partial: true}
 
+// To do: `markdown-rs` parses list items on their own and later stitches them
+// together.
+
 /**
  * @type {Tokenizer}
  * @this {TokenizeContextWithState}

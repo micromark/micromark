@@ -87,69 +87,136 @@ function resolveHeadingAtx(events, context) {
  * @type {Tokenizer}
  */
 function tokenizeHeadingAtx(effects, ok, nok) {
-  const self = this
   let size = 0
 
   return start
 
-  /** @type {State} */
+  /**
+   * Start of a heading (atx).
+   *
+   * ```markdown
+   * > | ## aa
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
   function start(code) {
-    assert(code === codes.numberSign, 'expected `#`')
+    // To do: parse indent like `markdown-rs`.
     effects.enter(types.atxHeading)
-    effects.enter(types.atxHeadingSequence)
-    return fenceOpenInside(code)
+    return before(code)
   }
 
-  /** @type {State} */
-  function fenceOpenInside(code) {
+  /**
+   * After optional whitespace, at `#`.
+   *
+   * ```markdown
+   * > | ## aa
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function before(code) {
+    assert(code === codes.numberSign, 'expected `#`')
+    effects.enter(types.atxHeadingSequence)
+    return sequenceOpen(code)
+  }
+
+  /**
+   * In opening sequence.
+   *
+   * ```markdown
+   * > | ## aa
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function sequenceOpen(code) {
     if (
       code === codes.numberSign &&
       size++ < constants.atxHeadingOpeningFenceSizeMax
     ) {
       effects.consume(code)
-      return fenceOpenInside
+      return sequenceOpen
     }
 
+    // Always at least one `#`.
     if (code === codes.eof || markdownLineEndingOrSpace(code)) {
       effects.exit(types.atxHeadingSequence)
-      return self.interrupt ? ok(code) : headingBreak(code)
+      return atBreak(code)
     }
 
     return nok(code)
   }
 
-  /** @type {State} */
-  function headingBreak(code) {
+  /**
+   * After something, before something else.
+   *
+   * ```markdown
+   * > | ## aa
+   *       ^
+   * ```
+   *
+   * @type {State}
+   */
+  function atBreak(code) {
     if (code === codes.numberSign) {
       effects.enter(types.atxHeadingSequence)
-      return sequence(code)
+      return sequenceFurther(code)
     }
 
     if (code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.atxHeading)
+      // To do: interrupt like `markdown-rs`.
+      // // Feel free to interrupt.
+      // tokenizer.interrupt = false
       return ok(code)
     }
 
     if (markdownSpace(code)) {
-      return factorySpace(effects, headingBreak, types.whitespace)(code)
+      return factorySpace(effects, atBreak, types.whitespace)(code)
     }
 
+    // To do: generate `data` tokens, add the `text` token later.
+    // Needs edit map, see: `markdown.rs`.
     effects.enter(types.atxHeadingText)
     return data(code)
   }
 
-  /** @type {State} */
-  function sequence(code) {
+  /**
+   * In further sequence (after whitespace).
+   *
+   * Could be normal “visible” hashes in the heading or a final sequence.
+   *
+   * ```markdown
+   * > | ## aa ##
+   *           ^
+   * ```
+   *
+   * @type {State}
+   */
+  function sequenceFurther(code) {
     if (code === codes.numberSign) {
       effects.consume(code)
-      return sequence
+      return sequenceFurther
     }
 
     effects.exit(types.atxHeadingSequence)
-    return headingBreak(code)
+    return atBreak(code)
   }
 
-  /** @type {State} */
+  /**
+   * In text.
+   *
+   * ```markdown
+   * > | ## aa
+   *        ^
+   * ```
+   *
+   * @type {State}
+   */
   function data(code) {
     if (
       code === codes.eof ||
@@ -157,7 +224,7 @@ function tokenizeHeadingAtx(effects, ok, nok) {
       markdownLineEndingOrSpace(code)
     ) {
       effects.exit(types.atxHeadingText)
-      return headingBreak(code)
+      return atBreak(code)
     }
 
     effects.consume(code)

@@ -24,7 +24,7 @@ function tokenizeCharacterEscape(effects, ok, nok) {
   return start
 
   /**
-   * Start of a character escape.
+   * Start of character escape.
    *
    * ```markdown
    * > | a\*b
@@ -39,11 +39,11 @@ function tokenizeCharacterEscape(effects, ok, nok) {
     effects.enter(types.escapeMarker)
     effects.consume(code)
     effects.exit(types.escapeMarker)
-    return open
+    return inside
   }
 
   /**
-   * Inside a character escape, after `\`.
+   * After `\`, at punctuation.
    *
    * ```markdown
    * > | a\*b
@@ -52,7 +52,8 @@ function tokenizeCharacterEscape(effects, ok, nok) {
    *
    * @type {State}
    */
-  function open(code) {
+  function inside(code) {
+    // ASCII punctuation.
     if (asciiPunctuation(code)) {
       effects.enter(types.characterEscapeValue)
       effects.consume(code)

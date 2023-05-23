@@ -5,6 +5,8 @@
 
 import {markdownSpace} from 'micromark-util-character'
 
+// To do: implement `spaceOrTab`, `spaceOrTabMinMax`, `spaceOrTabWithOptions`.
+
 /**
  * @param {Effects} effects
  * @param {State} ok

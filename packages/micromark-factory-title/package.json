@@ -42,8 +42,7 @@
     "micromark-factory-space": "^1.0.0",
     "micromark-util-character": "^1.0.0",
     "micromark-util-symbol": "^1.0.0",
-    "micromark-util-types": "^1.0.0",
-    "uvu": "^0.5.0"
+    "micromark-util-types": "^1.0.0"
   },
   "scripts": {
     "build": "micromark-build"

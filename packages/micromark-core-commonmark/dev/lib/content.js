@@ -43,10 +43,19 @@ function tokenizeContent(effects, ok) {
   /** @type {Token} */
   let previous
 
-  return start
+  return chunkStart
 
-  /** @type {State} */
-  function start(code) {
+  /**
+   * Before a content chunk.
+   *
+   * ```markdown
+   * > | abc
+   *     ^
+   * ```
+   *
+   * @type {State}
+   */
+  function chunkStart(code) {
     assert(
       code !== codes.eof && !markdownLineEnding(code),
       'expected no eof or eol'
@@ -56,15 +65,26 @@ function tokenizeContent(effects, ok) {
     previous = effects.enter(types.chunkContent, {
       contentType: constants.contentTypeContent
     })
-    return data(code)
+    return chunkInside(code)
   }
 
-  /** @type {State} */
-  function data(code) {
+  /**
+   * In a content chunk.
+   *
+   * ```markdown
+   * > | abc
+   *     ^^^
+   * ```
+   *
+   * @type {State}
+   */
+  function chunkInside(code) {
     if (code === codes.eof) {
       return contentEnd(code)
     }
 
+    // To do: in `markdown-rs`, each line is parsed on its own, and everything
+    // is stitched together resolving.
     if (markdownLineEnding(code)) {
       return effects.check(
         continuationConstruct,
@@ -75,17 +95,25 @@ function tokenizeContent(effects, ok) {
 
     // Data.
     effects.consume(code)
-    return data
+    return chunkInside
   }
 
-  /** @type {State} */
+  /**
+   *
+   *
+   * @type {State}
+   */
   function contentEnd(code) {
     effects.exit(types.chunkContent)
     effects.exit(types.content)
     return ok(code)
   }
 
-  /** @type {State} */
+  /**
+   *
+   *
+   * @type {State}
+   */
   function contentContinue(code) {
     assert(markdownLineEnding(code), 'expected eol')
     effects.consume(code)
@@ -95,7 +123,7 @@ function tokenizeContent(effects, ok) {
       previous
     })
     previous = previous.next
-    return data
+    return chunkInside
   }
 }
 
@@ -108,7 +136,11 @@ function tokenizeContinuation(effects, ok, nok) {
 
   return startLookahead
 
-  /** @type {State} */
+  /**
+   *
+   *
+   * @type {State}
+   */
   function startLookahead(code) {
     assert(markdownLineEnding(code), 'expected a line ending')
     effects.exit(types.chunkContent)
@@ -118,7 +150,11 @@ function tokenizeContinuation(effects, ok, nok) {
     return factorySpace(effects, prefixed, types.linePrefix)
   }
 
-  /** @type {State} */
+  /**
+   *
+   *
+   * @type {State}
+   */
   function prefixed(code) {
     if (code === codes.eof || markdownLineEnding(code)) {
       return nok(code)

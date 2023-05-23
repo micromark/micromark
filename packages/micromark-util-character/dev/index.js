@@ -145,6 +145,8 @@ export function markdownSpace(code) {
   )
 }
 
+// Size note: removing ASCII from the regex and using `asciiPunctuation` here
+// In fact adds to the bundle size.
 /**
  * Check whether the character code represents Unicode punctuation.
  *
@@ -158,9 +160,10 @@ export function markdownSpace(code) {
  * **\[UNICODE]**:
  * [The Unicode Standard](https://www.unicode.org/versions/).
  * Unicode Consortium.
+ *
+ * @param code
+ * @returns
  */
-// Size note: removing ASCII from the regex and using `asciiPunctuation` here
-// In fact adds to the bundle size.
 export const unicodePunctuation = regexCheck(unicodePunctuationRegex)
 
 /**
@@ -177,6 +180,9 @@ export const unicodePunctuation = regexCheck(unicodePunctuationRegex)
  * **\[UNICODE]**:
  * [The Unicode Standard](https://www.unicode.org/versions/).
  * Unicode Consortium.
+ *
+ * @param code
+ * @returns
  */
 export const unicodeWhitespace = regexCheck(/\s/)
 
