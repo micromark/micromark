@@ -26,3 +26,4 @@ packages/micromark-util-sanitize-uri/index.js
 packages/micromark-util-subtokenize/index.js
 test/fixtures/
 test/fuzz-bundle.cjs
+!packages/micromark-util-types/index.d.ts
