@@ -48,7 +48,7 @@ const debug = createDebug('micromark')
  *
  * @param {ParseContext} parser
  * @param {InitialConstruct} initialize
- * @param {Omit<Point, '_bufferIndex' | '_index'>} [from]
+ * @param {Omit<Point, '_bufferIndex' | '_index'> | undefined} [from]
  * @returns {TokenizeContext}
  */
 export function createTokenizer(parser, initialize, from) {
@@ -340,7 +340,7 @@ export function createTokenizer(parser, initialize, from) {
    * Factory to attempt/check/interrupt.
    *
    * @param {ReturnHandle} onreturn
-   * @param {Record<string, unknown>} [fields]
+   * @param {{interrupt?: boolean | undefined} | undefined} [fields]
    */
   function constructFactory(onreturn, fields) {
     return hook
@@ -351,7 +351,7 @@ export function createTokenizer(parser, initialize, from) {
      *
      * @param {Array<Construct> | Construct | ConstructRecord} constructs
      * @param {State} returnState
-     * @param {State} [bogusState]
+     * @param {State | undefined} [bogusState]
      * @returns {State}
      */
     function hook(constructs, returnState, bogusState) {
@@ -599,7 +599,7 @@ function sliceChunks(chunks, token) {
  * Get the string value of a slice of chunks.
  *
  * @param {Array<Chunk>} chunks
- * @param {boolean} [expandTabs=false]
+ * @param {boolean | undefined} [expandTabs=false]
  * @returns {string}
  */
 function serializeChunks(chunks, expandTabs) {

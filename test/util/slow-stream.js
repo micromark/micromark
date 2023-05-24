@@ -4,7 +4,7 @@ const PassThrough = stream.PassThrough
 
 /**
  * @param {Buffer | string} value
- * @param {BufferEncoding} [encoding]
+ * @param {BufferEncoding | undefined} [encoding]
  */
 export function slowStream(value, encoding) {
   const stream = new PassThrough()

@@ -1,5 +1,6 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').ContainerState} ContainerState
  * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
  * @typedef {import('micromark-util-types').Initializer} Initializer
  * @typedef {import('micromark-util-types').Point} Point
@@ -10,8 +11,7 @@
  */
 
 /**
- * @typedef {[Construct, StackState]} StackItem
- * @typedef {Record<string, unknown>} StackState
+ * @typedef {[Construct, ContainerState]} StackItem
  */
 
 import {factorySpace} from 'micromark-factory-space'
@@ -265,7 +265,7 @@ function initializeDocument(effects) {
 
   /**
    * @param {Token} token
-   * @param {boolean} [eof]
+   * @param {boolean | undefined} [eof]
    * @returns {void}
    */
   function writeToChild(token, eof) {

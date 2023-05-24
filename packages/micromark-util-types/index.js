@@ -114,31 +114,31 @@
  * @property {Point} end
  * @property {Token | undefined} [previous]
  *   The previous token in a list of linked tokens.
- * @property {Token} [next]
+ * @property {Token | undefined} [next]
  *   The next token in a list of linked tokens
- * @property {ContentType} [contentType]
+ * @property {ContentType | undefined} [contentType]
  *   Declares a token as having content of a certain type.
  * @property {TokenizeContext | undefined} [_tokenizer]
  *   Used when dealing with linked tokens.
  *   A child tokenizer is needed to tokenize them, which is stored on those
  *   tokens.
- * @property {boolean} [_open]
+ * @property {boolean | undefined} [_open]
  *   A marker used to parse attention, depending on the characters before
  *   sequences (`**`), the sequence can open, close, both, or none
- * @property {boolean} [_close]
+ * @property {boolean | undefined} [_close]
  *   A marker used to parse attention, depending on the characters after
  *   sequences (`**`), the sequence can open, close, both, or none
- * @property {boolean} [_isInFirstContentOfListItem]
+ * @property {boolean | undefined} [_isInFirstContentOfListItem]
  *   A boolean used internally to figure out if a token is in the first content
  *   of a list item construct.
- * @property {boolean} [_container]
+ * @property {boolean | undefined} [_container]
  *   A boolean used internally to figure out if a token is a container token.
- * @property {boolean} [_loose]
+ * @property {boolean | undefined} [_loose]
  *   A boolean used internally to figure out if a list is loose or not.
- * @property {boolean} [_inactive]
+ * @property {boolean | undefined} [_inactive]
  *   A boolean used internally to figure out if a link opening can’t be used
  *   (because links in links are incorrect).
- * @property {boolean} [_balanced]
+ * @property {boolean | undefined} [_balanced]
  *   A boolean used internally to figure out if a link opening is balanced: it’s
  *   not a link opening but has a balanced closing.
  *
@@ -151,7 +151,7 @@
  *   Open a token.
  * @param {string} type
  *   Token to enter.
- * @param {Record<string, unknown>} [fields]
+ * @param {Omit<Partial<Token>, 'type'> | undefined} [fields]
  *   Fields to patch on the token
  * @returns {Token}
  *
@@ -177,7 +177,7 @@
  *   state, and `bogusState` is used.
  * @param {Array<Construct> | Construct | ConstructRecord} construct
  * @param {State} returnState
- * @param {State} [bogusState]
+ * @param {State | undefined} [bogusState]
  * @returns {(code: Code) => void}
  *
  * @typedef Effects
@@ -239,26 +239,26 @@
  * @typedef Construct
  *   An object describing how to parse a markdown construct.
  * @property {Tokenizer} tokenize
- * @property {Previous} [previous]
+ * @property {Previous | undefined} [previous]
  *   Guard whether the previous character can come before the construct
- * @property {Construct} [continuation]
+ * @property {Construct | undefined} [continuation]
  *   For containers, a continuation construct.
- * @property {Exiter} [exit]
+ * @property {Exiter | undefined} [exit]
  *   For containers, a final hook.
- * @property {string} [name]
+ * @property {string | undefined} [name]
  *   Name of the construct, used to toggle constructs off.
  *   Named constructs must not be `partial`.
- * @property {boolean} [partial=false]
+ * @property {boolean | undefined} [partial=false]
  *   Whether this construct represents a partial construct.
  *   Partial constructs must not have a `name`.
- * @property {Resolver} [resolve]
+ * @property {Resolver | undefined} [resolve]
  *   Resolve the events parsed by `tokenize`.
  *
  *   For example, if we’re currently parsing a link title and this construct
  *   parses character references, then `resolve` is called with the events
  *   ranging from the start to the end of a character reference each time one is
  *   found.
- * @property {Resolver} [resolveTo]
+ * @property {Resolver | undefined} [resolveTo]
  *   Resolve the events from the start of the content (which includes other
  *   constructs) to the last one parsed by `tokenize`.
  *
@@ -274,7 +274,7 @@
  *   parses character references, then `resolveAll` is called *if* at least one
  *   character reference is found, ranging from the start to the end of the link
  *   title to the end.
- * @property {boolean} [concrete]
+ * @property {boolean | undefined} [concrete]
  *   Concrete constructs cannot be interrupted by more containers.
  *
  *   For example, when parsing the document (containers, such as block quotes
@@ -296,7 +296,7 @@
  *   ````
  *
  *   …`b` is not part of the table.
- * @property {'after' | 'before'} [add='before']
+ * @property {'after' | 'before' | undefined} [add='before']
  *   Whether the construct, when in a `ConstructRecord`, precedes over existing
  *   constructs for the same character code when merged
  *   The default is that new constructs precede over existing ones.
@@ -306,6 +306,24 @@
  *
  * @typedef {Record<string, Array<Construct> | Construct | undefined>} ConstructRecord
  *   Several constructs, mapped from their initial codes.
+ *
+ * @typedef ContainerState
+ *
+ * @property {boolean | undefined} [_closeFlow]
+ *   Special field to close the current flow (or containers).
+ * @property {boolean | undefined} [open]
+ *   Used by block quotes.
+ * @property {Code | undefined} [marker]
+ *   Current marker, used by lists.
+ * @property {string | undefined} [type]
+ *   Current token type, used by lists.
+ * @property {number | undefined} [size]
+ *   Current size, used by lists.
+ * @property {boolean | undefined} [initialBlankLine]
+ *   Whether there first line is blank, used by lists.
+ * @property {boolean | undefined} [furtherBlankLines]
+ *   Whether there are further blank lines, used by lists.
+ *
  *
  * @typedef TokenizeContext
  *   A context object that helps w/ tokenizing markdown constructs.
@@ -326,7 +344,7 @@
  * @property {Construct | undefined} [currentConstruct]
  *   The current construct.
  *   Constructs that are not `partial` are set here.
- * @property {Record<string, unknown> & {_closeFlow?: boolean | undefined}} [containerState]
+ * @property {ContainerState | undefined} [containerState]
  *   Info set when parsing containers.
  *   Containers are parsed in separate phases: their first line (`tokenize`),
  *   continued lines (`continuation.tokenize`), and finally `exit`.
@@ -337,7 +355,7 @@
  *   The relevant parsing context.
  * @property {(token: Pick<Token, 'end' | 'start'>) => Array<Chunk>} sliceStream
  *   Get the chunks that span a token (or location).
- * @property {(token: Pick<Token, 'end' | 'start'>, expandTabs?: boolean) => string} sliceSerialize
+ * @property {(token: Pick<Token, 'end' | 'start'>, expandTabs?: boolean | undefined) => string} sliceSerialize
  *   Get the source text that spans a token (or location).
  * @property {() => Point} now
  *   Get the current place.
@@ -400,9 +418,9 @@
  * @property {ConstructRecord} flow
  * @property {ConstructRecord} string
  * @property {ConstructRecord} text
- * @property {{null?: Array<string>}} disable
- * @property {{null?: Array<Pick<Construct, 'resolveAll'>>}} insideSpan
- * @property {{null?: Array<Code>}} attentionMarkers
+ * @property {{null?: Array<string> | undefined}} disable
+ * @property {{null?: Array<Pick<Construct, 'resolveAll'>> | undefined}} insideSpan
+ * @property {{null?: Array<Code> | undefined}} attentionMarkers
  *
  * @typedef _NormalizedExtensionFields
  * @property {Record<string, Array<Construct>>} document
@@ -498,8 +516,8 @@
  *   An HTML extension changes how markdown tokens are serialized.
  *
  * @typedef Definition
- * @property {string} [destination]
- * @property {string} [title]
+ * @property {string | undefined} [destination]
+ * @property {string | undefined} [title]
  *
  * @typedef _CompileDataFields
  * @property {boolean} lastWasTag
@@ -520,7 +538,7 @@
  *
  * @typedef CompileOptions
  *   Compile options
- * @property {'\r' | '\n' | '\r\n'} [defaultLineEnding]
+ * @property {'\r' | '\n' | '\r\n' | undefined} [defaultLineEnding]
  *   Value to use for line endings not in `doc` (`string`, default: first line
  *   ending or `'\n'`).
  *
@@ -528,9 +546,9 @@
  *   markdown document over to the compiled HTML.
  *   In some cases, such as `> a`, CommonMark requires that extra line endings
  *   are added: `<blockquote>\n<p>a</p>\n</blockquote>`.
- * @property {boolean} [allowDangerousHtml=false]
+ * @property {boolean | undefined} [allowDangerousHtml=false]
  *   Whether to allow embedded HTML (`boolean`, default: `false`).
- * @property {boolean} [allowDangerousProtocol=false]
+ * @property {boolean | undefined} [allowDangerousProtocol=false]
  *   Whether to allow potentially dangerous protocols in links and images
  *   (`boolean`, default: `false`).
  *   URLs relative to the current protocol are always allowed (such as,
@@ -538,7 +556,7 @@
  *   For links, the allowed protocols are `http`, `https`, `irc`, `ircs`,
  *   `mailto`, and `xmpp`.
  *   For images, the allowed protocols are `http` and `https`.
- * @property {Array<HtmlExtension>} [htmlExtensions=[]]
+ * @property {Array<HtmlExtension> | undefined} [htmlExtensions=[]]
  *   Array of HTML extensions
  */
 

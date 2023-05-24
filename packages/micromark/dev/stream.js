@@ -6,8 +6,9 @@
 
 /**
  * @callback Callback
- * @param {Error | undefined} [Error]
+ *   Function called when write was successful.
  * @returns {void}
+ *   Nothing.
  *
  * @typedef {Omit<NodeJS.ReadableStream & NodeJS.WritableStream, 'isPaused' | 'pause' | 'read' | 'resume' | 'setEncoding' | 'unpipe' | 'unshift' | 'wrap'>} MinimalDuplex
  */
@@ -19,8 +20,12 @@ import {postprocess} from './lib/postprocess.js'
 import {preprocess} from './lib/preprocess.js'
 
 /**
+ * Create a duplex (readable and writable) stream.
+ *
  * @param {Options | null | undefined} [options]
+ *   Configuration (optional).
  * @returns {MinimalDuplex}
+ *   Stream.
  */
 export function stream(options) {
   const prep = preprocess()
@@ -29,108 +34,139 @@ export function stream(options) {
   /** @type {boolean} */
   let ended
 
-  /**
-   * Write a chunk into memory.
-   *
-   * @param chunk
-   * @param encoding
-   * @param callback
-   */
-  const write =
-    /**
-     * @type {(
-     *   ((value?: Value | null | undefined, encoding?: Encoding | null | undefined, callback?: Callback | null | undefined) => boolean) &
-     *   ((value?: Value | null | undefined, callback?: Callback | null | undefined) => boolean)
-     * )}
-     */
-    (
-      /**
-       * @param {Value | null | undefined} [chunk]
-       * @param {Encoding | null | undefined} [encoding]
-       * @param {Callback | null | undefined} [callback]
-       */
-      function (chunk, encoding, callback) {
-        if (typeof encoding === 'function') {
-          callback = encoding
-          encoding = undefined
-        }
-
-        if (ended) {
-          throw new Error('Did not expect `write` after `end`')
-        }
-
-        tokenize(prep(chunk || '', encoding))
-
-        if (callback) {
-          callback()
-        }
-
-        // Signal successful write.
-        return true
-      }
-    )
-
-  /**
-   * End the writing.
-   * Passes all arguments to a final `write`.
-   *
-   * @param chunk
-   * @param encoding
-   * @param callback
-   */
-  const end =
-    /**
-     * @type {(
-     *   ((value?: Value | null | undefined, encoding?: Encoding | null | undefined, callback?: Callback | null | undefined) => boolean) &
-     *   ((value?: Value | null | undefined, callback?: Callback | null | undefined) => boolean)
-     * )}
-     */
-    (
-      /**
-       * @param {Value | null | undefined} [chunk]
-       * @param {Encoding | null | undefined} [encoding]
-       * @param {Callback | null | undefined} [callback]
-       */
-      function (chunk, encoding, callback) {
-        if (typeof chunk === 'function') {
-          encoding = chunk
-          chunk = undefined
-        }
-
-        write(chunk, encoding, callback)
-
-        emitter.emit(
-          'data',
-          comp(postprocess(tokenize(prep('', encoding, true))))
-        )
-
-        emitter.emit('end')
-        ended = true
-        return true
-      }
-    )
-
   /** @type {MinimalDuplex} */
   // @ts-expect-error `addListener` is fine.
   const emitter = Object.assign(new EventEmitter(), {
-    writable: true,
-    readable: true,
-    write,
     end,
-    pipe
+    pipe,
+    readable: true,
+    writable: true,
+    write
   })
 
   return emitter
 
   /**
+   * Write a chunk into memory.
+   *
+   * @overload
+   * @param {Value | null | undefined} [chunk]
+   *   Slice of markdown to parse (`string` or `Buffer`).
+   * @param {Encoding | null | undefined} [encoding]
+   *   Character encoding to understand `chunk` as when it’s a `Buffer`
+   *   (`string`, default: `'utf8'`).
+   * @param {Callback | null | undefined} [callback]
+   *   Function called when write was successful.
+   * @returns {boolean}
+   *   Whether write was successful.
+   *
+   * @overload
+   * @param {Value | null | undefined} [chunk]
+   *   Slice of markdown to parse (`string` or `Buffer`).
+   * @param {Callback | null | undefined} [callback]
+   *   Function called when write was successful.
+   * @returns {boolean}
+   *   Whether write was successful.
+   *
+   * @param {Value | null | undefined} [chunk]
+   *   Slice of markdown to parse (`string` or `Buffer`).
+   * @param {Callback | Encoding | null | undefined} [encoding]
+   *   Character encoding to understand `chunk` as when it’s a `Buffer`
+   *   (`string`, default: `'utf8'`).
+   * @param {Callback | null | undefined} [callback]
+   *   Function called when write was successful.
+   * @returns {boolean}
+   *   Whether write was successful.
+   */
+  function write(chunk, encoding, callback) {
+    if (typeof encoding === 'function') {
+      callback = encoding
+      encoding = undefined
+    }
+
+    if (ended) {
+      throw new Error('Did not expect `write` after `end`')
+    }
+
+    tokenize(prep(chunk || '', encoding))
+
+    if (callback) {
+      callback()
+    }
+
+    // Signal successful write.
+    return true
+  }
+
+  /**
+   * End the writing.
+   *
+   * Passes all arguments as a final `write`.
+   *
+   * @overload
+   * @param {Value | null | undefined} [chunk]
+   *   Slice of markdown to parse (`string` or `Buffer`).
+   * @param {Encoding | null | undefined} [encoding]
+   *   Character encoding to understand `chunk` as when it’s a `Buffer`
+   *   (`string`, default: `'utf8'`).
+   * @param {Callback | null | undefined} [callback]
+   *   Function called when write was successful.
+   * @returns {boolean}
+   *   Whether write was successful.
+   *
+   * @overload
+   * @param {Value | null | undefined} [chunk]
+   *   Slice of markdown to parse (`string` or `Buffer`).
+   * @param {Callback | null | undefined} [callback]
+   *   Function called when write was successful.
+   * @returns {boolean}
+   *   Whether write was successful.
+   *
+   * @overload
+   * @param {Callback | null | undefined} [callback]
+   *   Function called when write was successful.
+   * @returns {boolean}
+   *
+   * @param {Callback | Value | null | undefined} [chunk]
+   *   Slice of markdown to parse (`string` or `Buffer`).
+   * @param {Callback | Encoding | null | undefined} [encoding]
+   *   Character encoding to understand `chunk` as when it’s a `Buffer`
+   *   (`string`, default: `'utf8'`).
+   * @param {Callback | null | undefined} [callback]
+   *   Function called when write was successful.
+   * @returns {boolean}
+   *   Whether write was successful.
+   */
+  function end(chunk, encoding, callback) {
+    if (typeof chunk === 'function') {
+      encoding = chunk
+      chunk = undefined
+    }
+
+    if (typeof encoding === 'function') {
+      callback = encoding
+      encoding = undefined
+    }
+
+    write(chunk, encoding, callback)
+
+    emitter.emit('data', comp(postprocess(tokenize(prep('', encoding, true)))))
+
+    emitter.emit('end')
+    ended = true
+    return true
+  }
+
+  /**
    * Pipe the processor into a writable stream.
+   *
    * Basically `Stream#pipe`, but inlined and simplified to keep the bundled
    * size down.
    * See: <https://github.com/nodejs/node/blob/43a5170/lib/internal/streams/legacy.js#L13>.
    *
    * @template {NodeJS.WritableStream} Stream
    * @param {Stream} dest
-   * @param {{end?: boolean}} [options]
+   * @param {{end?: boolean | null | undefined}} [options]
    * @returns {Stream}
    */
   function pipe(dest, options) {
@@ -154,7 +190,7 @@ export function stream(options) {
     return dest
 
     /**
-     * End destination.
+     * End destination stream.
      *
      * @returns {void}
      */
@@ -195,7 +231,7 @@ export function stream(options) {
     /**
      * Close dangling pipes and handle unheard errors.
      *
-     * @param {Error?} [error]
+     * @param {Error | null | undefined} [error]
      * @returns {void}
      */
     function onerror(error) {

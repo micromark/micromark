@@ -67,7 +67,6 @@ function resolveHeadingAtx(events, context) {
       type: types.chunkText,
       start: events[contentStart][1].start,
       end: events[contentEnd][1].end,
-      // @ts-expect-error Constants are fine to assign.
       contentType: constants.contentTypeText
     }
 

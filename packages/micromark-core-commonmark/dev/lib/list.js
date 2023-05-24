@@ -1,15 +1,11 @@
 /**
  * @typedef {import('micromark-util-types').Code} Code
  * @typedef {import('micromark-util-types').Construct} Construct
+ * @typedef {import('micromark-util-types').ContainerState} ContainerState
  * @typedef {import('micromark-util-types').Exiter} Exiter
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
- */
-
-/**
- * @typedef {Record<string, unknown> & {marker: Code, type: string, size: number}} ListContainerState
- * @typedef {TokenizeContext & {containerState: ListContainerState}} TokenizeContextWithState
  */
 
 import {factorySpace} from 'micromark-factory-space'
@@ -43,7 +39,7 @@ const indentConstruct = {tokenize: tokenizeIndent, partial: true}
 
 /**
  * @type {Tokenizer}
- * @this {TokenizeContextWithState}
+ * @this {TokenizeContext}
  */
 function tokenizeListStart(effects, ok, nok) {
   const self = this
@@ -58,6 +54,7 @@ function tokenizeListStart(effects, ok, nok) {
 
   /** @type {State} */
   function start(code) {
+    assert(self.containerState, 'expected state')
     const kind =
       self.containerState.type ||
       (code === codes.asterisk || code === codes.plusSign || code === codes.dash
@@ -93,6 +90,7 @@ function tokenizeListStart(effects, ok, nok) {
 
   /** @type {State} */
   function inside(code) {
+    assert(self.containerState, 'expected state')
     if (asciiDigit(code) && ++size < constants.listItemValueSizeMax) {
       effects.consume(code)
       return inside
@@ -115,6 +113,7 @@ function tokenizeListStart(effects, ok, nok) {
    * @type {State}
    **/
   function atMarker(code) {
+    assert(self.containerState, 'expected state')
     assert(code !== codes.eof, 'eof (`null`) is not a marker')
     effects.enter(types.listItemMarker)
     effects.consume(code)
@@ -134,6 +133,7 @@ function tokenizeListStart(effects, ok, nok) {
 
   /** @type {State} */
   function onBlank(code) {
+    assert(self.containerState, 'expected state')
     self.containerState.initialBlankLine = true
     initialSize++
     return endOfPrefix(code)
@@ -153,6 +153,7 @@ function tokenizeListStart(effects, ok, nok) {
 
   /** @type {State} */
   function endOfPrefix(code) {
+    assert(self.containerState, 'expected state')
     self.containerState.size =
       initialSize +
       self.sliceSerialize(effects.exit(types.listItemPrefix), true).length
@@ -162,17 +163,20 @@ function tokenizeListStart(effects, ok, nok) {
 
 /**
  * @type {Tokenizer}
- * @this {TokenizeContextWithState}
+ * @this {TokenizeContext}
  */
 function tokenizeListContinuation(effects, ok, nok) {
   const self = this
 
+  assert(self.containerState, 'expected state')
   self.containerState._closeFlow = undefined
 
   return effects.check(blankLine, onBlank, notBlank)
 
   /** @type {State} */
   function onBlank(code) {
+    assert(self.containerState, 'expected state')
+    assert(typeof self.containerState.size === 'number', 'expected size')
     self.containerState.furtherBlankLines =
       self.containerState.furtherBlankLines ||
       self.containerState.initialBlankLine
@@ -189,6 +193,7 @@ function tokenizeListContinuation(effects, ok, nok) {
 
   /** @type {State} */
   function notBlank(code) {
+    assert(self.containerState, 'expected state')
     if (self.containerState.furtherBlankLines || !markdownSpace(code)) {
       self.containerState.furtherBlankLines = undefined
       self.containerState.initialBlankLine = undefined
@@ -202,6 +207,7 @@ function tokenizeListContinuation(effects, ok, nok) {
 
   /** @type {State} */
   function notInCurrentItem(code) {
+    assert(self.containerState, 'expected state')
     // While we do continue, we signal that the flow should be closed.
     self.containerState._closeFlow = true
     // As we’re closing flow, we’re no longer interrupting.
@@ -219,10 +225,13 @@ function tokenizeListContinuation(effects, ok, nok) {
 
 /**
  * @type {Tokenizer}
- * @this {TokenizeContextWithState}
+ * @this {TokenizeContext}
  */
 function tokenizeIndent(effects, ok, nok) {
   const self = this
+
+  assert(self.containerState, 'expected state')
+  assert(typeof self.containerState.size === 'number', 'expected size')
 
   return factorySpace(
     effects,
@@ -233,6 +242,7 @@ function tokenizeIndent(effects, ok, nok) {
 
   /** @type {State} */
   function afterPrefix(code) {
+    assert(self.containerState, 'expected state')
     const tail = self.events[self.events.length - 1]
     return tail &&
       tail[1].type === types.listItemIndent &&
@@ -244,15 +254,17 @@ function tokenizeIndent(effects, ok, nok) {
 
 /**
  * @type {Exiter}
- * @this {TokenizeContextWithState}
+ * @this {TokenizeContext}
  */
 function tokenizeListEnd(effects) {
+  assert(this.containerState, 'expected state')
+  assert(typeof this.containerState.type === 'string', 'expected type')
   effects.exit(this.containerState.type)
 }
 
 /**
  * @type {Tokenizer}
- * @this {TokenizeContextWithState}
+ * @this {TokenizeContext}
  */
 function tokenizeListItemPrefixWhitespace(effects, ok, nok) {
   const self = this

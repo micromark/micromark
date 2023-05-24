@@ -10,33 +10,46 @@ import {postprocess} from './lib/postprocess.js'
 import {preprocess} from './lib/preprocess.js'
 
 /**
- * @param value Markdown to parse (`string` or `Buffer`).
- * @param [encoding] Character encoding to understand `value` as when it’s a `Buffer` (`string`, default: `'utf8'`).
- * @param [options] Configuration
+ * Compile markdown to HTML.
+ *
+ * @overload
+ * @param {Value} value
+ *   Markdown to parse (`string` or `Buffer`).
+ * @param {Encoding | null | undefined} encoding
+ *   Character encoding to understand `value` as when it’s a `Buffer`
+ *   (`string`, default: `'utf8'`).
+ * @param {Options | null | undefined} [options]
+ *   Configuration.
+ * @returns {string}
+ *   Compiled HTML.
+ *
+ * @overload
+ * @param {Value} value
+ *   Markdown to parse (`string` or `Buffer`).
+ * @param {Options | null | undefined} [options]
+ *   Configuration.
+ * @returns {string}
+ *   Compiled HTML.
+ *
+ * @param {Value} value
+ *   Markdown to parse (`string` or `Buffer`).
+ * @param {Options | Encoding | null | undefined} [encoding]
+ *   Character encoding to understand `value` as when it’s a `Buffer`
+ *   (`string`, default: `'utf8'`).
+ * @param {Options | null | undefined} [options]
+ *   Configuration.
+ * @returns {string}
+ *   Compiled HTML.
  */
-export const micromark =
-  /**
-   * @type {(
-   *   ((value: Value, encoding: Encoding, options?: Options | null | undefined) => string) &
-   *   ((value: Value, options?: Options | null | undefined) => string)
-   * )}
-   */
-  (
-    /**
-     * @param {Value} value
-     * @param {Encoding | null | undefined} [encoding]
-     * @param {Options | null | undefined} [options]
-     */
-    function (value, encoding, options) {
-      if (typeof encoding !== 'string') {
-        options = encoding
-        encoding = undefined
-      }
+export function micromark(value, encoding, options) {
+  if (typeof encoding !== 'string') {
+    options = encoding
+    encoding = undefined
+  }
 
-      return compile(options)(
-        postprocess(
-          parse(options).document().write(preprocess()(value, encoding, true))
-        )
-      )
-    }
+  return compile(options)(
+    postprocess(
+      parse(options).document().write(preprocess()(value, encoding, true))
+    )
   )
+}

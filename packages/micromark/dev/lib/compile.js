@@ -27,12 +27,12 @@
 
 /**
  * @typedef Media
- * @property {boolean} [image]
- * @property {string} [labelId]
- * @property {string} [label]
- * @property {string} [referenceId]
- * @property {string} [destination]
- * @property {string} [title]
+ * @property {boolean | undefined} [image]
+ * @property {string | undefined} [labelId]
+ * @property {string | undefined} [label]
+ * @property {string | undefined} [referenceId]
+ * @property {string | undefined} [destination]
+ * @property {string | undefined} [title]
  */
 
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'

@@ -247,6 +247,7 @@ test('stream', async function (t) {
         assert.equal(String(value), '<p>brC!vo</p>', 'should honour encoding')
       })
     )
+
     // @ts-expect-error Types for `WritableStream#end` are wrong: buffers are
     // fine.
     s.end(Buffer.from([0x62, 0x72, 0xc3, 0xa1, 0x76, 0x6f]), 'ascii')
@@ -298,7 +299,14 @@ test('stream', async function (t) {
     tr.pipe(s)
 
     tr.write('alpha')
-    tr.write('bravo')
+
+    let called = false
+    tr.write('bravo', function () {
+      called = true
+    })
+
+    assert(called, 'should call callbacks')
+
     tr.end('charlie')
 
     assert.doesNotThrow(function () {
