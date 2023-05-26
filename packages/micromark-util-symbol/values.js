@@ -4,7 +4,7 @@
 // string versions of ’em.
 // The C0 block, except for LF, CR, HT, and w/ the replacement character added,
 // are available here.
-export const values = {
+export const values = /** @type {const} */ ({
   ht: '\t',
   lf: '\n',
   cr: '\r',
@@ -104,4 +104,4 @@ export const values = {
   rightCurlyBrace: '}',
   tilde: '~',
   replacementCharacter: '�'
-}
+})

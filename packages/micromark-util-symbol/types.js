@@ -9,7 +9,9 @@
  * instead of one shared name.
  */
 
-export const types = {
+// Note: when changing the next record, you must also change `TokenTypeMap`
+// in `micromark-util-types/index.d.ts`.
+export const types = /** @type {const} */ ({
   // Generic type for data, such as in a title, a destination, etc.
   data: 'data',
 
@@ -448,4 +450,4 @@ export const types = {
   chunkFlow: 'chunkFlow',
   chunkText: 'chunkText',
   chunkString: 'chunkString'
-}
+})

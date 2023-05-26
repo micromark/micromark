@@ -10,7 +10,7 @@
  * Additionally, there are a couple symbols used inside micromark.
  * These are all defined here, but compiled away by scripts.
  */
-export const constants = {
+export const constants = /** @type {const} */ ({
   attentionSideBefore: 1, // Symbol to mark an attention sequence as before content: `*a`
   attentionSideAfter: 2, // Symbol to mark an attention sequence as after content: `a*`
   atxHeadingOpeningFenceSizeMax: 6, // 6 number signs is fine, 7 isn’t.
@@ -50,4 +50,4 @@ export const constants = {
   tabSize: 4, // Tabs have a hard-coded size of 4, per CommonMark.
   thematicBreakMarkerCountMin: 3, // At least 3 asterisks, dashes, or underscores are needed.
   v8MaxSafeChunkSize: 10000 // V8 (and potentially others) have problems injecting giant arrays into other arrays, hence we operate in chunks.
-}
+})

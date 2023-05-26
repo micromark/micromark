@@ -2,6 +2,7 @@
  * @typedef {import('micromark-util-types').Code} Code
  * @typedef {import('micromark-util-types').Effects} Effects
  * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').TokenType} TokenType
  */
 
 import {factorySpace} from 'micromark-factory-space'
@@ -14,9 +15,9 @@ import {types} from 'micromark-util-symbol/types.js'
  * @param {Effects} effects
  * @param {State} ok
  * @param {State} nok
- * @param {string} type
- * @param {string} markerType
- * @param {string} stringType
+ * @param {TokenType} type
+ * @param {TokenType} markerType
+ * @param {TokenType} stringType
  * @returns {State}
  */
 // eslint-disable-next-line max-params

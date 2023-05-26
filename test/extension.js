@@ -80,12 +80,16 @@ test('syntax extension', function () {
 })
 
 test('html extension', async function (t) {
+  /** @type {import('micromark-util-types').Extension} */
   const syntax = {flow: {47: {tokenize: tokenizeCommentLine}}}
+  /** @type {import('micromark-util-types').HtmlExtension} */
   const html = {
     // An unknown key is treated as an existing key, probably never useful, but
     // symetrical to syntax extensions.
     unknown: {},
+    // @ts-expect-error: custom token, which should be registered in the types.
     enter: {commentLine: enterComment},
+    // @ts-expect-error: custom token.
     exit: {commentLine: exitComment}
   }
 
@@ -229,7 +233,9 @@ function tokenizeCommentLine(effects, ok, nok) {
       return nok(code)
     }
 
+    // @ts-expect-error: custom.
     effects.enter('commentLine')
+    // @ts-expect-error: custom.
     effects.enter('commentLineSequence')
     effects.consume(code)
     return insideSlashes
@@ -239,6 +245,7 @@ function tokenizeCommentLine(effects, ok, nok) {
   function insideSlashes(code) {
     if (code === 47) {
       effects.consume(code)
+      // @ts-expect-error: custom.
       effects.exit('commentLineSequence')
       return afterSlashes
     }
@@ -250,6 +257,7 @@ function tokenizeCommentLine(effects, ok, nok) {
   function afterSlashes(code) {
     // Eol or eof.
     if (code === null || code === -5 || code === -4 || code === -3) {
+      // @ts-expect-error: custom.
       effects.exit('commentLine')
       return ok(code)
     }
@@ -264,6 +272,7 @@ function tokenizeCommentLine(effects, ok, nok) {
     // Eol or eof.
     if (code === null || code === -5 || code === -4 || code === -3) {
       effects.exit('chunkString')
+      // @ts-expect-error: custom.
       effects.exit('commentLine')
       return ok(code)
     }
@@ -287,8 +296,10 @@ function tokenizeJustALessThan(effects, ok, nok) {
       return nok(code)
     }
 
+    // @ts-expect-error: custom.
     effects.enter('lessThan')
     effects.consume(code)
+    // @ts-expect-error: custom.
     effects.exit('lessThan')
     return ok
   }

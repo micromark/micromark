@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Effects} Effects
  * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').TokenType} TokenType
  */
 
 import {markdownSpace} from 'micromark-util-character'
@@ -10,7 +11,7 @@ import {markdownSpace} from 'micromark-util-character'
 /**
  * @param {Effects} effects
  * @param {State} ok
- * @param {string} type
+ * @param {TokenType} type
  * @param {number | undefined} [max=Infinity]
  * @returns {State}
  */

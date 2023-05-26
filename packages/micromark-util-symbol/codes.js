@@ -16,7 +16,7 @@
  *
  * Unicode basic latin block.
  */
-export const codes = {
+export const codes = /** @type {const} */ ({
   carriageReturn: -5,
   lineFeed: -4,
   carriageReturnLineFeed: -3,
@@ -155,4 +155,4 @@ export const codes = {
   byteOrderMarker: 65279,
   // Unicode Specials block.
   replacementCharacter: 65533 // `�`
-}
+})

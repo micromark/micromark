@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Effects} Effects
  * @typedef {import('micromark-util-types').State} State
+ * @typedef {import('micromark-util-types').TokenType} TokenType
  */
 
 import {
@@ -16,11 +17,11 @@ import {types} from 'micromark-util-symbol/types.js'
  * @param {Effects} effects
  * @param {State} ok
  * @param {State} nok
- * @param {string} type
- * @param {string} literalType
- * @param {string} literalMarkerType
- * @param {string} rawType
- * @param {string} stringType
+ * @param {TokenType} type
+ * @param {TokenType} literalType
+ * @param {TokenType} literalMarkerType
+ * @param {TokenType} rawType
+ * @param {TokenType} stringType
  * @param {number | undefined} [max=Infinity]
  * @returns {State}
  */

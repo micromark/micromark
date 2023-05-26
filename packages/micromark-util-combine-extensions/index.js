@@ -1,6 +1,7 @@
 /**
  * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Extension} Extension
+ * @typedef {import('micromark-util-types').Handles} Handles
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
  * @typedef {import('micromark-util-types').NormalizedExtension} NormalizedExtension
  */
@@ -123,11 +124,12 @@ function htmlExtension(all, extension) {
     const maybe = hasOwnProperty.call(all, hook) ? all[hook] : undefined
     const left = maybe || (all[hook] = {})
     const right = extension[hook]
-    /** @type {string} */
+    /** @type {keyof Handles} */
     let type
 
     if (right) {
       for (type in right) {
+        // @ts-expect-error assume document vs regular handler are managed correctly.
         left[type] = right[type]
       }
     }

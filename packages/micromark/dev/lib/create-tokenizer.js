@@ -9,6 +9,7 @@
  * @typedef {import('micromark-util-types').Point} Point
  * @typedef {import('micromark-util-types').State} State
  * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').TokenType} TokenType
  * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
  */
 

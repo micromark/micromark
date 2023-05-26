@@ -319,10 +319,12 @@ export function compile(options) {
 
     // Handle all events.
     while (++index < events.length) {
-      const handler = handlers[result[index][0]]
+      const handles = handlers[result[index][0]]
+      const kind = result[index][1].type
+      const handle = handles[kind]
 
-      if (hasOwnProperty.call(handler, result[index][1].type)) {
-        handler[result[index][1].type].call(
+      if (hasOwnProperty.call(handles, kind) && handle) {
+        handle.call(
           Object.assign(
             {sliceSerialize: result[index][2].sliceSerialize},
             context
