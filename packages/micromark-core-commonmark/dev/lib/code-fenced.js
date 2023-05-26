@@ -381,6 +381,12 @@ function tokenizeCodeFenced(effects, ok, nok) {
      * @type {State}
      */
     function start(code) {
+      // Always populated by defaults.
+      assert(
+        self.parser.constructs.disable.null,
+        'expected `disable.null` to be populated'
+      )
+
       // To do: `enter` here or in next state?
       effects.enter(types.codeFencedFence)
       return markdownSpace(code)

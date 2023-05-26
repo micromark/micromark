@@ -145,6 +145,12 @@ function resolveAllAttention(events, context) {
             ['enter', text, context]
           ])
 
+          // Always populated by defaults.
+          assert(
+            context.parser.constructs.insideSpan.null,
+            'expected `insideSpan` to be populated'
+          )
+
           // Between.
           nextEvents = push(
             nextEvents,
@@ -249,6 +255,9 @@ function tokenizeAttention(effects, ok) {
 
     // To do: next major: move this to resolver, just like `markdown-rs`.
     const after = classifyCharacter(code)
+
+    // Always populated by defaults.
+    assert(attentionMarkers, 'expected `attentionMarkers` to be populated')
 
     const open =
       !after ||

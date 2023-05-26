@@ -20,12 +20,10 @@ import * as defaultConstructs from './constructs.js'
  */
 export function parse(options) {
   const settings = options || {}
-  /** @type {FullNormalizedExtension} */
-  // @ts-expect-error `defaultConstructs` is full, so the result will be too.
-  const constructs = combineExtensions(
-    // @ts-expect-error Same as above.
-    [defaultConstructs].concat(settings.extensions || [])
+  const constructs = /** @type {FullNormalizedExtension} */ (
+    combineExtensions([defaultConstructs, ...(settings.extensions || [])])
   )
+
   /** @type {ParseContext} */
   const parser = {
     defined: [],

@@ -39,24 +39,28 @@ export function combineExtensions(extensions) {
  * @returns {void}
  */
 function syntaxExtension(all, extension) {
-  /** @type {string} */
+  /** @type {keyof Extension} */
   let hook
 
   for (hook in extension) {
     const maybe = hasOwnProperty.call(all, hook) ? all[hook] : undefined
+    /** @type {Record<string, unknown>} */
     const left = maybe || (all[hook] = {})
+    /** @type {Record<string, unknown> | undefined} */
     const right = extension[hook]
     /** @type {string} */
     let code
 
-    for (code in right) {
-      if (!hasOwnProperty.call(left, code)) left[code] = []
-      const value = right[code]
-      constructs(
-        // @ts-expect-error Looks like a list.
-        left[code],
-        Array.isArray(value) ? value : value ? [value] : []
-      )
+    if (right) {
+      for (code in right) {
+        if (!hasOwnProperty.call(left, code)) left[code] = []
+        const value = right[code]
+        constructs(
+          // @ts-expect-error Looks like a list.
+          left[code],
+          Array.isArray(value) ? value : value ? [value] : []
+        )
+      }
     }
   }
 }
@@ -112,7 +116,7 @@ export function combineHtmlExtensions(htmlExtensions) {
  * @returns {void}
  */
 function htmlExtension(all, extension) {
-  /** @type {string} */
+  /** @type {keyof HtmlExtension} */
   let hook
 
   for (hook in extension) {

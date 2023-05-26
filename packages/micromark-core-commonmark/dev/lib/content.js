@@ -40,7 +40,7 @@ function resolveContent(events) {
  * @type {Tokenizer}
  */
 function tokenizeContent(effects, ok) {
-  /** @type {Token} */
+  /** @type {Token | undefined} */
   let previous
 
   return chunkStart
@@ -118,6 +118,7 @@ function tokenizeContent(effects, ok) {
     assert(markdownLineEnding(code), 'expected eol')
     effects.consume(code)
     effects.exit(types.chunkContent)
+    assert(previous, 'expected previous token')
     previous.next = effects.enter(types.chunkContent, {
       contentType: constants.contentTypeContent,
       previous
@@ -159,6 +160,12 @@ function tokenizeContinuation(effects, ok, nok) {
     if (code === codes.eof || markdownLineEnding(code)) {
       return nok(code)
     }
+
+    // Always populated by defaults.
+    assert(
+      self.parser.constructs.disable.null,
+      'expected `disable.null` to be populated'
+    )
 
     const tail = self.events[self.events.length - 1]
 

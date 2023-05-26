@@ -139,6 +139,11 @@ function resolveToLabelEnd(events, context) {
   // Text open.
   media = push(media, [['enter', text, context]])
 
+  // Always populated by defaults.
+  assert(
+    context.parser.constructs.insideSpan.null,
+    'expected `insideSpan.null` to be populated'
+  )
   // Between.
   media = push(
     media,

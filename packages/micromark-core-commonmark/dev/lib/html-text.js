@@ -777,6 +777,11 @@ function tokenizeHtmlText(effects, ok, nok) {
    * @type {State}
    */
   function lineEndingAfter(code) {
+    // Always populated by defaults.
+    assert(
+      self.parser.constructs.disable.null,
+      'expected `disable.null` to be populated'
+    )
     return markdownSpace(code)
       ? factorySpace(
           effects,

@@ -199,12 +199,11 @@ export function compile(options) {
    * The values at such objects are names of tokens mapping to handlers.
    * Handlers are called, respectively when a token is opener or closed, with
    * that token, and a context as `this`.
-   *
-   * @type {NormalizedHtmlExtension}
    */
-  // @ts-expect-error `defaultHandlers` is full, so the result will be too.
-  const handlers = combineHtmlExtensions(
-    [defaultHandlers].concat(settings.htmlExtensions || [])
+  const handlers = /** @type {NormalizedHtmlExtension} */ (
+    combineHtmlExtensions(
+      [defaultHandlers].concat(settings.htmlExtensions || [])
+    )
   )
 
   /**
@@ -405,17 +404,15 @@ export function compile(options) {
 
   /**
    * @type {CompileContext['setData']}
-   * @param [value]
    */
   function setData(key, value) {
+    // @ts-expect-error: assume `value` is omitted (`undefined` is passed) only
+    // if allowed.
     data[key] = value
   }
 
   /**
    * @type {CompileContext['getData']}
-   * @template {string} K
-   * @param {K} key
-   * @returns {CompileData[K]}
    */
   function getData(key) {
     return data[key]
@@ -661,7 +658,6 @@ export function compile(options) {
     if (
       count !== undefined &&
       count < 2 &&
-      // @ts-expect-error `tightStack` is always set.
       data.tightStack.length > 0 &&
       !getData('lastWasTag')
     ) {

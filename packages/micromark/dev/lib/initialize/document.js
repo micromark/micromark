@@ -417,6 +417,11 @@ function initializeDocument(effects) {
  * @type {Tokenizer}
  */
 function tokenizeContainer(effects, ok, nok) {
+  // Always populated by defaults.
+  assert(
+    this.parser.constructs.disable.null,
+    'expected `disable.null` to be populated'
+  )
   return factorySpace(
     effects,
     effects.attempt(this.parser.constructs.document, ok, nok),

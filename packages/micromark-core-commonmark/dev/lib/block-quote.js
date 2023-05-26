@@ -117,6 +117,12 @@ function tokenizeBlockQuoteContinuation(effects, ok, nok) {
    */
   function contStart(code) {
     if (markdownSpace(code)) {
+      // Always populated by defaults.
+      assert(
+        self.parser.constructs.disable.null,
+        'expected `disable.null` to be populated'
+      )
+
       return factorySpace(
         effects,
         contBefore,

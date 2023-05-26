@@ -436,6 +436,12 @@ export function createTokenizer(parser, initialize, from) {
             context.currentConstruct = construct
           }
 
+          // Always populated by defaults.
+          assert(
+            context.parser.constructs.disable.null,
+            'expected `disable.null` to be populated'
+          )
+
           if (
             construct.name &&
             context.parser.constructs.disable.null.includes(construct.name)

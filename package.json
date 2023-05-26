@@ -157,7 +157,7 @@
     "ignores": [
       "packages/*/*.js",
       "packages/*/lib/**/*.js",
-      "**/*.d.ts"
+      "*.d.ts"
     ]
   },
   "remarkConfig": {

@@ -19,6 +19,8 @@ test('syntax extension', function () {
   const syntax = {
     // An unknown key is treated as an existing key, potentially useful for
     // new tokenizers.
+    // @ts-expect-error: this is a custom field, which users are supposed to
+    // manually type, but the runtime should just support it.
     unknown: {},
     flow: {
       // No construct (dot, not used by default).
@@ -104,7 +106,7 @@ test('html extension', async function (t) {
   assert.deepEqual(
     micromark('!', {
       htmlExtensions: [
-        /** @type {import('micromark-util-types').NormalizedHtmlExtension} */
+        /** @type {import('micromark-util-types').HtmlExtension} */
         ({enter: {null: enterDocument}, exit: {null: exitDocument}})
       ]
     }),
@@ -115,7 +117,7 @@ test('html extension', async function (t) {
   assert.deepEqual(
     micromark('', {
       htmlExtensions: [
-        /** @type {import('micromark-util-types').NormalizedHtmlExtension} */
+        /** @type {import('micromark-util-types').HtmlExtension} */
         ({enter: {null: enterDocument}, exit: {null: exitDocument}})
       ]
     }),

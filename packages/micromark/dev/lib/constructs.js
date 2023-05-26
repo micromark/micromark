@@ -27,7 +27,7 @@ import {
 import {codes} from 'micromark-util-symbol/codes.js'
 import {resolver as resolveText} from './initialize/text.js'
 
-/** @type {Extension['document']} */
+/** @satisfies {Extension['document']} */
 export const document = {
   [codes.asterisk]: list,
   [codes.plusSign]: list,
@@ -45,19 +45,19 @@ export const document = {
   [codes.greaterThan]: blockQuote
 }
 
-/** @type {Extension['contentInitial']} */
+/** @satisfies {Extension['contentInitial']} */
 export const contentInitial = {
   [codes.leftSquareBracket]: definition
 }
 
-/** @type {Extension['flowInitial']} */
+/** @satisfies {Extension['flowInitial']} */
 export const flowInitial = {
   [codes.horizontalTab]: codeIndented,
   [codes.virtualSpace]: codeIndented,
   [codes.space]: codeIndented
 }
 
-/** @type {Extension['flow']} */
+/** @satisfies {Extension['flow']} */
 export const flow = {
   [codes.numberSign]: headingAtx,
   [codes.asterisk]: thematicBreak,
@@ -69,13 +69,13 @@ export const flow = {
   [codes.tilde]: codeFenced
 }
 
-/** @type {Extension['string']} */
+/** @satisfies {Extension['string']} */
 export const string = {
   [codes.ampersand]: characterReference,
   [codes.backslash]: characterEscape
 }
 
-/** @type {Extension['text']} */
+/** @satisfies {Extension['text']} */
 export const text = {
   [codes.carriageReturn]: lineEnding,
   [codes.lineFeed]: lineEnding,
@@ -91,11 +91,11 @@ export const text = {
   [codes.graveAccent]: codeText
 }
 
-/** @type {Extension['insideSpan']} */
+/** @satisfies {Extension['insideSpan']} */
 export const insideSpan = {null: [attention, resolveText]}
 
-/** @type {Extension['attentionMarkers']} */
+/** @satisfies {Extension['attentionMarkers']} */
 export const attentionMarkers = {null: [codes.asterisk, codes.underscore]}
 
-/** @type {Extension['disable']} */
+/** @satisfies {Extension['disable']} */
 export const disable = {null: []}

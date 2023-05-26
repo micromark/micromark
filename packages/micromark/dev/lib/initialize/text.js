@@ -10,6 +10,7 @@
 import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 import {types} from 'micromark-util-symbol/types.js'
+import {ok as assert} from 'uvu/assert'
 
 export const resolver = {resolveAll: createResolver()}
 export const string = initializeFactory('string')
@@ -80,6 +81,9 @@ function initializeFactory(field) {
       let index = -1
 
       if (list) {
+        // Always populated by defaults.
+        assert(Array.isArray(list), 'expected `disable.null` to be populated')
+
         while (++index < list.length) {
           const item = list[index]
           if (!item.previous || item.previous.call(self, self.previous)) {

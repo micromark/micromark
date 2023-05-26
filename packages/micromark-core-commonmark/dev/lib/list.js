@@ -212,6 +212,11 @@ function tokenizeListContinuation(effects, ok, nok) {
     self.containerState._closeFlow = true
     // As we’re closing flow, we’re no longer interrupting.
     self.interrupt = undefined
+    // Always populated by defaults.
+    assert(
+      self.parser.constructs.disable.null,
+      'expected `disable.null` to be populated'
+    )
     return factorySpace(
       effects,
       effects.attempt(list, ok, nok),
@@ -268,6 +273,12 @@ function tokenizeListEnd(effects) {
  */
 function tokenizeListItemPrefixWhitespace(effects, ok, nok) {
   const self = this
+
+  // Always populated by defaults.
+  assert(
+    self.parser.constructs.disable.null,
+    'expected `disable.null` to be populated'
+  )
 
   return factorySpace(
     effects,
