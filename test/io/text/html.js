@@ -88,20 +88,20 @@ test('html', function () {
 
   assert.equal(
     micromark('foo <!-- not a comment -- two hyphens -->', unsafe),
-    '<p>foo &lt;!-- not a comment -- two hyphens --&gt;</p>',
-    'should not support comments w/ two dashes inside'
+    '<p>foo <!-- not a comment -- two hyphens --></p>',
+    'should support comments w/ two dashes inside'
   )
 
   assert.equal(
     micromark('foo <!--> foo -->', unsafe),
-    '<p>foo &lt;!--&gt; foo --&gt;</p>',
-    'should not support nonconforming comments (1)'
+    '<p>foo <!--> foo --&gt;</p>',
+    'should support nonconforming comments (1)'
   )
 
   assert.equal(
     micromark('foo <!-- foo--->', unsafe),
-    '<p>foo &lt;!-- foo---&gt;</p>',
-    'should not support nonconforming comments (2)'
+    '<p>foo <!-- foo---></p>',
+    'should support nonconforming comments (2)'
   )
 
   assert.equal(
@@ -161,8 +161,8 @@ test('html', function () {
 
   assert.equal(
     micromark('foo <!--->', unsafe),
-    '<p>foo &lt;!---&gt;</p>',
-    'should not support comments that start w/ `->`'
+    '<p>foo <!---></p>',
+    'should support comments that start w/ `->`'
   )
 
   assert.equal(

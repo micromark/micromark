@@ -141,61 +141,10 @@ function tokenizeHtmlText(effects, ok, nok) {
   function commentOpenInside(code) {
     if (code === codes.dash) {
       effects.consume(code)
-      return commentStart
+      return commentEnd
     }
 
     return nok(code)
-  }
-
-  /**
-   * After `<!--`, in a comment.
-   *
-   * > 👉 **Note**: html (flow) does allow `<!-->` or `<!--->` as empty
-   * > comments.
-   * > This is prohibited in html (text).
-   * > See: <https://github.com/commonmark/commonmark-spec/issues/712>.
-   *
-   * ```markdown
-   * > | a <!--b--> c
-   *           ^
-   * ```
-   *
-   * @type {State}
-   */
-  function commentStart(code) {
-    if (code === codes.greaterThan) {
-      return nok(code)
-    }
-
-    if (code === codes.dash) {
-      effects.consume(code)
-      return commentStartDash
-    }
-
-    return comment(code)
-  }
-
-  /**
-   * After `<!---`, inside a comment
-   *
-   * > 👉 **Note**: html (flow) does allow `<!-->` or `<!--->` as empty
-   * > comments.
-   * > This is prohibited in html (text).
-   * > See: <https://github.com/commonmark/commonmark-spec/issues/712>.
-   *
-   * ```markdown
-   * > | a <!---b--> c
-   *            ^
-   * ```
-   *
-   * @type {State}
-   */
-  function commentStartDash(code) {
-    if (code === codes.greaterThan) {
-      return nok(code)
-    }
-
-    return comment(code)
   }
 
   /**
@@ -240,10 +189,28 @@ function tokenizeHtmlText(effects, ok, nok) {
   function commentClose(code) {
     if (code === codes.dash) {
       effects.consume(code)
-      return end
+      return commentEnd
     }
 
     return comment(code)
+  }
+
+  /**
+   * In comment, after `--`.
+   *
+   * ```markdown
+   * > | a <!--b--> c
+   *              ^
+   * ```
+   *
+   * @type {State}
+   */
+  function commentEnd(code) {
+    return code === codes.greaterThan
+      ? end(code)
+      : code === codes.dash
+      ? commentClose(code)
+      : comment(code)
   }
 
   /**
