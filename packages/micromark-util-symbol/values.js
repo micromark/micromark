@@ -1,9 +1,11 @@
-// This module is compiled away!
-//
-// While micromark works based on character codes, this module includes the
-// string versions of ’em.
-// The C0 block, except for LF, CR, HT, and w/ the replacement character added,
-// are available here.
+/**
+ * This module is compiled away!
+ *
+ * While micromark works based on character codes, this module includes the
+ * string versions of ’em.
+ * The C0 block, except for LF, CR, HT, and w/ the replacement character added,
+ * are available here.
+ */
 export const values = /** @type {const} */ ({
   ht: '\t',
   lf: '\n',

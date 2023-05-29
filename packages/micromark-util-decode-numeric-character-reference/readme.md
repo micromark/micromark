@@ -8,22 +8,34 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility to decode numeric character references.
+[micromark][] utility to decode numeric character references.
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`decodeNumericCharacterReference(value)`](#decodenumericcharacterreferencevalue)
+    *   [`decodeNumericCharacterReference(value, base)`](#decodenumericcharacterreferencevalue-base)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes an algorithm to decode numeric character references.
+
+## When should I use this?
+
+This package might be useful when you are making your own micromark extensions.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-decode-numeric-character-reference
@@ -57,26 +69,46 @@ decodeNumericCharacterReference('110000', 16) // '�' - Out of range
 
 ## API
 
-This module exports the following identifiers:
-`decodeNumericCharacterReference`.
+This module exports the identifier:
+[`decodeNumericCharacterReference`][api-decode-numeric-character-reference].
 There is no default export.
 
-### `decodeNumericCharacterReference(value)`
+### `decodeNumericCharacterReference(value, base)`
 
-Sort of like `String.fromCharCode(Number.parseInt(value, base))`,
-but makes non-characters and control characters safe.
+Turn the number (in string form as either hexa- or plain decimal) coming from
+a numeric character reference into a character.
+
+Sort of like `String.fromCharCode(Number.parseInt(value, base))`, but makes
+non-characters and control characters safe.
 
 ###### Parameters
 
-*   `value` (`string`) — Value to decode.
-*   `base` (`number`, probably `10` or `16`) — Numeric base.
+*   `value` (`string`)
+    — value to decode
+*   `base` (`number`, probably `10` or `16`)
+    — numeric base
 
 ###### Returns
 
-`string` — Character code.
+Character (`string`).
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -134,10 +166,16 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[api-decode-numeric-character-reference]: #decodenumericcharacterreferencevalue-base

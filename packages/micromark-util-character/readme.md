@@ -8,33 +8,45 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility to handle [character codes](https://github.com/micromark/micromark#preprocess).
+[micromark][] utility to handle [character codes][code].
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
     *   [`asciiAlpha(code)`](#asciialphacode)
-    *   [`asciiDigit(code)`](#asciidigitcode)
-    *   [`asciiHexDigit(code)`](#asciihexdigitcode)
     *   [`asciiAlphanumeric(code)`](#asciialphanumericcode)
-    *   [`asciiPunctuation(code)`](#asciipunctuationcode)
     *   [`asciiAtext(code)`](#asciiatextcode)
     *   [`asciiControl(code)`](#asciicontrolcode)
-    *   [`markdownLineEndingOrSpace(code)`](#markdownlineendingorspacecode)
+    *   [`asciiDigit(code)`](#asciidigitcode)
+    *   [`asciiHexDigit(code)`](#asciihexdigitcode)
+    *   [`asciiPunctuation(code)`](#asciipunctuationcode)
     *   [`markdownLineEnding(code)`](#markdownlineendingcode)
+    *   [`markdownLineEndingOrSpace(code)`](#markdownlineendingorspacecode)
     *   [`markdownSpace(code)`](#markdownspacecode)
-    *   [`unicodeWhitespace(code)`](#unicodewhitespacecode)
     *   [`unicodePunctuation(code)`](#unicodepunctuationcode)
+    *   [`unicodeWhitespace(code)`](#unicodewhitespacecode)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes algorithms to check whether characters match groups.
+
+## When should I use this?
+
+This package might be useful when you are making your own micromark extensions.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-character
@@ -65,19 +77,25 @@ console.log(asciiAlpha(65)) // true
 
 ## API
 
-This module exports the following identifiers: `asciiAlpha`,
-`asciiAlphanumeric`, `asciiAtext`, `asciiControl`, `asciiDigit`,
-`asciiHexDigit`, `asciiPunctuation`, `markdownLineEnding`,
-`markdownLineEndingOrSpace`, `markdownSpace`, `unicodePunctuation`,
-`unicodeWhitespace`.
+This module exports the identifiers
+[`asciiAlpha`][api-ascii-alpha],
+[`asciiAlphanumeric`][api-ascii-alphanumeric],
+[`asciiAtext`][api-ascii-atext],
+[`asciiControl`][api-ascii-control],
+[`asciiDigit`][api-ascii-digit],
+[`asciiHexDigit`][api-ascii-hex-digit],
+[`asciiPunctuation`][api-ascii-punctuation],
+[`markdownLineEnding`][api-markdown-line-ending],
+[`markdownLineEndingOrSpace`][api-markdown-line-ending-or-space],
+[`markdownSpace`][api-markdown-space],
+[`unicodePunctuation`][api-unicode-punctuation],
+[`unicodeWhitespace`][api-unicode-whitespace].
 There is no default export.
 
 ### `asciiAlpha(code)`
 
-Check whether the
-[character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII alpha (`a` through `z`,
-case insensitive).
+Check whether the [character code][code] represents an ASCII alpha (`a` through
+`z`, case insensitive).
 
 An **ASCII alpha** is an ASCII upper alpha or ASCII lower alpha.
 
@@ -87,57 +105,35 @@ to U+005A (`Z`).
 An **ASCII lower alpha** is a character in the inclusive range U+0061 (`a`)
 to U+007A (`z`).
 
-### `asciiDigit(code)`
+###### Parameters
 
-Check whether the
-[character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII digit (`0` through `9`).
+*   `code` (`Code`)
+    — code
 
-An **ASCII digit** is a character in the inclusive range U+0030 (`0`) to
-U+0039 (`9`).
+###### Returns
 
-### `asciiHexDigit(code)`
-
-Check whether the
-[character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII hex digit (`a` through `f`, case insensitive, or `0` through
-`9`).
-
-An **ASCII hex digit** is an ASCII digit (see `asciiDigit`), ASCII upper hex
-digit, or an ASCII lower hex digit.
-
-An **ASCII upper hex digit** is a character in the inclusive range U+0041
-(`A`) to U+0046 (`F`).
-
-An **ASCII lower hex digit** is a character in the inclusive range U+0061
-(`a`) to U+0066 (`f`).
+Whether it matches (`boolean`).
 
 ### `asciiAlphanumeric(code)`
 
-Check whether the
-[character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII alphanumeric (`a` through `z`, case insensitive, or `0`
-through `9`).
+Check whether the [character code][code] represents an ASCII alphanumeric (`a`
+through `z`, case insensitive, or `0` through `9`).
 
 An **ASCII alphanumeric** is an ASCII digit (see `asciiDigit`) or ASCII alpha
 (see `asciiAlpha`).
 
-### `asciiPunctuation(code)`
+###### Parameters
 
-Check whether the
-[character code](https://github.com/micromark/micromark#preprocess)
-represents ASCII punctuation.
+*   `code` (`Code`)
+    — code
 
-An **ASCII punctuation** is a character in the inclusive ranges U+0021
-EXCLAMATION MARK (`!`) to U+002F SLASH (`/`), U+003A COLON (`:`) to U+0040 AT
-SIGN (`@`), U+005B LEFT SQUARE BRACKET (`[`) to U+0060 GRAVE ACCENT
-(`` ` ``), or U+007B LEFT CURLY BRACE (`{`) to U+007E TILDE (`~`).
+###### Returns
+
+Whether it matches (`boolean`).
 
 ### `asciiAtext(code)`
 
-Check whether the
-[character code](https://github.com/micromark/micromark#preprocess)
-represents an ASCII atext.
+Check whether the [character code][code] represents an ASCII atext.
 
 atext is an ASCII alphanumeric (see `asciiAlphanumeric`), or a character in
 the inclusive ranges U+0023 NUMBER SIGN (`#`) to U+0027 APOSTROPHE (`'`),
@@ -151,27 +147,92 @@ See **\[RFC5322]**:\
 P. Resnick.\
 IETF.
 
+###### Parameters
+
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
+
 ### `asciiControl(code)`
 
-Check whether a
-[character code](https://github.com/micromark/micromark#preprocess)
-is an ASCII control character.
+Check whether a [character code][code] is an ASCII control character.
 
 An **ASCII control** is a character in the inclusive range U+0000 NULL (NUL)
 to U+001F (US), or U+007F (DEL).
 
-### `markdownLineEndingOrSpace(code)`
+###### Parameters
 
-Check whether a
-[character code](https://github.com/micromark/micromark#preprocess)
-is a markdown line ending (see `markdownLineEnding`) or markdown space (see
-`markdownSpace`).
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
+
+### `asciiDigit(code)`
+
+Check whether the [character code][code] represents an ASCII digit (`0` through
+`9`).
+
+An **ASCII digit** is a character in the inclusive range U+0030 (`0`) to
+U+0039 (`9`).
+
+###### Parameters
+
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
+
+### `asciiHexDigit(code)`
+
+Check whether the [character code][code] represents an ASCII hex digit (`a`
+through `f`, case insensitive, or `0` through `9`).
+
+An **ASCII hex digit** is an ASCII digit (see `asciiDigit`), ASCII upper hex
+digit, or an ASCII lower hex digit.
+
+An **ASCII upper hex digit** is a character in the inclusive range U+0041
+(`A`) to U+0046 (`F`).
+
+An **ASCII lower hex digit** is a character in the inclusive range U+0061
+(`a`) to U+0066 (`f`).
+
+###### Parameters
+
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
+
+### `asciiPunctuation(code)`
+
+Check whether the [character code][code] represents ASCII punctuation.
+
+An **ASCII punctuation** is a character in the inclusive ranges U+0021
+EXCLAMATION MARK (`!`) to U+002F SLASH (`/`), U+003A COLON (`:`) to U+0040 AT
+SIGN (`@`), U+005B LEFT SQUARE BRACKET (`[`) to U+0060 GRAVE ACCENT
+(`` ` ``), or U+007B LEFT CURLY BRACE (`{`) to U+007E TILDE (`~`).
+
+###### Parameters
+
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
 
 ### `markdownLineEnding(code)`
 
-Check whether a
-[character code](https://github.com/micromark/micromark#preprocess)
-is a markdown line ending.
+Check whether a [character code][code] is a markdown line ending.
 
 A **markdown line ending** is the virtual characters M-0003 CARRIAGE RETURN
 LINE FEED (CRLF), M-0004 LINE FEED (LF) and M-0005 CARRIAGE RETURN (CR).
@@ -180,11 +241,32 @@ In micromark, the actual character U+000A LINE FEED (LF) and U+000D CARRIAGE
 RETURN (CR) are replaced by these virtual characters depending on whether
 they occurred together.
 
+###### Parameters
+
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
+
+### `markdownLineEndingOrSpace(code)`
+
+Check whether a [character code][code] is a markdown line ending (see
+`markdownLineEnding`) or markdown space (see `markdownSpace`).
+
+###### Parameters
+
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
+
 ### `markdownSpace(code)`
 
-Check whether a
-[character code](https://github.com/micromark/micromark#preprocess)
-is a markdown space.
+Check whether a [character code][code] is a markdown space.
 
 A **markdown space** is the concrete character U+0020 SPACE (SP) and the
 virtual characters M-0001 VIRTUAL SPACE (VS) and M-0002 HORIZONTAL TAB (HT).
@@ -193,11 +275,41 @@ In micromark, the actual character U+0009 CHARACTER TABULATION (HT) is
 replaced by one M-0002 HORIZONTAL TAB (HT) and between 0 and 3 M-0001 VIRTUAL
 SPACE (VS) characters, depending on the column at which the tab occurred.
 
+###### Parameters
+
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
+
+### `unicodePunctuation(code)`
+
+Check whether the [character code][code] represents Unicode punctuation.
+
+A **Unicode punctuation** is a character in the Unicode `Pc` (Punctuation,
+Connector), `Pd` (Punctuation, Dash), `Pe` (Punctuation, Close), `Pf`
+(Punctuation, Final quote), `Pi` (Punctuation, Initial quote), `Po`
+(Punctuation, Other), or `Ps` (Punctuation, Open) categories, or an ASCII
+punctuation (see `asciiPunctuation`) (**\[UNICODE]**).
+
+See **\[UNICODE]**:\
+[The Unicode Standard](https://www.unicode.org/versions/).\
+Unicode Consortium.
+
+###### Parameters
+
+*   `code` (`Code`)
+    — code
+
+###### Returns
+
+Whether it matches (`boolean`).
+
 ### `unicodeWhitespace(code)`
 
-Check whether the
-[character code](https://github.com/micromark/micromark#preprocess)
-represents Unicode whitespace.
+Check whether the [character code][code] represents Unicode whitespace.
 
 Note that this does handle micromark specific markdown whitespace characters.
 See `markdownLineEndingOrSpace` to check that.
@@ -210,24 +322,32 @@ See **\[UNICODE]**:\
 [The Unicode Standard](https://www.unicode.org/versions/).\
 Unicode Consortium.
 
-### `unicodePunctuation(code)`
+###### Parameters
 
-Check whether the
-[character code](https://github.com/micromark/micromark#preprocess)
-represents Unicode punctuation.
+*   `code` (`Code`)
+    — code
 
-A **Unicode punctuation** is a character in the Unicode `Pc` (Punctuation,
-Connector), `Pd` (Punctuation, Dash), `Pe` (Punctuation, Close), `Pf`
-(Punctuation, Final quote), `Pi` (Punctuation, Initial quote), `Po`
-(Punctuation, Other), or `Ps` (Punctuation, Open) categories, or an ASCII
-punctuation (see `asciiPunctuation`) (**\[UNICODE]**).
+###### Returns
 
-See **\[UNICODE]**:\
-[The Unicode Standard](https://www.unicode.org/versions/).\
-Unicode Consortium.
+Whether it matches (`boolean`).
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -285,10 +405,40 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[code]: https://github.com/micromark/micromark#preprocess
+
+[api-ascii-alpha]: #asciialphacode
+
+[api-ascii-alphanumeric]: #asciialphanumericcode
+
+[api-ascii-atext]: #asciiatextcode
+
+[api-ascii-control]: #asciicontrolcode
+
+[api-ascii-digit]: #asciidigitcode
+
+[api-ascii-hex-digit]: #asciihexdigitcode
+
+[api-ascii-punctuation]: #asciipunctuationcode
+
+[api-markdown-line-ending]: #markdownlineendingcode
+
+[api-markdown-line-ending-or-space]: #markdownlineendingorspacecode
+
+[api-markdown-space]: #markdownspacecode
+
+[api-unicode-punctuation]: #unicodepunctuationcode
+
+[api-unicode-whitespace]: #unicodewhitespacecode

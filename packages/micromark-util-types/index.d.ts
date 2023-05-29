@@ -817,7 +817,7 @@ export type Create = (
  */
 export interface ParseOptions {
   /**
-   * Array of syntax extensions
+   * Array of syntax extensions (default: `[]`).
    */
   extensions?: Array<Extension> | null | undefined
 }
@@ -1120,41 +1120,61 @@ export interface CompileData {
 }
 
 /**
- * Compile options
+ * Type of line ending in markdown.
+ */
+export type LineEnding = '\r' | '\n' | '\r\n'
+
+/**
+ * Compile options.
  */
 export interface CompileOptions {
   /**
-   * Value to use for line endings not in `doc` (`string`, default: first line
-   * ending or `'\n'`).
+   * Whether to allow (dangerous) HTML (`boolean`, default: `false`).
    *
-   * Generally, micromark copies line endings (`'\r'`, `'\n'`, `'\r\n'`) in the
+   * The default is `false`, which still parses the HTML according to
+   * `CommonMark` but shows the HTML as text instead of as elements.
+   *
+   * Pass `true` for trusted content to get actual HTML elements.
+   */
+  allowDangerousHtml?: boolean | null | undefined
+
+  /**
+   * Whether to allow dangerous protocols in links and images (`boolean`,
+   * default: `false`).
+   *
+   * The default is `false`, which drops URLs in links and images that use
+   * dangerous protocols.
+   *
+   * Pass `true` for trusted content to support all protocols.
+   *
+   * URLs that have no protocol (which means it’s relative to the current page,
+   * such as `./some/page.html`) and URLs that have a safe protocol (for
+   * images: `http`, `https`; for links: `http`, `https`, `irc`, `ircs`,
+   * `mailto`, `xmpp`), are safe.
+   * All other URLs are dangerous and dropped.
+   */
+  allowDangerousProtocol?: boolean | null | undefined
+
+  /**
+   * Default line ending to use when compiling to HTML, for line endings not in
+   * `value`.
+   *
+   * Generally, `micromark` copies line endings (`\r`, `\n`, `\r\n`) in the
    * markdown document over to the compiled HTML.
    * In some cases, such as `> a`, CommonMark requires that extra line endings
    * are added: `<blockquote>\n<p>a</p>\n</blockquote>`.
-   */
-  defaultLineEnding?: '\r' | '\n' | '\r\n' | undefined
-
-  /**
-   * Whether to allow embedded HTML (`boolean`, default: `false`).
-   */
-  allowDangerousHtml?: boolean | undefined
-
-  /**
-   * Whether to allow potentially dangerous protocols in links and images
-   * (`boolean`, default: `false`).
    *
-   * URLs relative to the current protocol are always allowed (such as,
-   * `image.jpg`).
-   * For links, the allowed protocols are `http`, `https`, `irc`, `ircs`,
-   * `mailto`, and `xmpp`.
-   * For images, the allowed protocols are `http` and `https`.
+   * To create that line ending, the document is checked for the first line
+   * ending that is used.
+   * If there is no line ending, `defaultLineEnding` is used.
+   * If that isn’t configured, `\n` is used.
    */
-  allowDangerousProtocol?: boolean | undefined
+  defaultLineEnding?: LineEnding | null | undefined
 
   /**
-   * Array of HTML extensions
+   * Array of HTML extensions (default: `[]`).
    */
-  htmlExtensions?: Array<HtmlExtension> | undefined
+  htmlExtensions?: Array<HtmlExtension> | null | undefined
 }
 
 /**

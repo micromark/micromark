@@ -8,7 +8,9 @@ const characterReferences = {'"': 'quot', '&': 'amp', '<': 'lt', '>': 'gt'}
  * Technically, we can skip `>` and `"` in many cases, but CM includes them.
  *
  * @param {string} value
+ *   Value to encode.
  * @returns {string}
+ *   Encoded value.
  */
 export function encode(value) {
   return value.replace(/["&<>]/g, replace)

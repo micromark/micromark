@@ -6,8 +6,25 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-A small CLI to build micromark development source code (for this monorepo but
-also for extensions and integrations) into production code.
+Tiny tool to help us maintain [micromark][] and the micromark extensions.
+
+## Contents
+
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
+*   [Install](#install)
+*   [Use](#use)
+*   [CLI](#cli)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
+*   [Security](#security)
+*   [Contribute](#contribute)
+*   [License](#license)
+
+## What is this?
+
+This package is a small CLI to build micromark development source code (for
+this monorepo but also for extensions and integrations) into production code.
 
 If you are making a micromark extension or are otherwise integrating with
 its code, you *should* use this.
@@ -15,10 +32,13 @@ its code, you *should* use this.
 State machines are hard: assertions, debugging messages, and readable names
 are great to develop with, but slow or big in production, this solves that.
 
+## When should I use this?
+
+This package is useful when you are making your own micromark extensions.
+
 ## Install
 
-This package is a CLI.
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-build --save-dev
@@ -85,6 +105,20 @@ The following Babel plugins are used:
 You should use `uvu/assert`, `debug`, and `micromark-util-symbol` to develop
 micromark extensions!
 
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+These package works with `micromark` version 3+.
+
 ## Security
 
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
@@ -132,10 +166,14 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark

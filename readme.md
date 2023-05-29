@@ -10,50 +10,27 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-The smallest CommonMark compliant markdown parser with positional info and
-concrete tokens.
+The smallest CommonMark compliant markdown parser.
+With positional info and concrete tokens.
 
 ## Feature highlights
 
+<!-- Note: this section has to be in sync with the `micromark` readme. -->
+
 *   [x] **[compliant][commonmark]** (100% to CommonMark)
-*   [x] **[extensions][]** ([GFM][], [directives][], [frontmatter][], [math][],
-    [MDX.js][mdxjs])
+*   [x] **[extensions][]** (100% [GFM][], 100% [MDX.js][mdxjs], [directives][],
+    [frontmatter][], [math][])
 *   [x] **[safe][security]** (by default)
-*   [x] **[small][size]** (smallest CM parser that exists)
-*   [x] **[robust][test]** (1800+ tests, 100% coverage, fuzz testing)
-
-## When to use this
-
-*   If you *just* want to turn markdown into HTML (with maybe a few extensions)
-*   If you want to do *really complex things* with markdown
-
-See [§ Comparison][comparison] for more info
-
-## Intro
-
-micromark is a long awaited markdown parser.
-It uses a [state machine][cmsm] to parse the entirety of markdown into concrete
-tokens.
-It’s the smallest 100% [CommonMark][] compliant markdown parser in JavaScript.
-It was made to replace the internals of [`remark-parse`][remark-parse], the most
-[popular][] markdown parser.
-Its API compiles to HTML, but its parts are made to be used separately, so as to
-generate syntax trees ([`mdast-util-from-markdown`][from-markdown]) or compile
-to other output formats.
-
-*   to learn markdown, see this [cheatsheet and tutorial][cheat]
-*   for more about us, see [`unifiedjs.com`][site]
-*   for updates, see [Twitter][]
-*   for questions, see [Discussions][chat]
-*   to help, see [contribute][] or [sponsor][] below
+*   [x] **[robust][test]** (±2k tests, 100% coverage, fuzz testing)
+*   [x] **[small][size-debug]** (smallest CM parser at ±14.4kb)
 
 ## Contents
 
+*   [When should I use this?](#when-should-i-use-this)
+*   [What is this?](#what-is-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
-    *   [`micromark(value[, encoding][, options])`](#micromarkvalue-encoding-options)
-    *   [`stream(options?)`](#streamoptions)
 *   [Extensions](#extensions)
     *   [List of extensions](#list-of-extensions)
     *   [`SyntaxExtension`](#syntaxextension)
@@ -84,10 +61,48 @@ to other output formats.
     *   [Origin story](#origin-story)
     *   [License](#license)
 
+## When should I use this?
+
+<!-- Note: this section has to be in sync with the `micromark` readme. -->
+
+*   If you *just* want to turn markdown into HTML (with maybe a few extensions)
+*   If you want to do *really complex things* with markdown
+
+See [§ Comparison][comparison] for more info
+
+## What is this?
+
+<!-- Note: this section has to be in sync with the `micromark` readme. -->
+
+`micromark` is an open source markdown parser written in JavaScript.
+It’s implemented as a state machine that emits concrete tokens, so that every
+byte is accounted for, with positional info.
+It then compiles those tokens directly to HTML, but other tools can take the
+data and for example build an AST which is easier to work with
+([`mdast-util-to-markdown`][mdast-util-to-markdown]).
+
+While most markdown parsers work towards compliancy with CommonMark (or GFM),
+this project goes further by following how the reference parsers (`cmark`,
+`cmark-gfm`) work, which is confirmed with thousands of extra tests.
+
+Other than CommonMark and GFM, micromark also supports common extensions to
+markdown such as MDX, math, and frontmatter.
+
+These npm packages have a sibling project in Rust:
+[`markdown-rs`][markdown-rs].
+
+*   to learn markdown, see this [cheatsheet and tutorial][cheat]
+*   for more about us, see [`unifiedjs.com`][site]
+*   for updates, see [Twitter][]
+*   for questions, see [Discussions][chat]
+*   to help, see [contribute][] and [sponsor][] below
+
 ## Install
 
+<!-- Note: this section has to be in sync with the `micromark` readme. -->
+
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark
@@ -108,6 +123,8 @@ In browsers with [`esm.sh`][esmsh]:
 ```
 
 ## Use
+
+<!-- Note: this section has to be in sync with the `micromark` readme. -->
 
 Typical use (buffering):
 
@@ -166,86 +183,7 @@ function handleError(error) {
 
 ## API
 
-`micromark` core has two entries in its export map: `micromark` and
-`micromark/stream`.
-
-`micromark` exports the following identifier: `micromark`.
-`micromark/stream` exports the following identifier: `stream`.
-There are no default exports.
-
-The export map supports the endorsed
-[`development` condition](https://nodejs.org/api/packages.html#packages_resolving_user_conditions).
-Run `node --conditions development module.js` to get instrumented dev code.
-Without this condition, production code is loaded.
-See [§ Size & debug][size-debug] for more info.
-
-### `micromark(value[, encoding][, options])`
-
-Compile markdown to HTML.
-
-##### Parameters
-
-###### `value`
-
-Markdown to parse (`string` or `Buffer`).
-
-###### `encoding`
-
-[Character encoding][encoding] to understand `value` as when it’s a
-[`Buffer`][buffer] (`string`, default: `'utf8'`).
-
-###### `options.defaultLineEnding`
-
-Value to use for line endings not in `value` (`string`, default: first line
-ending or `'\n'`).
-
-Generally, micromark copies line endings (`'\r'`, `'\n'`, `'\r\n'`) in the
-markdown document over to the compiled HTML.
-In some cases, such as `> a`, CommonMark requires that extra line endings are
-added: `<blockquote>\n<p>a</p>\n</blockquote>`.
-
-###### `options.allowDangerousHtml`
-
-Whether to allow embedded HTML (`boolean`, default: `false`).
-See [§ Security][security].
-
-###### `options.allowDangerousProtocol`
-
-Whether to allow potentially dangerous protocols in links and images (`boolean`,
-default: `false`).
-URLs relative to the current protocol are always allowed (such as, `image.jpg`).
-For links, the allowed protocols are `http`, `https`, `irc`, `ircs`, `mailto`,
-and `xmpp`.
-For images, the allowed protocols are `http` and `https`.
-See [§ Security][security].
-
-###### `options.extensions`
-
-Array of syntax extensions ([`Array<SyntaxExtension>`][syntax-extension],
-default: `[]`).
-See [§ Extensions][extensions].
-
-###### `options.htmlExtensions`
-
-Array of HTML extensions ([`Array<HtmlExtension>`][html-extension], default:
-`[]`).
-See [§ Extensions][extensions].
-
-##### Returns
-
-`string` — Compiled HTML.
-
-### `stream(options?)`
-
-Streaming interface of micromark.
-Compiles markdown to HTML.
-`options` are the same as the buffering API above.
-Note that some of the work to parse markdown can be done streaming, but in the
-end buffering is required.
-
-micromark does not handle errors for you, so you must handle errors on whatever
-streams you pipe into it.
-As markdown does not know errors, `micromark` itself does not emit errors.
+See [§API][api] in the `micromark` readme.
 
 ## Extensions
 
@@ -254,8 +192,8 @@ There are two types of extensions for micromark:
 [`SyntaxExtension`][syntax-extension],
 which change how markdown is parsed, and [`HtmlExtension`][html-extension],
 which change how it compiles.
-They can be passed in [`options.extensions`][option-extensions] or
-[`options.htmlExtensions`][option-htmlextensions], respectively.
+They can be passed in [`options.extensions`][api-option-extensions] or
+[`options.htmlExtensions`][api-option-htmlextensions], respectively.
 
 As a user of extensions, refer to each extension’s readme for more on how to use
 them.
@@ -474,10 +412,11 @@ Syntax extensions change how markdown is parsed.
 HTML extensions change how it compiles.
 
 HTML extensions are not always needed, as micromark is often used through
-[`mdast-util-from-markdown`][from-markdown] to parse to a markdown syntax tree
+[`mdast-util-from-markdown`][mdast-util-from-markdown] to parse to a markdown
+syntax tree.
 So instead of an HTML extension a `from-markdown` utility is needed.
-Then, a [`mdast-util-to-markdown`][to-markdown] utility, which is responsible
-for serializing syntax trees to markdown, is also needed.
+Then, a [`mdast-util-to-markdown`][mdast-util-to-markdown] utility, which is
+responsible for serializing syntax trees to markdown, is also needed.
 
 When developing something for internal use only, you can pick and choose which
 parts you need.
@@ -855,9 +794,9 @@ Of course, it can be better, such as with the following potential features:
 *   Add warnings on undefined variables
 *   Use `micromark-build`, and use `uvu/assert`, `debug`, and
     `micromark-util-symbol` (see [§ Size & debug][size-debug])
-*   Add [`mdast-util-from-markdown`][from-markdown] and
-    [`mdast-util-to-markdown`][to-markdown] utilities to parse and serialize the
-    AST
+*   Add [`mdast-util-from-markdown`][mdast-util-from-markdown] and
+    [`mdast-util-to-markdown`][mdast-util-to-markdown] utilities to parse and
+    serialize the AST
 
 #### Case: turn off constructs
 
@@ -1211,8 +1150,8 @@ console.log(micromark(doc, {extensions: [math], htmlExtensions: [mathHtml()]}))
 
 ### Syntax tree
 
-A higher level project, [`mdast-util-from-markdown`][from-markdown], can give
-you an AST.
+A higher level project, [`mdast-util-from-markdown`][mdast-util-from-markdown],
+can give you an AST.
 
 ```js
 import fromMarkdown from 'mdast-util-from-markdown' // This wraps micromark.
@@ -1296,7 +1235,7 @@ are created for (abstract or concrete) syntax trees—to inspect, transform, and
 generate content, so that you can make things like [MDX][], [Prettier][], or
 [Gatsby][].
 
-###### micromark
+###### `micromark`
 
 micromark can be used in two different ways.
 It can either be used, optionally with existing extensions, to get HTML easily.
@@ -1312,7 +1251,7 @@ most popular markdown parser in JavaScript.
 If you’re looking for fine grained control, use micromark.
 If you just want HTML from markdown, use micromark.
 
-###### remark
+###### `remark`
 
 [remark][] is the most popular markdown parser.
 It’s built on top of `micromark` and boasts syntax trees.
@@ -1326,7 +1265,7 @@ remark is stable, widely used, and extremely powerful for handling complex data.
 
 You probably should use [remark][].
 
-###### marked
+###### `marked`
 
 [marked][] is the oldest markdown parser on the block.
 It’s been around for ages, is battle tested, small, popular, and has a bunch of
@@ -1336,7 +1275,7 @@ If you have markdown you trust and want to turn it into HTML without a fuss, and
 don’t care about perfect compatibility with CommonMark or GFM, but do appreciate
 a small bundle size and stability, use [marked][].
 
-###### markdown-it
+###### `markdown-it`
 
 [markdown-it][] is a good, stable, and essentially CommonMark compliant markdown
 parser, with (optional) support for some GFM features as well.
@@ -1374,8 +1313,6 @@ unit tests, or both them and their coverage, respectively.
 The `$ npm run test-fuzz` script does fuzz testing for 15 minutes.
 The timeout is provided by GNU coreutils **timeout(1)**, which might not be
 available on your system.
-Either install `timeout` or remove that part temporarily from the script and
-manually exit the program after a while.
 
 ### Size & debug
 
@@ -1442,6 +1379,8 @@ By interacting with this repository, organisation, or community you agree to
 abide by its terms.
 
 ### Sponsor
+
+<!-- Note: this section has to be in sync with the `micromark` readme. -->
 
 Support this effort and give back by sponsoring on [OpenCollective][]!
 
@@ -1577,6 +1516,9 @@ micromark.
 And it’s hard to describe how that moment felt.
 It was great.
 
+In 2022, Vercel paid me to make a Rust version: [`markdown-rs`][markdown-rs].
+Super cool that I got to continue this work and bring it to a new language.
+
 ### License
 
 [MIT][license] © [Titus Wormer][author]
@@ -1623,13 +1565,13 @@ It was great.
 
 [xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
 
 [cheat]: https://commonmark.org/help/
 
@@ -1643,15 +1585,7 @@ It was great.
 
 [contribute]: #contribute
 
-[encoding]: https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings
-
-[buffer]: https://nodejs.org/api/buffer.html
-
 [commonmark-spec]: https://commonmark.org
-
-[popular]: https://www.npmtrends.com/remark-parse-vs-marked-vs-markdown-it
-
-[remark-parse]: https://unifiedjs.com/explore/package/remark-parse/
 
 [improper]: https://github.com/ChALkeR/notes/blob/master/Improper-markup-sanitization.md
 
@@ -1660,10 +1594,6 @@ It was great.
 [cmsm]: https://github.com/micromark/common-markup-state-machine
 
 [mdx-cmsm]: https://github.com/micromark/mdx-state-machine
-
-[from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
-
-[to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
 [directives]: https://github.com/micromark/micromark-extension-directive
 
@@ -1684,10 +1614,6 @@ It was great.
 [syntax-extension]: #syntaxextension
 
 [html-extension]: #htmlextension
-
-[option-extensions]: #optionsextensions
-
-[option-htmlextensions]: #optionshtmlextensions
 
 [mdast]: https://github.com/syntax-tree/mdast
 
@@ -1731,8 +1657,6 @@ It was great.
 
 [commonmark]: #commonmark
 
-[size]: #size--debug
-
 [test]: #test
 
 [security]: #security
@@ -1744,3 +1668,15 @@ It was great.
 [@johno]: https://github.com/johno
 
 [200]: https://github.com/micromark/micromark/releases/tag/2.0.0
+
+[markdown-rs]: https://github.com/wooorm/markdown-rs
+
+[mdast-util-to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
+
+[mdast-util-from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
+
+[api]: https://github.com/micromark/micromark/blob/main/packages/micromark/readme.md#api
+
+[api-option-extensions]: https://github.com/micromark/micromark/blob/main/packages/micromark/readme.md#extensions
+
+[api-option-htmlextensions]: https://github.com/micromark/micromark/blob/main/packages/micromark/readme.md#htmlextensions

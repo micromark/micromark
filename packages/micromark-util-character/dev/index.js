@@ -16,6 +16,11 @@ import {unicodePunctuationRegex} from './lib/unicode-punctuation-regex.js'
  *
  * An **ASCII lower alpha** is a character in the inclusive range U+0061 (`a`)
  * to U+007A (`z`).
+ *
+ * @param code
+ *   Code.
+ * @returns
+ *   Whether it matches.
  */
 export const asciiAlpha = regexCheck(/[A-Za-z]/)
 
@@ -25,6 +30,11 @@ export const asciiAlpha = regexCheck(/[A-Za-z]/)
  *
  * An **ASCII alphanumeric** is an ASCII digit (see `asciiDigit`) or ASCII alpha
  * (see `asciiAlpha`).
+ *
+ * @param code
+ *   Code.
+ * @returns
+ *   Whether it matches.
  */
 export const asciiAlphanumeric = regexCheck(/[\dA-Za-z]/)
 
@@ -43,6 +53,11 @@ export const asciiAlphanumeric = regexCheck(/[\dA-Za-z]/)
  * [Internet Message Format](https://tools.ietf.org/html/rfc5322).
  * P. Resnick.
  * IETF.
+ *
+ * @param code
+ *   Code.
+ * @returns
+ *   Whether it matches.
  */
 export const asciiAtext = regexCheck(/[#-'*+\--9=?A-Z^-~]/)
 
@@ -53,7 +68,9 @@ export const asciiAtext = regexCheck(/[#-'*+\--9=?A-Z^-~]/)
  * to U+001F (US), or U+007F (DEL).
  *
  * @param {Code} code
+ *   Code.
  * @returns {boolean}
+ *   Whether it matches.
  */
 export function asciiControl(code) {
   return (
@@ -68,6 +85,11 @@ export function asciiControl(code) {
  *
  * An **ASCII digit** is a character in the inclusive range U+0030 (`0`) to
  * U+0039 (`9`).
+ *
+ * @param code
+ *   Code.
+ * @returns
+ *   Whether it matches.
  */
 export const asciiDigit = regexCheck(/\d/)
 
@@ -83,6 +105,11 @@ export const asciiDigit = regexCheck(/\d/)
  *
  * An **ASCII lower hex digit** is a character in the inclusive range U+0061
  * (`a`) to U+0066 (`f`).
+ *
+ * @param code
+ *   Code.
+ * @returns
+ *   Whether it matches.
  */
 export const asciiHexDigit = regexCheck(/[\dA-Fa-f]/)
 
@@ -93,6 +120,11 @@ export const asciiHexDigit = regexCheck(/[\dA-Fa-f]/)
  * EXCLAMATION MARK (`!`) to U+002F SLASH (`/`), U+003A COLON (`:`) to U+0040 AT
  * SIGN (`@`), U+005B LEFT SQUARE BRACKET (`[`) to U+0060 GRAVE ACCENT
  * (`` ` ``), or U+007B LEFT CURLY BRACE (`{`) to U+007E TILDE (`~`).
+ *
+ * @param code
+ *   Code.
+ * @returns
+ *   Whether it matches.
  */
 export const asciiPunctuation = regexCheck(/[!-/:-@[-`{-~]/)
 
@@ -107,7 +139,9 @@ export const asciiPunctuation = regexCheck(/[!-/:-@[-`{-~]/)
  * they occurred together.
  *
  * @param {Code} code
+ *   Code.
  * @returns {boolean}
+ *   Whether it matches.
  */
 export function markdownLineEnding(code) {
   return code !== null && code < codes.horizontalTab
@@ -118,7 +152,9 @@ export function markdownLineEnding(code) {
  * `markdownLineEnding`) or markdown space (see `markdownSpace`).
  *
  * @param {Code} code
+ *   Code.
  * @returns {boolean}
+ *   Whether it matches.
  */
 export function markdownLineEndingOrSpace(code) {
   return code !== null && (code < codes.nul || code === codes.space)
@@ -135,7 +171,9 @@ export function markdownLineEndingOrSpace(code) {
  * SPACE (VS) characters, depending on the column at which the tab occurred.
  *
  * @param {Code} code
+ *   Code.
  * @returns {boolean}
+ *   Whether it matches.
  */
 export function markdownSpace(code) {
   return (
@@ -162,7 +200,9 @@ export function markdownSpace(code) {
  * Unicode Consortium.
  *
  * @param code
+ *   Code.
  * @returns
+ *   Whether it matches.
  */
 export const unicodePunctuation = regexCheck(unicodePunctuationRegex)
 
@@ -182,7 +222,9 @@ export const unicodePunctuation = regexCheck(unicodePunctuationRegex)
  * Unicode Consortium.
  *
  * @param code
+ *   Code.
  * @returns
+ *   Whether it matches.
  */
 export const unicodeWhitespace = regexCheck(/\s/)
 
@@ -199,9 +241,9 @@ function regexCheck(regex) {
    * Check whether a code matches the bound regex.
    *
    * @param {Code} code
-   *   Character code
+   *   Character code.
    * @returns {boolean}
-   *   Whether the character code matches the bound regex
+   *   Whether the character code matches the bound regex.
    */
   function check(code) {
     return code !== null && regex.test(String.fromCharCode(code))

@@ -8,24 +8,36 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility with symbols.
-
-It’s useful to reference these by name instead of value while developing.
-[`micromark-build`][micromark-build] compiles them away for production code.
+[micromark][] utility with symbols.
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes constants used throughout the micromark ecosystem.
+
+## When should I use this?
+
+This package is useful when you are making your own micromark extensions.
+It’s useful to reference these constants by name instead of value while
+developing.
+[`micromark-build`][micromark-build] compiles them away for production code.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-symbol
@@ -69,10 +81,25 @@ Each module exports an identifier with the same name (for example,
 `micromark-util-symbol/codes` has `codes`), which is an object mapping strings
 to other values.
 
-Take a peek at the code to learn more!
+See the code for the exposed data.
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -130,12 +157,16 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
 
 [micromark-build]: https://github.com/micromark/micromark/tree/main/packages/micromark-build

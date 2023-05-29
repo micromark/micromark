@@ -8,22 +8,34 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility normalize identifiers (as found in references, definitions).
+[micromark][] utility normalize identifiers.
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
     *   [`normalizeIdentifier(value)`](#normalizeidentifiervalue)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes an algorithm to normalize identifiers found in markdown.
+
+## When should I use this?
+
+This package might be useful when you are making your own micromark extensions.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-normalize-identifier
@@ -56,32 +68,51 @@ normalizeIdentifier('Толпой') // 'ТОЛПОЙ'
 
 ## API
 
-This module exports the following identifiers: `normalizeIdentifier`.
+This module exports the identifier
+[`normalizeIdentifier`][api-normalize-identifier].
 There is no default export.
 
 ### `normalizeIdentifier(value)`
 
-Normalize an identifier (such as used in definitions).
-Collapse Markdown whitespace, trim, and then lower- and uppercase.
+Normalize an identifier (as found in references, definitions).
+
+Collapses markdown whitespace, trim, and then lower- and uppercase.
 
 Some characters are considered “uppercase”, such as U+03F4 (`ϴ`), but if their
 lowercase counterpart (U+03B8 (`θ`)) is uppercased will result in a different
 uppercase character (U+0398 (`Θ`)).
-Hence, to get that form, we perform both lower- and uppercase.
+So, to get a canonical form, we perform both lower- and uppercase.
 
-Using uppercase last makes sure keys will not interact with default prototypal
-methods: no method is uppercase.
+Using uppercase last makes sure keys will never interact with default
+prototypal values (such as `constructor`): nothing in the prototype of `Object`
+is uppercase.
 
 ###### Parameters
 
-*   `value` (`string`) — Identifier to normalize.
+*   `value` (`string`)
+    — identifier to normalize
 
 ###### Returns
 
-`string` — Normalized value.
+Normalized identifier (`string`).
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -139,10 +170,16 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[api-normalize-identifier]: #normalizeidentifiervalue

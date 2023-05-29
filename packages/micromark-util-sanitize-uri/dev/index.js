@@ -7,20 +7,23 @@ import {values} from 'micromark-util-symbol/values.js'
  * Make a value safe for injection as a URL.
  *
  * This encodes unsafe characters with percent-encoding and skips already
- * encoded sequences (see `normalizeUri` below).
+ * encoded sequences (see `normalizeUri`).
  * Further unsafe characters are encoded as character references (see
  * `micromark-util-encode`).
  *
- * Then, a regex of allowed protocols can be given, in which case the URL is
+ * A regex of allowed protocols can be given, in which case the URL is
  * sanitized.
- * For example, `/^(https?|ircs?|mailto|xmpp)$/i` can be used for `a[href]`,
- * or `/^https?$/i` for `img[src]`.
+ * For example, `/^(https?|ircs?|mailto|xmpp)$/i` can be used for `a[href]`, or
+ * `/^https?$/i` for `img[src]` (this is what `github.com` allows).
  * If the URL includes an unknown protocol (one not matched by `protocol`, such
  * as a dangerous example, `javascript:`), the value is ignored.
  *
  * @param {string | undefined} url
+ *   URI to sanitize.
  * @param {RegExp | null | undefined} [protocol]
+ *   Allowed protocols.
  * @returns {string}
+ *   Sanitized URI.
  */
 export function sanitizeUri(url, protocol) {
   const value = encode(normalizeUri(url || ''))
@@ -51,13 +54,15 @@ export function sanitizeUri(url, protocol) {
 }
 
 /**
- * Normalize a URL (such as used in definitions).
+ * Normalize a URL.
  *
  * Encode unsafe characters with percent-encoding, skipping already encoded
  * sequences.
  *
  * @param {string} value
+ *   URI to normalize.
  * @returns {string}
+ *   Normalized URI.
  */
 export function normalizeUri(value) {
   /** @type {Array<string>} */

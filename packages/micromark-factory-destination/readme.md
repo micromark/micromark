@@ -8,22 +8,34 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark factory to parse destinations (found in resources, definitions).
+[micromark][] factory to parse destinations (found in resources, definitions).
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
     *   [`factoryDestination(…)`](#factorydestination)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes states to parse destinations.
+
+## When should I use this?
+
+This package is useful when you are making your own micromark extensions.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-factory-destination
@@ -85,26 +97,13 @@ function tokenizeResource(effects, ok, nok) {
 
 ## API
 
-This module exports the following identifiers: `factoryDestination`.
+This module exports the identifier
+[`factoryDestination`][api-factory-destination].
 There is no default export.
 
 ### `factoryDestination(…)`
 
-###### Parameters
-
-*   `effects` (`Effects`) — Context
-*   `ok` (`State`) — State switched to when successful
-*   `nok` (`State`) — State switched to when not successful
-*   `type` (`string`) — Token type for whole (`<a>` or `b`)
-*   `literalType` (`string`) — Token type when enclosed (`<a>`)
-*   `literalMarkerType` (`string`) — Token type for enclosing (`<` and `>`)
-*   `rawType` (`string`) — Token type when not enclosed (`b`)
-*   `stringType` (`string`) — Token type for the URI (`a` or `b`)
-*   `max` (`number`, default: `Infinity`) — Max depth of nested parens
-
-###### Returns
-
-`State`.
+Parse destinations.
 
 ###### Examples
 
@@ -119,8 +118,48 @@ a(b)c
 a(b)
 ```
 
+###### Parameters
+
+*   `effects` (`Effects`)
+    — context
+*   `ok` (`State`)
+    — state switched to when successful
+*   `nok` (`State`)
+    — state switched to when unsuccessful
+*   `type` (`string`)
+    — type for whole (`<a>` or `b`)
+*   `literalType` (`string`)
+    — type when enclosed (`<a>`)
+*   `literalMarkerType` (`string`)
+    — type for enclosing (`<` and `>`)
+*   `rawType` (`string`)
+    — type when not enclosed (`b`)
+*   `stringType` (`string`)
+    — type for the value (`a` or `b`)
+*   `max` (`number`, default: `Infinity`)
+    — depth of nested parens (inclusive)
+
+###### Returns
+
+Start state (`State`).
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
+
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -178,10 +217,16 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[api-factory-destination]: #factorydestination

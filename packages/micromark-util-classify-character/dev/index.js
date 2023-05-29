@@ -11,16 +11,18 @@ import {codes} from 'micromark-util-symbol/codes.js'
 import {constants} from 'micromark-util-symbol/constants.js'
 
 /**
- * Classify whether a character code represents whitespace, punctuation, or
- * something else.
+ * Classify whether a code represents whitespace, punctuation, or something
+ * else.
  *
  * Used for attention (emphasis, strong), whose sequences can open or close
  * based on the class of surrounding characters.
  *
- * Note that eof (`null`) is seen as whitespace.
+ * > 👉 **Note**: eof (`null`) is seen as whitespace.
  *
  * @param {Code} code
- * @returns {number | undefined}
+ *   Code.
+ * @returns {typeof constants.characterGroupWhitespace | typeof constants.characterGroupPunctuation | undefined}
+ *   Group.
  */
 export function classifyCharacter(code) {
   if (

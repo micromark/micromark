@@ -8,23 +8,35 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility to sanitize urls.
+[micromark][] utility to sanitize urls.
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
+    *   [`normalizeUri(value)`](#normalizeurivalue)
     *   [`sanitizeUri(url[, pattern])`](#sanitizeuriurl-pattern)
-    *   [`normalizeUri(url[, pattern])`](#normalizeuriurl-pattern)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes an algorithm to make URLs safe.
+
+## When should I use this?
+
+This package might be useful when you are making your own micromark extensions.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-sanitize-uri
@@ -61,17 +73,34 @@ sanitizeUri('#a', /^https?$/i) // '#a'
 
 ## API
 
-This module exports the following identifiers: `sanitizeUri`.
+This module exports the identifiers [`normalizeUri`][api-normalize-uri] and
+[`sanitizeUri`][api-sanitize-uri].
 There is no default export.
+
+### `normalizeUri(value)`
+
+Normalize a URL.
+
+Encode unsafe characters with percent-encoding, skipping already encoded
+sequences.
+
+###### Parameters
+
+*   `value` (`string`)
+    — URI to normalize
+
+###### Returns
+
+Normalized URI (`string`).
 
 ### `sanitizeUri(url[, pattern])`
 
 Make a value safe for injection as a URL.
 
 This encodes unsafe characters with percent-encoding and skips already
-encoded sequences (see `normalizeUri` internally).
+encoded sequences (see [`normalizeUri`][api-normalize-uri]).
 Further unsafe characters are encoded as character references (see
-`micromark-util-encode`).
+[`micromark-util-encode`][micromark-util-encode]).
 
 A regex of allowed protocols can be given, in which case the URL is sanitized.
 For example, `/^(https?|ircs?|mailto|xmpp)$/i` can be used for `a[href]`, or
@@ -81,30 +110,32 @@ as a dangerous example, `javascript:`), the value is ignored.
 
 ###### Parameters
 
-*   `url` (`string`) — URI to sanitize.
-*   `pattern` (`RegExp`, optional) — Allowed protocols.
+*   `url` (`string`)
+    — URI to sanitize
+*   `pattern` (`RegExp`, optional)
+    — allowed protocols
 
 ###### Returns
 
-`string` — Sanitized URI.
+Sanitized URI (`string`).
 
-### `normalizeUri(url[, pattern])`
+## Types
 
-Normalize a URL (such as used in definitions).
+This package is fully typed with [TypeScript][].
+It exports no additional types.
 
-Encode unsafe characters with percent-encoding, skipping already encoded
-sequences.
+## Compatibility
 
-###### Parameters
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
 
-*   `url` (`string`) — URI to normalize.
-
-###### Returns
-
-`string` — Normalized URI.
+This package works with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -162,10 +193,20 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[micromark-util-encode]: https://github.com/micromark/micromark/tree/main/packages/micromark-util-encode
+
+[api-normalize-uri]: #normalizeurivalue
+
+[api-sanitize-uri]: #sanitizeuriurl-pattern

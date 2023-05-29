@@ -8,9 +8,13 @@
  * Call all `resolveAll`s.
  *
  * @param {Array<{resolveAll?: Resolver | undefined}>} constructs
+ *   List of constructs, optionally with `resolveAll`s.
  * @param {Array<Event>} events
+ *   List of events.
  * @param {TokenizeContext} context
+ *   Context used by `tokenize`.
  * @returns {Array<Event>}
+ *   Changed events.
  */
 export function resolveAll(constructs, events, context) {
   /** @type {Array<Resolver>} */

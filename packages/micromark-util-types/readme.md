@@ -8,24 +8,43 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility with a couple of typescript types.
+[micromark][] utility package with TypeScript types.
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes TypeScript types shared throughout the micromark
+ecosystem.
+
+## When should I use this?
+
+This package is useful when you are making your own, typed, micromark
+extensions.
+
 ## Install
 
-This package is types only.
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-types
+```
+
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import type {Point, /* … */} from 'https://esm.sh/micromark-util-types@1'
 ```
 
 ## Use
@@ -41,12 +60,25 @@ npm install micromark-util-types
 This module exports no identifiers.
 There is no default export.
 
-See
-[the code](https://github.com/micromark/micromark/blob/main/packages/micromark-util-types/index.js)
-for all about the exposed types.
+See [the code][code] for all about the exposed types.
+
+## Types
+
+This package is just [TypeScript][] types.
+It exports lots of different types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package work with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -90,6 +122,8 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esmsh]: https://esm.sh
+
 [chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
 [chat]: https://github.com/micromark/micromark/discussions
@@ -100,10 +134,16 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[code]: https://github.com/micromark/micromark/blob/main/packages/micromark-util-types/index.d.ts

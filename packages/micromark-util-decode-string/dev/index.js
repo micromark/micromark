@@ -7,13 +7,16 @@ const characterEscapeOrReference =
   /\\([!-/:-@[-`{-~])|&(#(?:\d{1,7}|x[\da-f]{1,6})|[\da-z]{1,31});/gi
 
 /**
- * Utility to decode markdown strings (which occur in places such as fenced
- * code info strings, destinations, labels, and titles).
+ * Decode markdown strings (which occur in places such as fenced code info
+ * strings, destinations, labels, and titles).
+ *
  * The “string” content type allows character escapes and -references.
  * This decodes those.
  *
  * @param {string} value
+ *   Value to decode.
  * @returns {string}
+ *   Decoded value.
  */
 export function decodeString(value) {
   return value.replace(characterEscapeOrReference, decode)

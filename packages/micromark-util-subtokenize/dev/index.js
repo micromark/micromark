@@ -13,7 +13,9 @@ import {ok as assert} from 'uvu/assert'
  * Tokenize subcontent.
  *
  * @param {Array<Event>} events
+ *   List of events.
  * @returns {boolean}
+ *   Whether subtokens were found.
  */
 export function subtokenize(events) {
   /** @type {Record<string, number>} */

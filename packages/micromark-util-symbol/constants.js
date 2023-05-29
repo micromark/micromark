@@ -1,8 +1,4 @@
 /**
- * @typedef {import('micromark-util-types').ContentType} ContentType
- */
-
-/**
  * This module is compiled away!
  *
  * Parsing markdown comes with a couple of constants, such as minimum or maximum
@@ -23,15 +19,10 @@ export const constants = /** @type {const} */ ({
   characterReferenceHexadecimalSizeMax: 6, // `&#xff9999;`.
   characterReferenceNamedSizeMax: 31, // `&CounterClockwiseContourIntegral;`.
   codeFencedSequenceSizeMin: 3, // At least 3 ticks or tildes are needed.
-  /** @satisfies {ContentType} */
   contentTypeDocument: 'document',
-  /** @satisfies {ContentType} */
   contentTypeFlow: 'flow',
-  /** @satisfies {ContentType} */
   contentTypeContent: 'content',
-  /** @satisfies {ContentType} */
   contentTypeString: 'string',
-  /** @satisfies {ContentType} */
   contentTypeText: 'text',
   hardBreakPrefixSizeMin: 2, // At least 2 trailing spaces are needed.
   htmlRaw: 1, // Symbol for `<script>`

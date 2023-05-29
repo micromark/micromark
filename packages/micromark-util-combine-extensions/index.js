@@ -1,5 +1,4 @@
 /**
- * @typedef {import('micromark-util-types').Construct} Construct
  * @typedef {import('micromark-util-types').Extension} Extension
  * @typedef {import('micromark-util-types').Handles} Handles
  * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
@@ -11,7 +10,7 @@ import {splice} from 'micromark-util-chunked'
 const hasOwnProperty = {}.hasOwnProperty
 
 /**
- * Combine several syntax extensions into one.
+ * Combine multiple syntax extensions into one.
  *
  * @param {Array<Extension>} extensions
  *   List of syntax extensions.
@@ -88,12 +87,12 @@ function constructs(existing, list) {
 }
 
 /**
- * Combine several HTML extensions into one.
+ * Combine multiple HTML extensions into one.
  *
  * @param {Array<HtmlExtension>} htmlExtensions
  *   List of HTML extensions.
  * @returns {HtmlExtension}
- *   A single combined extension.
+ *   A single combined HTML extension.
  */
 export function combineHtmlExtensions(htmlExtensions) {
   /** @type {HtmlExtension} */

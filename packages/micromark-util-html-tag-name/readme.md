@@ -8,23 +8,35 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility with list of html tag names.
+[micromark][] utility with list of html tag names.
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
     *   [`htmlBlockNames`](#htmlblocknames)
     *   [`htmlRawNames`](#htmlrawnames)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes a list of known tag names to markdown.
+
+## When should I use this?
+
+This package is only useful if you want to build an alternative to micromark.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-html-tag-name
@@ -55,33 +67,56 @@ console.log(htmlRawNames) // ['pre', 'script', …]
 
 ## API
 
-This module exports the following identifiers: `htmlBlockNames`,
-`htmlRawNames`.
+This module exports the identifiers [`htmlBlockNames`][api-html-block-names]
+and [`htmlRawNames`][api-html-raw-names].
 There is no default export.
 
 ### `htmlBlockNames`
 
-List of lowercase HTML tag names (`Array<string>`) which when parsing HTML
-(flow), result in more relaxed rules (condition 6): because they are known
-blocks, the HTML-like syntax doesn’t have to be strictly parsed.
+List of lowercase HTML “block” tag names (`Array<string>`).
+
+The list, when parsing HTML (flow), results in more relaxed rules (condition
+6\).
+Because they are known blocks, the HTML-like syntax doesn’t have to be strictly
+parsed.
 For tag names not in this list, a more strict algorithm (condition 7) is used
 to detect whether the HTML-like syntax is seen as HTML (flow) or not.
-
-This is copied from: <https://spec.commonmark.org/0.30/#html-blocks>.
-
-### `htmlRawNames`
-
-List of lowercase HTML tag names (`Array<string>`) which when parsing HTML
-(flow), result in HTML that can include lines w/o exiting, until a closing tag
-also in this list is found (condition 1).
 
 This is copied from:
 <https://spec.commonmark.org/0.30/#html-blocks>.
 
-Note that `textarea` was added in `CommonMark@0.30`.
+> 👉 **Note**: `search` was added in `CommonMark@0.31`.
+
+### `htmlRawNames`
+
+List of lowercase HTML “raw” tag names (`Array<string>`).
+
+The list, when parsing HTML (flow), results in HTML that can include lines
+without exiting, until a closing tag also in this list is found (condition
+1\).
+
+This module is copied from:
+<https://spec.commonmark.org/0.30/#html-blocks>.
+
+> 👉 **Note**: `textarea` was added in `CommonMark@0.30`.
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -139,10 +174,18 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[api-html-block-names]: #htmlblocknames
+
+[api-html-raw-names]: #htmlrawnames

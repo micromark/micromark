@@ -8,23 +8,35 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark factory to parse [markdown space][markdown-space] (found in lots of
-places).
+[micromark][] factory to parse [markdown space][markdown-space] (found in lots
+of places).
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
     *   [`factorySpace(…)`](#factoryspace)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes states to parse spaces and/or tabs.
+
+## When should I use this?
+
+This package is useful when you are making your own micromark extensions.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-factory-space
@@ -80,28 +92,19 @@ function tokenizeCodeFenced(effects, ok, nok) {
 
 ## API
 
-This module exports the following identifiers: `factorySpace`.
+This module exports the identifier [`factorySpace`][api-factory-space].
 There is no default export.
 
 ### `factorySpace(…)`
 
-Note that there is no `nok` parameter:
+Parse spaces and tabs.
+
+There is no `nok` parameter:
 
 *   spaces in markdown are often optional, in which case this factory can be
-    used and `ok` will be switched to whether spaces were found or not,
-*   One space character can be detected with
-    [markdownSpace(code)][markdown-space] right before using `factorySpace`
-
-###### Parameters
-
-*   `effects` (`Effects`) — Context
-*   `ok` (`State`) — State switched to when successful
-*   `type` (`string`) — Token type for whole (`' \t'`)
-*   `max` (`number`, default: `Infinity`) — Max size of whitespace
-
-###### Returns
-
-`State`.
+    used and `ok` will be switched to whether spaces were found or not
+*   one line ending or space can be detected with `markdownSpace(code)` right
+    before using `factorySpace`
 
 ###### Examples
 
@@ -114,8 +117,38 @@ single space.
 ␉␠
 ```
 
+###### Parameters
+
+*   `effects` (`Effects`)
+    — context
+*   `ok` (`State`)
+    — state switched to when successful
+*   `type` (`string`)
+    — type (`' \t'`)
+*   `max` (`number`, default: `Infinity`)
+    — max (exclusive)
+
+###### Returns
+
+Start state (`State`).
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
+
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -173,12 +206,18 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
 
 [markdown-space]: https://github.com/micromark/micromark/tree/main/packages/micromark-util-character#markdownspacecode
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[api-factory-space]: #factoryspace

@@ -8,23 +8,36 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility to combine [syntax][] or [html][] extensions.
+[micromark][] utility to combine [syntax][] or [html][] extensions.
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
     *   [`combineExtensions(extensions)`](#combineextensionsextensions)
     *   [`combineHtmlExtensions(htmlExtensions)`](#combinehtmlextensionshtmlextensions)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package can merge multiple extensions into one.
+
+## When should I use this?
+
+This package might be useful when you are making “presets”, such as
+[`micromark-extension-gfm`][micromark-extension-gfm].
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-combine-extensions
@@ -58,17 +71,19 @@ const gfm = combineExtensions([gfmAutolinkLiteral, gfmStrikethrough(), gfmTable,
 
 ## API
 
-This module exports the following identifiers: `combineExtensions`,
-`combineHtmlExtensions`.
+This module exports the identifiers
+[`combineExtensions`][api-combine-extensions] and
+[`combineHtmlExtensions`][api-combine-html-extensions].
 There is no default export.
 
 ### `combineExtensions(extensions)`
 
-Combine several syntax extensions into one.
+Combine multiple syntax extensions into one.
 
 ###### Parameters
 
-*   `extensions` (`Array<Extension>`) — List of syntax extensions
+*   `extensions` (`Array<Extension>`)
+    — list of syntax extensions
 
 ###### Returns
 
@@ -76,18 +91,34 @@ A single combined extension (`Extension`).
 
 ### `combineHtmlExtensions(htmlExtensions)`
 
-Combine several html extensions into one.
+Combine multiple html extensions into one.
 
 ###### Parameters
 
-*   `htmlExtensions` (`Array<HtmlExtension>`) — List of html extensions
+*   `htmlExtensions` (`Array<HtmlExtension>`)
+    — list of HTML extensions
 
 ###### Returns
 
-A single combined html extension (`HtmlExtension`).
+A single combined HTML extension (`HtmlExtension`).
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -145,14 +176,24 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
 
 [syntax]: https://github.com/micromark/micromark#syntaxextension
 
 [html]: https://github.com/micromark/micromark#htmlextension
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[micromark-extension-gfm]: https://github.com/micromark/micromark-extension-gfm
+
+[api-combine-extensions]: #combineextensionsextensions
+
+[api-combine-html-extensions]: #combinehtmlextensionshtmlextensions

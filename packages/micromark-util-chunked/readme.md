@@ -8,23 +8,36 @@
 [![Backers][backers-badge]][opencollective]
 [![Chat][chat-badge]][chat]
 
-micromark utility to splice and push with giant arrays.
+[micromark][] utility to splice and push with giant arrays.
 
 ## Contents
 
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
 *   [Install](#install)
 *   [Use](#use)
 *   [API](#api)
     *   [`push(list, items)`](#pushlist-items)
     *   [`splice(list, start, remove, items)`](#splicelist-start-remove-items)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
 *   [Security](#security)
 *   [Contribute](#contribute)
 *   [License](#license)
 
+## What is this?
+
+This package exposes an algorithm to splice for giant arrays, which V8 bugs
+out on.
+
+## When should I use this?
+
+This package might be useful when you are making your own micromark extensions.
+
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 16+), install with [npm][]:
 
 ```sh
 npm install micromark-util-chunked
@@ -65,7 +78,8 @@ splice(events, open - 1, index - open + 3, nextEvents)
 
 ## API
 
-This module exports the following identifiers: `push`, `splice`.
+This module exports the identifiers [`push`][api-push]
+and [`splice`][api-splice].
 There is no default export.
 
 ### `push(list, items)`
@@ -78,12 +92,14 @@ and adds items in batches to prevent V8 from hanging.
 
 ###### Parameters
 
-*   `list` (`Array<unknown>`) — List to operate on
-*   `items` (`Array<unknown>`) — Items to add to `list`
+*   `list` (`Array<unknown>`)
+    — list to operate on
+*   `items` (`Array<unknown>`)
+    — items to add to `list`
 
 ###### Returns
 
-`list` or `items`
+Either `list` or `items` (`Array<unknown>`).
 
 ### `splice(list, start, remove, items)`
 
@@ -97,17 +113,36 @@ array instead of rest parameters.
 
 ###### Parameters
 
-*   `list` (`Array<unknown>`) — List to operate on
-*   `start` (`number`) — Index to remove/insert at (can be negative)
-*   `remove` (`number`) — Number of items to remove
-*   `items` (`Array<unknown>`) — Items to inject into `list`
+*   `list` (`Array<unknown>`)
+    — list to operate on
+*   `start` (`number`)
+    — index to remove/insert at (can be negative)
+*   `remove` (`number`)
+    — number of items to remove
+*   `items` (`Array<unknown>`)
+    — items to inject into `list`
 
 ###### Returns
 
-`void`
+Nothing (`void`).
+
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports no additional types.
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 16+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
+This package works with `micromark` version 3+.
 
 ## Security
 
+This package is safe.
 See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
 submit a security report.
 
@@ -165,10 +200,18 @@ abide by its terms.
 
 [health]: https://github.com/micromark/.github
 
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
+[support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[typescript]: https://www.typescriptlang.org
+
+[micromark]: https://github.com/micromark/micromark
+
+[api-push]: #pushlist-items
+
+[api-splice]: #splicelist-start-remove-items
