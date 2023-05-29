@@ -1310,9 +1310,7 @@ install.
 The `$ npm run test-api` and `$ npm run test-coverage` scripts check either the
 unit tests, or both them and their coverage, respectively.
 
-The `$ npm run test-fuzz` script does fuzz testing for 15 minutes.
-The timeout is provided by GNU coreutils **timeout(1)**, which might not be
-available on your system.
+The `$ npm run test-fuzz` script does fuzz testing for 30 minutes.
 
 ### Size & debug
 
