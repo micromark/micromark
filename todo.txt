@@ -1,27 +1,27 @@
-Things to check:
-- [ ] `resolver`s should mutate and not return?
-- [ ] Size/perf: feed more subtokenizers directly?
-- [ ] Perf: use `resolveAll` instead of `resolveToLabelEnd` for label end.
-- [ ] Perf: see if we can remove unneeded checks, interrupts, attempts, or other double parsing.
-- [ ] Perf: instead of interrupting, we can do two things:
-  1. Separate `content` chunks per line, let normal parsing make blocks and merge adjacent content
-  2. On a successful interrupt, close content and use the events from interrupting
-- [ ] Perf: more tests: <https://github.com/commonmark/commonmark.js/issues/129>
-- [ ] Tests: https://github.com/commonmark/commonmark.js/blob/master/test/regression.txt
-
 Go through:
 - Probably also update `micromark-extension-math`?
 - Probably also update `micromark-extension-directive`?
 
-Future:
+To do list:
 
-- Remove `code-text` resolver
-- Remove use of all resolvers except for “whole” resolvers
-- Remove support for passing events back from resolver
-- Add support for, in development mode, deprecation warnings
-- Change attention resolver completely
-- Change label resolvers, completely (to do: micromark-rs improvement first, if possible?)
-- Remove `to do: remove`s (e.g., end of `label-start-image` and `label-start-link` for `_hiddenFootnoteSupport`)
+* 1, misc: Add some extra extension tests
+* 3, minor: Parse BOM as construct
+* 3, minor: Use new `spaceOrTab` etc functions
+* 5, minor: Add support for, in development mode, deprecation warnings
+* 1, major: Remove `_gfmTableDynamicInterruptHack` field
+* 1, major: Remove `_hiddenFootnoteSupport` field, add `_gfmFootnoteSupport` field
+* 3, major: remove `.js` export, or even all export map entries? (except maybe `/stream`)?
+* 5, major: parse list items separately
+* 3, major: Do not use `space` in code (text), use resolver (see `Attachments` below)
+* 8, major: Change type names to match `markdown-rs`
+* 8, major: Change (doc, flow) constructs to handle their own indent
+* 13, major: Change all resolvers, use edit map, register resolvers manually instead of in construct
+* 13, major: Change tokenizer, codes, chunks, interrupt/lazy/pierce, new attempt/check algo, etc to match `markdown-rs`
+
+Things to check:
+
+* Perf: more tests: <https://github.com/commonmark/commonmark.js/issues/129>
+* <https://github.com/commonmark/commonmark.js/blob/master/test/regression.txt>
 
 Attachments:
 

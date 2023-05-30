@@ -167,6 +167,8 @@ function initializeDocument(effects) {
       // If we do have flow, it could still be a blank line,
       // but we’d be interrupting it w/ a new container if there’s a current
       // construct.
+      // To do: next major: remove `_gfmTableDynamicInterruptHack` (no longer
+      // needed in micromark-extension-gfm-table@1.0.6).
       self.interrupt = Boolean(
         childFlow.currentConstruct && !childFlow._gfmTableDynamicInterruptHack
       )

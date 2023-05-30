@@ -238,8 +238,6 @@ export interface Token {
  */
 export type Event = ['enter' | 'exit', Token, TokenizeContext]
 
-// To do: make `type` an interface, make fields a generic, make a smart return
-// type.
 /**
  * Open a token.
  *
@@ -713,6 +711,8 @@ export interface TokenizeContext {
    */
   _gfmTasklistFirstContentOfListItem?: boolean | undefined
 
+  // To do: next major: remove `_gfmTableDynamicInterruptHack` (no longer
+  // needed in micromark-extension-gfm-table@1.0.6).
   /**
    * Internal boolean shared with `micromark-extension-gfm-table` whose body
    * rows are not affected by normal interruption rules.
@@ -1002,7 +1002,6 @@ export type DocumentHandle = (
   this: Omit<CompileContext, 'sliceSerialize'>
 ) => void
 
-// To do: use token types.
 /**
  * Token types mapping to handles.
  */
@@ -1195,7 +1194,7 @@ export type TokenType = keyof TokenTypeMap
 export interface TokenTypeMap {
   // Note: these are compiled away.
   attentionSequence: 'attentionSequence' // To do: remove.
-  space: 'space' // to do: remove.
+  space: 'space' // To do: remove.
 
   data: 'data'
   whitespace: 'whitespace'
