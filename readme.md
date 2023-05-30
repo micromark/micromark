@@ -22,7 +22,7 @@ With positional info and concrete tokens.
     [frontmatter][], [math][])
 *   [x] **[safe][security]** (by default)
 *   [x] **[robust][test]** (±2k tests, 100% coverage, fuzz testing)
-*   [x] **[small][size-debug]** (smallest CM parser at ±14.4kb)
+*   [x] **[small][size-debug]** (smallest CM parser at ±15kb)
 
 ## Contents
 
