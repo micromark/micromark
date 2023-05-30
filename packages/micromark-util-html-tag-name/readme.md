@@ -148,9 +148,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/micromark-util-html-tag-name
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-html-tag-name.svg
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-util-html-tag-name
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-html-tag-name
+[bundle-size]: https://bundlejs.com/?q=micromark-util-html-tag-name
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

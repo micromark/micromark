@@ -1535,9 +1535,9 @@ Super cool that I got to continue this work and bring it to a new language.
 
 [downloads]: https://www.npmjs.com/package/micromark
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark.svg
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark
+[bundle-size]: https://bundlejs.com/?q=micromark
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

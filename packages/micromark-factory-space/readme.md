@@ -180,9 +180,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/micromark-factory-space
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-factory-space.svg
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-factory-space
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark-factory-space
+[bundle-size]: https://bundlejs.com/?q=micromark-factory-space
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

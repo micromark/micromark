@@ -138,9 +138,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/micromark-util-subtokenize
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-subtokenize.svg
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-util-subtokenize
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-subtokenize
+[bundle-size]: https://bundlejs.com/?q=micromark-util-subtokenize
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

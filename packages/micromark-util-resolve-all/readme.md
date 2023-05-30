@@ -193,9 +193,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/micromark-util-resolve-all
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-resolve-all.svg
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-util-resolve-all
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-resolve-all
+[bundle-size]: https://bundlejs.com/?q=micromark-util-resolve-all
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

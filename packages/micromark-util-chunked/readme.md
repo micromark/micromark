@@ -174,9 +174,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/micromark-util-chunked
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-chunked.svg
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-util-chunked
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-chunked
+[bundle-size]: https://bundlejs.com/?q=micromark-util-chunked
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

@@ -186,9 +186,9 @@ abide by its terms.
 
 [downloads]: https://www.npmjs.com/package/micromark-factory-title
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-factory-title.svg
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-factory-title
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark-factory-title
+[bundle-size]: https://bundlejs.com/?q=micromark-factory-title
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

@@ -10,8 +10,8 @@
 
 Markdown parser.
 
-> **Note**: this is the `micromark` package from the [micromark][] monorepo.
-> See the monorepo readme for more on the project.
+> **Note**: this is the `micromark` package from the micromark monorepo.
+> See the [monorepo readme][micromark] for more on the project.
 > See this readme for how to use it.
 
 ## Feature highlights
@@ -398,9 +398,9 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [downloads]: https://www.npmjs.com/package/micromark
 
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark.svg
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark
 
-[bundle-size]: https://bundlephobia.com/result?p=micromark
+[bundle-size]: https://bundlejs.com/?q=micromark
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
