@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-decode-string",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "micromark utility to decode markdown strings",
   "license": "MIT",
   "keywords": [
