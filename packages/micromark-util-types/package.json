@@ -35,6 +35,5 @@
     "index.js"
   ],
   "exports": "./index.js",
-  "scripts": {},
   "xo": false
 }

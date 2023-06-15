@@ -35,12 +35,5 @@
     "index.js"
   ],
   "exports": "./index.js",
-  "scripts": {},
-  "xo": false,
-  "typeCoverage": {
-    "atLeast": 100,
-    "detail": true,
-    "strict": true,
-    "ignoreCatch": true
-  }
+  "xo": false
 }

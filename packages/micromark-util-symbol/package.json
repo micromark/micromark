@@ -48,12 +48,5 @@
     "./values": "./values.js",
     "./values.js": "./values.js"
   },
-  "scripts": {},
-  "xo": false,
-  "typeCoverage": {
-    "atLeast": 100,
-    "detail": true,
-    "strict": true,
-    "ignoreCatch": true
-  }
+  "xo": false
 }

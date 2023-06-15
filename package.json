@@ -59,7 +59,6 @@
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-terser": "^0.4.0",
     "@types/concat-stream": "^2.0.0",
-    "@types/glob": "^8.0.0",
     "@types/ms": "^0.7.0",
     "@types/node": "^20.0.0",
     "@types/regenerate": "^1.0.0",
@@ -94,27 +93,37 @@
     "test": "npm run build && npm run format && npm run test-coverage"
   },
   "prettier": {
-    "tabWidth": 2,
-    "useTabs": false,
-    "singleQuote": true,
     "bracketSpacing": false,
     "semi": false,
-    "trailingComma": "none"
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
+  },
+  "remarkConfig": {
+    "plugins": [
+      "remark-preset-wooorm",
+      [
+        "remark-lint-no-html",
+        false
+      ]
+    ]
+  },
+  "typeCoverage": {
+    "atLeast": 100,
+    "detail": true,
+    "ignoreCatch": true,
+    "strict": true
   },
   "xo": {
-    "prettier": true,
     "envs": [
       "shared-node-browser"
     ],
-    "rules": {
-      "import/extensions": [
-        "error",
-        "ignorePackages"
-      ],
-      "n/file-extension-in-import": "off",
-      "unicorn/prefer-code-point": "off",
-      "prefer-arrow-callback": "off"
-    },
+    "ignores": [
+      "packages/*/*.js",
+      "packages/*/lib/**/*.js",
+      "*.d.ts"
+    ],
     "overrides": [
       {
         "files": [
@@ -124,12 +133,10 @@
           "es"
         ],
         "extends": [
-          "plugin:es/no-new-in-es2016",
+          "plugin:es/no-new-in-es2020",
           "plugin:security/recommended"
         ],
         "rules": {
-          "complexity": "off",
-          "guard-for-in": "off",
           "max-depth": "off",
           "security/detect-object-injection": "off",
           "unicorn/no-this-assignment": "off",
@@ -144,35 +151,12 @@
         "rules": {
           "import/no-unassigned-import": "off"
         }
-      },
-      {
-        "files": [
-          "script/**/*.js"
-        ],
-        "rules": {
-          "no-await-in-loop": "off"
-        }
       }
     ],
-    "ignores": [
-      "packages/*/*.js",
-      "packages/*/lib/**/*.js",
-      "*.d.ts"
-    ]
-  },
-  "remarkConfig": {
-    "plugins": [
-      "remark-preset-wooorm",
-      [
-        "remark-lint-no-html",
-        false
-      ]
-    ]
-  },
-  "typeCoverage": {
-    "atLeast": 100,
-    "detail": true,
-    "strict": true,
-    "ignoreCatch": true
+    "prettier": true,
+    "rules": {
+      "n/file-extension-in-import": "off",
+      "unicorn/prefer-code-point": "off"
+    }
   }
 }

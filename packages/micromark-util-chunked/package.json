@@ -47,11 +47,5 @@
   "scripts": {
     "build": "micromark-build"
   },
-  "xo": false,
-  "typeCoverage": {
-    "atLeast": 100,
-    "detail": true,
-    "strict": true,
-    "ignoreCatch": true
-  }
+  "xo": false
 }

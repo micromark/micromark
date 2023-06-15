@@ -30,6 +30,7 @@ export const attention = {
  *
  * @type {Resolver}
  */
+// eslint-disable-next-line complexity
 function resolveAllAttention(events, context) {
   let index = -1
   /** @type {number} */

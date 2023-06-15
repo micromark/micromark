@@ -17,6 +17,7 @@ import {ok as assert} from 'uvu/assert'
  * @returns {boolean}
  *   Whether subtokens were found.
  */
+// eslint-disable-next-line complexity
 export function subtokenize(events) {
   /** @type {Record<string, number>} */
   const jumps = {}

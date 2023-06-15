@@ -111,6 +111,7 @@
   "dependencies": {
     "@types/debug": "^4.0.0",
     "debug": "^4.0.0",
+    "decode-named-character-reference": "^1.0.0",
     "micromark-core-commonmark": "^1.0.1",
     "micromark-factory-space": "^1.0.0",
     "micromark-util-character": "^1.0.0",
@@ -124,17 +125,10 @@
     "micromark-util-subtokenize": "^1.0.0",
     "micromark-util-symbol": "^1.0.0",
     "micromark-util-types": "^1.0.1",
-    "decode-named-character-reference": "^1.0.0",
     "uvu": "^0.5.0"
   },
   "scripts": {
     "build": "micromark-build"
   },
-  "xo": false,
-  "typeCoverage": {
-    "atLeast": 100,
-    "detail": true,
-    "strict": true,
-    "ignoreCatch": true
-  }
+  "xo": false
 }

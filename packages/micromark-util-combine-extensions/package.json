@@ -40,12 +40,5 @@
     "micromark-util-chunked": "^1.0.0",
     "micromark-util-types": "^1.0.0"
   },
-  "scripts": {},
-  "xo": false,
-  "typeCoverage": {
-    "atLeast": 100,
-    "detail": true,
-    "strict": true,
-    "ignoreCatch": true
-  }
+  "xo": false
 }

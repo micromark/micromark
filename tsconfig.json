@@ -5,10 +5,9 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "exactOptionalPropertyTypes": true,
-    "forceConsistentCasingInFileNames": true,
     "lib": ["es2020"],
     "module": "node16",
-    "newLine": "lf",
+    // There’s a bug in `terser` currently :'(
     "skipLibCheck": true,
     "strict": true,
     "target": "es2020"
