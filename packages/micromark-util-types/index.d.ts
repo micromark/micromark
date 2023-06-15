@@ -1187,7 +1187,7 @@ export type Options = ParseOptions & CompileOptions
 export type TokenType = keyof TokenTypeMap
 
 // Note: when changing the next interface, you likely also have to change
-// `micromark-util-symbol/types.js`.
+// `micromark-util-symbol/types`.
 /**
  * Map of allowed token types.
  */

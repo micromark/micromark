@@ -3,8 +3,8 @@ import {Buffer} from 'node:buffer'
 import {promises as fs, createReadStream, createWriteStream} from 'node:fs'
 import stream from 'node:stream'
 import test from 'node:test'
-import concat from 'concat-stream'
-import {stream as micromark} from 'micromark/stream.js'
+import concatStream from 'concat-stream'
+import {stream as micromark} from 'micromark/stream'
 import {slowStream} from './util/slow-stream.js'
 
 test('stream', async function (t) {
@@ -15,7 +15,7 @@ test('stream', async function (t) {
       )
         .pipe(micromark())
         .pipe(
-          concat(function (result) {
+          concatStream(function (result) {
             assert.equal(
               result,
               '<p>`` some code? No, not code! A link though: <a href="http://example.com">http://example.com</a></p>',
@@ -33,7 +33,7 @@ test('stream', async function (t) {
       slowStream(Buffer.from('<admin@example.com>'))
         .pipe(micromark())
         .pipe(
-          concat(function (result) {
+          concatStream(function (result) {
             assert.equal(
               result,
               '<p><a href="mailto:admin@example.com">admin@example.com</a></p>',
@@ -51,7 +51,7 @@ test('stream', async function (t) {
       slowStream('[x]\n\n[x]: y')
         .pipe(micromark())
         .pipe(
-          concat(function (result) {
+          concatStream(function (result) {
             assert.equal(result, '<p><a href="y">x</a></p>\n', 'pass')
 
             resolve(undefined)
@@ -65,7 +65,7 @@ test('stream', async function (t) {
       slowStream('***x**y**')
         .pipe(micromark())
         .pipe(
-          concat(function (result) {
+          concatStream(function (result) {
             assert.equal(result, '<p><em><strong>x</strong>y</em>*</p>', 'pass')
 
             resolve(undefined)
@@ -79,7 +79,7 @@ test('stream', async function (t) {
       slowStream('***\r\r    fn()\r\r### Heading\r\r')
         .pipe(micromark())
         .pipe(
-          concat(function (result) {
+          concatStream(function (result) {
             assert.equal(
               result,
               '<hr />\r<pre><code>fn()\r</code></pre>\r<h3>Heading</h3>\r',
@@ -99,7 +99,7 @@ test('stream', async function (t) {
         slowStream('***\r\n\r\n    fn()\r\n\r\n### Heading\r\n\r\n')
           .pipe(micromark())
           .pipe(
-            concat(function (result) {
+            concatStream(function (result) {
               assert.equal(
                 result,
                 '<hr />\r\n<pre><code>fn()\r\n</code></pre>\r\n<h3>Heading</h3>\r\n',
@@ -143,7 +143,7 @@ test('stream', async function (t) {
       slowStream('<x>')
         .pipe(micromark())
         .pipe(
-          concat(function (result) {
+          concatStream(function (result) {
             assert.equal(result, '&lt;x&gt;', 'pass')
             resolve(undefined)
           })
@@ -155,7 +155,7 @@ test('stream', async function (t) {
     slowStream('<x>')
       .pipe(micromark({allowDangerousHtml: true}))
       .pipe(
-        concat(function (result) {
+        concatStream(function (result) {
           assert.equal(result, '<x>', 'pass')
         })
       )
@@ -214,7 +214,7 @@ test('stream', async function (t) {
 
     s = micromark()
     s.pipe(
-      concat(function (value) {
+      concatStream(function (value) {
         assert.equal(String(value), '', 'should end w/o ever receiving data')
       })
     )
@@ -222,7 +222,7 @@ test('stream', async function (t) {
 
     s = micromark()
     s.pipe(
-      concat(function (value) {
+      concatStream(function (value) {
         assert.equal(String(value), '<p>x</p>', 'should end')
       }),
       {end: true}
@@ -231,7 +231,7 @@ test('stream', async function (t) {
 
     s = micromark()
     s.pipe(
-      concat(function (value) {
+      concatStream(function (value) {
         assert.equal(
           String(value),
           '<p>alpha</p>',
@@ -243,7 +243,7 @@ test('stream', async function (t) {
 
     s = micromark()
     s.pipe(
-      concat(function (value) {
+      concatStream(function (value) {
         assert.equal(String(value), '<p>brC!vo</p>', 'should honour encoding')
       })
     )
@@ -256,7 +256,7 @@ test('stream', async function (t) {
 
     s = micromark()
     s.pipe(
-      concat(function () {
+      concatStream(function () {
         assert.equal(phase, 1, 'should trigger data after callback')
         phase++
       })
@@ -334,7 +334,7 @@ test('stream', async function (t) {
     tr = micromark()
 
     tr.pipe(
-      concat(function (buf) {
+      concatStream(function (buf) {
         assert.equal(
           String(buf),
           '<p>alphabravocharlie</p>',

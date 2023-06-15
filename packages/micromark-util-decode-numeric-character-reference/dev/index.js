@@ -1,5 +1,5 @@
-import {codes} from 'micromark-util-symbol/codes.js'
-import {values} from 'micromark-util-symbol/values.js'
+import {codes} from 'micromark-util-symbol/codes'
+import {values} from 'micromark-util-symbol/values'
 
 /**
  * Turn the number (in string form as either hexa- or plain decimal) coming from

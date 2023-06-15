@@ -7,8 +7,8 @@ import {
   unicodePunctuation,
   unicodeWhitespace
 } from 'micromark-util-character'
-import {codes} from 'micromark-util-symbol/codes.js'
-import {constants} from 'micromark-util-symbol/constants.js'
+import {codes} from 'micromark-util-symbol/codes'
+import {constants} from 'micromark-util-symbol/constants'
 
 /**
  * Classify whether a code represents whitespace, punctuation, or something

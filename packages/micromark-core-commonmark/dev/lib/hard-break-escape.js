@@ -6,8 +6,8 @@
  */
 
 import {markdownLineEnding} from 'micromark-util-character'
-import {codes} from 'micromark-util-symbol/codes.js'
-import {types} from 'micromark-util-symbol/types.js'
+import {codes} from 'micromark-util-symbol/codes'
+import {types} from 'micromark-util-symbol/types'
 import {ok as assert} from 'uvu/assert'
 
 /** @type {Construct} */

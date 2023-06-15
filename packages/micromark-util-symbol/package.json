@@ -40,13 +40,9 @@
   "To do": "next major: remove `.js` suffixes",
   "exports": {
     "./codes": "./codes.js",
-    "./codes.js": "./codes.js",
     "./constants": "./constants.js",
-    "./constants.js": "./constants.js",
     "./types": "./types.js",
-    "./types.js": "./types.js",
-    "./values": "./values.js",
-    "./values.js": "./values.js"
+    "./values": "./values.js"
   },
   "xo": false
 }

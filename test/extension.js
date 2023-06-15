@@ -9,9 +9,9 @@
 
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import concat from 'concat-stream'
+import concatStream from 'concat-stream'
 import {micromark} from 'micromark'
-import {stream} from 'micromark/stream.js'
+import {stream} from 'micromark/stream'
 import {slowStream} from './util/slow-stream.js'
 
 test('syntax extension', function () {
@@ -134,7 +134,7 @@ test('html extension', async function (t) {
       slowStream('// a\r\nb')
         .pipe(stream({extensions: [syntax], htmlExtensions: [html]}))
         .pipe(
-          concat(function (result) {
+          concatStream(function (result) {
             assert.equal(result, '<p>b</p>', 'pass')
             resolve(undefined)
           })

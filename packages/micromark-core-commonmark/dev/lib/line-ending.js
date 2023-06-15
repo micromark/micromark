@@ -7,7 +7,7 @@
 
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
-import {types} from 'micromark-util-symbol/types.js'
+import {types} from 'micromark-util-symbol/types'
 import {ok as assert} from 'uvu/assert'
 
 /** @type {Construct} */

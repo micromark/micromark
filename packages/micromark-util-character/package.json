@@ -28,7 +28,6 @@
   "sideEffects": false,
   "type": "module",
   "main": "index.js",
-  "types": "dev/index.d.ts",
   "files": [
     "dev/",
     "lib/",
@@ -36,7 +35,6 @@
     "index.js"
   ],
   "exports": {
-    "types": "./dev/index.d.ts",
     "development": "./dev/index.js",
     "default": "./index.js"
   },

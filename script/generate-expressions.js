@@ -13,7 +13,7 @@ import InitialPunctuation from '@unicode/unicode-15.0.0/General_Category/Initial
 import OtherPunctuation from '@unicode/unicode-15.0.0/General_Category/Other_Punctuation/code-points.js'
 // @ts-expect-error untyped.
 import OpenPunctuation from '@unicode/unicode-15.0.0/General_Category/Open_Punctuation/code-points.js'
-import {codes} from 'micromark-util-symbol/codes.js'
+import {codes} from 'micromark-util-symbol/codes'
 import regenerate from 'regenerate'
 
 const pcAll = regenerate()

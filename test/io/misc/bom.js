@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {Buffer} from 'node:buffer'
-import concat from 'concat-stream'
+import concatStream from 'concat-stream'
 import {micromark} from 'micromark'
-import {stream} from 'micromark/stream.js'
+import {stream} from 'micromark/stream'
 import {slowStream} from '../../util/slow-stream.js'
 
 test('bom (byte order marker)', async function () {
@@ -31,7 +31,7 @@ test('bom (byte order marker)', async function () {
     slowStream('\uFEFF# hea\uFEFFding')
       .pipe(stream())
       .pipe(
-        concat((result) => {
+        concatStream((result) => {
           assert.equal(
             result,
             '<h1>hea\uFEFFding</h1>',
@@ -47,7 +47,7 @@ test('bom (byte order marker)', async function () {
     slowStream('\uFEFF')
       .pipe(stream())
       .pipe(
-        concat((result) => {
+        concatStream((result) => {
           assert.equal(result, '', 'should ignore just a bom (stream)')
 
           resolve(undefined)

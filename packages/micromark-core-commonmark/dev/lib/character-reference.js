@@ -12,9 +12,9 @@ import {
   asciiDigit,
   asciiHexDigit
 } from 'micromark-util-character'
-import {codes} from 'micromark-util-symbol/codes.js'
-import {constants} from 'micromark-util-symbol/constants.js'
-import {types} from 'micromark-util-symbol/types.js'
+import {codes} from 'micromark-util-symbol/codes'
+import {constants} from 'micromark-util-symbol/constants'
+import {types} from 'micromark-util-symbol/types'
 import {ok as assert} from 'uvu/assert'
 
 /** @type {Construct} */

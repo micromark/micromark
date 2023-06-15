@@ -32,8 +32,8 @@ import createDebug from 'debug'
 import {markdownLineEnding} from 'micromark-util-character'
 import {push, splice} from 'micromark-util-chunked'
 import {resolveAll} from 'micromark-util-resolve-all'
-import {codes} from 'micromark-util-symbol/codes.js'
-import {values} from 'micromark-util-symbol/values.js'
+import {codes} from 'micromark-util-symbol/codes'
+import {values} from 'micromark-util-symbol/values'
 import {ok as assert} from 'uvu/assert'
 
 const debug = createDebug('micromark')

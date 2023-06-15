@@ -5,7 +5,7 @@
 
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
-import {types} from 'micromark-util-symbol/types.js'
+import {types} from 'micromark-util-symbol/types'
 
 /**
  * Parse spaces and tabs.

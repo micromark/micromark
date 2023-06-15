@@ -24,7 +24,7 @@ import {
   setextUnderline,
   thematicBreak
 } from 'micromark-core-commonmark'
-import {codes} from 'micromark-util-symbol/codes.js'
+import {codes} from 'micromark-util-symbol/codes'
 import {resolver as resolveText} from './initialize/text.js'
 
 /** @satisfies {Extension['document']} */

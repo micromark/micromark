@@ -41,10 +41,10 @@ while (++index < files.length) {
 
   const base = pathToFileURL(path.resolve(root) + path.sep)
   const modules = [
-    'micromark-util-symbol/codes.js',
-    'micromark-util-symbol/constants.js',
-    'micromark-util-symbol/types.js',
-    'micromark-util-symbol/values.js'
+    'micromark-util-symbol/codes',
+    'micromark-util-symbol/constants',
+    'micromark-util-symbol/types',
+    'micromark-util-symbol/values'
   ]
     .map((d) => {
       try {

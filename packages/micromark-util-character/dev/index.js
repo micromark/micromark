@@ -2,7 +2,7 @@
  * @typedef {import('micromark-util-types').Code} Code
  */
 
-import {codes} from 'micromark-util-symbol/codes.js'
+import {codes} from 'micromark-util-symbol/codes'
 import {unicodePunctuationRegex} from './lib/unicode-punctuation-regex.js'
 
 /**

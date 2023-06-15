@@ -1,4 +1,4 @@
-import {constants} from 'micromark-util-symbol/constants.js'
+import {constants} from 'micromark-util-symbol/constants'
 
 /**
  * Like `Array#splice`, but smarter for giant arrays.

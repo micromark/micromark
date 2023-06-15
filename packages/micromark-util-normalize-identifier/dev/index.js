@@ -1,4 +1,4 @@
-import {values} from 'micromark-util-symbol/values.js'
+import {values} from 'micromark-util-symbol/values'
 
 /**
  * Normalize an identifier (as found in references, definitions).
