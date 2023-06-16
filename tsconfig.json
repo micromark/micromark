@@ -27,7 +27,6 @@
     "packages/micromark-factory-space/index.js",
     "packages/micromark-factory-title/index.js",
     "packages/micromark-factory-whitespace/index.js",
-    "packages/micromark-util-character/lib/",
     "packages/micromark-util-character/index.js",
     "packages/micromark-util-chunked/index.js",
     "packages/micromark-util-classify-character/index.js",

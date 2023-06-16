@@ -61,8 +61,6 @@
     "@types/concat-stream": "^2.0.0",
     "@types/ms": "^0.7.0",
     "@types/node": "^20.0.0",
-    "@types/regenerate": "^1.0.0",
-    "@unicode/unicode-15.0.0": "^1.0.0",
     "c8": "^8.0.0",
     "character-entities": "^2.0.0",
     "commonmark.json": "^0.30.0",
@@ -73,7 +71,6 @@
     "gzip-size-cli": "^5.0.0",
     "ms": "^2.0.0",
     "prettier": "^2.0.0",
-    "regenerate": "^1.0.0",
     "remark-cli": "^11.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "rollup": "^3.0.0",
@@ -82,7 +79,7 @@
     "xo": "^0.54.0"
   },
   "scripts": {
-    "build": "node script/generate-expressions.js && tsc --build --clean && tsc && type-coverage && npm run build --workspaces --if-present && rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
+    "build": "tsc --build --clean && tsc && type-coverage && npm run build --workspaces --if-present && rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "#format": "remark . -qfo -- temporarily off while releasing a major :)",
     "format": "prettier . -w --loglevel warn && xo --fix",
     "pretest-fuzz": "esbuild micromark --format=cjs --platform=node --bundle > test/fuzz-bundle.cjs && node script/generate-fixtures.js",

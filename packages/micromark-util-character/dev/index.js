@@ -3,7 +3,6 @@
  */
 
 import {codes} from 'micromark-util-symbol/codes'
-import {unicodePunctuationRegex} from './lib/unicode-punctuation-regex.js'
 
 /**
  * Check whether the character code represents an ASCII alpha (`a` through `z`,
@@ -204,7 +203,7 @@ export function markdownSpace(code) {
  * @returns
  *   Whether it matches.
  */
-export const unicodePunctuation = regexCheck(unicodePunctuationRegex)
+export const unicodePunctuation = regexCheck(/\p{P}/u)
 
 /**
  * Check whether the character code represents Unicode whitespace.
