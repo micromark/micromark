@@ -34,7 +34,7 @@ import {push, splice} from 'micromark-util-chunked'
 import {resolveAll} from 'micromark-util-resolve-all'
 import {codes} from 'micromark-util-symbol/codes'
 import {values} from 'micromark-util-symbol/values'
-import {ok as assert} from 'uvu/assert'
+import {ok as assert} from 'devlop'
 
 const debug = createDebug('micromark')
 

@@ -58,7 +58,7 @@ In browsers with [`esm.sh`][esmsh]:
 ## Use
 
 ```js
-import {ok as assert} from 'uvu/assert'
+import {ok as assert} from 'devlop'
 import {factoryLabel} from 'micromark-factory-label'
 import {codes} from 'micromark-util-symbol/codes'
 import {types} from 'micromark-util-symbol/types'

@@ -8,7 +8,7 @@
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes'
 import {types} from 'micromark-util-symbol/types'
-import {ok as assert} from 'uvu/assert'
+import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const hardBreakEscape = {

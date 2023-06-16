@@ -10,7 +10,7 @@
 import {codes} from 'micromark-util-symbol/codes'
 import {constants} from 'micromark-util-symbol/constants'
 import {types} from 'micromark-util-symbol/types'
-import {ok as assert} from 'uvu/assert'
+import {ok as assert} from 'devlop'
 
 export const resolver = {resolveAll: createResolver()}
 export const string = initializeFactory('string')

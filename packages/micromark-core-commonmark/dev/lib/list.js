@@ -13,7 +13,7 @@ import {asciiDigit, markdownSpace} from 'micromark-util-character'
 import {codes} from 'micromark-util-symbol/codes'
 import {constants} from 'micromark-util-symbol/constants'
 import {types} from 'micromark-util-symbol/types'
-import {ok as assert} from 'uvu/assert'
+import {ok as assert} from 'devlop'
 import {blankLine} from './blank-line.js'
 import {thematicBreak} from './thematic-break.js'
 

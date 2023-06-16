@@ -58,7 +58,16 @@ while (++index < files.length) {
     plugins: [
       [
         'babel-plugin-unassert',
-        {modules: ['assert', 'node:assert', 'power-assert', 'uvu/assert']}
+        {
+          modules: [
+            'assert',
+            'devlop',
+            'node:assert',
+            'node:assert/strict',
+            'power-assert',
+            'uvu/assert'
+          ]
+        }
       ],
       'babel-plugin-undebug',
       ['babel-plugin-inline-constants', {modules}]

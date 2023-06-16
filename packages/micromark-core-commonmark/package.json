@@ -38,6 +38,8 @@
     "default": "./index.js"
   },
   "dependencies": {
+    "decode-named-character-reference": "^1.0.0",
+    "devlop": "^1.0.0",
     "micromark-factory-destination": "^1.0.0",
     "micromark-factory-label": "^1.0.0",
     "micromark-factory-space": "^1.0.0",
@@ -51,9 +53,7 @@
     "micromark-util-resolve-all": "^1.0.0",
     "micromark-util-subtokenize": "^1.0.0",
     "micromark-util-symbol": "^1.0.0",
-    "micromark-util-types": "^1.0.1",
-    "decode-named-character-reference": "^1.0.0",
-    "uvu": "^0.5.0"
+    "micromark-util-types": "^1.0.1"
   },
   "scripts": {
     "build": "micromark-build"
