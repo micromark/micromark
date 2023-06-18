@@ -1,8 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {parse} from 'micromark/lib/parse'
-import {postprocess} from 'micromark/lib/postprocess'
-import {preprocess} from 'micromark/lib/preprocess'
+import {parse, postprocess, preprocess} from 'micromark'
 
 test('sliceSerialize', () => {
   assert.deepEqual(

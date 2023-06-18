@@ -9,6 +9,11 @@ import {parse} from './lib/parse.js'
 import {postprocess} from './lib/postprocess.js'
 import {preprocess} from './lib/preprocess.js'
 
+export {compile} from './lib/compile.js'
+export {parse} from './lib/parse.js'
+export {postprocess} from './lib/postprocess.js'
+export {preprocess} from './lib/preprocess.js'
+
 /**
  * Compile markdown to HTML.
  *
