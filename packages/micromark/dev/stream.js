@@ -13,7 +13,7 @@
  * @typedef {Omit<NodeJS.ReadableStream & NodeJS.WritableStream, 'isPaused' | 'pause' | 'read' | 'resume' | 'setEncoding' | 'unpipe' | 'unshift' | 'wrap'>} MinimalDuplex
  */
 
-import {EventEmitter} from 'events'
+import {EventEmitter} from 'node:events'
 import {compile} from './lib/compile.js'
 import {parse} from './lib/parse.js'
 import {postprocess} from './lib/postprocess.js'

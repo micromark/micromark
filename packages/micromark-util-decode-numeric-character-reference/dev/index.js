@@ -5,7 +5,7 @@ import {values} from 'micromark-util-symbol/values'
  * Turn the number (in string form as either hexa- or plain decimal) coming from
  * a numeric character reference into a character.
  *
- * Sort of like `String.fromCharCode(Number.parseInt(value, base))`, but makes
+ * Sort of like `String.fromCodePoint(Number.parseInt(value, base))`, but makes
  * non-characters and control characters safe.
  *
  * @param {string} value
@@ -26,18 +26,18 @@ export function decodeNumericCharacterReference(value, base) {
     // Control character (DEL) of C0, and C1 controls.
     (code > codes.tilde && code < 160) ||
     // Lone high surrogates and low surrogates.
-    (code > 55295 && code < 57344) ||
+    (code > 55_295 && code < 57_344) ||
     // Noncharacters.
-    (code > 64975 && code < 65008) ||
+    (code > 64_975 && code < 65_008) ||
     /* eslint-disable no-bitwise */
-    (code & 65535) === 65535 ||
-    (code & 65535) === 65534 ||
+    (code & 65_535) === 65_535 ||
+    (code & 65_535) === 65_534 ||
     /* eslint-enable no-bitwise */
     // Out of range
-    code > 1114111
+    code > 1_114_111
   ) {
     return values.replacementCharacter
   }
 
-  return String.fromCharCode(code)
+  return String.fromCodePoint(code)
 }

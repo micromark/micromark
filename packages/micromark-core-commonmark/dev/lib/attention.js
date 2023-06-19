@@ -71,8 +71,8 @@ function resolveAllAttention(events, context) {
           events[open][1].type === 'attentionSequence' &&
           events[open][1]._open &&
           // If the markers are the same:
-          context.sliceSerialize(events[open][1]).charCodeAt(0) ===
-            context.sliceSerialize(events[index][1]).charCodeAt(0)
+          context.sliceSerialize(events[open][1]).codePointAt(0) ===
+            context.sliceSerialize(events[index][1]).codePointAt(0)
         ) {
           // If the opening can close or the closing can open,
           // and the close size *is not* a multiple of three,

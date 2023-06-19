@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-code-point */
 /**
  * @typedef {import('micromark-util-types').Chunk} Chunk
  * @typedef {import('micromark-util-types').Code} Code
@@ -659,7 +660,7 @@ function serializeChunks(chunks, expandTabs) {
         default: {
           assert(typeof chunk === 'number', 'expected number')
           // Currently only replacement character.
-          value = String.fromCharCode(chunk)
+          value = String.fromCodePoint(chunk)
         }
       }
 

@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-code-point */
 import {asciiAlphanumeric} from 'micromark-util-character'
 import {encode} from 'micromark-util-encode'
 import {codes} from 'micromark-util-symbol/codes'
@@ -86,17 +87,17 @@ export function normalizeUri(value) {
     }
     // ASCII.
     else if (code < 128) {
-      if (!/[!#$&-;=?-Z_a-z~]/.test(String.fromCharCode(code))) {
-        replace = String.fromCharCode(code)
+      if (!/[!#$&-;=?-Z_a-z~]/.test(String.fromCodePoint(code))) {
+        replace = String.fromCodePoint(code)
       }
     }
     // Astral.
-    else if (code > 55295 && code < 57344) {
+    else if (code > 55_295 && code < 57_344) {
       const next = value.charCodeAt(index + 1)
 
       // A correct surrogate pair.
-      if (code < 56320 && next > 56319 && next < 57344) {
-        replace = String.fromCharCode(code, next)
+      if (code < 56_320 && next > 56_319 && next < 57_344) {
+        replace = String.fromCodePoint(code, next)
         skip = 1
       }
       // Lone surrogate.
@@ -106,7 +107,7 @@ export function normalizeUri(value) {
     }
     // Unicode.
     else {
-      replace = String.fromCharCode(code)
+      replace = String.fromCodePoint(code)
     }
 
     if (replace) {

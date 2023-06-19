@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-code-point */
 /**
  * @typedef {import('micromark-util-types').Chunk} Chunk
  * @typedef {import('micromark-util-types').Code} Code

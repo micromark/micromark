@@ -114,7 +114,7 @@ test('url', function () {
       ascii.push('\\')
     }
 
-    ascii.push(String.fromCharCode(code))
+    ascii.push(String.fromCodePoint(code))
   }
 
   assert.equal(

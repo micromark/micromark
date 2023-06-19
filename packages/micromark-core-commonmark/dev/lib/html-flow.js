@@ -154,7 +154,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     if (asciiAlpha(code)) {
       effects.consume(code)
       // @ts-expect-error: not null.
-      buffer = String.fromCharCode(code)
+      buffer = String.fromCodePoint(code)
       return tagName
     }
 
@@ -235,7 +235,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
   function cdataOpenInside(code) {
     const value = constants.cdataOpeningString
 
-    if (code === value.charCodeAt(index++)) {
+    if (code === value.codePointAt(index++)) {
       effects.consume(code)
 
       if (index === value.length) {
@@ -264,7 +264,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     if (asciiAlpha(code)) {
       effects.consume(code)
       // @ts-expect-error: not null.
-      buffer = String.fromCharCode(code)
+      buffer = String.fromCodePoint(code)
       return tagName
     }
 
@@ -325,7 +325,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     // ASCII alphanumerical and `-`.
     if (code === codes.dash || asciiAlphanumeric(code)) {
       effects.consume(code)
-      buffer += String.fromCharCode(code)
+      buffer += String.fromCodePoint(code)
       return tagName
     }
 
@@ -812,7 +812,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     if (asciiAlpha(code) && buffer.length < constants.htmlRawSizeMax) {
       effects.consume(code)
       // @ts-expect-error: not null.
-      buffer += String.fromCharCode(code)
+      buffer += String.fromCodePoint(code)
       return continuationRawEndTag
     }
 

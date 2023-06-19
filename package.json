@@ -137,9 +137,7 @@
         "rules": {
           "max-depth": "off",
           "security/detect-object-injection": "off",
-          "unicorn/no-this-assignment": "off",
-          "unicorn/numeric-separators-style": "off",
-          "unicorn/prefer-node-protocol": "off"
+          "unicorn/no-this-assignment": "off"
         }
       },
       {
@@ -153,8 +151,7 @@
     ],
     "prettier": true,
     "rules": {
-      "n/file-extension-in-import": "off",
-      "unicorn/prefer-code-point": "off"
+      "n/file-extension-in-import": "off"
     }
   }
 }
