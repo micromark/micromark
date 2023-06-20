@@ -20,6 +20,10 @@ await fs.writeFile(
   new URL('../packages/micromark/index.js', import.meta.url),
   [
     'export {micromark}',
+    'export {compile} from "./lib/compile.js"',
+    'export {parse} from "./lib/parse.js"',
+    'export {postprocess} from "./lib/postprocess.js"',
+    'export {preprocess} from "./lib/preprocess.js"',
     'import fs from "fs"',
     'import path from "path"',
     'import {micromark as core} from "./index.bak.js"',
