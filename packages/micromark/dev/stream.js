@@ -58,9 +58,9 @@ export function stream(options) {
    *
    * @overload
    * @param {Value | null | undefined} [chunk]
-   *   Slice of markdown to parse (`string` or `Buffer`).
+   *   Slice of markdown to parse (`string` or `Uint8Array`).
    * @param {Encoding | null | undefined} [encoding]
-   *   Character encoding to understand `chunk` as when it’s a `Buffer`
+   *   Character encoding to understand `chunk` as when it’s a `Uint8Array`
    *   (`string`, default: `'utf8'`).
    * @param {Callback | null | undefined} [callback]
    *   Function called when write was successful.
@@ -69,16 +69,16 @@ export function stream(options) {
    *
    * @overload
    * @param {Value | null | undefined} [chunk]
-   *   Slice of markdown to parse (`string` or `Buffer`).
+   *   Slice of markdown to parse (`string` or `Uint8Array`).
    * @param {Callback | null | undefined} [callback]
    *   Function called when write was successful.
    * @returns {boolean}
    *   Whether write was successful.
    *
    * @param {Value | null | undefined} [chunk]
-   *   Slice of markdown to parse (`string` or `Buffer`).
+   *   Slice of markdown to parse (`string` or `Uint8Array`).
    * @param {Callback | Encoding | null | undefined} [encoding]
-   *   Character encoding to understand `chunk` as when it’s a `Buffer`
+   *   Character encoding to understand `chunk` as when it’s a `Uint8Array`
    *   (`string`, default: `'utf8'`).
    * @param {Callback | null | undefined} [callback]
    *   Function called when write was successful.
@@ -112,9 +112,9 @@ export function stream(options) {
    *
    * @overload
    * @param {Value | null | undefined} [chunk]
-   *   Slice of markdown to parse (`string` or `Buffer`).
+   *   Slice of markdown to parse (`string` or `Uint8Array`).
    * @param {Encoding | null | undefined} [encoding]
-   *   Character encoding to understand `chunk` as when it’s a `Buffer`
+   *   Character encoding to understand `chunk` as when it’s a `Uint8Array`
    *   (`string`, default: `'utf8'`).
    * @param {Callback | null | undefined} [callback]
    *   Function called when write was successful.
@@ -123,7 +123,7 @@ export function stream(options) {
    *
    * @overload
    * @param {Value | null | undefined} [chunk]
-   *   Slice of markdown to parse (`string` or `Buffer`).
+   *   Slice of markdown to parse (`string` or `Uint8Array`).
    * @param {Callback | null | undefined} [callback]
    *   Function called when write was successful.
    * @returns {boolean}
@@ -135,9 +135,9 @@ export function stream(options) {
    * @returns {boolean}
    *
    * @param {Callback | Value | null | undefined} [chunk]
-   *   Slice of markdown to parse (`string` or `Buffer`).
+   *   Slice of markdown to parse (`string` or `Uint8Array`).
    * @param {Callback | Encoding | null | undefined} [encoding]
-   *   Character encoding to understand `chunk` as when it’s a `Buffer`
+   *   Character encoding to understand `chunk` as when it’s a `Uint8Array`
    *   (`string`, default: `'utf8'`).
    * @param {Callback | null | undefined} [callback]
    *   Function called when write was successful.

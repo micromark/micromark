@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict'
-import {Buffer} from 'node:buffer'
 import {promises as fs, createReadStream, createWriteStream} from 'node:fs'
 import stream from 'node:stream'
 import test from 'node:test'
@@ -28,9 +27,9 @@ test('stream', async function (t) {
     })
   })
 
-  await t.test('should support streaming buffers', function () {
+  await t.test('should support streaming typed arrays', function () {
     return new Promise(function (resolve) {
-      slowStream(Buffer.from('<admin@example.com>'))
+      slowStream(new TextEncoder().encode('<admin@example.com>'))
         .pipe(micromark())
         .pipe(
           concatStream(function (result) {
@@ -194,90 +193,113 @@ test('stream', async function (t) {
     })
   })
 
-  await t.test('#end and #write', function () {
-    /** @type {ReturnType<micromark>} */
-    let s
-    /** @type {number} */
-    let phase
-
-    assert.equal(micromark().end(), true, 'should return true for `end`')
-
-    assert.throws(
-      function () {
-        const tr = micromark()
-        tr.end()
-        tr.end()
-      },
-      /^Error: Did not expect `write` after `end`$/,
-      'should throw on end after end'
-    )
-
-    s = micromark()
-    s.pipe(
-      concatStream(function (value) {
-        assert.equal(String(value), '', 'should end w/o ever receiving data')
-      })
-    )
-    s.end()
-
-    s = micromark()
-    s.pipe(
-      concatStream(function (value) {
-        assert.equal(String(value), '<p>x</p>', 'should end')
-      }),
-      {end: true}
-    )
-    s.end('x')
-
-    s = micromark()
-    s.pipe(
-      concatStream(function (value) {
-        assert.equal(
-          String(value),
-          '<p>alpha</p>',
-          'should receive final data from `end`'
-        )
-      })
-    )
-    s.end('alpha')
-
-    s = micromark()
-    s.pipe(
-      concatStream(function (value) {
-        assert.equal(String(value), '<p>brC!vo</p>', 'should honour encoding')
-      })
-    )
-
-    // @ts-expect-error Types for `WritableStream#end` are wrong: buffers are
-    // fine.
-    s.end(Buffer.from([0x62, 0x72, 0xc3, 0xa1, 0x76, 0x6f]), 'ascii')
-
-    phase = 0
-
-    s = micromark()
-    s.pipe(
-      concatStream(function () {
-        assert.equal(phase, 1, 'should trigger data after callback')
-        phase++
-      })
-    )
-    s.end('charlie', function () {
-      assert.equal(phase, 0, 'should trigger callback before data')
-      phase++
-    })
-
-    phase = 0
-
-    micromark().end(() => {
-      phase++
-    })
-
-    assert.equal(
-      phase,
-      1,
-      'should trigger callback when it’s the only argument'
-    )
+  await t.test('#end: should return true for `end`', function () {
+    assert.equal(micromark().end(), true)
   })
+
+  await t.test('#end: should throw on end after end', function () {
+    assert.throws(function () {
+      const tr = micromark()
+      tr.end()
+      tr.end()
+    }, /^Error: Did not expect `write` after `end`$/)
+  })
+
+  await t.test('#end: should end w/o ever receiving data', async function () {
+    await new Promise(function (resolve) {
+      const s = micromark()
+      s.pipe(
+        concatStream(function (value) {
+          assert.equal(String(value), '')
+          resolve(undefined)
+        })
+      )
+      s.end()
+    })
+  })
+
+  await t.test('#end: should end', async function () {
+    await new Promise(function (resolve) {
+      const s = micromark()
+      s.pipe(
+        concatStream(function (value) {
+          assert.equal(String(value), '<p>x</p>')
+          resolve(undefined)
+        }),
+        {end: true}
+      )
+      s.end('x')
+    })
+  })
+
+  await t.test('#end: should receive final data from `end`', async function () {
+    await new Promise(function (resolve) {
+      const s = micromark()
+      s.pipe(
+        concatStream(function (value) {
+          assert.equal(String(value), '<p>alpha</p>')
+          resolve(undefined)
+        })
+      )
+      s.end('alpha')
+    })
+  })
+
+  await t.test('#end: should honour encoding', async function () {
+    await new Promise(function (resolve) {
+      const s = micromark()
+      s.pipe(
+        concatStream(function (value) {
+          assert.equal(String(value), '<p>abc</p>')
+          resolve(undefined)
+        })
+      )
+
+      // @ts-expect-error Types for `WritableStream#end` are wrong: typed arrays are
+      // fine.
+      s.end(
+        new Uint8Array([0xfe, 0xff, 0x00, 0x61, 0x00, 0x62, 0x00, 0x63]),
+        'utf-16be'
+      )
+    })
+  })
+
+  await t.test(
+    '#end: should trigger callback and data in the correct order',
+    async function () {
+      await new Promise(function (resolve) {
+        let phase = 0
+        const s = micromark()
+        s.pipe(
+          concatStream(function () {
+            assert.equal(phase, 1)
+            phase++
+            resolve(undefined)
+          })
+        )
+        s.end('charlie', function () {
+          assert.equal(phase, 0)
+          phase++
+        })
+      })
+    }
+  )
+
+  await t.test(
+    '#end: should trigger callback when it’s the only argument',
+    async function () {
+      await new Promise(function (resolve) {
+        let phase = 0
+
+        micromark().end(() => {
+          phase++
+        })
+
+        assert.equal(phase, 1)
+        resolve(undefined)
+      })
+    }
+  )
 
   await t.test('#pipe', function () {
     /** @type {ReturnType<micromark>} */

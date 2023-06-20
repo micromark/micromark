@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {Buffer} from 'node:buffer'
 import concatStream from 'concat-stream'
 import {micromark} from 'micromark'
 import {stream} from 'micromark/stream'
@@ -16,15 +15,15 @@ test('bom (byte order marker)', async function () {
   )
 
   assert.equal(
-    micromark(Buffer.from('\uFEFF')),
+    micromark(new TextEncoder().encode('\uFEFF')),
     '',
-    'should ignore just a bom (buffer)'
+    'should ignore just a bom (typed array)'
   )
 
   assert.equal(
-    micromark(Buffer.from('\uFEFF# hea\uFEFFding')),
+    micromark(new TextEncoder().encode('\uFEFF# hea\uFEFFding')),
     '<h1>hea\uFEFFding</h1>',
-    'should ignore a bom (buffer)'
+    'should ignore a bom (typed array)'
   )
 
   await new Promise(function (resolve) {
@@ -32,9 +31,10 @@ test('bom (byte order marker)', async function () {
       .pipe(stream())
       .pipe(
         concatStream((result) => {
+          // Note: `TextDecoder` removes the internal BOM.
           assert.equal(
             result,
-            '<h1>hea\uFEFFding</h1>',
+            '<h1>heading</h1>',
             'should ignore a bom (stream)'
           )
 

@@ -33,6 +33,7 @@ export function preprocess() {
   return preprocessor
 
   /** @type {Preprocessor} */
+  // eslint-disable-next-line complexity
   function preprocessor(value, encoding, end) {
     /** @type {Array<Chunk>} */
     const chunks = []
@@ -47,8 +48,12 @@ export function preprocess() {
     /** @type {Code} */
     let code
 
-    // @ts-expect-error `Buffer` does allow an encoding.
-    value = buffer + value.toString(encoding)
+    value =
+      buffer +
+      (typeof value === 'string'
+        ? value.toString()
+        : new TextDecoder(encoding || undefined).decode(value))
+
     startPosition = 0
     buffer = ''
 

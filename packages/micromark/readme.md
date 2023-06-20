@@ -180,13 +180,16 @@ See [§ Size & debug][size-debug] for more info.
 
 Compile markdown to HTML.
 
+> Note: which encodings are supported depends on the engine.
+> For info on Node.js, see *[WHATWG supported encodings][encoding]*.
+
 ###### Parameters
 
-*   `value` (`string` or [`Buffer`][buffer])
+*   `value` (`string` or [`Uint8Array`][uint8-array])
     — markdown to parse
 *   `encoding` (`string`, default: `'utf8'`)
     — [character encoding][encoding] to understand `value` as when it’s a
-    `Buffer`
+    [`Uint8Array`][uint8-array]
 *   `options` ([`Options`][api-options], optional)
     — configuration
 
@@ -444,9 +447,9 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 [contribute]: #contribute
 
-[encoding]: https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings
+[uint8-array]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
 
-[buffer]: https://nodejs.org/api/buffer.html
+[encoding]: https://nodejs.org/api/util.html#whatwg-supported-encodings
 
 [commonmark]: https://commonmark.org
 

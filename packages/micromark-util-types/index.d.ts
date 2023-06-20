@@ -738,32 +738,25 @@ export interface TokenizeContext {
 }
 
 /**
- * Encodings supported by the buffer class.
+ * Encodings supported by `TextEncoder`.
  *
- * This is a copy of the typing from Node, copied to prevent Node globals from
- * being needed.
- * Copied from: <https://github.com/DefinitelyTyped/DefinitelyTyped/blob/a2bc1d8/types/node/globals.d.ts#L174>
+ * Arbitrary encodings can be supported depending on how the engine is built.
+ * So any string *could* be valid.
+ * But you probably want `utf-8`.
  */
 export type Encoding =
-  | 'ascii'
-  | 'base64'
-  | 'binary'
-  | 'hex'
-  | 'latin1'
-  | 'ucs-2'
-  | 'ucs2'
-  | 'utf-8'
-  | 'utf16le'
-  | 'utf8'
+  // Encodings supported in Node by default or when built with the small-icu option.
+  // Does not include aliases.
+  | 'utf-8' // Always supported in Node.
+  | 'utf-16le' // Always supported in Node.
+  | 'utf-16be' // Not supported when ICU is disabled.
+  // Everything else (depends on browser, or full ICU data).
+  | (string & {})
 
 /**
  * Contents of the file.
  *
- * Can either be text, or a `Buffer` like structure.
- * This does not directly use type `Buffer`, because it can also be used in a
- * browser context.
- * Instead this leverages `Uint8Array` which is the base type for `Buffer`,
- * and a native JavaScript construct.
+ * Can either be text, or a `Uint8Array` like structure.
  */
 export type Value = Uint8Array | string
 

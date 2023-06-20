@@ -3,7 +3,7 @@ import stream from 'node:stream'
 const PassThrough = stream.PassThrough
 
 /**
- * @param {Buffer | string} value
+ * @param {Uint8Array | string} value
  * @param {BufferEncoding | undefined} [encoding]
  */
 export function slowStream(value, encoding) {
