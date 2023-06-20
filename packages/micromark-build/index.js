@@ -5,33 +5,34 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import {pathToFileURL} from 'node:url'
+import {pathToFileURL, fileURLToPath} from 'node:url'
 import {transformAsync as babel} from '@babel/core'
 import {resolve} from 'import-meta-resolve'
 import {glob} from 'glob'
+// @ts-expect-error: intyped.
+import RelativizeUrl from 'relativize-url'
 
-const root = process.cwd()
+const root = pathToFileURL(process.cwd())
 const files = await glob('./dev/**/*{.d.ts,.js}', {cwd: root})
 let index = -1
 
 while (++index < files.length) {
-  const input = path.relative(root, files[index])
-  const out = input
-    .split(path.sep)
-    .filter((d) => d !== 'dev')
-    .join(path.sep)
+  const input = new URL(files[index], root + '/')
+  const output = new URL(input.href.replace(/\/dev\//, '/'))
+  const inputRelative = RelativizeUrl.relativize(input, root)
+  const outputRelative = RelativizeUrl.relativize(output, root)
 
-  if (out === input) {
+  if (output.href === input.href) {
     continue
   }
 
-  await fs.mkdir(path.dirname(out), {recursive: true})
+  await fs.mkdir(new URL('.', output), {recursive: true})
 
-  const ext = path.extname(files[index])
+  const ext = path.extname(fileURLToPath(output))
 
   if (ext === '.ts') {
-    await fs.copyFile(input, out)
-    console.log('%s (from `%s`)', out, input)
+    await fs.copyFile(input, output)
+    console.log('%s (from `%s`)', outputRelative, inputRelative)
     continue
   }
 
@@ -39,7 +40,6 @@ while (++index < files.length) {
     throw new Error('Unknown extension `' + ext + '`')
   }
 
-  const base = pathToFileURL(path.resolve(root) + path.sep)
   const modules = [
     'micromark-util-symbol/codes',
     'micromark-util-symbol/constants',
@@ -48,13 +48,13 @@ while (++index < files.length) {
   ]
     .map((d) => {
       try {
-        return resolve(d, base.href)
+        return resolve(d, input.href)
       } catch {}
     })
     .filter(Boolean)
 
   const result = await babel(String(await fs.readFile(input)), {
-    filename: input,
+    filename: fileURLToPath(input),
     plugins: [
       [
         'babel-plugin-unassert',
@@ -78,7 +78,7 @@ while (++index < files.length) {
     throw new Error('Could not transform `' + input + '`')
   }
 
-  console.log('%s (from `%s`)', out, input)
+  console.log('%s (from `%s`)', outputRelative, inputRelative)
 
-  await fs.writeFile(out, result.code)
+  await fs.writeFile(output, result.code)
 }

@@ -71,6 +71,7 @@
     "gzip-size-cli": "^5.0.0",
     "ms": "^2.0.0",
     "prettier": "^2.0.0",
+    "relativize-url": "^0.0.2",
     "remark-cli": "^11.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "rollup": "^3.0.0",

@@ -63,8 +63,8 @@
   "dependencies": {
     "@types/debug": "^4.0.0",
     "debug": "^4.0.0",
-    "devlop": "^1.0.0",
     "decode-named-character-reference": "^1.0.0",
+    "devlop": "^1.0.0",
     "micromark-core-commonmark": "^1.0.1",
     "micromark-factory-space": "^1.0.0",
     "micromark-util-character": "^1.0.0",
