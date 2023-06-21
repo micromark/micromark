@@ -46,7 +46,7 @@
     "micromark-factory-whitespace": "^2.0.0",
     "micromark-util-character": "^2.0.0",
     "micromark-util-chunked": "^2.0.0",
-    "micromark-util-classify-character": "^1.0.0",
+    "micromark-util-classify-character": "^2.0.0",
     "micromark-util-html-tag-name": "^1.0.0",
     "micromark-util-normalize-identifier": "^1.0.0",
     "micromark-util-resolve-all": "^1.0.0",
