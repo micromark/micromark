@@ -81,8 +81,7 @@
   },
   "scripts": {
     "build": "tsc --build --clean && tsc && type-coverage && npm run build --workspaces --if-present && rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
-    "#format": "remark . -qfo -- temporarily off while releasing a major :)",
-    "format": "prettier . -w --loglevel warn && xo --fix",
+    "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "test-fuzz": "esbuild micromark --bundle --conditions=development --format=cjs --platform=node --target=es2022 > test/fuzz-bundle.cjs && node script/generate-fixtures.js && jazzer test/fuzz.cjs test/fixtures -- -max_total_time=1800",
     "test-api-dev": "node --conditions development test/index.js",
     "test-api-prod": "node --conditions production test/index.js",
