@@ -71,7 +71,7 @@
     "micromark-util-combine-extensions": "^2.0.0",
     "micromark-util-decode-numeric-character-reference": "^2.0.0",
     "micromark-util-encode": "^2.0.0",
-    "micromark-util-normalize-identifier": "^1.0.0",
+    "micromark-util-normalize-identifier": "^2.0.0",
     "micromark-util-resolve-all": "^1.0.0",
     "micromark-util-sanitize-uri": "^1.0.0",
     "micromark-util-subtokenize": "^1.0.0",
