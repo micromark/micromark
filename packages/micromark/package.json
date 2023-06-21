@@ -67,7 +67,7 @@
     "micromark-core-commonmark": "^1.0.1",
     "micromark-factory-space": "^2.0.0",
     "micromark-util-character": "^2.0.0",
-    "micromark-util-chunked": "^1.0.0",
+    "micromark-util-chunked": "^2.0.0",
     "micromark-util-combine-extensions": "^1.0.0",
     "micromark-util-decode-numeric-character-reference": "^1.0.0",
     "micromark-util-encode": "^1.0.0",
