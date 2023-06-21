@@ -41,11 +41,11 @@ let index = 0
 // Note: line endings have already been turned into spaces.
 if (
   result.length > 2 &&
-  result.codePointAt(index) === codes.space &&
-  result.codePointAt(result.length - 1) === codes.space
+  result.charCodeAt(index) === codes.space &&
+  result.charCodeAt(result.length - 1) === codes.space
 ) {
   while (++index < result.length - 1 && !trim) {
-    if (result.codePointAt(index) !== codes.space) {
+    if (result.charCodeAt(index) !== codes.space) {
         trim = true
     }
   }

@@ -34,10 +34,10 @@ function decode($0, $1, $2) {
   }
 
   // Reference.
-  const head = $2.codePointAt(0)
+  const head = $2.charCodeAt(0)
 
   if (head === codes.numberSign) {
-    const head = $2.codePointAt(1)
+    const head = $2.charCodeAt(1)
     const hex = head === codes.lowercaseX || head === codes.uppercaseX
     return decodeNumericCharacterReference(
       $2.slice(hex ? 2 : 1),

@@ -224,7 +224,7 @@ function tokenizeHtmlText(effects, ok, nok) {
   function cdataOpenInside(code) {
     const value = constants.cdataOpeningString
 
-    if (code === value.codePointAt(index++)) {
+    if (code === value.charCodeAt(index++)) {
       effects.consume(code)
       return index === value.length ? cdata : cdataOpenInside
     }

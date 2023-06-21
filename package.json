@@ -151,7 +151,8 @@
     ],
     "prettier": true,
     "rules": {
-      "n/file-extension-in-import": "off"
+      "n/file-extension-in-import": "off",
+      "unicorn/prefer-code-point": "off"
     }
   }
 }

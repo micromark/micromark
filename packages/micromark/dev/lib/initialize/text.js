@@ -166,7 +166,7 @@ function resolveAllLineSuffixes(events, context) {
         if (typeof chunk === 'string') {
           bufferIndex = chunk.length
 
-          while (chunk.codePointAt(bufferIndex - 1) === codes.space) {
+          while (chunk.charCodeAt(bufferIndex - 1) === codes.space) {
             size++
             bufferIndex--
           }

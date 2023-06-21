@@ -456,7 +456,7 @@ export function compile(options) {
   function lineEndingIfNeeded() {
     const buffer = buffers[buffers.length - 1]
     const slice = buffer[buffer.length - 1]
-    const previous = slice ? slice.codePointAt(slice.length - 1) : codes.eof
+    const previous = slice ? slice.charCodeAt(slice.length - 1) : codes.eof
 
     if (
       previous === codes.lf ||
@@ -949,7 +949,7 @@ export function compile(options) {
   function onexitsetextheadinglinesequence(token) {
     setData(
       'headingRank',
-      this.sliceSerialize(token).codePointAt(0) === codes.equalsTo ? 1 : 2
+      this.sliceSerialize(token).charCodeAt(0) === codes.equalsTo ? 1 : 2
     )
   }
 
