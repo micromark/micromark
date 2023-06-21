@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "micromark-util-symbol": "^1.0.0",
-    "micromark-util-types": "^1.0.0"
+    "micromark-util-types": "^2.0.0"
   },
   "scripts": {
     "build": "micromark-build"
