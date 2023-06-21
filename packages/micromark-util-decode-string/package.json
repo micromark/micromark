@@ -41,7 +41,7 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-character": "^1.0.0",
+    "micromark-util-character": "^2.0.0",
     "micromark-util-decode-numeric-character-reference": "^1.0.0",
     "micromark-util-symbol": "^2.0.0",
     "decode-named-character-reference": "^1.0.0"

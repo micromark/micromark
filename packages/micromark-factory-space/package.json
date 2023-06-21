@@ -36,7 +36,7 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-character": "^1.0.0",
+    "micromark-util-character": "^2.0.0",
     "micromark-util-types": "^2.0.0"
   },
   "scripts": {

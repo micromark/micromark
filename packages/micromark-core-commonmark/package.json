@@ -44,7 +44,7 @@
     "micromark-factory-space": "^1.0.0",
     "micromark-factory-title": "^1.0.0",
     "micromark-factory-whitespace": "^1.0.0",
-    "micromark-util-character": "^1.0.0",
+    "micromark-util-character": "^2.0.0",
     "micromark-util-chunked": "^1.0.0",
     "micromark-util-classify-character": "^1.0.0",
     "micromark-util-html-tag-name": "^1.0.0",
