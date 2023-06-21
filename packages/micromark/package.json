@@ -65,7 +65,7 @@
     "decode-named-character-reference": "^1.0.0",
     "devlop": "^1.0.0",
     "micromark-core-commonmark": "^1.0.1",
-    "micromark-factory-space": "^1.0.0",
+    "micromark-factory-space": "^2.0.0",
     "micromark-util-character": "^2.0.0",
     "micromark-util-chunked": "^1.0.0",
     "micromark-util-combine-extensions": "^1.0.0",

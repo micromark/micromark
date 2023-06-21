@@ -41,7 +41,7 @@
     "devlop": "^1.0.0",
     "micromark-factory-destination": "^2.0.0",
     "micromark-factory-label": "^2.0.0",
-    "micromark-factory-space": "^1.0.0",
+    "micromark-factory-space": "^2.0.0",
     "micromark-factory-title": "^1.0.0",
     "micromark-factory-whitespace": "^1.0.0",
     "micromark-util-character": "^2.0.0",
