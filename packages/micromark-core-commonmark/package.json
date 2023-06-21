@@ -43,7 +43,7 @@
     "micromark-factory-label": "^2.0.0",
     "micromark-factory-space": "^2.0.0",
     "micromark-factory-title": "^2.0.0",
-    "micromark-factory-whitespace": "^1.0.0",
+    "micromark-factory-whitespace": "^2.0.0",
     "micromark-util-character": "^2.0.0",
     "micromark-util-chunked": "^1.0.0",
     "micromark-util-classify-character": "^1.0.0",
