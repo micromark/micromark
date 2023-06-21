@@ -69,7 +69,7 @@
     "micromark-util-character": "^2.0.0",
     "micromark-util-chunked": "^2.0.0",
     "micromark-util-combine-extensions": "^2.0.0",
-    "micromark-util-decode-numeric-character-reference": "^1.0.0",
+    "micromark-util-decode-numeric-character-reference": "^2.0.0",
     "micromark-util-encode": "^1.0.0",
     "micromark-util-normalize-identifier": "^1.0.0",
     "micromark-util-resolve-all": "^1.0.0",
