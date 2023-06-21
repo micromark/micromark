@@ -42,7 +42,7 @@ export {preprocess} from './lib/preprocess.js'
  *
  * @param {Value} value
  *   Markdown to parse (`string` or `Uint8Array`).
- * @param {Options | Encoding | null | undefined} [encoding]
+ * @param {Encoding | Options | null | undefined} [encoding]
  *   Character encoding to understand `value` as when it’s a `Uint8Array`
  *   (`string`, default: `'utf8'`).
  * @param {Options | null | undefined} [options]

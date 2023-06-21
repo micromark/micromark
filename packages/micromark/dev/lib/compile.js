@@ -154,7 +154,7 @@ export function compile(options) {
       codeFenced: onexitflowcode,
       codeFencedFence: onexitcodefencedfence,
       codeFencedFenceInfo: onexitcodefencedfenceinfo,
-      codeFencedFenceMeta: resume,
+      codeFencedFenceMeta: onresumedrop,
       codeFlowValue: onexitcodeflowvalue,
       codeIndented: onexitflowcode,
       codeText: onexitcodetext,
@@ -179,9 +179,9 @@ export function compile(options) {
       listOrdered: onexitlistordered,
       listUnordered: onexitlistunordered,
       paragraph: onexitparagraph,
-      reference: resume,
+      reference: onresumedrop,
       referenceString: onexitreferencestring,
-      resource: resume,
+      resource: onresumedrop,
       resourceDestinationString: onexitresourcedestinationstring,
       resourceTitleString: onexitresourcetitlestring,
       setextHeading: onexitsetextheading,
@@ -346,7 +346,7 @@ export function compile(options) {
    * Figure out whether lists are loose or not.
    *
    * @param {Array<Event>} slice
-   * @returns {void}
+   * @returns {undefined}
    */
   function prepareList(slice) {
     const length = slice.length
@@ -448,7 +448,7 @@ export function compile(options) {
   /**
    * Output an extra line ending.
    *
-   * @returns {void}
+   * @returns {undefined}
    */
   function lineEnding() {
     raw(lineEndingStyle || '\n')
@@ -479,6 +479,13 @@ export function compile(options) {
   //
   // Handlers.
   //
+
+  /**
+   * @returns {undefined}
+   */
+  function onresumedrop() {
+    resume()
+  }
 
   /**
    * @this {CompileContext}
@@ -519,6 +526,9 @@ export function compile(options) {
     }
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onenterlistitemmarker() {
     if (getData('expectFirstItem')) {
       tag('>')
@@ -533,6 +543,9 @@ export function compile(options) {
     setData('lastWasTag')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onexitlistordered() {
     onexitlistitem()
     tightStack.pop()
@@ -540,6 +553,9 @@ export function compile(options) {
     tag('</ol>')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onexitlistunordered() {
     onexitlistitem()
     tightStack.pop()
@@ -547,6 +563,9 @@ export function compile(options) {
     tag('</ul>')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onexitlistitem() {
     if (getData('lastWasTag') && !getData('slurpAllLineEndings')) {
       lineEndingIfNeeded()
@@ -997,47 +1016,77 @@ export function compile(options) {
     tag('<br />')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onenterhtmlflow() {
     lineEndingIfNeeded()
     onenterhtml()
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onexithtml() {
     setData('ignoreEncode')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onenterhtml() {
     if (settings.allowDangerousHtml) {
       setData('ignoreEncode', true)
     }
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onenteremphasis() {
     tag('<em>')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onenterstrong() {
     tag('<strong>')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onentercodetext() {
     setData('inCodeText', true)
     tag('<code>')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onexitcodetext() {
     setData('inCodeText')
     tag('</code>')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onexitemphasis() {
     tag('</em>')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onexitstrong() {
     tag('</strong>')
   }
 
+  /**
+   * @returns {undefined}
+   */
   function onexitthematicbreak() {
     lineEndingIfNeeded()
     tag('<hr />')
@@ -1046,6 +1095,7 @@ export function compile(options) {
   /**
    * @this {CompileContext}
    * @param {Token} token
+   * @returns {undefined}
    */
   function onexitcharacterreferencemarker(token) {
     setData('characterReferenceType', token.type)

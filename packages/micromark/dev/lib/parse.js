@@ -10,7 +10,7 @@ import {combineExtensions} from 'micromark-util-combine-extensions'
 import {content} from './initialize/content.js'
 import {document} from './initialize/document.js'
 import {flow} from './initialize/flow.js'
-import {text, string} from './initialize/text.js'
+import {string, text} from './initialize/text.js'
 import {createTokenizer} from './create-tokenizer.js'
 import * as defaultConstructs from './constructs.js'
 

@@ -19,13 +19,13 @@ await fs.rename(
 await fs.writeFile(
   new URL('../packages/micromark/index.js', import.meta.url),
   [
-    'export {micromark}',
     'export {compile} from "./lib/compile.js"',
     'export {parse} from "./lib/parse.js"',
     'export {postprocess} from "./lib/postprocess.js"',
     'export {preprocess} from "./lib/preprocess.js"',
-    'import fs from "fs"',
-    'import path from "path"',
+    'export {micromark}',
+    'import fs from "node:fs"',
+    'import path from "node:path"',
     'import {micromark as core} from "./index.bak.js"',
     'const captured = []',
     'const base = path.join("test", "fixtures")',

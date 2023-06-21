@@ -16,7 +16,7 @@
 
 /**
  * @callback Restore
- * @returns {void}
+ * @returns {undefined}
  *
  * @typedef Info
  * @property {Restore} restore
@@ -26,7 +26,7 @@
  *   Handle a successful run.
  * @param {Construct} construct
  * @param {Info} info
- * @returns {void}
+ * @returns {undefined}
  */
 
 import createDebug from 'debug'
@@ -105,7 +105,7 @@ export function createTokenizer(parser, initialize, from) {
   /**
    * The state function.
    *
-   * @type {State | void}
+   * @type {State | undefined}
    */
   let state = initialize.tokenize.call(context, effects)
 
@@ -181,7 +181,7 @@ export function createTokenizer(parser, initialize, from) {
    * The reason to do this in a loop instead of a call is so the stack can
    * drain.
    *
-   * @returns {void}
+   * @returns {undefined}
    */
   function main() {
     /** @type {number} */
@@ -214,7 +214,7 @@ export function createTokenizer(parser, initialize, from) {
    * Deal with one code.
    *
    * @param {Code} code
-   * @returns {void}
+   * @returns {undefined}
    */
   function go(code) {
     assert(consumed === true, 'expected character to be consumed')
@@ -489,7 +489,7 @@ export function createTokenizer(parser, initialize, from) {
   /**
    * @param {Construct} construct
    * @param {number} from
-   * @returns {void}
+   * @returns {undefined}
    */
   function addResult(construct, from) {
     if (construct.resolveAll && !resolveAllConstructs.includes(construct)) {
@@ -534,7 +534,7 @@ export function createTokenizer(parser, initialize, from) {
     /**
      * Restore state.
      *
-     * @returns {void}
+     * @returns {undefined}
      */
     function restore() {
       point = startPoint
@@ -551,7 +551,7 @@ export function createTokenizer(parser, initialize, from) {
    * Move the current point a bit forward in the line when it’s on a column
    * skip.
    *
-   * @returns {void}
+   * @returns {undefined}
    */
   function accountForPotentialSkip() {
     if (point.line in columnStart && point.column < 2) {

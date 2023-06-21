@@ -22,7 +22,7 @@ import {types} from 'micromark-util-symbol/types'
  *   Context.
  * @param {State} ok
  *   State switched to when successful.
- * @returns
+ * @returns {State}
  *   Start state.
  */
 export function factoryWhitespace(effects, ok) {

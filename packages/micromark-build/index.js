@@ -5,7 +5,7 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import {pathToFileURL, fileURLToPath} from 'node:url'
+import {fileURLToPath, pathToFileURL} from 'node:url'
 import {transformAsync as babel} from '@babel/core'
 import {resolve} from 'import-meta-resolve'
 import {glob} from 'glob'

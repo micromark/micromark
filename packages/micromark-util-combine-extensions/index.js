@@ -36,7 +36,7 @@ export function combineExtensions(extensions) {
  *   Extension to merge into.
  * @param {Extension} extension
  *   Extension to merge.
- * @returns {void}
+ * @returns {undefined}
  */
 function syntaxExtension(all, extension) {
   /** @type {keyof Extension} */
@@ -71,7 +71,7 @@ function syntaxExtension(all, extension) {
  *
  * @param {Array<unknown>} existing
  * @param {Array<unknown>} list
- * @returns {void}
+ * @returns {undefined}
  */
 function constructs(existing, list) {
   let index = -1
@@ -113,7 +113,7 @@ export function combineHtmlExtensions(htmlExtensions) {
  *   Extension to merge into.
  * @param {HtmlExtension} extension
  *   Extension to merge.
- * @returns {void}
+ * @returns {undefined}
  */
 function htmlExtension(all, extension) {
   /** @type {keyof HtmlExtension} */

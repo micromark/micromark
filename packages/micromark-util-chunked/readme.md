@@ -124,7 +124,7 @@ array instead of rest parameters.
 
 ###### Returns
 
-Nothing (`void`).
+Nothing (`undefined`).
 
 ## Types
 

@@ -268,7 +268,7 @@ function initializeDocument(effects) {
   /**
    * @param {Token} token
    * @param {boolean | undefined} [eof]
-   * @returns {void}
+   * @returns {undefined}
    */
   function writeToChild(token, eof) {
     assert(childFlow, 'expected `childFlow` to be defined when continuing')
@@ -382,7 +382,7 @@ function initializeDocument(effects) {
 
   /**
    * @param {number} size
-   * @returns {void}
+   * @returns {undefined}
    */
   function exitContainers(size) {
     let index = stack.length

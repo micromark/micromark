@@ -7,8 +7,11 @@
 /**
  * @callback Callback
  *   Function called when write was successful.
- * @returns {void}
+ * @returns {undefined}
  *   Nothing.
+ *
+ * @typedef PipeOptions
+ * @property {boolean | null | undefined} [end]
  *
  * @typedef {Omit<NodeJS.ReadableStream & NodeJS.WritableStream, 'isPaused' | 'pause' | 'read' | 'resume' | 'setEncoding' | 'unpipe' | 'unshift' | 'wrap'>} MinimalDuplex
  */
@@ -173,7 +176,7 @@ export function stream(options) {
    *
    * @template {NodeJS.WritableStream} Stream
    * @param {Stream} dest
-   * @param {{end?: boolean | null | undefined}} [options]
+   * @param {PipeOptions | null | undefined} [options]
    * @returns {Stream}
    */
   function pipe(dest, options) {
@@ -199,7 +202,7 @@ export function stream(options) {
     /**
      * End destination stream.
      *
-     * @returns {void}
+     * @returns {undefined}
      */
     function onend() {
       if (dest.end) {
@@ -211,7 +214,7 @@ export function stream(options) {
      * Handle data.
      *
      * @param {string} chunk
-     * @returns {void}
+     * @returns {undefined}
      */
     function ondata(chunk) {
       if (dest.writable) {
@@ -222,7 +225,7 @@ export function stream(options) {
     /**
      * Clean listeners.
      *
-     * @returns {void}
+     * @returns {undefined}
      */
     function cleanup() {
       emitter.removeListener('data', ondata)
@@ -239,7 +242,7 @@ export function stream(options) {
      * Close dangling pipes and handle unheard errors.
      *
      * @param {Error | null | undefined} [error]
-     * @returns {void}
+     * @returns {undefined}
      */
     function onerror(error) {
       cleanup()

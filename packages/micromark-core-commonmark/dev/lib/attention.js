@@ -287,7 +287,7 @@ function tokenizeAttention(effects, ok) {
  *
  * @param {Point} point
  * @param {number} offset
- * @returns {void}
+ * @returns {undefined}
  */
 function movePoint(point, offset) {
   point.column += offset

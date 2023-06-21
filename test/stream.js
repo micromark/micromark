@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
-import {promises as fs, createReadStream, createWriteStream} from 'node:fs'
-import stream from 'node:stream'
+import {createReadStream, createWriteStream, promises as fs} from 'node:fs'
+import {PassThrough, Readable} from 'node:stream'
 import test from 'node:test'
 import concatStream from 'concat-stream'
-import {stream as micromark} from 'micromark/stream'
+import {stream} from 'micromark/stream'
 import {slowStream} from './util/slow-stream.js'
 
 test('stream', async function (t) {
@@ -12,7 +12,7 @@ test('stream', async function (t) {
       slowStream(
         '`` some code? No, not code! A link though: <http://example.com>'
       )
-        .pipe(micromark())
+        .pipe(stream())
         .pipe(
           concatStream(function (result) {
             assert.equal(
@@ -30,7 +30,7 @@ test('stream', async function (t) {
   await t.test('should support streaming typed arrays', function () {
     return new Promise(function (resolve) {
       slowStream(new TextEncoder().encode('<admin@example.com>'))
-        .pipe(micromark())
+        .pipe(stream())
         .pipe(
           concatStream(function (result) {
             assert.equal(
@@ -48,7 +48,7 @@ test('stream', async function (t) {
   await t.test('should support reference-first definition-later', function () {
     return new Promise(function (resolve) {
       slowStream('[x]\n\n[x]: y')
-        .pipe(micromark())
+        .pipe(stream())
         .pipe(
           concatStream(function (result) {
             assert.equal(result, '<p><a href="y">x</a></p>\n', 'pass')
@@ -62,7 +62,7 @@ test('stream', async function (t) {
   await t.test('should support emphasis and strong', function () {
     return new Promise(function (resolve) {
       slowStream('***x**y**')
-        .pipe(micromark())
+        .pipe(stream())
         .pipe(
           concatStream(function (result) {
             assert.equal(result, '<p><em><strong>x</strong>y</em>*</p>', 'pass')
@@ -76,7 +76,7 @@ test('stream', async function (t) {
   await t.test('should support carriage returns between flow', function () {
     return new Promise(function (resolve) {
       slowStream('***\r\r    fn()\r\r### Heading\r\r')
-        .pipe(micromark())
+        .pipe(stream())
         .pipe(
           concatStream(function (result) {
             assert.equal(
@@ -96,7 +96,7 @@ test('stream', async function (t) {
     function () {
       return new Promise(function (resolve) {
         slowStream('***\r\n\r\n    fn()\r\n\r\n### Heading\r\n\r\n')
-          .pipe(micromark())
+          .pipe(stream())
           .pipe(
             concatStream(function (result) {
               assert.equal(
@@ -119,7 +119,7 @@ test('stream', async function (t) {
 
       return new Promise((resolve) => {
         createReadStream('integrate-input')
-          .pipe(micromark())
+          .pipe(stream())
           .pipe(createWriteStream('integrate-output'))
           .on('close', async function () {
             assert.equal(
@@ -140,7 +140,7 @@ test('stream', async function (t) {
   await t.test('should be safe by default', function () {
     return new Promise((resolve) => {
       slowStream('<x>')
-        .pipe(micromark())
+        .pipe(stream())
         .pipe(
           concatStream(function (result) {
             assert.equal(result, '&lt;x&gt;', 'pass')
@@ -152,7 +152,7 @@ test('stream', async function (t) {
 
   await t.test('should be unsafe w/ `allowDangerousHtml`', function () {
     slowStream('<x>')
-      .pipe(micromark({allowDangerousHtml: true}))
+      .pipe(stream({allowDangerousHtml: true}))
       .pipe(
         concatStream(function (result) {
           assert.equal(result, '<x>', 'pass')
@@ -176,7 +176,7 @@ test('stream', async function (t) {
         encoding,
         highWaterMark: 1
       })
-        .pipe(micromark())
+        .pipe(stream())
         .pipe(createWriteStream('non-utf8-output'))
         .on('close', async function () {
           assert.equal(
@@ -194,12 +194,12 @@ test('stream', async function (t) {
   })
 
   await t.test('#end: should return true for `end`', function () {
-    assert.equal(micromark().end(), true)
+    assert.equal(stream().end(), true)
   })
 
   await t.test('#end: should throw on end after end', function () {
     assert.throws(function () {
-      const tr = micromark()
+      const tr = stream()
       tr.end()
       tr.end()
     }, /^Error: Did not expect `write` after `end`$/)
@@ -207,7 +207,7 @@ test('stream', async function (t) {
 
   await t.test('#end: should end w/o ever receiving data', async function () {
     await new Promise(function (resolve) {
-      const s = micromark()
+      const s = stream()
       s.pipe(
         concatStream(function (value) {
           assert.equal(String(value), '')
@@ -220,7 +220,7 @@ test('stream', async function (t) {
 
   await t.test('#end: should end', async function () {
     await new Promise(function (resolve) {
-      const s = micromark()
+      const s = stream()
       s.pipe(
         concatStream(function (value) {
           assert.equal(String(value), '<p>x</p>')
@@ -234,7 +234,7 @@ test('stream', async function (t) {
 
   await t.test('#end: should receive final data from `end`', async function () {
     await new Promise(function (resolve) {
-      const s = micromark()
+      const s = stream()
       s.pipe(
         concatStream(function (value) {
           assert.equal(String(value), '<p>alpha</p>')
@@ -247,7 +247,7 @@ test('stream', async function (t) {
 
   await t.test('#end: should honour encoding', async function () {
     await new Promise(function (resolve) {
-      const s = micromark()
+      const s = stream()
       s.pipe(
         concatStream(function (value) {
           assert.equal(String(value), '<p>abc</p>')
@@ -269,7 +269,7 @@ test('stream', async function (t) {
     async function () {
       await new Promise(function (resolve) {
         let phase = 0
-        const s = micromark()
+        const s = stream()
         s.pipe(
           concatStream(function () {
             assert.equal(phase, 1)
@@ -291,7 +291,7 @@ test('stream', async function (t) {
       await new Promise(function (resolve) {
         let phase = 0
 
-        micromark().end(() => {
+        stream().end(() => {
           phase++
         })
 
@@ -302,19 +302,19 @@ test('stream', async function (t) {
   )
 
   await t.test('#pipe', function () {
-    /** @type {ReturnType<micromark>} */
+    /** @type {ReturnType<stream>} */
     let tr
 
     assert.doesNotThrow(function () {
       // Not writable.
-      const tr = micromark()
+      const tr = stream()
       // @ts-expect-error Runtime.
-      tr.pipe(new stream.Readable())
+      tr.pipe(new Readable())
       tr.end('foo')
     }, 'should not throw when piping to a non-writable stream')
 
-    tr = micromark()
-    const s = new stream.PassThrough()
+    tr = stream()
+    const s = new PassThrough()
     // @ts-expect-error `std{err,out}` can have this field.
     s._isStdio = true // Act as if we’re stdout.
 
@@ -335,15 +335,15 @@ test('stream', async function (t) {
       s.write('delta')
     }, 'should not `end` stdio streams')
 
-    tr = micromark().on('error', function (/** @type {Error} */ error) {
+    tr = stream().on('error', function (/** @type {Error} */ error) {
       assert.equal(error.message, 'Whoops!', 'should pass errors')
     })
 
-    tr.pipe(new stream.PassThrough())
+    tr.pipe(new PassThrough())
     tr.emit('error', new Error('Whoops!'))
 
-    tr = micromark()
-    tr.pipe(new stream.PassThrough())
+    tr = stream()
+    tr.pipe(new PassThrough())
 
     assert.throws(
       function () {
@@ -353,7 +353,7 @@ test('stream', async function (t) {
       'should throw if errors are not listened to'
     )
 
-    tr = micromark()
+    tr = stream()
 
     tr.pipe(
       concatStream(function (buf) {

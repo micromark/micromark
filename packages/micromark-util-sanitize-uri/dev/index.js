@@ -19,7 +19,7 @@ import {values} from 'micromark-util-symbol/values'
  * If the URL includes an unknown protocol (one not matched by `protocol`, such
  * as a dangerous example, `javascript:`), the value is ignored.
  *
- * @param {string | undefined} url
+ * @param {string | null | undefined} url
  *   URI to sanitize.
  * @param {RegExp | null | undefined} [protocol]
  *   Allowed protocols.

@@ -19,7 +19,7 @@ import {constants} from 'micromark-util-symbol/constants'
  *   Number of items to remove.
  * @param {Array<T>} items
  *   Items to inject into `list`.
- * @returns {void}
+ * @returns {undefined}
  *   Nothing.
  */
 export function splice(list, start, remove, items) {

@@ -245,7 +245,7 @@ export type Event = ['enter' | 'exit', Token, TokenizeContext]
  *   Token type.
  * @param fields
  *   Extra fields.
- * @returns
+ * @returns {Token}
  *   Token.
  */
 export type Enter = (
@@ -269,7 +269,7 @@ export type Exit = (type: TokenType) => Token
  * @param code
  *   Current code.
  */
-export type Consume = (code: Code) => void
+export type Consume = (code: Code) => undefined
 
 /**
  * Attempt deals with several values, and tries to parse according to those
@@ -337,10 +337,10 @@ export type Effects = {
  * A state function should return another function: the next
  * state-as-a-function to go to.
  *
- * But there is one case where they return void: for the eof character code
- * (at the end of a value).
- * The reason being: well, there isn’t any state that makes sense, so void
- * works well.
+ * But there is one case where they return `undefined`: for the eof character
+ * code (at the end of a value).
+ * The reason being: well, there isn’t any state that makes sense, so
+ * `undefined` works well.
  * Practically that has also helped: if for some reason it was a mistake, then
  * an exception is throw because there is no next function, meaning it
  * surfaces early.
@@ -350,7 +350,7 @@ export type Effects = {
  * @returns
  *   Next state.
  */
-export type State = (code: Code) => State | void
+export type State = (code: Code) => State | undefined
 
 /**
  * A resolver handles and cleans events coming from `tokenize`.
@@ -401,7 +401,7 @@ export type Tokenizer = (
 export type Initializer = (this: TokenizeContext, effects: Effects) => State
 
 /**
- * Like a tokenizer, but without `ok` or `nok`, and returning void.
+ * Like a tokenizer, but without `ok` or `nok`, and returning `undefined`.
  *
  * This is the final hook when a container must be closed.
  *
@@ -412,7 +412,7 @@ export type Initializer = (this: TokenizeContext, effects: Effects) => State
  * @returns
  *   Nothing.
  */
-export type Exiter = (this: TokenizeContext, effects: Effects) => void
+export type Exiter = (this: TokenizeContext, effects: Effects) => undefined
 
 /**
  * Guard whether `code` can come before the construct.
@@ -690,7 +690,7 @@ export interface TokenizeContext {
    * @returns
    *   Nothing.
    */
-  defineSkip: (point: Point) => void
+  defineSkip: (point: Point) => undefined
 
   /**
    * Write a slice of chunks.
@@ -891,7 +891,7 @@ export type CompileContext = {
   setData: <Key extends keyof CompileData>(
     key: Key,
     value?: CompileData[Key]
-  ) => void
+  ) => undefined
 
   /**
    * Get data from the key-value store.
@@ -909,7 +909,7 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  lineEndingIfNeeded: () => void
+  lineEndingIfNeeded: () => undefined
 
   /**
    * Make a value safe for injection in HTML (except w/ `ignoreEncode`).
@@ -927,7 +927,7 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  buffer: () => void
+  buffer: () => undefined
 
   /**
    * Stop capturing and access the output data.
@@ -945,7 +945,7 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  raw: (value: string) => void
+  raw: (value: string) => undefined
 
   /**
    * Output (parts of) HTML tags.
@@ -955,7 +955,7 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  tag: (value: string) => void
+  tag: (value: string) => undefined
 
   /**
    * Get the string value of a token.
@@ -983,7 +983,7 @@ export type Compile = (events: Array<Event>) => string
  * @returns
  *   Nothing.
  */
-export type Handle = (this: CompileContext, token: Token) => void
+export type Handle = (this: CompileContext, token: Token) => undefined
 
 /**
  * Handle the whole document.
@@ -993,7 +993,7 @@ export type Handle = (this: CompileContext, token: Token) => void
  */
 export type DocumentHandle = (
   this: Omit<CompileContext, 'sliceSerialize'>
-) => void
+) => undefined
 
 /**
  * Token types mapping to handles.

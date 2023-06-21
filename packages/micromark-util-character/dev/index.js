@@ -18,7 +18,7 @@ import {codes} from 'micromark-util-symbol/codes'
  *
  * @param code
  *   Code.
- * @returns
+ * @returns {boolean}
  *   Whether it matches.
  */
 export const asciiAlpha = regexCheck(/[A-Za-z]/)
@@ -32,7 +32,7 @@ export const asciiAlpha = regexCheck(/[A-Za-z]/)
  *
  * @param code
  *   Code.
- * @returns
+ * @returns {boolean}
  *   Whether it matches.
  */
 export const asciiAlphanumeric = regexCheck(/[\dA-Za-z]/)
@@ -55,7 +55,7 @@ export const asciiAlphanumeric = regexCheck(/[\dA-Za-z]/)
  *
  * @param code
  *   Code.
- * @returns
+ * @returns {boolean}
  *   Whether it matches.
  */
 export const asciiAtext = regexCheck(/[#-'*+\--9=?A-Z^-~]/)
@@ -87,7 +87,7 @@ export function asciiControl(code) {
  *
  * @param code
  *   Code.
- * @returns
+ * @returns {boolean}
  *   Whether it matches.
  */
 export const asciiDigit = regexCheck(/\d/)
@@ -107,7 +107,7 @@ export const asciiDigit = regexCheck(/\d/)
  *
  * @param code
  *   Code.
- * @returns
+ * @returns {boolean}
  *   Whether it matches.
  */
 export const asciiHexDigit = regexCheck(/[\dA-Fa-f]/)
@@ -122,7 +122,7 @@ export const asciiHexDigit = regexCheck(/[\dA-Fa-f]/)
  *
  * @param code
  *   Code.
- * @returns
+ * @returns {boolean}
  *   Whether it matches.
  */
 export const asciiPunctuation = regexCheck(/[!-/:-@[-`{-~]/)
@@ -200,7 +200,7 @@ export function markdownSpace(code) {
  *
  * @param code
  *   Code.
- * @returns
+ * @returns {boolean}
  *   Whether it matches.
  */
 export const unicodePunctuation = regexCheck(/\p{P}/u)
@@ -222,7 +222,7 @@ export const unicodePunctuation = regexCheck(/\p{P}/u)
  *
  * @param code
  *   Code.
- * @returns
+ * @returns {boolean}
  *   Whether it matches.
  */
 export const unicodeWhitespace = regexCheck(/\s/)

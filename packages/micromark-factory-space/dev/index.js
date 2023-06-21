@@ -37,7 +37,7 @@ import {markdownSpace} from 'micromark-util-character'
  *   Type (`' \t'`).
  * @param {number | undefined} [max=Infinity]
  *   Max (exclusive).
- * @returns
+ * @returns {State}
  *   Start state.
  */
 export function factorySpace(effects, ok, type, max) {
