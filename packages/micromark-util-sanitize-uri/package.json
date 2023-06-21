@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "micromark-util-character": "^2.0.0",
-    "micromark-util-encode": "^1.0.0",
+    "micromark-util-encode": "^2.0.0",
     "micromark-util-symbol": "^2.0.0"
   },
   "scripts": {
