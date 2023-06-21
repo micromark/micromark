@@ -27,9 +27,9 @@
   ],
   "sideEffects": false,
   "type": "module",
-  "exports": "./lib/default.js",
   "files": [
     "lib/"
   ],
+  "exports": "./lib/default.js",
   "xo": false
 }
