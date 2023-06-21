@@ -183,7 +183,7 @@ function handleError(error) {
 
 ## API
 
-See [§API][api] in the `micromark` readme.
+See [§ API][api] in the `micromark` readme.
 
 ## Extensions
 
@@ -1233,7 +1233,7 @@ focus on completely different things than other markdown parsers do.
 Sure, you can generate HTML from markdown with them, but micromark (and remark)
 are created for (abstract or concrete) syntax trees—to inspect, transform, and
 generate content, so that you can make things like [MDX][], [Prettier][], or
-[Gatsby][].
+[Astro][].
 
 ###### `micromark`
 
@@ -1635,13 +1635,13 @@ Super cool that I got to continue this work and bring it to a new language.
 
 [preprocess]: #preprocess
 
-[content-types]: https://github.com/micromark/micromark#content-types
+[content-types]: #content-types
 
-[postprocess]: https://github.com/micromark/micromark#postprocess
+[postprocess]: #postprocess
 
-[size-debug]: https://github.com/micromark/micromark#size--debug
+[size-debug]: #size--debug
 
-[packages]: https://github.com/micromark/micromark/tree/main/packages
+[packages]: packages/
 
 [marked]: https://github.com/markedjs/marked
 
@@ -1651,7 +1651,7 @@ Super cool that I got to continue this work and bring it to a new language.
 
 [prettier]: https://github.com/prettier/prettier
 
-[gatsby]: https://github.com/gatsbyjs/gatsby
+[astro]: https://github.com/withastro/astro
 
 [commonmark]: #commonmark
 
