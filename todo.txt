@@ -10,7 +10,6 @@ To do list:
 * 5, minor: Add support for, in development mode, deprecation warnings
 * 1, major: Remove `_gfmTableDynamicInterruptHack` field
 * 1, major: Remove `_hiddenFootnoteSupport` field, add `_gfmFootnoteSupport` field
-* 3, major: remove `.js` export, or even all export map entries? (except maybe `/stream`)?
 * 5, major: parse list items separately
 * 3, major: Do not use `space` in code (text), use resolver (see `Attachments` below)
 * 8, major: Change type names to match `markdown-rs`

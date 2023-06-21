@@ -1,8 +1,7 @@
 /* eslint-disable unicorn/prefer-code-point */
 import {asciiAlphanumeric} from 'micromark-util-character'
 import {encode} from 'micromark-util-encode'
-import {codes} from 'micromark-util-symbol/codes'
-import {values} from 'micromark-util-symbol/values'
+import {codes, values} from 'micromark-util-symbol'
 
 /**
  * Make a value safe for injection as a URL.

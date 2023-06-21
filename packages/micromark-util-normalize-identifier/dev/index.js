@@ -1,4 +1,4 @@
-import {values} from 'micromark-util-symbol/values'
+import {values} from 'micromark-util-symbol'
 
 /**
  * Normalize an identifier (as found in references, definitions).

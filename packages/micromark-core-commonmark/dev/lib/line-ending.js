@@ -7,7 +7,7 @@
 
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
-import {types} from 'micromark-util-symbol/types'
+import {types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
 
 /** @type {Construct} */

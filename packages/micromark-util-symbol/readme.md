@@ -46,24 +46,21 @@ npm install micromark-util-symbol
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {codes} from 'https://esm.sh/micromark-util-symbol/codes@1'
+import * as symbol from 'https://esm.sh/micromark-util-symbol@1'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {codes} from 'https://esm.sh/micromark-util-symbol/codes@1?bundle'
+  import * as symbol from 'https://esm.sh/micromark-util-symbol@1?bundle'
 </script>
 ```
 
 ## Use
 
 ```js
-import {codes} from 'micromark-util-symbol/codes'
-import {constants} from 'micromark-util-symbol/constants'
-import {types} from 'micromark-util-symbol/types'
-import {values} from 'micromark-util-symbol/values'
+import {codes, constants, types, values} from 'micromark-util-symbol'
 
 console.log(codes.atSign) // 64
 console.log(constants.characterReferenceNamedSizeMax) // 31
@@ -73,14 +70,11 @@ console.log(values.atSign) // '@'
 
 ## API
 
-This package has four entries in its export map: `micromark-util-symbol/codes`,
-`micromark-util-symbol/constants`, `micromark-util-symbol/types`,
-`micromark-util-symbol/values`.
+This package exports the identifiers `codes`, `constants`, `types`, and
+`values`.
+There is no default export.
 
-Each module exports an identifier with the same name (for example,
-`micromark-util-symbol/codes` has `codes`), which is an object mapping strings
-to other values.
-
+Each identifier is an object mapping strings to values.
 See the code for the exposed data.
 
 ## Types

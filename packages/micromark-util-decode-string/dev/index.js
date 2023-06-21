@@ -1,7 +1,6 @@
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {decodeNumericCharacterReference} from 'micromark-util-decode-numeric-character-reference'
-import {codes} from 'micromark-util-symbol/codes'
-import {constants} from 'micromark-util-symbol/constants'
+import {codes, constants} from 'micromark-util-symbol'
 
 const characterEscapeOrReference =
   /\\([!-/:-@[-`{-~])|&(#(?:\d{1,7}|x[\da-f]{1,6})|[\da-z]{1,31});/gi

@@ -60,8 +60,7 @@ In browsers with [`esm.sh`][esmsh]:
 ```js
 import {ok as assert} from 'devlop'
 import {factoryLabel} from 'micromark-factory-label'
-import {codes} from 'micromark-util-symbol/codes'
-import {types} from 'micromark-util-symbol/types'
+import {codes, types} from 'micromark-util-symbol'
 
 // A micromark tokenizer that uses the factory:
 /**

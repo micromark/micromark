@@ -27,22 +27,9 @@
   ],
   "sideEffects": false,
   "type": "module",
+  "exports": "./lib/default.js",
   "files": [
-    "codes.d.ts",
-    "codes.js",
-    "constants.d.ts",
-    "constants.js",
-    "types.d.ts",
-    "types.js",
-    "values.d.ts",
-    "values.js"
+    "lib/"
   ],
-  "To do": "next major: remove `.js` suffixes",
-  "exports": {
-    "./codes": "./codes.js",
-    "./constants": "./constants.js",
-    "./types": "./types.js",
-    "./values": "./values.js"
-  },
   "xo": false
 }

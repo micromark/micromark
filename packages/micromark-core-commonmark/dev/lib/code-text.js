@@ -9,8 +9,7 @@
  */
 
 import {markdownLineEnding} from 'micromark-util-character'
-import {codes} from 'micromark-util-symbol/codes'
-import {types} from 'micromark-util-symbol/types'
+import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
 
 /** @type {Construct} */

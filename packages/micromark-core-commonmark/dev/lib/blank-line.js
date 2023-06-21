@@ -7,8 +7,7 @@
 
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
-import {codes} from 'micromark-util-symbol/codes'
-import {types} from 'micromark-util-symbol/types'
+import {codes, types} from 'micromark-util-symbol'
 
 /** @type {Construct} */
 export const blankLine = {tokenize: tokenizeBlankLine, partial: true}

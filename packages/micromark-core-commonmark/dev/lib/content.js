@@ -10,9 +10,7 @@
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {subtokenize} from 'micromark-util-subtokenize'
-import {codes} from 'micromark-util-symbol/codes'
-import {constants} from 'micromark-util-symbol/constants'
-import {types} from 'micromark-util-symbol/types'
+import {codes, constants, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
 
 /**

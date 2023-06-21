@@ -42,9 +42,7 @@ import {decodeNumericCharacterReference} from 'micromark-util-decode-numeric-cha
 import {encode as _encode} from 'micromark-util-encode'
 import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
 import {sanitizeUri} from 'micromark-util-sanitize-uri'
-import {codes} from 'micromark-util-symbol/codes'
-import {constants} from 'micromark-util-symbol/constants'
-import {types} from 'micromark-util-symbol/types'
+import {codes, constants, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
 
 const hasOwnProperty = {}.hasOwnProperty

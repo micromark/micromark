@@ -5,8 +5,7 @@
  * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
  */
 
-import {codes} from 'micromark-util-symbol/codes'
-import {types} from 'micromark-util-symbol/types'
+import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
 import {labelEnd} from './label-end.js'
 

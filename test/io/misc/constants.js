@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {characterEntities} from 'character-entities'
 import {htmlRawNames} from 'micromark-util-html-tag-name'
-import {constants} from 'micromark-util-symbol/constants'
+import {constants} from 'micromark-util-symbol'
 
 test('constants', function () {
   assert.equal(

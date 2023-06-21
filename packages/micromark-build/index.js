@@ -40,12 +40,7 @@ while (++index < files.length) {
     throw new Error('Unknown extension `' + ext + '`')
   }
 
-  const modules = [
-    'micromark-util-symbol/codes',
-    'micromark-util-symbol/constants',
-    'micromark-util-symbol/types',
-    'micromark-util-symbol/values'
-  ]
+  const modules = ['micromark-util-symbol']
     .map((d) => {
       try {
         return resolve(d, input.href)

@@ -14,8 +14,7 @@
  * @returns {Array<Chunk>}
  */
 
-import {codes} from 'micromark-util-symbol/codes'
-import {constants} from 'micromark-util-symbol/constants'
+import {codes, constants} from 'micromark-util-symbol'
 
 const search = /[\0\t\n\r]/g
 

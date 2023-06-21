@@ -60,8 +60,7 @@ In browsers with [`esm.sh`][esmsh]:
 
 ```js
 import {factoryTitle} from 'micromark-factory-title'
-import {codes} from 'micromark-util-symbol/codes'
-import {types} from 'micromark-util-symbol/types'
+import {codes, types} from 'micromark-util-symbol'
 
 // A micromark tokenizer that uses the factory:
 /**

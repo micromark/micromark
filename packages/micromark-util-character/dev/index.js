@@ -2,7 +2,7 @@
  * @typedef {import('micromark-util-types').Code} Code
  */
 
-import {codes} from 'micromark-util-symbol/codes'
+import {codes} from 'micromark-util-symbol'
 
 /**
  * Check whether the character code represents an ASCII alpha (`a` through `z`,

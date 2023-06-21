@@ -103,7 +103,7 @@ The following Babel plugins are used:
     — Inline the values from
     [`micromark-util-symbol`](https://github.com/micromark/micromark/tree/main/packages/micromark-util-symbol)
 
-You should use `uvu/assert`, `debug`, and `micromark-util-symbol` to develop
+You should use `devlop`, `debug`, and `micromark-util-symbol` to develop
 micromark extensions!
 
 ## Types
