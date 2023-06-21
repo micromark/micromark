@@ -73,7 +73,7 @@
     "micromark-util-encode": "^2.0.0",
     "micromark-util-normalize-identifier": "^2.0.0",
     "micromark-util-resolve-all": "^2.0.0",
-    "micromark-util-sanitize-uri": "^1.0.0",
+    "micromark-util-sanitize-uri": "^2.0.0",
     "micromark-util-subtokenize": "^1.0.0",
     "micromark-util-symbol": "^2.0.0",
     "micromark-util-types": "^2.0.0"
