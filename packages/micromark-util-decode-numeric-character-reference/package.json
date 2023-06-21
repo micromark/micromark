@@ -41,7 +41,7 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-symbol": "^1.0.0"
+    "micromark-util-symbol": "^2.0.0"
   },
   "scripts": {
     "build": "micromark-build"
