@@ -40,7 +40,7 @@
     "decode-named-character-reference": "^1.0.0",
     "devlop": "^1.0.0",
     "micromark-factory-destination": "^2.0.0",
-    "micromark-factory-label": "^1.0.0",
+    "micromark-factory-label": "^2.0.0",
     "micromark-factory-space": "^1.0.0",
     "micromark-factory-title": "^1.0.0",
     "micromark-factory-whitespace": "^1.0.0",
