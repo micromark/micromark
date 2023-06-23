@@ -32,7 +32,6 @@
   ],
   "dependencies": {
     "@babel/core": "^7.0.0",
-    "@types/glob": "^8.0.0",
     "babel-plugin-inline-constants": "^4.0.0",
     "babel-plugin-unassert": "^3.2.0",
     "babel-plugin-undebug": "^2.0.0",
