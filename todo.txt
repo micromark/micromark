@@ -14,8 +14,9 @@ To do list:
 * 3, major: Do not use `space` in code (text), use resolver (see `Attachments` below)
 * 8, major: Change type names to match `markdown-rs`
 * 8, major: Change (doc, flow) constructs to handle their own indent
-* 13, major: Change all resolvers, use edit map, register resolvers manually instead of in construct
+* 13, major: Change all resolvers, use edit map (see micromark-extension-gfm-table), register resolvers manually instead of in construct
 * 13, major: Change tokenizer, codes, chunks, interrupt/lazy/pierce, new attempt/check algo, etc to match `markdown-rs`
+* 1, minor: expose all events on compiler
 
 Things to check:
 
