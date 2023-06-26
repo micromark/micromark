@@ -794,6 +794,25 @@ test('emphasis', function () {
     'should not end emphasis inside code (2)'
   )
 
+  // See: <https://github.com/commonmark/commonmark-spec/pull/739>
+  assert.equal(
+    micromark('*$*a.'),
+    '<p>*$*a.</p>',
+    'should support symbols correctly (1, ASCII symbol)'
+  )
+
+  assert.equal(
+    micromark('*£*a.'),
+    '<p><em>£</em>a.</p>',
+    'should support symbols correctly (2, unicode symbol)'
+  )
+
+  assert.equal(
+    micromark('*€*a.'),
+    '<p><em>€</em>a.</p>',
+    'should support symbols correctly (3, unicode symbol)'
+  )
+
   assert.equal(
     micromark('**a<http://foo.bar/?q=**>'),
     '<p>**a<a href="http://foo.bar/?q=**">http://foo.bar/?q=**</a></p>',
