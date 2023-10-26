@@ -38,5 +38,5 @@ export function decodeNumericCharacterReference(value, base) {
     return values.replacementCharacter
   }
 
-  return String.fromCharCode(code)
+  return String.fromCodePoint(code)
 }
