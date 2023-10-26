@@ -4,7 +4,8 @@
 
 import {codes} from 'micromark-util-symbol'
 
-const unicodePunctuationInternal = regexCheck(/\p{P}/u)
+// Lazy-load that regex to avoid crashing on Node.js compiled without Unicode support.
+let unicodePunctuationInternal
 
 /**
  * Check whether the character code represents an ASCII alpha (`a` through `z`,
@@ -206,7 +207,7 @@ export function markdownSpace(code) {
  *   Whether it matches.
  */
 export function unicodePunctuation(code) {
-  return asciiPunctuation(code) || unicodePunctuationInternal(code)
+  return asciiPunctuation(code) || (unicodePunctuationInternal ??= regexCheck(/\p{P}/u))(code)
 }
 
 /**
