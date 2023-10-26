@@ -39,5 +39,14 @@
     "import-meta-resolve": "^3.0.0",
     "relativize-url": "^0.0.2"
   },
-  "xo": false
+  "xo": {
+    "envs": [
+      "shared-node-browser"
+    ],
+    "prettier": true,
+    "rules": {
+      "no-await-in-loop": "off",
+      "unicorn/prefer-code-point": "off"
+    }
+  }
 }

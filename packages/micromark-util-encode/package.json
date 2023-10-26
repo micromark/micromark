@@ -33,5 +33,14 @@
     "index.js"
   ],
   "exports": "./index.js",
-  "xo": false
+  "xo": {
+    "envs": [
+      "shared-node-browser"
+    ],
+    "prettier": true,
+    "rules": {
+      "unicorn/prefer-string-replace-all": "off",
+      "unicorn/prefer-code-point": "off"
+    }
+  }
 }

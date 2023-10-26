@@ -152,7 +152,7 @@ export const codes = /** @type {const} */ ({
   tilde: 126, // `~`
   del: 127,
   // Unicode Specials block.
-  byteOrderMarker: 65279,
+  byteOrderMarker: 65_279,
   // Unicode Specials block.
-  replacementCharacter: 65533 // `�`
+  replacementCharacter: 65_533 // `�`
 })

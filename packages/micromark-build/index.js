@@ -5,6 +5,7 @@
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import process from 'node:process'
 import {fileURLToPath, pathToFileURL} from 'node:url'
 import {transformAsync as babel} from '@babel/core'
 import {resolve} from 'import-meta-resolve'
@@ -45,6 +46,8 @@ while (++index < files.length) {
       try {
         return resolve(d, input.href)
       } catch {}
+
+      return undefined
     })
     .filter(Boolean)
 

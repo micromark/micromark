@@ -33,5 +33,16 @@
     "index.js"
   ],
   "exports": "./index.js",
-  "xo": false
+  "xo": {
+    "envs": [
+      "shared-node-browser"
+    ],
+    "prettier": true,
+    "rules": {
+      "@typescript-eslint/array-type": "off",
+      "@typescript-eslint/ban-types": "off",
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "unicorn/text-encoding-identifier-case": "off"
+    }
+  }
 }

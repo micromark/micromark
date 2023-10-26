@@ -625,7 +625,7 @@ export interface TokenizeContext {
   currentConstruct?: Construct | undefined
 
   /**
-   * share state set when parsing containers.
+   * Share state set when parsing containers.
    *
    * Containers are parsed in separate phases: their first line (`tokenize`),
    * continued lines (`continuation.tokenize`), and finally `exit`.

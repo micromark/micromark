@@ -58,7 +58,9 @@ export function micromark(value, encoding, options) {
 
   return compile(options)(
     postprocess(
-      parse(options).document().write(preprocess()(value, encoding, true))
+      parse(options)
+        .document()
+        .write(preprocess()(value, encoding, true))
     )
   )
 }

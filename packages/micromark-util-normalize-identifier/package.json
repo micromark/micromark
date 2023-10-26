@@ -44,5 +44,14 @@
   "scripts": {
     "build": "micromark-build"
   },
-  "xo": false
+  "xo": {
+    "envs": [
+      "shared-node-browser"
+    ],
+    "prettier": true,
+    "rules": {
+      "unicorn/prefer-code-point": "off",
+      "unicorn/prefer-string-replace-all": "off"
+    }
+  }
 }

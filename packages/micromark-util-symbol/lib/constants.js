@@ -40,5 +40,5 @@ export const constants = /** @type {const} */ ({
   numericBaseHexadecimal: 0x10,
   tabSize: 4, // Tabs have a hard-coded size of 4, per CommonMark.
   thematicBreakMarkerCountMin: 3, // At least 3 asterisks, dashes, or underscores are needed.
-  v8MaxSafeChunkSize: 10000 // V8 (and potentially others) have problems injecting giant arrays into other arrays, hence we operate in chunks.
+  v8MaxSafeChunkSize: 10_000 // V8 (and potentially others) have problems injecting giant arrays into other arrays, hence we operate in chunks.
 })
