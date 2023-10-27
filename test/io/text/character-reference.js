@@ -28,6 +28,12 @@ test('character-reference', function () {
   )
 
   assert.equal(
+    micromark('片&#xE0103;'),
+    '<p>片\u{E0103}</p>',
+    'should support astral character references'
+  )
+
+  assert.equal(
     micromark(
       [
         '&nbsp &x; &#; &#x;',
