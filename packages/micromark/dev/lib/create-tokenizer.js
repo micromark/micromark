@@ -368,9 +368,9 @@ export function createTokenizer(parser, initialize, from) {
         ? /* c8 ignore next 1 */
           handleListOfConstructs(constructs)
         : 'tokenize' in constructs
-        ? // @ts-expect-error Looks like a construct.
-          handleListOfConstructs([constructs])
-        : handleMapOfConstructs(constructs)
+          ? // @ts-expect-error Looks like a construct.
+            handleListOfConstructs([constructs])
+          : handleMapOfConstructs(constructs)
 
       /**
        * Handle a list of construct.

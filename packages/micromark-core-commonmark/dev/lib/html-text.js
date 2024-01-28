@@ -207,8 +207,8 @@ function tokenizeHtmlText(effects, ok, nok) {
     return code === codes.greaterThan
       ? end(code)
       : code === codes.dash
-      ? commentClose(code)
-      : comment(code)
+        ? commentClose(code)
+        : comment(code)
   }
 
   /**

@@ -316,8 +316,8 @@ function tokenizeHtmlFlow(effects, ok, nok) {
       return self.interrupt && !self.parser.lazy[self.now().line]
         ? nok(code)
         : closingTag
-        ? completeClosingTagAfter(code)
-        : completeAttributeNameBefore(code)
+          ? completeClosingTagAfter(code)
+          : completeAttributeNameBefore(code)
     }
 
     // ASCII alphanumerical and `-`.

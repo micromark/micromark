@@ -192,7 +192,7 @@ function tokenizeFurtherStart(effects, ok, nok) {
       tail[2].sliceSerialize(tail[1], true).length >= constants.tabSize
       ? ok(code)
       : markdownLineEnding(code)
-      ? furtherStart(code)
-      : nok(code)
+        ? furtherStart(code)
+        : nok(code)
   }
 }
