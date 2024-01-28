@@ -44,8 +44,10 @@
   "files": [
     "dev/",
     "lib/",
+    "index.d.ts.map",
     "index.d.ts",
     "index.js",
+    "stream.d.ts.map",
     "stream.d.ts",
     "stream.js"
   ],

@@ -14,7 +14,7 @@ import {glob} from 'glob'
 import RelativizeUrl from 'relativize-url'
 
 const root = pathToFileURL(process.cwd())
-const files = await glob('./dev/**/*{.d.ts,.js}', {cwd: root})
+const files = await glob('./dev/**/*{.d.ts.map,.d.ts,.js}', {cwd: root})
 let index = -1
 
 while (++index < files.length) {
@@ -31,7 +31,7 @@ while (++index < files.length) {
 
   const ext = path.extname(fileURLToPath(output))
 
-  if (ext === '.ts') {
+  if (ext === '.map' || ext === '.ts') {
     await fs.copyFile(input, output)
     console.log('%s (from `%s`)', outputRelative, inputRelative)
     continue

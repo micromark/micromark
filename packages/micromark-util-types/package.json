@@ -29,6 +29,7 @@
   "sideEffects": false,
   "type": "module",
   "files": [
+    "index.d.ts.map",
     "index.d.ts",
     "index.js"
   ],

@@ -27,6 +27,7 @@
   "type": "module",
   "bin": "index.js",
   "files": [
+    "index.d.ts.map",
     "index.d.ts",
     "index.js"
   ],

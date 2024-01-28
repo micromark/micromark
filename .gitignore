@@ -1,6 +1,7 @@
 coverage/
 node_modules/
 *.log
+*.d.ts.map
 *.d.ts
 .DS_Store
 micromark.min.js

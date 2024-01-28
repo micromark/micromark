@@ -30,6 +30,7 @@
   "files": [
     "dev/",
     "lib/",
+    "index.d.ts.map",
     "index.d.ts",
     "index.js"
   ],
