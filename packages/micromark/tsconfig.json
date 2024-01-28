@@ -1,18 +1,3 @@
 {
-  "extends": "../../tsconfig.json",
-  "references": [
-    {"path": "../micromark-core-commonmark/"},
-    {"path": "../micromark-factory-space/"},
-    {"path": "../micromark-util-character/"},
-    {"path": "../micromark-util-chunked/"},
-    {"path": "../micromark-util-combine-extensions/"},
-    {"path": "../micromark-util-decode-numeric-character-reference/"},
-    {"path": "../micromark-util-encode/"},
-    {"path": "../micromark-util-normalize-identifier/"},
-    {"path": "../micromark-util-resolve-all/"},
-    {"path": "../micromark-util-sanitize-uri/"},
-    {"path": "../micromark-util-subtokenize/"},
-    {"path": "../micromark-util-symbol/"},
-    {"path": "../micromark-util-types/"}
-  ]
+  "extends": "../../tsconfig.json"
 }
