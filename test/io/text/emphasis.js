@@ -803,13 +803,13 @@ test('emphasis', function () {
 
   assert.equal(
     micromark('*£*a.'),
-    '<p><em>£</em>a.</p>',
+    '<p>*£*a.</p>',
     'should support symbols correctly (2, unicode symbol)'
   )
 
   assert.equal(
     micromark('*€*a.'),
-    '<p><em>€</em>a.</p>',
+    '<p>*€*a.</p>',
     'should support symbols correctly (3, unicode symbol)'
   )
 

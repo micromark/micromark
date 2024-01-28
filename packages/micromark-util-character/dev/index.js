@@ -4,8 +4,6 @@
 
 import {codes} from 'micromark-util-symbol'
 
-const unicodePunctuationInternal = regexCheck(/\p{P}/u)
-
 /**
  * Check whether the character code represents an ASCII alpha (`a` through `z`,
  * case insensitive).
@@ -200,14 +198,12 @@ export function markdownSpace(code) {
  * [The Unicode Standard](https://www.unicode.org/versions/).
  * Unicode Consortium.
  *
- * @param {Code} code
+ * @param code
  *   Code.
- * @returns {boolean}
+ * @returns
  *   Whether it matches.
  */
-export function unicodePunctuation(code) {
-  return asciiPunctuation(code) || unicodePunctuationInternal(code)
-}
+export const unicodePunctuation = regexCheck(/\p{P}|\p{S}/u)
 
 /**
  * Check whether the character code represents Unicode whitespace.
@@ -226,7 +222,7 @@ export function unicodePunctuation(code) {
  *
  * @param code
  *   Code.
- * @returns {boolean}
+ * @returns
  *   Whether it matches.
  */
 export const unicodeWhitespace = regexCheck(/\s/)
