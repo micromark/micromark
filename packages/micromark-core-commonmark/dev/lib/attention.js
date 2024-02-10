@@ -11,6 +11,7 @@
  */
 
 import {push, splice} from 'micromark-util-chunked'
+import {cjk} from 'micromark-util-character'
 import {classifyCharacter} from 'micromark-util-classify-character'
 import {resolveAll} from 'micromark-util-resolve-all'
 import {codes, constants, types} from 'micromark-util-symbol'
@@ -259,10 +260,12 @@ function tokenizeAttention(effects, ok) {
     assert(attentionMarkers, 'expected `attentionMarkers` to be populated')
 
     const open =
+      cjk(previous) ||
       !after ||
       (after === constants.characterGroupPunctuation && before) ||
       attentionMarkers.includes(code)
     const close =
+      cjk(code) ||
       !before ||
       (before === constants.characterGroupPunctuation && after) ||
       attentionMarkers.includes(previous)

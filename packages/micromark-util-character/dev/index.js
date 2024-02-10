@@ -228,6 +228,13 @@ export const unicodePunctuation = regexCheck(/\p{P}|\p{S}/u)
 export const unicodeWhitespace = regexCheck(/\s/)
 
 /**
+ * To do...
+ */
+export const cjk = regexCheck(
+  /[\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\u3000-\u303f\uFF00-\uFFEE]/ // eslint-disable-line unicorn/escape-case
+)
+
+/**
  * Create a code check from a regex.
  *
  * @param {RegExp} regex
