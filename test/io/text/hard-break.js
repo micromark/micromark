@@ -101,13 +101,13 @@ test('hard-break', function () {
 
   assert.equal(
     micromark('aaa\0  \nbb'),
-    '<p>aaa�<br />\nbb</p>',
+    '<p>aaa\uFFFD<br />\nbb</p>',
     'should support a hard break after a replacement character'
   )
 
   assert.equal(
     micromark('aaa\0\t\nbb'),
-    '<p>aaa�\nbb</p>',
+    '<p>aaa\uFFFD\nbb</p>',
     'should support a line suffix after a replacement character'
   )
 

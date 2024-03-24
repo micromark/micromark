@@ -6,13 +6,13 @@ import {micromark} from 'micromark'
 test('nul', function () {
   assert.equal(
     micromark('asd\0asd'),
-    '<p>asd�asd</p>',
-    'should replace `\\0` w/ a replacement characters (`�`)'
+    '<p>asd\uFFFDasd</p>',
+    'should replace `\\0` w/ a replacement characters (`\uFFFD`)'
   )
 
   assert.equal(
     micromark('&#0;'),
-    '<p>�</p>',
+    '<p>\uFFFD</p>',
     'should replace NUL in a character reference'
   )
 

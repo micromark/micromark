@@ -10,7 +10,7 @@ test('decodeString', function () {
   )
   assert.equal(
     decodeString('a &#0; b'),
-    'a � b',
+    'a \uFFFD b',
     'should properly decode dangerous references'
   )
   assert.equal(

@@ -17,7 +17,7 @@ test('character-reference', function () {
 
   assert.equal(
     micromark('&#35; &#1234; &#992; &#0;'),
-    '<p># Ӓ Ϡ �</p>',
+    '<p># Ӓ Ϡ \uFFFD</p>',
     'should support decimal character references'
   )
 
@@ -138,13 +138,13 @@ test('character-reference', function () {
 
   assert.equal(
     micromark('&#xff9999;'),
-    '<p>�</p>',
+    '<p>\uFFFD</p>',
     'should “support” a longest possible hexadecimal character reference'
   )
 
   assert.equal(
     micromark('&#9999999;'),
-    '<p>�</p>',
+    '<p>\uFFFD</p>',
     'should “support” a longest possible decimal character reference'
   )
 
