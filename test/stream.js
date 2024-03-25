@@ -162,14 +162,14 @@ test('stream', async function (t) {
 
   await t.test('should stream in non-UTF8', async function () {
     const encoding = 'utf16le'
-    const doc = [
+    const document = [
       'A bit of arabic: الإعلان العالمي لحقوق الإنسان',
       'Some hebrew: הכרזה לכל באי עולם בדבר זכויות האדם',
       'Mongolian (Halh, Mongolian script): ᠬᠦᠮᠦᠨ ᠪᠦᠷ ᠲᠥᠷᠥᠵᠦ ᠮᠡᠨᠳᠡᠯᠡᠬᠦ ᠡᠷᠬᠡ ᠴᠢᠯᠥᠭᠡ ᠲᠡᠢ᠂ ᠠᠳᠠᠯᠢᠬᠠᠨ ᠨᠡᠷ',
       'And some happy families: 🎊👩‍👩‍👦‍👦👨‍👨‍👧‍👦🌈'
     ].join('\n')
 
-    await fs.writeFile('non-utf8-input', doc, encoding)
+    await fs.writeFile('non-utf8-input', document, encoding)
 
     return new Promise((resolve) => {
       createReadStream('non-utf8-input', {
@@ -181,7 +181,7 @@ test('stream', async function (t) {
         .on('close', async function () {
           assert.equal(
             String(await fs.readFile('non-utf8-output')),
-            '<p>' + doc + '</p>',
+            '<p>' + document + '</p>',
             'pass'
           )
 

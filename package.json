@@ -74,7 +74,7 @@
     "rollup": "^4.0.0",
     "type-coverage": "^2.0.0",
     "typescript": "^5.0.0",
-    "xo": "^0.56.0"
+    "xo": "^0.58.0"
   },
   "scripts": {
     "build": "tsc --build --clean && tsc && type-coverage && npm run build --workspaces --if-present && rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
@@ -125,6 +125,7 @@
     ],
     "prettier": true,
     "rules": {
+      "logical-assignment-operators": "off",
       "n/file-extension-in-import": "off",
       "unicorn/prefer-code-point": "off"
     }

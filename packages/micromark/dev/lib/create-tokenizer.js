@@ -383,12 +383,12 @@ export function createTokenizer(parser, initialize, from) {
 
         /** @type {State} */
         function start(code) {
-          const def = code !== null && map[code]
+          const left = code !== null && map[code]
           const all = code !== null && map.null
           const list = [
             // To do: add more extension tests.
             /* c8 ignore next 2 */
-            ...(Array.isArray(def) ? def : def ? [def] : []),
+            ...(Array.isArray(left) ? left : left ? [left] : []),
             ...(Array.isArray(all) ? all : all ? [all] : [])
           ]
 
