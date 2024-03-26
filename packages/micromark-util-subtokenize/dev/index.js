@@ -246,10 +246,11 @@ function subcontent(events, eventIndex) {
     const slice = childEvents.slice(breaks[index], breaks[index + 1])
     const start = startPositions.pop()
     assert(start !== undefined, 'expected a start position when splicing')
-    jumps.unshift([start, start + slice.length - 1])
+    jumps.push([start, start + slice.length - 1])
     splice(events, start, 2, slice)
   }
 
+  jumps.reverse()
   index = -1
 
   while (++index < jumps.length) {
