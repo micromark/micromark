@@ -51,6 +51,7 @@
     ],
     "prettier": true,
     "rules": {
+      "logical-assignment-operators": "off",
       "unicorn/no-this-assignment": "off",
       "unicorn/prefer-code-point": "off"
     }

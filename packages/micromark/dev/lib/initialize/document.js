@@ -265,13 +265,13 @@ function initializeDocument(effects) {
 
   /**
    * @param {Token} token
-   * @param {boolean | undefined} [eof]
+   * @param {boolean | undefined} [endOfFile]
    * @returns {undefined}
    */
-  function writeToChild(token, eof) {
+  function writeToChild(token, endOfFile) {
     assert(childFlow, 'expected `childFlow` to be defined when continuing')
     const stream = self.sliceStream(token)
-    if (eof) stream.push(null)
+    if (endOfFile) stream.push(null)
     token.previous = childToken
     if (childToken) childToken.next = token
     childToken = token

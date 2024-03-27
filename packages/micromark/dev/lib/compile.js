@@ -54,7 +54,7 @@ const hasOwnProperty = {}.hasOwnProperty
  * <https://github.com/syntax-tree/hast-util-sanitize/blob/9275b21/lib/github.json#L31>
  */
 const protocolHref = /^(https?|ircs?|mailto|xmpp)$/i
-const protocolSrc = /^https?$/i
+const protocolSource = /^https?$/i
 
 /**
  * @param {CompileOptions | null | undefined} [options]
@@ -803,7 +803,7 @@ export function compile(options) {
         '<img src="' +
           sanitizeUri(
             context.destination,
-            settings.allowDangerousProtocol ? undefined : protocolSrc
+            settings.allowDangerousProtocol ? undefined : protocolSource
           ) +
           '" alt="'
       )

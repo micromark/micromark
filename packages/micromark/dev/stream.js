@@ -175,29 +175,29 @@ export function stream(options) {
    * See: <https://github.com/nodejs/node/blob/43a5170/lib/internal/streams/legacy.js#L13>.
    *
    * @template {NodeJS.WritableStream} Stream
-   * @param {Stream} dest
+   * @param {Stream} destination
    * @param {PipeOptions | null | undefined} [options]
    * @returns {Stream}
    */
-  function pipe(dest, options) {
+  function pipe(destination, options) {
     emitter.on('data', ondata)
     emitter.on('error', onerror)
     emitter.on('end', cleanup)
     emitter.on('close', cleanup)
 
-    // If the `end` option is not supplied, `dest.end()` will be
+    // If the `end` option is not supplied, `destination.end()` will be
     // called when the `end` or `close` events are received.
     // @ts-expect-error `_isStdio` is available on `std{err,out}`
-    if (!dest._isStdio && (!options || options.end !== false)) {
+    if (!destination._isStdio && (!options || options.end !== false)) {
       emitter.on('end', onend)
     }
 
-    dest.on('error', onerror)
-    dest.on('close', cleanup)
+    destination.on('error', onerror)
+    destination.on('close', cleanup)
 
-    dest.emit('pipe', emitter)
+    destination.emit('pipe', emitter)
 
-    return dest
+    return destination
 
     /**
      * End destination stream.
@@ -205,8 +205,8 @@ export function stream(options) {
      * @returns {undefined}
      */
     function onend() {
-      if (dest.end) {
-        dest.end()
+      if (destination.end) {
+        destination.end()
       }
     }
 
@@ -217,8 +217,8 @@ export function stream(options) {
      * @returns {undefined}
      */
     function ondata(chunk) {
-      if (dest.writable) {
-        dest.write(chunk)
+      if (destination.writable) {
+        destination.write(chunk)
       }
     }
 
@@ -234,8 +234,8 @@ export function stream(options) {
       emitter.removeListener('end', cleanup)
       emitter.removeListener('close', cleanup)
 
-      dest.removeListener('error', onerror)
-      dest.removeListener('close', cleanup)
+      destination.removeListener('error', onerror)
+      destination.removeListener('close', cleanup)
     }
 
     /**

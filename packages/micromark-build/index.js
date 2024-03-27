@@ -29,16 +29,16 @@ while (++index < files.length) {
 
   await fs.mkdir(new URL('.', output), {recursive: true})
 
-  const ext = path.extname(fileURLToPath(output))
+  const extname = path.extname(fileURLToPath(output))
 
-  if (ext === '.map' || ext === '.ts') {
+  if (extname === '.map' || extname === '.ts') {
     await fs.copyFile(input, output)
     console.log('%s (from `%s`)', outputRelative, inputRelative)
     continue
   }
 
-  if (ext !== '.js') {
-    throw new Error('Unknown extension `' + ext + '`')
+  if (extname !== '.js') {
+    throw new Error('Unknown extension `' + extname + '`')
   }
 
   const modules = ['micromark-util-symbol']

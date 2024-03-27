@@ -89,6 +89,7 @@
     ],
     "prettier": true,
     "rules": {
+      "logical-assignment-operators": "off",
       "max-depth": "off",
       "unicorn/no-this-assignment": "off",
       "unicorn/prefer-at": "off",
