@@ -31,11 +31,20 @@
     "dev/",
     "index.d.ts.map",
     "index.d.ts",
-    "index.js"
+    "index.js",
+    "splice-buffer.d.ts.map",
+    "splice-buffer.d.ts",
+    "splice-buffer.js"
   ],
   "exports": {
-    "development": "./dev/index.js",
-    "default": "./index.js"
+    ".": {
+      "development": "./dev/index.js",
+      "default": "./index.js"
+    },
+    "./splice-buffer": {
+      "development": "./dev/splice-buffer.js",
+      "default": "./splice-buffer.js"
+    }
   },
   "dependencies": {
     "devlop": "^1.0.0",
