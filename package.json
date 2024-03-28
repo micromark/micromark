@@ -129,9 +129,5 @@
       "n/file-extension-in-import": "off",
       "unicorn/prefer-code-point": "off"
     }
-  },
-  "dependencies": {
-    "micromark-extension-mdx": "^2.1.0",
-    "micromark-extension-mdxjs": "^3.0.0"
   }
 }
