@@ -42,7 +42,7 @@ export type Chunk = Code | string
  * This allows for an efficient sequence of splices (or pushes, pops, shifts,
  * or unshifts) as long such edits happen at the same part of the array or
  * generally sweep through the array from the beginning to the end.
- * 
+ *
  * The interface for splice buffers also supports large numbers of inputs by
  * passing a single array argument rather passing multiple arguments on the
  * function call stack.
@@ -57,7 +57,7 @@ export interface SpliceBuffer<T extends {} | null> {
   /**
    * Mimics the behavior of Array.prototype.splice() except for the change of
    * interface necessary to avoid segfaults when patching in very large arrays.
-   * 
+   *
    * This operation moves cursor is moved to `start` and results in the cursor
    * placed after any inserted items.
    *
@@ -430,11 +430,6 @@ export type Effects = {
    */
   check: Attempt
 }
-
-/**
- * A gap buffer
- */
-export type GapBuffer = Array
 
 /**
  * The main unit in the state machine: a function that gets a character code
