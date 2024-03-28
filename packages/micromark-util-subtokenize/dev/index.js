@@ -5,9 +5,9 @@
  * @typedef {import('micromark-util-types').SpliceBuffer<Event>} EventSpliceBuffer
  */
 
+import {splice} from 'micromark-util-chunked'
 import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
-import {splice} from 'micromark-util-chunked'
 import {spliceBuffer} from './splicebuffer.js'
 
 /**
