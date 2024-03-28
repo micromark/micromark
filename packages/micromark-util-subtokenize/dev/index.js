@@ -7,6 +7,7 @@
 
 import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
+import {splice} from 'micromark-util-chunked'
 import {spliceBuffer} from './splicebuffer.js'
 
 /**
@@ -126,6 +127,8 @@ export function subtokenize(eventsArray) {
     }
   }
 
+  // The changes to the `events` buffer must be copied back into the eventsArray
+  splice(eventsArray, 0, Number.POSITIVE_INFINITY, events.slice(0))
   return !more
 }
 
