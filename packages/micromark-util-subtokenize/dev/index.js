@@ -2,22 +2,24 @@
  * @typedef {import('micromark-util-types').Chunk} Chunk
  * @typedef {import('micromark-util-types').Event} Event
  * @typedef {import('micromark-util-types').Token} Token
+ * @typedef {import('micromark-util-types').SpliceBuffer<Event>} SpliceBuffer
  */
 
-import {splice} from 'micromark-util-chunked'
 import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
+import {splice} from 'micromark-util-chunked'
+import {spliceBuffer} from './splicebuffer.js'
 
 /**
  * Tokenize subcontent.
  *
- * @param {Array<Event>} events
+ * @param {Array<Event>} eventsArray
  *   List of events.
  * @returns {boolean}
  *   Whether subtokens were found.
  */
 // eslint-disable-next-line complexity
-export function subtokenize(events) {
+export function subtokenize(eventsArray) {
   /** @type {Record<string, number>} */
   const jumps = {}
   let index = -1
@@ -35,6 +37,8 @@ export function subtokenize(events) {
   let subevents
   /** @type {boolean | undefined} */
   let more
+  /** @type {SpliceBuffer} */
+  const events = spliceBuffer(eventsArray)
 
   while (++index < events.length) {
     while (index in jumps) {
@@ -118,18 +122,19 @@ export function subtokenize(events) {
         // Switch container exit w/ line endings.
         parameters = events.slice(lineIndex, index)
         parameters.unshift(event)
-        splice(events, lineIndex, index - lineIndex + 1, parameters)
+        events.splice(lineIndex, index - lineIndex + 1, parameters)
       }
     }
   }
 
+  splice(eventsArray, 0, Number.POSITIVE_INFINITY, events.slice(0))
   return !more
 }
 
 /**
  * Tokenize embedded tokens.
  *
- * @param {Array<Event>} events
+ * @param {SpliceBuffer} events
  * @param {number} eventIndex
  * @returns {Record<string, number>}
  */
@@ -247,7 +252,7 @@ function subcontent(events, eventIndex) {
     const start = startPositions.pop()
     assert(start !== undefined, 'expected a start position when splicing')
     jumps.push([start, start + slice.length - 1])
-    splice(events, start, 2, slice)
+    events.splice(start, 2, slice)
   }
 
   jumps.reverse()
