@@ -41,17 +41,25 @@ export type Chunk = Code | string
  * new information at the cursor is as efficient as the push/pop operation.
  * This allows for an efficient sequence of splices (or pushes, pops, shifts,
  * or unshifts) as long such edits happen at the same part of the array or
- * generally sweep through the array from the beginning to the end. The
- * interface for splice buffers also supports large numbers of inputs by
- * passing a single array argument rather than a list of arguments.
+ * generally sweep through the array from the beginning to the end.
+ * 
+ * The interface for splice buffers also supports large numbers of inputs by
+ * passing a single array argument rather passing multiple arguments on the
+ * function call stack.
  */
 export interface SpliceBuffer<T extends {} | null> {
+  /**
+   * The length of the splice buffer, one greater than the largest index in the
+   * array.
+   */
   readonly length: number
 
   /**
-   * Mimics the behavior of Array.prototype.slice() except for avoiding
-   * the spread operation. The cursor is moved to `start` and ends
-   * after the inserted items.
+   * Mimics the behavior of Array.prototype.splice() except for the change of
+   * interface necessary to avoid segfaults when patching in very large arrays.
+   * 
+   * This operation moves cursor is moved to `start` and results in the cursor
+   * placed after any inserted items.
    *
    * @param start
    *   Zero-based index at which to start changing the array. Negative
@@ -88,29 +96,28 @@ export interface SpliceBuffer<T extends {} | null> {
 
   /**
    * Inserts a single item to the low-numbered side of the array. Moves
-   * the cursor to 1.
+   * the cursor to 0.
    */
   unshift(item: T): void
 
   /**
    * Inserts many items to the low-numbered side of the array. Moves
-   * the cursor to `items.length`.
+   * the cursor to 0.
    */
   unshiftMany(items: T[]): void
 
   /**
-   * Remove and return `buf[0]`.
+   * Remove and return `buf[0]`. Moves the cursor to 0.
    */
   shift(): T | undefined
 
   /**
-   * Slice the buffer to get an array. Moves the cursor to the beginning of
-   * the slice, and leaves the cursor at the end of the slice.
+   * Slice the buffer to get an array. Does not move the cursor.
    */
   slice(start: number, end?: number): T[]
 
   /**
-   * Array access
+   * Array access. Does not move the cursor.
    */
   get(index: number): T
 }
