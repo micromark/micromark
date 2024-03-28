@@ -92,7 +92,7 @@ export function spliceBuffer(initial) {
     setCursor(Math.trunc(start))
     const removed = right.splice(right.length - count, Number.POSITIVE_INFINITY)
     if (items) chunkedPush(left, items)
-    return removed
+    return removed.reverse()
   }
 
   /**

@@ -8,7 +8,7 @@
 import {splice} from 'micromark-util-chunked'
 import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
-import {spliceBuffer} from './splicebuffer.js'
+import {spliceBuffer} from './splice-buffer.js'
 
 /**
  * Tokenize subcontent.
