@@ -6,6 +6,9 @@ import {micromark} from 'micromark'
 test('nul', function () {
   assert.equal(
     micromark('asd\0asd'),
+    // Note: this long comment has to be here because otherwise TypeScript crashes.
+    // It doesn’t accept the actual `\uFFFD` character in the first 256 characters.
+    // See: microsoft/TypeScript#57930.
     '<p>asd�asd</p>',
     'should replace `\\0` w/ a replacement characters (`�`)'
   )
