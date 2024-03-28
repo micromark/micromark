@@ -46,7 +46,6 @@ export type Chunk = Code | string
  * passing a single array argument rather than a list of arguments.
  */
 export interface SpliceBuffer<T extends {} | null> {
-  [index: number]: T
   readonly length: number
 
   /**
@@ -109,6 +108,11 @@ export interface SpliceBuffer<T extends {} | null> {
    * the slice, and leaves the cursor at the end of the slice.
    */
   slice(start: number, end?: number): T[]
+
+  /**
+   * Array access
+   */
+  get(index: number): T
 }
 
 /**

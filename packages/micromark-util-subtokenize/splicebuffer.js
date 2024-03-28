@@ -6,11 +6,9 @@
  */
 export function spliceBuffer(initial) {
   /** @type {T[]} */
-  const left = initial ? [...initial] : [];
+  const left = initial ? [...initial] : []
   /** @type {T[]} */
-  const right = [];
-  const length = () => left.length + right.length;
-  const cursor = () => left.length;
+  const right = []
 
   /**
    * Avoid stack overflow by pushing items onto the stack in segments
@@ -20,12 +18,13 @@ export function spliceBuffer(initial) {
    */
   function chunkedPush(array, items) {
     /** @type number */
-    const chunkStart = 0;
-    if (items.length < 10000) {
-      array.push(...items);
+    let chunkStart = 0
+    if (items.length < 10_000) {
+      array.push(...items)
     } else {
       while (chunkStart < items.length) {
-        array.push(...items.slice(chunkStart, chunkStart + 10000));
+        array.push(...items.slice(chunkStart, chunkStart + 10_000))
+        chunkStart += 10_000
       }
     }
   }
@@ -40,15 +39,23 @@ export function spliceBuffer(initial) {
    * @param {number} n
    */
   function setCursor(n) {
-    if (n === left.length || n > left.length && right.length === 0 || n < 0 && left.length === 0) return;
+    if (
+      n === left.length ||
+      (n > left.length && right.length === 0) ||
+      (n < 0 && left.length === 0)
+    )
+      return
     if (n < left.length) {
       // Move cursor to the left
-      const removed = left.splice(n, Number.POSITIVE_INFINITY);
-      chunkedPush(right, removed.reverse());
+      const removed = left.splice(n, Number.POSITIVE_INFINITY)
+      chunkedPush(right, removed.reverse())
     } else {
       // Move cursor to the right
-      const removed = right.splice(length() - n, Number.POSITIVE_INFINITY);
-      chunkedPush(left, removed.reverse());
+      const removed = right.splice(
+        left.length + right.length - n,
+        Number.POSITIVE_INFINITY
+      )
+      chunkedPush(left, removed.reverse())
     }
   }
 
@@ -56,31 +63,15 @@ export function spliceBuffer(initial) {
    * Array access for the splice buffer (constant time)
    *
    * @param {number} index
-   * @returns Event | undefined
+   * @returns Event
    */
   function get(index) {
-    if (index < 0 || index >= length()) return undefined;
-    if (index < left.length) return left[index];
-    return right[right.length - (index - left.length + 1)];
-  }
-
-  /**
-   * Array write for the splice buffer: throws an error if the index
-   * does not already exist in the array (constant time)
-   *
-   * @param {number} index
-   * @param {T} value
-   */
-  function set(index, value) {
-    if (index < 0 || index >= length()) {
-      return false;
-    }
-    if (index < left.length) {
-      left[index] = value;
-    } else {
-      right[right.length - (index - left.length + 1)] = value;
-    }
-    return true;
+    if (index < 0 || index >= left.length + right.length)
+      throw new RangeError(
+        `index ${index} in a buffer of size ${left.length + right.length}`
+      )
+    if (index < left.length) return left[index]
+    return right[right.length - index + left.length - 1]
   }
 
   /**
@@ -91,59 +82,59 @@ export function spliceBuffer(initial) {
    */
   function splice(start, deleteCount, items) {
     /** @type number */
-    const count = deleteCount || 0;
-    setCursor(Math.trunc(start));
-    const removed = right.splice(right.length - count, Number.POSITIVE_INFINITY);
-    if (items) chunkedPush(left, items);
-    return removed;
+    const count = deleteCount || 0
+    setCursor(Math.trunc(start))
+    const removed = right.splice(right.length - count, Number.POSITIVE_INFINITY)
+    if (items) chunkedPush(left, items)
+    return removed
   }
 
   /**
    * @returns T | undefined
    */
   function pop() {
-    setCursor(Number.POSITIVE_INFINITY);
-    return left.pop();
+    setCursor(Number.POSITIVE_INFINITY)
+    return left.pop()
   }
 
   /**
    * @param {T} item
    */
   function push(item) {
-    setCursor(Number.POSITIVE_INFINITY);
-    left.push(item);
+    setCursor(Number.POSITIVE_INFINITY)
+    left.push(item)
   }
 
   /**
    * @param {T[]} items
    */
   function pushMany(items) {
-    setCursor(Number.POSITIVE_INFINITY);
-    chunkedPush(left, items);
+    setCursor(Number.POSITIVE_INFINITY)
+    chunkedPush(left, items)
   }
 
   /**
    * @param {T} item
    */
   function unshift(item) {
-    setCursor(0);
-    right.push(item);
+    setCursor(0)
+    right.push(item)
   }
 
   /**
    * @param {T[]} items
    */
   function unshiftMany(items) {
-    setCursor(0);
-    chunkedPush(right, items.reverse());
+    setCursor(0)
+    chunkedPush(right, items.reverse())
   }
 
   /**
    * @returns T | undefined
    */
   function shift() {
-    setCursor(0);
-    return right.pop();
+    setCursor(0)
+    return right.pop()
   }
 
   /**
@@ -152,19 +143,26 @@ export function spliceBuffer(initial) {
    */
   function slice(start, end) {
     /** @type number */
-    const stop = end === undefined ? Number.POSITIVE_INFINITY : end;
-    /** @type T | undefined */
-    let element;
-    /** @type T[] */
-    const sliced = [];
-    setCursor(start);
-    while (cursor() < stop && (element = right.pop()) !== undefined) {
-      left.push(element);
-      sliced.push(element);
+    const stop = end === undefined ? Number.POSITIVE_INFINITY : end
+    if (stop < left.length) {
+      return left.slice(start, end)
     }
-    return sliced;
+
+    if (start > left.length) {
+      return right
+        .slice(
+          right.length - stop + left.length,
+          right.length - start + left.length
+        )
+        .reverse()
+    }
+
+    return left
+      .slice(start)
+      .concat(right.slice(right.length - stop + left.length).reverse())
   }
-  const proxy = {
+
+  return {
     splice,
     push,
     pushMany,
@@ -173,40 +171,34 @@ export function spliceBuffer(initial) {
     unshiftMany,
     shift,
     slice,
-    toString() {
-      return `[${left.map(x => `${x}`).join('|')}<>${[...right].reverse().map(x => `${x}`).join('|')}]`;
-    },
+    get,
     get length() {
-      return length();
+      return left.length + right.length
     }
-  };
-  return new Proxy(proxy, {
-    /**
-     * @param {typeof proxy} target
-     * @param {keyof typeof proxy} property
-     *   The type of `property` here is a lie to make Typescript happy.
-     *   `property` can also have the value of a number, parsed into a string in
-     *   base 10.
-     * @returns
-     */
-    get(target, property) {
-      const index = Number.parseInt(property, 10);
-      if (index.toString() === property) {
-        const result = get(index);
-        return result;
-      }
-      return target[property];
-    },
-    /**
-     * @param {string | symbol} property
-     * @param {T} newValue
-     * @returns
-     */
-    set(_, property, newValue) {
-      if (typeof property === 'symbol') return false;
-      const index = Number.parseInt(property, 10);
-      if (index.toString() !== property) return false;
-      return set(index, newValue);
-    }
-  });
+  } /*
+     Return new Proxy(proxy, {
+     /**
+      * @param {typeof proxy} target
+      * @param {keyof typeof proxy} property
+      *   The type of `property` here is a lie to make Typescript happy.
+      *   `property` can also have the value of a number, parsed into a string in
+      *   base 10.
+      * @returns
+      *
+     get(target, property) {
+       if (target[property]) return target[property]
+       return get(Number.parseInt(property, 10))
+     },
+     /**
+      * @param {string | symbol} property
+      * @param {T} newValue
+      * @returns
+      *
+     set(_, property, newValue) {
+       if (typeof property === 'symbol') return false
+       const index = Number.parseInt(property, 10)
+       if (index.toString() !== property) return false
+       return set(index, newValue)
+     }
+     }) */
 }

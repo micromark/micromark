@@ -2,12 +2,11 @@
  * @typedef {import('micromark-util-types').Chunk} Chunk
  * @typedef {import('micromark-util-types').Event} Event
  * @typedef {import('micromark-util-types').Token} Token
- * @typedef {import('micromark-util-types').SpliceBuffer<Event>} SpliceBuffer
+ * @typedef {import('micromark-util-types').SpliceBuffer<Event>} EventSpliceBuffer
  */
 
 import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
-import {splice} from 'micromark-util-chunked'
 import {spliceBuffer} from './splicebuffer.js'
 
 /**
@@ -37,7 +36,7 @@ export function subtokenize(eventsArray) {
   let subevents
   /** @type {boolean | undefined} */
   let more
-  /** @type {SpliceBuffer} */
+  /** @type {EventSpliceBuffer} */
   const events = spliceBuffer(eventsArray)
 
   while (++index < events.length) {
@@ -45,14 +44,14 @@ export function subtokenize(eventsArray) {
       index = jumps[index]
     }
 
-    event = events[index]
+    event = events.get(index)
 
     // Add a hook for the GFM tasklist extension, which needs to know if text
     // is in the first content of a list item.
     if (
       index &&
       event[1].type === types.chunkFlow &&
-      events[index - 1][1].type === types.listItemPrefix
+      events.get(index - 1)[1].type === types.listItemPrefix
     ) {
       assert(event[1]._tokenizer, 'expected `_tokenizer` on subtokens')
       subevents = event[1]._tokenizer.events
@@ -96,7 +95,7 @@ export function subtokenize(eventsArray) {
       lineIndex = undefined
 
       while (otherIndex--) {
-        otherEvent = events[otherIndex]
+        otherEvent = events.get(otherIndex)
 
         if (
           otherEvent[1].type === types.lineEnding ||
@@ -104,7 +103,7 @@ export function subtokenize(eventsArray) {
         ) {
           if (otherEvent[0] === 'enter') {
             if (lineIndex) {
-              events[lineIndex][1].type = types.lineEndingBlank
+              events.get(lineIndex)[1].type = types.lineEndingBlank
             }
 
             otherEvent[1].type = types.lineEnding
@@ -117,7 +116,7 @@ export function subtokenize(eventsArray) {
 
       if (lineIndex) {
         // Fix position.
-        event[1].end = Object.assign({}, events[lineIndex][1].start)
+        event[1].end = Object.assign({}, events.get(lineIndex)[1].start)
 
         // Switch container exit w/ line endings.
         parameters = events.slice(lineIndex, index)
@@ -127,20 +126,19 @@ export function subtokenize(eventsArray) {
     }
   }
 
-  splice(eventsArray, 0, Number.POSITIVE_INFINITY, events.slice(0))
   return !more
 }
 
 /**
  * Tokenize embedded tokens.
  *
- * @param {SpliceBuffer} events
+ * @param {EventSpliceBuffer} events
  * @param {number} eventIndex
  * @returns {Record<string, number>}
  */
 function subcontent(events, eventIndex) {
-  const token = events[eventIndex][1]
-  const context = events[eventIndex][2]
+  const token = events.get(eventIndex)[1]
+  const context = events.get(eventIndex)[2]
   let startPosition = eventIndex - 1
   /** @type {Array<number>} */
   const startPositions = []
@@ -167,7 +165,7 @@ function subcontent(events, eventIndex) {
   // subtokenizer.
   while (current) {
     // Find the position of the event for this token.
-    while (events[++startPosition][1] !== current) {
+    while (events.get(++startPosition)[1] !== current) {
       // Empty.
     }
 

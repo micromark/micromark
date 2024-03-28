@@ -11,8 +11,6 @@ export function spliceBuffer(initial) {
   const left = initial ? [...initial] : []
   /** @type {T[]} */
   const right = []
-  const length = () => left.length + right.length
-  const cursor = () => left.length
 
   /**
    * Avoid stack overflow by pushing items onto the stack in segments
@@ -22,7 +20,7 @@ export function spliceBuffer(initial) {
    */
   function chunkedPush(array, items) {
     /** @type number */
-    const chunkStart = 0
+    let chunkStart = 0
 
     if (items.length < constants.v8MaxSafeChunkSize) {
       array.push(...items)
@@ -31,6 +29,7 @@ export function spliceBuffer(initial) {
         array.push(
           ...items.slice(chunkStart, chunkStart + constants.v8MaxSafeChunkSize)
         )
+        chunkStart += constants.v8MaxSafeChunkSize
       }
     }
   }
@@ -57,7 +56,10 @@ export function spliceBuffer(initial) {
       chunkedPush(right, removed.reverse())
     } else {
       // Move cursor to the right
-      const removed = right.splice(length() - n, Number.POSITIVE_INFINITY)
+      const removed = right.splice(
+        left.length + right.length - n,
+        Number.POSITIVE_INFINITY
+      )
       chunkedPush(left, removed.reverse())
     }
   }
@@ -66,33 +68,15 @@ export function spliceBuffer(initial) {
    * Array access for the splice buffer (constant time)
    *
    * @param {number} index
-   * @returns Event | undefined
+   * @returns Event
    */
   function get(index) {
-    if (index < 0 || index >= length()) return undefined
+    if (index < 0 || index >= left.length + right.length)
+      throw new RangeError(
+        `index ${index} in a buffer of size ${left.length + right.length}`
+      )
     if (index < left.length) return left[index]
-    return right[right.length - (index - left.length + 1)]
-  }
-
-  /**
-   * Array write for the splice buffer: throws an error if the index
-   * does not already exist in the array (constant time)
-   *
-   * @param {number} index
-   * @param {T} value
-   */
-  function set(index, value) {
-    if (index < 0 || index >= length()) {
-      return false
-    }
-
-    if (index < left.length) {
-      left[index] = value
-    } else {
-      right[right.length - (index - left.length + 1)] = value
-    }
-
-    return true
+    return right[right.length - index + left.length - 1]
   }
 
   /**
@@ -166,21 +150,26 @@ export function spliceBuffer(initial) {
   function slice(start, end) {
     /** @type number */
     const stop = end === undefined ? Number.POSITIVE_INFINITY : end
-    /** @type T | undefined */
-    let element
-    /** @type T[] */
-    const sliced = []
 
-    setCursor(start)
-    while (cursor() < stop && (element = right.pop()) !== undefined) {
-      left.push(element)
-      sliced.push(element)
+    if (stop < left.length) {
+      return left.slice(start, end)
     }
 
-    return sliced
+    if (start > left.length) {
+      return right
+        .slice(
+          right.length - stop + left.length,
+          right.length - start + left.length
+        )
+        .reverse()
+    }
+
+    return left
+      .slice(start)
+      .concat(right.slice(right.length - stop + left.length).reverse())
   }
 
-  const proxy = {
+  return {
     splice,
     push,
     pushMany,
@@ -189,17 +178,12 @@ export function spliceBuffer(initial) {
     unshiftMany,
     shift,
     slice,
-    toString() {
-      return `[${left.map((x) => `${x}`).join('|')}<>${[...right]
-        .reverse()
-        .map((x) => `${x}`)
-        .join('|')}]`
-    },
+    get,
     get length() {
-      return length()
+      return left.length + right.length
     }
-  }
-  return new Proxy(proxy, {
+  } /*
+  Return new Proxy(proxy, {
     /**
      * @param {typeof proxy} target
      * @param {keyof typeof proxy} property
@@ -207,26 +191,21 @@ export function spliceBuffer(initial) {
      *   `property` can also have the value of a number, parsed into a string in
      *   base 10.
      * @returns
-     */
+     *
     get(target, property) {
-      const index = Number.parseInt(property, 10)
-      if (index.toString() === property) {
-        const result = get(index)
-        return result
-      }
-
-      return target[property]
+      if (target[property]) return target[property]
+      return get(Number.parseInt(property, 10))
     },
     /**
      * @param {string | symbol} property
      * @param {T} newValue
      * @returns
-     */
+     *
     set(_, property, newValue) {
       if (typeof property === 'symbol') return false
       const index = Number.parseInt(property, 10)
       if (index.toString() !== property) return false
       return set(index, newValue)
     }
-  })
+  }) */
 }
