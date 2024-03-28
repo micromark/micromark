@@ -182,30 +182,5 @@ export function spliceBuffer(initial) {
     get length() {
       return left.length + right.length
     }
-  } /*
-  Return new Proxy(proxy, {
-    /**
-     * @param {typeof proxy} target
-     * @param {keyof typeof proxy} property
-     *   The type of `property` here is a lie to make Typescript happy.
-     *   `property` can also have the value of a number, parsed into a string in
-     *   base 10.
-     * @returns
-     *
-    get(target, property) {
-      if (target[property]) return target[property]
-      return get(Number.parseInt(property, 10))
-    },
-    /**
-     * @param {string | symbol} property
-     * @param {T} newValue
-     * @returns
-     *
-    set(_, property, newValue) {
-      if (typeof property === 'symbol') return false
-      const index = Number.parseInt(property, 10)
-      if (index.toString() !== property) return false
-      return set(index, newValue)
-    }
-  }) */
+  }
 }

@@ -3,6 +3,13 @@ import test from 'node:test'
 import {spliceBuffer} from 'micromark-util-subtokenize/splice-buffer'
 
 test('spliceBuffer', function () {
+  /** @type {import('micromark-util-types').SpliceBuffer<bigint>} */
+  const sb0 = spliceBuffer()
+  assert.deepEqual(sb0.splice(0), [])
+  assert.throws(() => sb.get(0), 'RangeError: index 0 in a buffer of size 0')
+  assert.deepEqual(sb0.splice(0, 0, [2n, 4n]), [])
+  assert.deepEqual(sb0.slice(0, 1), [2n])
+
   const sb = spliceBuffer(['a', 'b', 'c', 'd'])
 
   assert.deepEqual(sb.slice(0), ['a', 'b', 'c', 'd'])
@@ -47,4 +54,11 @@ test('spliceBuffer', function () {
   assert.equal(sb.get(1), 'there')
   assert.throws(() => sb.get(-1), 'RangeError: index -1 in a buffer of size 2')
   assert.throws(() => sb.get(2), 'RangeError: index 2 in a buffer of size 2')
+
+  const lots = [...Array.from({length: 140_000}).keys()].map((x) =>
+    x.toString()
+  )
+  assert.deepEqual(sb.splice(1, 0, lots), [])
+  assert.deepEqual(sb.slice(0, 2), ['hi', '0'])
+  assert.deepEqual(sb.slice(140_000), ['139999', 'there'])
 })
