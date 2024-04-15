@@ -24,6 +24,7 @@ packages/micromark-util-decode-string/index.js
 packages/micromark-util-normalize-identifier/index.js
 packages/micromark-util-sanitize-uri/index.js
 packages/micromark-util-subtokenize/index.js
+packages/micromark-util-subtokenize/splice-buffer.js
 test/fixtures/
 test/fuzz-bundle.cjs
 !packages/micromark-util-types/index.d.ts
