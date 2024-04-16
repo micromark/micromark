@@ -133,7 +133,7 @@ export function subtokenize(eventsArray) {
 /**
  * Tokenize embedded tokens.
  *
- * @param {import('./splice-buffer.js').SpliceBuffer<Event>} events
+ * @param {SpliceBuffer<Event>} events
  * @param {number} eventIndex
  * @returns {Record<string, number>}
  */
