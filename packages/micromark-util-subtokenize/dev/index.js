@@ -4,15 +4,10 @@
  * @typedef {import('micromark-util-types').Token} Token
  */
 
-/**
- * @template {{} | null} T
- * @typedef {import('micromark-util-types').SpliceBuffer<T>} SpliceBuffer<T>
- */
-
 import {splice} from 'micromark-util-chunked'
 import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
-import {spliceBuffer} from './splice-buffer.js'
+import {SpliceBuffer} from './splice-buffer.js'
 
 /**
  * Tokenize subcontent.
@@ -41,8 +36,7 @@ export function subtokenize(eventsArray) {
   let subevents
   /** @type {boolean | undefined} */
   let more
-  /** @type {SpliceBuffer<Event>} */
-  const events = spliceBuffer(eventsArray)
+  const events = new SpliceBuffer(eventsArray)
 
   while (++index < events.length) {
     while (index in jumps) {
@@ -139,7 +133,7 @@ export function subtokenize(eventsArray) {
 /**
  * Tokenize embedded tokens.
  *
- * @param {SpliceBuffer<Event>} events
+ * @param {import('./splice-buffer.js').SpliceBuffer<Event>} events
  * @param {number} eventIndex
  * @returns {Record<string, number>}
  */

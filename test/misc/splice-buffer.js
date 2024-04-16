@@ -1,16 +1,22 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {spliceBuffer} from 'micromark-util-subtokenize/splice-buffer'
+import {SpliceBuffer} from 'micromark-util-subtokenize/splice-buffer'
 
-test('spliceBuffer', function () {
-  /** @type {import('micromark-util-types').SpliceBuffer<bigint>} */
-  const sb0 = spliceBuffer()
+test('SpliceBuffer', function () {
+  /** @type {SpliceBuffer<bigint>} */
+  const sb0 = new SpliceBuffer()
+
   assert.deepEqual(sb0.splice(0), [])
-  assert.throws(() => sb.get(0), 'RangeError: index 0 in a buffer of size 0')
+
+  assert.throws(
+    () => sb0.get(0),
+    /Cannot access index `0` in a splice buffer of size `0`/
+  )
+
   assert.deepEqual(sb0.splice(0, 0, [2n, 4n]), [])
   assert.deepEqual(sb0.slice(0, 1), [2n])
 
-  const sb = spliceBuffer(['a', 'b', 'c', 'd'])
+  const sb = new SpliceBuffer(['a', 'b', 'c', 'd'])
 
   assert.deepEqual(sb.slice(0), ['a', 'b', 'c', 'd'])
   assert.equal(sb.length, 4)
@@ -52,8 +58,14 @@ test('spliceBuffer', function () {
   assert.deepEqual(sb.splice(-100, 100, ['hi', 'there']), [])
   assert.equal(sb.get(0), 'hi')
   assert.equal(sb.get(1), 'there')
-  assert.throws(() => sb.get(-1), 'RangeError: index -1 in a buffer of size 2')
-  assert.throws(() => sb.get(2), 'RangeError: index 2 in a buffer of size 2')
+  assert.throws(
+    () => sb.get(-1),
+    /Cannot access index `-1` in a splice buffer of size `2`/
+  )
+  assert.throws(
+    () => sb.get(2),
+    /Cannot access index `2` in a splice buffer of size `2`/
+  )
 
   const lots = [...Array.from({length: 140_000}).keys()].map((x) =>
     x.toString()
