@@ -17,56 +17,56 @@ With positional info and concrete tokens.
 
 <!-- Note: this section has to be in sync with the `micromark` readme. -->
 
-*   [x] **[compliant][commonmark]** (100% to CommonMark)
-*   [x] **[extensions][]** (100% [GFM][], 100% [MDX.js][mdxjs], [directives][],
-    [frontmatter][], [math][])
-*   [x] **[safe][security]** (by default)
-*   [x] **[robust][test]** (±2k tests, 100% coverage, fuzz testing)
-*   [x] **[small][size-debug]** (smallest CM parser at ±14kb)
+* [x] **[compliant][commonmark]** (100% to CommonMark)
+* [x] **[extensions][]** (100% [GFM][], 100% [MDX.js][mdxjs], [directives][],
+  [frontmatter][], [math][])
+* [x] **[safe][security]** (by default)
+* [x] **[robust][test]** (±2k tests, 100% coverage, fuzz testing)
+* [x] **[small][size-debug]** (smallest CM parser at ±14kb)
 
 ## Contents
 
-*   [When should I use this?](#when-should-i-use-this)
-*   [What is this?](#what-is-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-*   [Extensions](#extensions)
-    *   [List of extensions](#list-of-extensions)
-    *   [`SyntaxExtension`](#syntaxextension)
-    *   [`HtmlExtension`](#htmlextension)
-    *   [Extending markdown](#extending-markdown)
-    *   [Creating a micromark extension](#creating-a-micromark-extension)
-*   [Architecture](#architecture)
-    *   [Overview](#overview)
-    *   [Preprocess](#preprocess)
-    *   [Parse](#parse)
-    *   [Postprocess](#postprocess)
-    *   [Compile](#compile)
-*   [Examples](#examples)
-    *   [GitHub flavored markdown (GFM)](#github-flavored-markdown-gfm)
-    *   [Math](#math)
-    *   [Syntax tree](#syntax-tree)
-*   [Markdown](#markdown)
-    *   [CommonMark](#commonmark)
-    *   [Grammar](#grammar)
-*   [Project](#project)
-    *   [Comparison](#comparison)
-    *   [Test](#test)
-    *   [Size & debug](#size--debug)
-    *   [Version](#version)
-    *   [Security](#security)
-    *   [Contribute](#contribute)
-    *   [Sponsor](#sponsor)
-    *   [Origin story](#origin-story)
-    *   [License](#license)
+* [When should I use this?](#when-should-i-use-this)
+* [What is this?](#what-is-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+* [Extensions](#extensions)
+  * [List of extensions](#list-of-extensions)
+  * [`SyntaxExtension`](#syntaxextension)
+  * [`HtmlExtension`](#htmlextension)
+  * [Extending markdown](#extending-markdown)
+  * [Creating a micromark extension](#creating-a-micromark-extension)
+* [Architecture](#architecture)
+  * [Overview](#overview)
+  * [Preprocess](#preprocess)
+  * [Parse](#parse)
+  * [Postprocess](#postprocess)
+  * [Compile](#compile)
+* [Examples](#examples)
+  * [GitHub flavored markdown (GFM)](#github-flavored-markdown-gfm)
+  * [Math](#math)
+  * [Syntax tree](#syntax-tree)
+* [Markdown](#markdown)
+  * [CommonMark](#commonmark)
+  * [Grammar](#grammar)
+* [Project](#project)
+  * [Comparison](#comparison)
+  * [Test](#test)
+  * [Size & debug](#size--debug)
+  * [Version](#version)
+  * [Security](#security)
+  * [Contribute](#contribute)
+  * [Sponsor](#sponsor)
+  * [Origin story](#origin-story)
+  * [License](#license)
 
 ## When should I use this?
 
 <!-- Note: this section has to be in sync with the `micromark` readme. -->
 
-*   If you *just* want to turn markdown into HTML (with maybe a few extensions)
-*   If you want to do *really complex things* with markdown
+* If you *just* want to turn markdown into HTML (with maybe a few extensions)
+* If you want to do *really complex things* with markdown
 
 See [§ Comparison][comparison] for more info
 
@@ -91,11 +91,11 @@ markdown such as MDX, math, and frontmatter.
 These npm packages have a sibling project in Rust:
 [`markdown-rs`][markdown-rs].
 
-*   to learn markdown, see this [cheatsheet and tutorial][cheat]
-*   for more about us, see [`unifiedjs.com`][site]
-*   for updates, see [Twitter][]
-*   for questions, see [Discussions][chat]
-*   to help, see [contribute][] and [sponsor][] below
+* to learn markdown, see this [cheatsheet and tutorial][cheat]
+* for more about us, see [`unifiedjs.com`][site]
+* for updates, see [Twitter][]
+* for questions, see [Discussions][chat]
+* to help, see [contribute][] and [sponsor][] below
 
 ## Install
 
@@ -203,43 +203,43 @@ As a (potential) author of extensions, refer to
 
 ### List of extensions
 
-*   [`micromark/micromark-extension-directive`][directives]
-    — support directives (generic extensions)
-*   [`micromark/micromark-extension-frontmatter`][frontmatter]
-    — support frontmatter (YAML, TOML, etc)
-*   [`micromark/micromark-extension-gfm`][gfm]
-    — support GFM (GitHub Flavored Markdown)
-*   [`micromark/micromark-extension-gfm-autolink-literal`](https://github.com/micromark/micromark-extension-gfm-autolink-literal)
-    — support GFM autolink literals
-*   [`micromark/micromark-extension-gfm-footnote`](https://github.com/micromark/micromark-extension-gfm-footnote)
-    — support GFM footnotes
-*   [`micromark/micromark-extension-gfm-strikethrough`](https://github.com/micromark/micromark-extension-gfm-strikethrough)
-    — support GFM strikethrough
-*   [`micromark/micromark-extension-gfm-table`](https://github.com/micromark/micromark-extension-gfm-table)
-    — support GFM tables
-*   [`micromark/micromark-extension-gfm-tagfilter`](https://github.com/micromark/micromark-extension-gfm-tagfilter)
-    — support GFM tagfilter
-*   [`micromark/micromark-extension-gfm-task-list-item`](https://github.com/micromark/micromark-extension-gfm-task-list-item)
-    — support GFM tasklists
-*   [`micromark/micromark-extension-math`][math]
-    — support math
-*   [`micromark/micromark-extension-mdx`](https://github.com/micromark/micromark-extension-mdx)
-    — support MDX
-*   [`micromark/micromark-extension-mdxjs`][mdxjs]
-    — support MDX.js
-*   [`micromark/micromark-extension-mdx-expression`](https://github.com/micromark/micromark-extension-mdx-expression)
-    — support MDX (or MDX.js) expressions
-*   [`micromark/micromark-extension-mdx-jsx`](https://github.com/micromark/micromark-extension-mdx-jsx)
-    — support MDX (or MDX.js) JSX
-*   [`micromark/micromark-extension-mdx-md`](https://github.com/micromark/micromark-extension-mdx-md)
-    — support misc MDX changes
-*   [`micromark/micromark-extension-mdxjs-esm`](https://github.com/micromark/micromark-extension-mdxjs-esm)
-    — support MDX.js import/exports
+* [`micromark/micromark-extension-directive`][directives]
+  — support directives (generic extensions)
+* [`micromark/micromark-extension-frontmatter`][frontmatter]
+  — support frontmatter (YAML, TOML, etc)
+* [`micromark/micromark-extension-gfm`][gfm]
+  — support GFM (GitHub Flavored Markdown)
+* [`micromark/micromark-extension-gfm-autolink-literal`](https://github.com/micromark/micromark-extension-gfm-autolink-literal)
+  — support GFM autolink literals
+* [`micromark/micromark-extension-gfm-footnote`](https://github.com/micromark/micromark-extension-gfm-footnote)
+  — support GFM footnotes
+* [`micromark/micromark-extension-gfm-strikethrough`](https://github.com/micromark/micromark-extension-gfm-strikethrough)
+  — support GFM strikethrough
+* [`micromark/micromark-extension-gfm-table`](https://github.com/micromark/micromark-extension-gfm-table)
+  — support GFM tables
+* [`micromark/micromark-extension-gfm-tagfilter`](https://github.com/micromark/micromark-extension-gfm-tagfilter)
+  — support GFM tagfilter
+* [`micromark/micromark-extension-gfm-task-list-item`](https://github.com/micromark/micromark-extension-gfm-task-list-item)
+  — support GFM tasklists
+* [`micromark/micromark-extension-math`][math]
+  — support math
+* [`micromark/micromark-extension-mdx`](https://github.com/micromark/micromark-extension-mdx)
+  — support MDX
+* [`micromark/micromark-extension-mdxjs`][mdxjs]
+  — support MDX.js
+* [`micromark/micromark-extension-mdx-expression`](https://github.com/micromark/micromark-extension-mdx-expression)
+  — support MDX (or MDX.js) expressions
+* [`micromark/micromark-extension-mdx-jsx`](https://github.com/micromark/micromark-extension-mdx-jsx)
+  — support MDX (or MDX.js) JSX
+* [`micromark/micromark-extension-mdx-md`](https://github.com/micromark/micromark-extension-mdx-md)
+  — support misc MDX changes
+* [`micromark/micromark-extension-mdxjs-esm`](https://github.com/micromark/micromark-extension-mdxjs-esm)
+  — support MDX.js import/exports
 
 #### Community extensions
 
-*   [`wataru-chocola/micromark-extension-definition-list`](https://github.com/wataru-chocola/micromark-extension-definition-list)
-    — support definition lists
+* [`wataru-chocola/micromark-extension-definition-list`](https://github.com/wataru-chocola/micromark-extension-definition-list)
+  — support definition lists
 
 ### `SyntaxExtension`
 
@@ -267,15 +267,15 @@ Over the years, many micromark and remark users have asked about their unique
 goals for markdown.
 Some exemplary goals are:
 
-1.  I want to add `rel="nofollow"` to external links
-2.  I want to add links from headings to themselves
-3.  I want line breaks in paragraphs to become hard breaks
-4.  I want to support embedded music sheets
-5.  I want authors to add arbitrary attributes
-6.  I want authors to mark certain blocks with meaning, such as tip, warning,
-    etc
-7.  I want to combine markdown with JS(X)
-8.  I want to support our legacy flavor of markdown-like syntax
+1. I want to add `rel="nofollow"` to external links
+2. I want to add links from headings to themselves
+3. I want line breaks in paragraphs to become hard breaks
+4. I want to support embedded music sheets
+5. I want authors to add arbitrary attributes
+6. I want authors to mark certain blocks with meaning, such as tip, warning,
+   etc
+7. I want to combine markdown with JS(X)
+8. I want to support our legacy flavor of markdown-like syntax
 
 These can be solved in different ways and which solution is best is both
 subjective and dependent on unique needs.
@@ -283,108 +283,108 @@ Often, there is already a solution in the form of an existing remark or rehype
 plugin.
 Respectively, their solutions are:
 
-1.  [`remark-external-links`](https://github.com/remarkjs/remark-external-links)
-2.  [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
-3.  [`remark-breaks`](https://github.com/remarkjs/remark-breaks)
-4.  custom plugin similar to
-    [`rehype-katex`](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex)
-    but integrating [`abcjs`](https://www.abcjs.net)
-5.  either [`remark-directive`](https://github.com/remarkjs/remark-directive)
-    and a custom plugin or with
-    [`rehype-attr`](https://github.com/jaywcjlove/rehype-attr)
-6.  [`remark-directive`](https://github.com/remarkjs/remark-directive)
-    combined with a custom plugin
-7.  combining the existing micromark MDX extensions however you please, such as
-    done by [`mdx-js/mdx`](https://github.com/mdx-js/mdx) or
-    [`xdm`](https://github.com/wooorm/xdm)
-8.  Writing a micromark extension
+1. [`remark-external-links`](https://github.com/remarkjs/remark-external-links)
+2. [`rehype-autolink-headings`](https://github.com/rehypejs/rehype-autolink-headings)
+3. [`remark-breaks`](https://github.com/remarkjs/remark-breaks)
+4. custom plugin similar to
+   [`rehype-katex`](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex)
+   but integrating [`abcjs`](https://www.abcjs.net)
+5. either [`remark-directive`](https://github.com/remarkjs/remark-directive)
+   and a custom plugin or with
+   [`rehype-attr`](https://github.com/jaywcjlove/rehype-attr)
+6. [`remark-directive`](https://github.com/remarkjs/remark-directive)
+   combined with a custom plugin
+7. combining the existing micromark MDX extensions however you please, such as
+   done by [`mdx-js/mdx`](https://github.com/mdx-js/mdx) or
+   [`xdm`](https://github.com/wooorm/xdm)
+8. Writing a micromark extension
 
 Looking at these from a higher level, they can be categorized:
 
-*   **Changing the output by transforming syntax trees**
-    (1 and 2)
+* **Changing the output by transforming syntax trees**
+  (1 and 2)
 
-    This category is nice as the format remains plain markdown that authors are
-    already familiar with and which will work with existing tools and platforms.
+  This category is nice as the format remains plain markdown that authors are
+  already familiar with and which will work with existing tools and platforms.
 
-    Implementations will deal with the syntax tree
-    ([`mdast`][mdast]) and the ecosystems
-    **[remark][]** and **[rehype][]**.
-    There are many existing
-    [utilities for working with that tree][utilities].
-    Many [remark plugins][] and [rehype plugins][] also exist.
-*   **Using and abusing markdown to add new meaning**
-    (3, 4, potentially 5)
+  Implementations will deal with the syntax tree
+  ([`mdast`][mdast]) and the ecosystems
+  **[remark][]** and **[rehype][]**.
+  There are many existing
+  [utilities for working with that tree][utilities].
+  Many [remark plugins][] and [rehype plugins][] also exist.
+* **Using and abusing markdown to add new meaning**
+  (3, 4, potentially 5)
 
-    This category is similar to *Changing the output by transforming syntax
-    trees*, but adds a new meaning to certain things which already have
-    semantics in markdown.
+  This category is similar to *Changing the output by transforming syntax
+  trees*, but adds a new meaning to certain things which already have
+  semantics in markdown.
 
-    Some examples in pseudocode:
+  Some examples in pseudocode:
 
-    ````markdown
-    *   **A list item with the first paragraph bold**
+  ````markdown
+  *   **A list item with the first paragraph bold**
 
-        And then more content, is turned into `<dl>` / `<dt>` / `<dd>` elements
+      And then more content, is turned into `<dl>` / `<dt>` / `<dd>` elements
 
-    Or, the title attributes on links or images is [overloaded](/url 'rel:nofollow')
-    with a new meaning.
+  Or, the title attributes on links or images is [overloaded](/url 'rel:nofollow')
+  with a new meaning.
 
-    ```csv
-    fenced,code,can,include,data
-    which,is,turned,into,a,graph
-    ```
+  ```csv
+  fenced,code,can,include,data
+  which,is,turned,into,a,graph
+  ```
 
-    ```js data can="be" passed=true
-    // after the code language name
-    ```
+  ```js data can="be" passed=true
+  // after the code language name
+  ```
 
-    HTML, especially comments, could be used as **markers**<!--id="markers"-->
-    ````
-*   **Arbitrary extension mechanism**
-    (potentially 5; 6)
+  HTML, especially comments, could be used as **markers**<!--id="markers"-->
+  ````
+* **Arbitrary extension mechanism**
+  (potentially 5; 6)
 
-    This category is nice when content should contain embedded “components”.
-    Often this means it’s required for authors to have some programming
-    experience.
-    There are three good ways to solve arbitrary extensions.
+  This category is nice when content should contain embedded “components”.
+  Often this means it’s required for authors to have some programming
+  experience.
+  There are three good ways to solve arbitrary extensions.
 
-    **HTML**: Markdown already has an arbitrary extension syntax.
-    It works in most places and authors are already familiar with the syntax,
-    but it’s reasonably hard to implement securely.
-    Certain platforms will remove HTML completely, others sanitize it to varying
-    degrees.
-    HTML also supports custom elements.
-    These could be used and enhanced by client side JavaScript or enhanced when
-    transforming the syntax tree.
+  **HTML**: Markdown already has an arbitrary extension syntax.
+  It works in most places and authors are already familiar with the syntax,
+  but it’s reasonably hard to implement securely.
+  Certain platforms will remove HTML completely, others sanitize it to varying
+  degrees.
+  HTML also supports custom elements.
+  These could be used and enhanced by client side JavaScript or enhanced when
+  transforming the syntax tree.
 
-    **Generic directives**: although
-    [a proposal][directive-proposal]
-    and not supported on most platforms, directives do work with many tools
-    already.
-    They’re not the easiest to author compared to, say, a heading, but sometimes
-    that’s okay.
-    They do have potential: they nicely solve the need for an infinite number of
-    potential extensions to markdown in a single markdown-esque way.
+  **Generic directives**: although
+  [a proposal][directive-proposal]
+  and not supported on most platforms, directives do work with many tools
+  already.
+  They’re not the easiest to author compared to, say, a heading, but sometimes
+  that’s okay.
+  They do have potential: they nicely solve the need for an infinite number of
+  potential extensions to markdown in a single markdown-esque way.
 
-    **MDX** also adds support for components by swapping HTML out for JS(X).
-    JSX is an extension to JavaScript, so MDX is something along the lines of
-    literate programming.
-    This does require knowledge of React (or Vue) and JavaScript, excluding some
-    authors.
-*   **Extending markdown syntax**
-    (7 and 8)
+  **MDX** also adds support for components by swapping HTML out for JS(X).
+  JSX is an extension to JavaScript, so MDX is something along the lines of
+  literate programming.
+  This does require knowledge of React (or Vue) and JavaScript, excluding some
+  authors.
+* **Extending markdown syntax**
+  (7 and 8)
 
-    Extend the syntax of markdown means:
+  Extend the syntax of markdown means:
 
-    *   Authors won’t be familiar with the syntax
-    *   Content won’t work in other places (such as on GitHub)
-    *   Defeating the purpose of markdown: being simple to author and looking
-        like what it means
+  * Authors won’t be familiar with the syntax
+  * Content won’t work in other places (such as on GitHub)
+  * Defeating the purpose of markdown: being simple to author and looking
+    like what it means
 
-    …and it’s hard to do as it requires some in-depth knowledge of JavaScript
-    and parsing.
-    But it’s possible and in certain cases very powerful.
+  …and it’s hard to do as it requires some in-depth knowledge of JavaScript
+  and parsing.
+  But it’s possible and in certain cases very powerful.
 
 ### Creating a micromark extension
 
@@ -396,14 +396,14 @@ This section shows how to create an extension for micromark that parses
 
 #### Prerequisites
 
-*   You should possess an intermediate to high understanding of JavaScript:
-    it’s going to get a bit complex
-*   Read the readme of [unified][] (until you hit the API section) to better
-    understand where micromark fits
-*   Read the [§ Architecture][architecture] section to understand how micromark
-    works
-*   Read the [§ Extending markdown][extending-markdown] section to understand
-    whether it’s a good idea to extend the syntax of markdown
+* You should possess an intermediate to high understanding of JavaScript:
+  it’s going to get a bit complex
+* Read the readme of [unified][] (until you hit the API section) to better
+  understand where micromark fits
+* Read the [§ Architecture][architecture] section to understand how micromark
+  works
+* Read the [§ Extending markdown][extending-markdown] section to understand
+  whether it’s a good idea to extend the syntax of markdown
 
 #### Extension basics
 
@@ -452,15 +452,15 @@ It looks simple enough, but with markdown there are often a couple more things
 to think about.
 For this case, I can see the following:
 
-*   Is there a “block” version too?
-*   Are spaces allowed?
-    Line endings?
-    Should initial and final white space be ignored?
-*   Balanced nested braces?
-    Superfluous ones such as `{{planet}}` or meaningful ones such as
-    `{a {pla} net}`?
-*   Character escapes (`{pla\}net}`) and character references
-    (`{pla&#x7d;net}`)?
+* Is there a “block” version too?
+* Are spaces allowed?
+  Line endings?
+  Should initial and final white space be ignored?
+* Balanced nested braces?
+  Superfluous ones such as `{{planet}}` or meaningful ones such as
+  `{a {pla} net}`?
+* Character escapes (`{pla\}net}`) and character references
+  (`{pla&#x7d;net}`)?
 
 To keep things as simple as possible, let’s not support a block syntax, see
 spaces as special, support line endings, or support nested braces.
@@ -541,20 +541,20 @@ works!
 Much in micromark is based on character codes (see [§ Preprocess][preprocess]).
 For this extension, the relevant codes are:
 
-*   `-5`
-    — M-0005 CARRIAGE RETURN (CR)
-*   `-4`
-    — M-0004 LINE FEED (LF)
-*   `-3`
-    — M-0003 CARRIAGE RETURN LINE FEED (CRLF)
-*   `null`
-    — EOF (end of the stream)
-*   `92`
-    — U+005C BACKSLASH (`\`)
-*   `123`
-    — U+007B LEFT CURLY BRACE (`{`)
-*   `125`
-    — U+007D RIGHT CURLY BRACE (`}`)
+* `-5`
+  — M-0005 CARRIAGE RETURN (CR)
+* `-4`
+  — M-0004 LINE FEED (LF)
+* `-3`
+  — M-0003 CARRIAGE RETURN LINE FEED (CRLF)
+* `null`
+  — EOF (end of the stream)
+* `92`
+  — U+005C BACKSLASH (`\`)
+* `123`
+  — U+007B LEFT CURLY BRACE (`{`)
+* `125`
+  — U+007D RIGHT CURLY BRACE (`}`)
 
 Also relevant are the content types (see [§ Content types][content-types]).
 This extension is a *text* construct, as it’s parsed alongsides links and such.
@@ -601,20 +601,20 @@ code coverage tool to ensure I’ve thought of everything.
 
 In prose, what we have to code looks like this:
 
-*   **start**:
-    Receive `123` as `code`, enter a token for the whole (let’s call it
-    `variable`), enter a token for the marker (`variableMarker`), consume
-    `code`, exit the marker token, enter a token for the contents
-    (`variableString`), switch to *begin*
-*   **begin**:
-    If `code` is `125`, reconsume in *nok*.
-    Else, reconsume in *inside*
-*   **inside**:
-    If `code` is `-5`, `-4`, `-3`, or `null`, reconsume in `nok`.
-    Else, if `code` is `125`, exit the string token, enter a `variableMarker`,
-    consume `code`, exit the marker token, exit the variable token, and switch
-    to *ok*.
-    Else, consume, and remain in *inside*.
+* **start**:
+  Receive `123` as `code`, enter a token for the whole (let’s call it
+  `variable`), enter a token for the marker (`variableMarker`), consume
+  `code`, exit the marker token, enter a token for the contents
+  (`variableString`), switch to *begin*
+* **begin**:
+  If `code` is `125`, reconsume in *nok*.
+  Else, reconsume in *inside*
+* **inside**:
+  If `code` is `-5`, `-4`, `-3`, or `null`, reconsume in `nok`.
+  Else, if `code` is `125`, exit the string token, enter a `variableMarker`,
+  consume `code`, exit the marker token, exit the variable token, and switch
+  to *ok*.
+  Else, consume, and remain in *inside*.
 
 That should be it!
 Replace `variableTokenize` with the following to include the needed states:
@@ -786,17 +786,17 @@ It works!
 We’re done!
 Of course, it can be better, such as with the following potential features:
 
-*   Add support for empty variables
-*   Add support for spaces between markers and string
-*   Add support for line endings in variables
-*   Add support for nested braces
-*   Add support for blocks
-*   Add warnings on undefined variables
-*   Use `micromark-build`, and use `devlop`, `debug`, and
-    `micromark-util-symbol` (see [§ Size & debug][size-debug])
-*   Add [`mdast-util-from-markdown`][mdast-util-from-markdown] and
-    [`mdast-util-to-markdown`][mdast-util-to-markdown] utilities to parse and
-    serialize the AST
+* Add support for empty variables
+* Add support for spaces between markers and string
+* Add support for line endings in variables
+* Add support for nested braces
+* Add support for blocks
+* Add warnings on undefined variables
+* Use `micromark-build`, and use `devlop`, `debug`, and
+  `micromark-util-symbol` (see [§ Size & debug][size-debug])
+* Add [`mdast-util-from-markdown`][mdast-util-from-markdown] and
+  [`mdast-util-to-markdown`][mdast-util-to-markdown] utilities to parse and
+  serialize the AST
 
 #### Case: turn off constructs
 
@@ -834,16 +834,16 @@ Each module maintained here is available in [`packages/`][packages].
 
 The naming scheme in [`packages/`][packages] is as follows:
 
-*   `micromark-build`
-    — Small CLI to build dev code into production code
-*   `micromark-core-commonmark`
-    — CommonMark constructs used in micromark
-*   `micromark-factory-*`
-    — Reusable subroutines used to parse parts of constructs
-*   `micromark-util-*`
-    — Reusable helpers often needed when parsing markdown
-*   `micromark`
-    — Core module
+* `micromark-build`
+  — Small CLI to build dev code into production code
+* `micromark-core-commonmark`
+  — CommonMark constructs used in micromark
+* `micromark-factory-*`
+  — Reusable subroutines used to parse parts of constructs
+* `micromark-util-*`
+  — Reusable helpers often needed when parsing markdown
+* `micromark`
+  — Core module
 
 micromark has two interfaces: buffering (maintained in
 [`micromark/dev/index.js`](https://github.com/micromark/micromark/blob/main/packages/micromark/dev/index.js))
@@ -928,10 +928,10 @@ Take for example:
   b*.
 ```
 
-1.  The list marker and the space after it is parsed first
-2.  The rest of the line is a `chunkFlow` token
-3.  The two spaces on the second line are a `linePrefix` of the list
-4.  The rest of the line is another `chunkFlow` token
+1. The list marker and the space after it is parsed first
+2. The rest of the line is a `chunkFlow` token
+3. The two spaces on the second line are a `linePrefix` of the list
+4. The rest of the line is another `chunkFlow` token
 
 The two `chunkFlow` tokens are linked together and the chunks they span are
 passed through the flow tokenizer.

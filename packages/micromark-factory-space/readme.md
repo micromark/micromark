@@ -13,17 +13,17 @@ of places).
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`factorySpace(…)`](#factoryspace)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`factorySpace(…)`](#factoryspace)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -100,10 +100,10 @@ Parse spaces and tabs.
 
 There is no `nok` parameter:
 
-*   spaces in markdown are often optional, in which case this factory can be
-    used and `ok` will be switched to whether spaces were found or not
-*   one line ending or space can be detected with `markdownSpace(code)` right
-    before using `factorySpace`
+* spaces in markdown are often optional, in which case this factory can be
+  used and `ok` will be switched to whether spaces were found or not
+* one line ending or space can be detected with `markdownSpace(code)` right
+  before using `factorySpace`
 
 ###### Examples
 
@@ -118,14 +118,14 @@ single space.
 
 ###### Parameters
 
-*   `effects` (`Effects`)
-    — context
-*   `ok` (`State`)
-    — state switched to when successful
-*   `type` (`string`)
-    — type (`' \t'`)
-*   `max` (`number`, default: `Infinity`)
-    — max (exclusive)
+* `effects` (`Effects`)
+  — context
+* `ok` (`State`)
+  — state switched to when successful
+* `type` (`string`)
+  — type (`' \t'`)
+* `max` (`number`, default: `Infinity`)
+  — max (exclusive)
 
 ###### Returns
 

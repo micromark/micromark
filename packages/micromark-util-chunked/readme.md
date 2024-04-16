@@ -12,18 +12,18 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`push(list, items)`](#pushlist-items)
-    *   [`splice(list, start, remove, items)`](#splicelist-start-remove-items)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`push(list, items)`](#pushlist-items)
+  * [`splice(list, start, remove, items)`](#splicelist-start-remove-items)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -92,10 +92,10 @@ and adds items in batches to prevent V8 from hanging.
 
 ###### Parameters
 
-*   `list` (`Array<unknown>`)
-    — list to operate on
-*   `items` (`Array<unknown>`)
-    — items to add to `list`
+* `list` (`Array<unknown>`)
+  — list to operate on
+* `items` (`Array<unknown>`)
+  — items to add to `list`
 
 ###### Returns
 
@@ -113,14 +113,14 @@ array instead of rest parameters.
 
 ###### Parameters
 
-*   `list` (`Array<unknown>`)
-    — list to operate on
-*   `start` (`number`)
-    — index to remove/insert at (can be negative)
-*   `remove` (`number`)
-    — number of items to remove
-*   `items` (`Array<unknown>`)
-    — items to inject into `list`
+* `list` (`Array<unknown>`)
+  — list to operate on
+* `start` (`number`)
+  — index to remove/insert at (can be negative)
+* `remove` (`number`)
+  — number of items to remove
+* `items` (`Array<unknown>`)
+  — items to inject into `list`
 
 ###### Returns
 

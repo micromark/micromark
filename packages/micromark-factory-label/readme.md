@@ -12,17 +12,17 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`factoryLabel(…)`](#factorylabel)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`factoryLabel(…)`](#factorylabel)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -113,20 +113,20 @@ b]
 
 ###### Parameters
 
-*   `this` (`TokenizeContext`)
-    — tokenize context
-*   `effects` (`Effects`)
-    — context
-*   `ok` (`State`)
-    — state switched to when successful
-*   `nok` (`State`)
-    — state switched to when unsuccessful
-*   `type` (`string`)
-    — type of the whole label (`[a]`)
-*   `markerType` (`string`)
-    — type for the markers (`[` and `]`)
-*   `stringType` (`string`)
-    — type for the identifier (`a`)
+* `this` (`TokenizeContext`)
+  — tokenize context
+* `effects` (`Effects`)
+  — context
+* `ok` (`State`)
+  — state switched to when successful
+* `nok` (`State`)
+  — state switched to when unsuccessful
+* `type` (`string`)
+  — type of the whole label (`[a]`)
+* `markerType` (`string`)
+  — type for the markers (`[` and `]`)
+* `stringType` (`string`)
+  — type for the identifier (`a`)
 
 ###### Returns
 

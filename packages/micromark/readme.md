@@ -18,36 +18,36 @@ Markdown parser.
 
 <!-- Note: this section has to be in sync with the monorepo readme. -->
 
-*   [x] **[compliant][commonmark]** (100% to CommonMark)
-*   [x] **[extensions][]** (100% [GFM][], 100% [MDX.js][mdxjs], [directives][],
-    [frontmatter][], [math][])
-*   [x] **[safe][security]** (by default)
-*   [x] **[robust][test]** (±2k tests, 100% coverage, fuzz testing)
-*   [x] **[small][size-debug]** (smallest CM parser at ±14kb)
+* [x] **[compliant][commonmark]** (100% to CommonMark)
+* [x] **[extensions][]** (100% [GFM][], 100% [MDX.js][mdxjs], [directives][],
+  [frontmatter][], [math][])
+* [x] **[safe][security]** (by default)
+* [x] **[robust][test]** (±2k tests, 100% coverage, fuzz testing)
+* [x] **[small][size-debug]** (smallest CM parser at ±14kb)
 
 ## Contents
 
-*   [When should I use this?](#when-should-i-use-this)
-*   [What is this?](#what-is-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`micromark(value[, encoding][, options])`](#micromarkvalue-encoding-options)
-    *   [`stream(options?)`](#streamoptions)
-    *   [`Options`](#options)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [Sponsor](#sponsor)
-*   [License](#license)
+* [When should I use this?](#when-should-i-use-this)
+* [What is this?](#what-is-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`micromark(value[, encoding][, options])`](#micromarkvalue-encoding-options)
+  * [`stream(options?)`](#streamoptions)
+  * [`Options`](#options)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [Sponsor](#sponsor)
+* [License](#license)
 
 ## When should I use this?
 
 <!-- Note: this section has to be in sync with the monorepo readme. -->
 
-*   If you *just* want to turn markdown into HTML (with maybe a few extensions)
-*   If you want to do *really complex things* with markdown
+* If you *just* want to turn markdown into HTML (with maybe a few extensions)
+* If you want to do *really complex things* with markdown
 
 See [§ Comparison][comparison] for more info
 
@@ -72,11 +72,11 @@ markdown such as MDX, math, and frontmatter.
 These npm packages have a sibling project in Rust:
 [`markdown-rs`][markdown-rs].
 
-*   to learn markdown, see this [cheatsheet and tutorial][cheat]
-*   for more about us, see [`unifiedjs.com`][site]
-*   for updates, see [Twitter][]
-*   for questions, see [Discussions][chat]
-*   to help, see [contribute][] and [sponsor][] below
+* to learn markdown, see this [cheatsheet and tutorial][cheat]
+* for more about us, see [`unifiedjs.com`][site]
+* for updates, see [Twitter][]
+* for questions, see [Discussions][chat]
+* to help, see [contribute][] and [sponsor][] below
 
 ## Install
 
@@ -185,13 +185,13 @@ Compile markdown to HTML.
 
 ###### Parameters
 
-*   `value` (`string` or [`Uint8Array`][uint8-array])
-    — markdown to parse
-*   `encoding` (`string`, default: `'utf8'`)
-    — [character encoding][encoding] to understand `value` as when it’s a
-    [`Uint8Array`][uint8-array]
-*   `options` ([`Options`][api-options], optional)
-    — configuration
+* `value` (`string` or [`Uint8Array`][uint8-array])
+  — markdown to parse
+* `encoding` (`string`, default: `'utf8'`)
+  — [character encoding][encoding] to understand `value` as when it’s a
+  [`Uint8Array`][uint8-array]
+* `options` ([`Options`][api-options], optional)
+  — configuration
 
 ###### Returns
 
@@ -210,8 +210,8 @@ As markdown does not know errors, `micromark` itself does not emit errors.
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], optional)
-    — configuration
+* `options` ([`Options`][api-options], optional)
+  — configuration
 
 ###### Returns
 

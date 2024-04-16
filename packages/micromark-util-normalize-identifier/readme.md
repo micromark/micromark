@@ -12,17 +12,17 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`normalizeIdentifier(value)`](#normalizeidentifiervalue)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`normalizeIdentifier(value)`](#normalizeidentifiervalue)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -89,8 +89,8 @@ is uppercase.
 
 ###### Parameters
 
-*   `value` (`string`)
-    — identifier to normalize
+* `value` (`string`)
+  — identifier to normalize
 
 ###### Returns
 

@@ -12,17 +12,17 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`factoryDestination(…)`](#factorydestination)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`factoryDestination(…)`](#factorydestination)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -119,24 +119,24 @@ a(b)
 
 ###### Parameters
 
-*   `effects` (`Effects`)
-    — context
-*   `ok` (`State`)
-    — state switched to when successful
-*   `nok` (`State`)
-    — state switched to when unsuccessful
-*   `type` (`string`)
-    — type for whole (`<a>` or `b`)
-*   `literalType` (`string`)
-    — type when enclosed (`<a>`)
-*   `literalMarkerType` (`string`)
-    — type for enclosing (`<` and `>`)
-*   `rawType` (`string`)
-    — type when not enclosed (`b`)
-*   `stringType` (`string`)
-    — type for the value (`a` or `b`)
-*   `max` (`number`, default: `Infinity`)
-    — depth of nested parens (inclusive)
+* `effects` (`Effects`)
+  — context
+* `ok` (`State`)
+  — state switched to when successful
+* `nok` (`State`)
+  — state switched to when unsuccessful
+* `type` (`string`)
+  — type for whole (`<a>` or `b`)
+* `literalType` (`string`)
+  — type when enclosed (`<a>`)
+* `literalMarkerType` (`string`)
+  — type for enclosing (`<` and `>`)
+* `rawType` (`string`)
+  — type when not enclosed (`b`)
+* `stringType` (`string`)
+  — type for the value (`a` or `b`)
+* `max` (`number`, default: `Infinity`)
+  — depth of nested parens (inclusive)
 
 ###### Returns
 

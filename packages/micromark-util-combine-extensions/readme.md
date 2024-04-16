@@ -12,18 +12,18 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`combineExtensions(extensions)`](#combineextensionsextensions)
-    *   [`combineHtmlExtensions(htmlExtensions)`](#combinehtmlextensionshtmlextensions)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`combineExtensions(extensions)`](#combineextensionsextensions)
+  * [`combineHtmlExtensions(htmlExtensions)`](#combinehtmlextensionshtmlextensions)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -82,8 +82,8 @@ Combine multiple syntax extensions into one.
 
 ###### Parameters
 
-*   `extensions` (`Array<Extension>`)
-    — list of syntax extensions
+* `extensions` (`Array<Extension>`)
+  — list of syntax extensions
 
 ###### Returns
 
@@ -95,8 +95,8 @@ Combine multiple html extensions into one.
 
 ###### Parameters
 
-*   `htmlExtensions` (`Array<HtmlExtension>`)
-    — list of HTML extensions
+* `htmlExtensions` (`Array<HtmlExtension>`)
+  — list of HTML extensions
 
 ###### Returns
 

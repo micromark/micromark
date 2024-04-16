@@ -13,17 +13,17 @@ lots of places).
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`factoryWhitespace(…)`](#factorywhitespace)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`factoryWhitespace(…)`](#factorywhitespace)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -93,19 +93,19 @@ Parse spaces and tabs.
 
 There is no `nok` parameter:
 
-*   line endings or spaces in markdown are often optional, in which case this
-    factory can be used and `ok` will be switched to whether spaces were found
-    or not
-*   one line ending or space can be detected with
-    [`markdownLineEndingOrSpace(code)`][ws] right before using
-    `factoryWhitespace`
+* line endings or spaces in markdown are often optional, in which case this
+  factory can be used and `ok` will be switched to whether spaces were found
+  or not
+* one line ending or space can be detected with
+  [`markdownLineEndingOrSpace(code)`][ws] right before using
+  `factoryWhitespace`
 
 ###### Parameters
 
-*   `effects` (`Effects`)
-    — context
-*   `ok` (`State`)
-    — state switched to when successful
+* `effects` (`Effects`)
+  — context
+* `ok` (`State`)
+  — state switched to when successful
 
 ###### Returns
 

@@ -12,17 +12,17 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`decodeNumericCharacterReference(value, base)`](#decodenumericcharacterreferencevalue-base)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`decodeNumericCharacterReference(value, base)`](#decodenumericcharacterreferencevalue-base)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -83,10 +83,10 @@ non-characters and control characters safe.
 
 ###### Parameters
 
-*   `value` (`string`)
-    — value to decode
-*   `base` (`number`, probably `10` or `16`)
-    — numeric base
+* `value` (`string`)
+  — value to decode
+* `base` (`number`, probably `10` or `16`)
+  — numeric base
 
 ###### Returns
 

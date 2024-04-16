@@ -10,16 +10,16 @@ Tiny tool to help us maintain [micromark][] and the micromark extensions.
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [CLI](#cli)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [CLI](#cli)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -92,16 +92,16 @@ See Use above: run it and get files out.
 
 The following Babel plugins are used:
 
-*   [`babel-plugin-unassert`](https://github.com/unassert-js/babel-plugin-unassert)
-    — Remove [`assert`](https://nodejs.org/api/assert.html),
-    [`power-assert`](https://github.com/power-assert-js/power-assert),
-    [`uvu/assert`](https://github.com/lukeed/uvu), and
-    [`devlop`](https://github.com/wooorm/devlop) calls
-*   [`babel-plugin-undebug`](https://github.com/wooorm/babel-plugin-undebug)
-    — Remove [`debug`](https://github.com/visionmedia/debug) calls
-*   [`babel-plugin-inline-constants`](https://github.com/wooorm/babel-plugin-inline-constants)
-    — Inline the values from
-    [`micromark-util-symbol`](https://github.com/micromark/micromark/tree/main/packages/micromark-util-symbol)
+* [`babel-plugin-unassert`](https://github.com/unassert-js/babel-plugin-unassert)
+  — Remove [`assert`](https://nodejs.org/api/assert.html),
+  [`power-assert`](https://github.com/power-assert-js/power-assert),
+  [`uvu/assert`](https://github.com/lukeed/uvu), and
+  [`devlop`](https://github.com/wooorm/devlop) calls
+* [`babel-plugin-undebug`](https://github.com/wooorm/babel-plugin-undebug)
+  — Remove [`debug`](https://github.com/visionmedia/debug) calls
+* [`babel-plugin-inline-constants`](https://github.com/wooorm/babel-plugin-inline-constants)
+  — Inline the values from
+  [`micromark-util-symbol`](https://github.com/micromark/micromark/tree/main/packages/micromark-util-symbol)
 
 You should use `devlop`, `debug`, and `micromark-util-symbol` to develop
 micromark extensions!

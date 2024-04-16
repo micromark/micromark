@@ -12,18 +12,18 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`normalizeUri(value)`](#normalizeurivalue)
-    *   [`sanitizeUri(url[, pattern])`](#sanitizeuriurl-pattern)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`normalizeUri(value)`](#normalizeurivalue)
+  * [`sanitizeUri(url[, pattern])`](#sanitizeuriurl-pattern)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -86,8 +86,8 @@ sequences.
 
 ###### Parameters
 
-*   `value` (`string`)
-    — URI to normalize
+* `value` (`string`)
+  — URI to normalize
 
 ###### Returns
 
@@ -110,10 +110,10 @@ as a dangerous example, `javascript:`), the value is ignored.
 
 ###### Parameters
 
-*   `url` (`string`)
-    — URI to sanitize
-*   `pattern` (`RegExp`, optional)
-    — allowed protocols
+* `url` (`string`)
+  — URI to sanitize
+* `pattern` (`RegExp`, optional)
+  — allowed protocols
 
 ###### Returns
 

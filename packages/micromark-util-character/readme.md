@@ -12,28 +12,28 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`asciiAlpha(code)`](#asciialphacode)
-    *   [`asciiAlphanumeric(code)`](#asciialphanumericcode)
-    *   [`asciiAtext(code)`](#asciiatextcode)
-    *   [`asciiControl(code)`](#asciicontrolcode)
-    *   [`asciiDigit(code)`](#asciidigitcode)
-    *   [`asciiHexDigit(code)`](#asciihexdigitcode)
-    *   [`asciiPunctuation(code)`](#asciipunctuationcode)
-    *   [`markdownLineEnding(code)`](#markdownlineendingcode)
-    *   [`markdownLineEndingOrSpace(code)`](#markdownlineendingorspacecode)
-    *   [`markdownSpace(code)`](#markdownspacecode)
-    *   [`unicodePunctuation(code)`](#unicodepunctuationcode)
-    *   [`unicodeWhitespace(code)`](#unicodewhitespacecode)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`asciiAlpha(code)`](#asciialphacode)
+  * [`asciiAlphanumeric(code)`](#asciialphanumericcode)
+  * [`asciiAtext(code)`](#asciiatextcode)
+  * [`asciiControl(code)`](#asciicontrolcode)
+  * [`asciiDigit(code)`](#asciidigitcode)
+  * [`asciiHexDigit(code)`](#asciihexdigitcode)
+  * [`asciiPunctuation(code)`](#asciipunctuationcode)
+  * [`markdownLineEnding(code)`](#markdownlineendingcode)
+  * [`markdownLineEndingOrSpace(code)`](#markdownlineendingorspacecode)
+  * [`markdownSpace(code)`](#markdownspacecode)
+  * [`unicodePunctuation(code)`](#unicodepunctuationcode)
+  * [`unicodeWhitespace(code)`](#unicodewhitespacecode)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -107,8 +107,8 @@ to U+007A (`z`).
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -124,8 +124,8 @@ An **ASCII alphanumeric** is an ASCII digit (see `asciiDigit`) or ASCII alpha
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -149,8 +149,8 @@ IETF.
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -165,8 +165,8 @@ to U+001F (US), or U+007F (DEL).
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -182,8 +182,8 @@ U+0039 (`9`).
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -205,8 +205,8 @@ An **ASCII lower hex digit** is a character in the inclusive range U+0061
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -223,8 +223,8 @@ SIGN (`@`), U+005B LEFT SQUARE BRACKET (`[`) to U+0060 GRAVE ACCENT
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -243,8 +243,8 @@ they occurred together.
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -257,8 +257,8 @@ Check whether a [character code][code] is a markdown line ending (see
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -277,8 +277,8 @@ SPACE (VS) characters, depending on the column at which the tab occurred.
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -300,8 +300,8 @@ Unicode Consortium.
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 
@@ -324,8 +324,8 @@ Unicode Consortium.
 
 ###### Parameters
 
-*   `code` (`Code`)
-    — code
+* `code` (`Code`)
+  — code
 
 ###### Returns
 

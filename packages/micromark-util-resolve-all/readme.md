@@ -20,17 +20,17 @@ when one closing matches an opening, too.
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`resolveAll(constructs, events, context)`](#resolveallconstructs-events-context)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`resolveAll(constructs, events, context)`](#resolveallconstructs-events-context)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -134,12 +134,12 @@ Call all `resolveAll`s in `constructs`.
 
 ###### Parameters
 
-*   `constructs` (`Array<Construct>`)
-    — list of constructs, optionally with `resolveAll`s
-*   `events` (`Array<Event>`)
-    — list of events
-*   `context` (`TokenizeContext`)
-    — context used by `tokenize`
+* `constructs` (`Array<Construct>`)
+  — list of constructs, optionally with `resolveAll`s
+* `events` (`Array<Event>`)
+  — list of events
+* `context` (`TokenizeContext`)
+  — context used by `tokenize`
 
 ###### Returns
 
