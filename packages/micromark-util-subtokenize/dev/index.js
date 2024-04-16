@@ -7,7 +7,10 @@
 import {splice} from 'micromark-util-chunked'
 import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
-import {SpliceBuffer} from './splice-buffer.js'
+import {SpliceBuffer} from './lib/splice-buffer.js'
+
+// Hidden API exposed for testing.
+export {SpliceBuffer} from './lib/splice-buffer.js'
 
 /**
  * Tokenize subcontent.

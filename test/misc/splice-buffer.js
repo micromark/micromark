@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {SpliceBuffer} from 'micromark-util-subtokenize/splice-buffer'
+import {SpliceBuffer} from 'micromark-util-subtokenize'
 
 test('SpliceBuffer', function () {
   /** @type {SpliceBuffer<bigint>} */

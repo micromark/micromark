@@ -29,22 +29,14 @@
   "type": "module",
   "files": [
     "dev/",
+    "lib/",
     "index.d.ts.map",
     "index.d.ts",
-    "index.js",
-    "splice-buffer.d.ts.map",
-    "splice-buffer.d.ts",
-    "splice-buffer.js"
+    "index.js"
   ],
   "exports": {
-    ".": {
-      "development": "./dev/index.js",
-      "default": "./index.js"
-    },
-    "./splice-buffer": {
-      "development": "./dev/splice-buffer.js",
-      "default": "./splice-buffer.js"
-    }
+    "development": "./dev/index.js",
+    "default": "./index.js"
   },
   "dependencies": {
     "devlop": "^1.0.0",
