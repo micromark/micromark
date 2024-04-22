@@ -235,6 +235,12 @@ test('autolink', function () {
   )
 
   assert.equal(
+    micromark('<@example.com>'),
+    '<p>&lt;@example.com&gt;</p>',
+    'should not support an at sign at the start of email autolinks'
+  )
+
+  assert.equal(
     micromark('<a@b.co>', {extensions: [{disable: {null: ['autolink']}}]}),
     '<p>&lt;a@b.co&gt;</p>',
     'should support turning off autolinks'

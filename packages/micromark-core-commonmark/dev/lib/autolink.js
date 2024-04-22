@@ -66,6 +66,10 @@ function tokenizeAutolink(effects, ok, nok) {
       return schemeOrEmailAtext
     }
 
+    if (code === codes.atSign) {
+      return nok(code)
+    }
+
     return emailAtext(code)
   }
 
