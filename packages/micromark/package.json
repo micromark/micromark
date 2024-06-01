@@ -47,6 +47,9 @@
     "index.d.ts.map",
     "index.d.ts",
     "index.js",
+    "micromark.d.ts.map",
+    "micromark.d.ts",
+    "micromark.js",
     "stream.d.ts.map",
     "stream.d.ts",
     "stream.js"

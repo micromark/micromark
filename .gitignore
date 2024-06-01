@@ -8,6 +8,7 @@ micromark.min.js
 yarn.lock
 packages/micromark/lib/
 packages/micromark/index.js
+packages/micromark/micromark.js
 packages/micromark/stream.js
 packages/micromark-core-commonmark/lib/
 packages/micromark-core-commonmark/index.js
