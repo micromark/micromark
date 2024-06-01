@@ -59,6 +59,10 @@
       "development": "./dev/index.js",
       "default": "./index.js"
     },
+    "./micromark": {
+      "development": "./dev/micromark.js",
+      "default": "./micromark.js"
+    },
     "./stream": {
       "development": "./dev/stream.js",
       "default": "./stream.js"
