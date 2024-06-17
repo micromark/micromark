@@ -19,7 +19,7 @@ let index = -1
 
 while (++index < files.length) {
   const input = new URL(files[index], root + '/')
-  const output = new URL(input.href.replace(/\/dev\//, '/'))
+  const output = new URL(input.href.replace(/\/dev\/(?!.*\/dev\/)/, '/'))
   const inputRelative = RelativizeUrl.relativize(input, root)
   const outputRelative = RelativizeUrl.relativize(output, root)
 
