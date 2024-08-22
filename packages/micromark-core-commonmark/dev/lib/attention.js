@@ -259,13 +259,16 @@ function tokenizeAttention(effects, ok) {
     // Always populated by defaults.
     assert(attentionMarkers, 'expected `attentionMarkers` to be populated')
 
+    // TODO: if `previous` is a SVS (U+FE00-U+FE02 & U+FE0E), check one more previous code
+    const eitherCjk = cjk(code) || cjk(previous)
+
     const open =
-      cjk(previous) ||
+      eitherCjk ||
       !after ||
       (after === constants.characterGroupPunctuation && before) ||
       attentionMarkers.includes(code)
     const close =
-      cjk(code) ||
+      eitherCjk ||
       !before ||
       (before === constants.characterGroupPunctuation && after) ||
       attentionMarkers.includes(previous)
