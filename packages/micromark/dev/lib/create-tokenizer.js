@@ -200,7 +200,12 @@ export function createTokenizer(parser, initialize, from) {
           point._index === chunkIndex &&
           point._bufferIndex < chunk.length
         ) {
-          go(chunk.charCodeAt(point._bufferIndex))
+          // The expression after `??` simulates the behavior of String#charCodeAt.
+          // However, it is a bug if `?? Number.NaN` were executed.
+          go(
+            chunk.codePointAt(point._bufferIndex) /* c8 ignore start */ ??
+              Number.NaN /* c8 ignore stop */
+          )
         }
       } else {
         go(chunk)
@@ -256,7 +261,8 @@ export function createTokenizer(parser, initialize, from) {
     if (point._bufferIndex < 0) {
       point._index++
     } else {
-      point._bufferIndex++
+      // If code is 0x1_0000 or more, then it is represented as a surrogate pair in string.
+      point._bufferIndex += code !== null && code >= 65_536 ? 2 : 1
 
       // At end of string chunk.
       // @ts-expect-error Points w/ non-negative `_bufferIndex` reference

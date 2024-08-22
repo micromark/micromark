@@ -252,6 +252,6 @@ function regexCheck(regex) {
    *   Whether the character code matches the bound regex.
    */
   function check(code) {
-    return code !== null && code > -1 && regex.test(String.fromCharCode(code))
+    return code !== null && code > -1 && regex.test(String.fromCodePoint(code))
   }
 }
