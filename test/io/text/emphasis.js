@@ -830,4 +830,265 @@ test('emphasis', function () {
     '<p>*a*</p>',
     'should support turning off attention'
   )
+
+  assert.equal(
+    micromark(`これは**私のやりたかったこと。**だからするの。`),
+    '<p>これは<strong>私のやりたかったこと。</strong>だからするの。</p>',
+    'should support CJK characters in emphasis (1)'
+  )
+
+  assert.equal(
+    micromark(
+      `**[製品ほげ](./product-foo)**と**[製品ふが](./product-bar)**をお試しください`
+    ),
+    '<p><strong><a href="./product-foo">製品ほげ</a></strong>と<strong><a href="./product-bar">製品ふが</a></strong>をお試しください</p>',
+    'should support CJK characters in emphasis (2)'
+  )
+  assert.equal(
+    micromark(`単語と**[単語と](word-and)**単語`),
+    '<p>単語と<strong><a href="word-and">単語と</a></strong>単語</p>'
+  )
+  assert.equal(
+    micromark(`**これは太字になりません。**ご注意ください。`),
+    '<p><strong>これは太字になりません。</strong>ご注意ください。</p>'
+  )
+  assert.equal(
+    micromark(`カッコに注意**（太字にならない）**文が続く場合に要警戒。`),
+    '<p>カッコに注意<strong>（太字にならない）</strong>文が続く場合に要警戒。</p>'
+  )
+  assert.equal(
+    micromark(`**[リンク](https://example.com)**も注意。（画像も同様）`),
+    '<p><strong><a href="https://example.com">リンク</a></strong>も注意。（画像も同様）</p>'
+  )
+  assert.equal(
+    micromark(`先頭の**\`コード\`も注意。**`),
+    '<p>先頭の<strong><code>コード</code>も注意。</strong></p>'
+  )
+  assert.equal(
+    micromark(`**末尾の\`コード\`**も注意。`),
+    '<p><strong>末尾の<code>コード</code></strong>も注意。</p>'
+  )
+  assert.equal(
+    micromark(`税込**¥10,000**で入手できます。`),
+    '<p>税込<strong>¥10,000</strong>で入手できます。</p>'
+  )
+  assert.equal(
+    micromark(`正解は**④**です。`),
+    '<p>正解は<strong>④</strong>です。</p>'
+  )
+  assert.equal(
+    micromark(`太郎は\\ **「こんにちわ」**\\ といった`),
+    '<p>太郎は\\ <strong>「こんにちわ」</strong>\\ といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は&#x200B;**「こんにちわ」**&#x200B;といった`),
+    '<p>太郎は\u200B<strong>「こんにちわ」</strong>\u200Bといった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は${'\u200B'}**「こんにちわ」**${'\u200B'}といった`),
+    '<p>太郎は\u200B<strong>「こんにちわ」</strong>\u200Bといった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は${'\u200B'} **「こんにちわ」**${'\u200B'} といった`),
+    '<p>太郎は\u200B <strong>「こんにちわ」</strong>\u200B といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**「こんにちわ」**といった`),
+    '<p>太郎は<strong>「こんにちわ」</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**"こんにちわ"**といった`),
+    '<p>太郎は<strong>&quot;こんにちわ&quot;</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**こんにちわ**といった`),
+    '<p>太郎は<strong>こんにちわ</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**「Hello」**といった`),
+    '<p>太郎は<strong>「Hello」</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**"Hello"**といった`),
+    '<p>太郎は<strong>&quot;Hello&quot;</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**Hello**といった`),
+    '<p>太郎は<strong>Hello</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**「Oh my god」**といった`),
+    '<p>太郎は<strong>「Oh my god」</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**"Oh my god"**といった`),
+    '<p>太郎は<strong>&quot;Oh my god&quot;</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(`太郎は**Oh my god**といった`),
+    '<p>太郎は<strong>Oh my god</strong>といった</p>'
+  )
+  assert.equal(
+    micromark(
+      `**C#**や**F#**は**「.NET」**というプラットフォーム上で動作します。`
+    ),
+    '<p><strong>C#</strong>や<strong>F#</strong>は<strong>「.NET」</strong>というプラットフォーム上で動作します。</p>'
+  )
+  assert.equal(
+    micromark(`IDが**001号**になります。`),
+    '<p>IDが<strong>001号</strong>になります。</p>'
+  )
+  assert.equal(
+    micromark(`IDが**００１号**になります。`),
+    '<p>IDが<strong>００１号</strong>になります。</p>'
+  )
+  assert.equal(
+    micromark(`Go**「初心者」**を対象とした記事です。`),
+    '<p>Go<strong>「初心者」</strong>を対象とした記事です。</p>'
+  )
+  assert.equal(
+    micromark(`**[リンク](https://example.com)**も注意。`),
+    '<p><strong><a href="https://example.com">リンク</a></strong>も注意。</p>'
+  )
+  assert.equal(micromark(`先頭の**`), '<p>先頭の**</p>')
+  assert.equal(micromark(`も注意。**`), '<p>も注意。**</p>')
+  assert.equal(
+    micromark(`**⻲田太郎**と申します`),
+    '<p><strong>⻲田太郎</strong>と申します</p>'
+  )
+  assert.equal(
+    micromark(`・**㋐**:選択肢１つ目`),
+    '<p>・<strong>㋐</strong>:選択肢１つ目</p>'
+  )
+  assert.equal(micromark(`**真，**她`), '<p><strong>真，</strong>她</p>')
+  assert.equal(micromark(`**真。**她`), '<p><strong>真。</strong>她</p>')
+  assert.equal(micromark(`**真、**她`), '<p><strong>真、</strong>她</p>')
+  assert.equal(micromark(`**真；**她`), '<p><strong>真；</strong>她</p>')
+  assert.equal(micromark(`**真：**她`), '<p><strong>真：</strong>她</p>')
+  assert.equal(micromark(`**真？**她`), '<p><strong>真？</strong>她</p>')
+  assert.equal(micromark(`**真！**她`), '<p><strong>真！</strong>她</p>')
+  assert.equal(micromark(`**真“**她`), '<p><strong>真“</strong>她</p>')
+  assert.equal(micromark(`**真”**她`), '<p><strong>真”</strong>她</p>')
+  assert.equal(micromark(`**真‘**她`), '<p><strong>真‘</strong>她</p>')
+  assert.equal(micromark(`**真’**她`), '<p><strong>真’</strong>她</p>')
+  assert.equal(micromark(`**真（**她`), '<p><strong>真（</strong>她</p>')
+  assert.equal(micromark(`真**（她**`), '<p>真<strong>（她</strong></p>')
+  assert.equal(micromark(`**真）**她`), '<p><strong>真）</strong>她</p>')
+  assert.equal(micromark(`**真【**她`), '<p><strong>真【</strong>她</p>')
+  assert.equal(micromark(`真**【她**`), '<p>真<strong>【她</strong></p>')
+  assert.equal(micromark(`**真】**她`), '<p><strong>真】</strong>她</p>')
+  assert.equal(micromark(`**真《**她`), '<p><strong>真《</strong>她</p>')
+  assert.equal(micromark(`真**《她**`), '<p>真<strong>《她</strong></p>')
+  assert.equal(micromark(`**真》**她`), '<p><strong>真》</strong>她</p>')
+  assert.equal(micromark(`**真—**她`), '<p><strong>真—</strong>她</p>')
+  assert.equal(micromark(`**真～**她`), '<p><strong>真～</strong>她</p>')
+  assert.equal(micromark(`**真…**她`), '<p><strong>真…</strong>她</p>')
+  assert.equal(micromark(`**真·**她`), '<p><strong>真·</strong>她</p>')
+  assert.equal(micromark(`**真〃**她`), '<p><strong>真〃</strong>她</p>')
+  assert.equal(micromark(`**真-**她`), '<p><strong>真-</strong>她</p>')
+  assert.equal(micromark(`**真々**她`), '<p><strong>真々</strong>她</p>')
+  assert.equal(micromark(`**真**她`), '<p><strong>真</strong>她</p>')
+  assert.equal(micromark(`**真，** 她`), '<p><strong>真，</strong> 她</p>')
+  assert.equal(micromark(`**真**，她`), '<p><strong>真</strong>，她</p>')
+  assert.equal(
+    micromark(`**真，**&ZeroWidthSpace;她`),
+    '<p><strong>真，</strong>\u200B她</p>'
+  )
+  assert.equal(
+    micromark(`私は**⻲田太郎**と申します`),
+    '<p>私は<strong>⻲田太郎</strong>と申します</p>'
+  )
+  assert.equal(
+    micromark(`選択肢**㋐**: 1つ目の選択肢`),
+    '<p>選択肢<strong>㋐</strong>: 1つ目の選択肢</p>'
+  )
+  assert.equal(
+    micromark(`**さようなら︙**と太郎はいった。`),
+    '<p><strong>さようなら︙</strong>と太郎はいった。</p>'
+  )
+  assert.equal(
+    micromark(`.NET**（.NET Frameworkは不可）**では、`),
+    '<p>.NET<strong>（.NET Frameworkは不可）</strong>では、</p>'
+  )
+  assert.equal(
+    micromark(`「禰󠄀」の偏は示ではなく**礻**です。`),
+    '<p>「禰󠄀」の偏は示ではなく<strong>礻</strong>です。</p>'
+  )
+  assert.equal(
+    micromark(`Git**（注：不是GitHub）**`),
+    '<p>Git<strong>（注：不是GitHub）</strong></p>'
+  )
+  assert.equal(
+    micromark(`太郎は**「こんにちわ」**といった。`),
+    '<p>太郎は<strong>「こんにちわ」</strong>といった。</p>'
+  )
+  assert.equal(
+    micromark(`𰻞𰻞**（ビャンビャン）**麺`),
+    '<p>𰻞𰻞<strong>（ビャンビャン）</strong>麺</p>'
+  )
+  assert.equal(
+    micromark(`𰻞𰻞**(ビャンビャン)**麺`),
+    '<p>𰻞𰻞<strong>(ビャンビャン)</strong>麺</p>'
+  )
+  assert.equal(
+    micromark(`ハイパーテキストコーヒーポット制御プロトコル**(HTCPCP)**`),
+    '<p>ハイパーテキストコーヒーポット制御プロトコル<strong>(HTCPCP)</strong></p>'
+  )
+  assert.equal(micromark(`﨑**(崎)**`), '<p>﨑<strong>(崎)</strong></p>')
+  assert.equal(
+    micromark(`国際規格**[ECMA-262](https://tc39.es/ecma262/)**`),
+    '<p>国際規格<strong><a href="https://tc39.es/ecma262/">ECMA-262</a></strong></p>'
+  )
+  assert.equal(
+    micromark(`㐧**(第の俗字)**`),
+    '<p>㐧<strong>(第の俗字)</strong></p>'
+  )
+  assert.equal(
+    micromark(`𠮟**(こちらが正式表記)**`),
+    '<p>𠮟<strong>(こちらが正式表記)</strong></p>'
+  )
+  assert.equal(
+    micromark(`𪜈**(トモの合略仮名)**`),
+    '<p>𪜈<strong>(トモの合略仮名)</strong></p>'
+  )
+  assert.equal(
+    micromark(`𫠉**(馬の俗字)**`),
+    '<p>𫠉<strong>(馬の俗字)</strong></p>'
+  )
+  assert.equal(
+    micromark(`谺𬤲**(こだま)**石神社`),
+    '<p>谺𬤲<strong>(こだま)</strong>石神社</p>'
+  )
+  assert.equal(
+    micromark(`石𮧟**(いしただら)**`),
+    '<p>石𮧟<strong>(いしただら)</strong></p>'
+  )
+  assert.equal(
+    micromark(`**推荐几个框架：**React、Vue等前端框架。`),
+    '<p><strong>推荐几个框架：</strong>React、Vue等前端框架。</p>'
+  )
+  assert.equal(
+    micromark(`葛󠄀**(こちらが正式表記)**城市`),
+    '<p>葛󠄀<strong>(こちらが正式表記)</strong>城市</p>'
+  )
+  assert.equal(
+    micromark(`禰󠄀**(こちらが正式表記)**豆子`),
+    '<p>禰󠄀<strong>(こちらが正式表記)</strong>豆子</p>'
+  )
+  assert.equal(
+    micromark(`𱟛**(U+317DB)**`),
+    '<p>𱟛<strong>(U+317DB)</strong></p>'
+  )
+  assert.equal(
+    micromark(`阿寒湖アイヌシアターイコㇿ**(Akanko Ainu Theater Ikor)**`),
+    '<p>阿寒湖アイヌシアターイコㇿ<strong>(Akanko Ainu Theater Ikor)</strong></p>'
+  )
+  assert.equal(
+    micromark(`あ𛀙**(か)**よろし`),
+    '<p>あ𛀙<strong>(か)</strong>よろし</p>'
+  )
+  assert.equal(
+    micromark(`𮹝**(simplified form of 龘 in China)**`),
+    '<p>𮹝<strong>(simplified form of 龘 in China)</strong></p>'
+  )
 })
