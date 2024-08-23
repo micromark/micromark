@@ -237,6 +237,13 @@ export const cjk = regexCheck(
 )
 
 /**
+ * Check whether the character code represents Standard Variation Sequence that can follow an ideographic character.
+ *
+ * U+FE0E is used for some CJK symbols (e.g. U+3299) that can also be
+ */
+export const svsFollowingCjk = regexCheck(/[\uFE00-\uFE02\uFE0E]/u)
+
+/**
  * Create a code check from a regex.
  *
  * @param {RegExp} regex

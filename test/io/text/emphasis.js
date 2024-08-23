@@ -1091,4 +1091,14 @@ test('emphasis', function () {
     micromark(`𮹝**(simplified form of 龘 in China)**`),
     '<p>𮹝<strong>(simplified form of 龘 in China)</strong></p>'
   )
+  assert.equal(
+    micromark('大塚︀**(U+585A U+FE00)** 大塚**(U+FA10)**'),
+    '<p>大塚︀<strong>(U+585A U+FE00)</strong> 大塚<strong>(U+FA10)</strong></p>',
+    'should skip previous SVS character (VS01)'
+  )
+  assert.equal(
+    micromark('〽︎**(庵点)**は、'),
+    '<p>〽︎<strong>(庵点)</strong>は、</p>',
+    'should skip previous SVS character (VS15)'
+  )
 })

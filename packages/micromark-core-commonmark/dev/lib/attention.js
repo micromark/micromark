@@ -16,6 +16,7 @@ import {classifyCharacter} from 'micromark-util-classify-character'
 import {resolveAll} from 'micromark-util-resolve-all'
 import {codes, constants, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
+import {svsFollowingCjk} from 'micromark-util-character'
 
 /** @type {Construct} */
 export const attention = {
@@ -207,6 +208,7 @@ function resolveAllAttention(events, context) {
  */
 function tokenizeAttention(effects, ok) {
   const attentionMarkers = this.parser.constructs.attentionMarkers.null
+  const twoPrevious = this.twoPrevious
   const previous = this.previous
   const before = classifyCharacter(previous)
 
@@ -259,8 +261,10 @@ function tokenizeAttention(effects, ok) {
     // Always populated by defaults.
     assert(attentionMarkers, 'expected `attentionMarkers` to be populated')
 
-    // TODO: if `previous` is a SVS (U+FE00-U+FE02 & U+FE0E), check one more previous code
-    const eitherCjk = cjk(code) || cjk(previous)
+    const eitherCjk =
+      cjk(code) ||
+      cjk(previous) ||
+      (svsFollowingCjk(previous) && cjk(twoPrevious))
 
     const open =
       eitherCjk ||

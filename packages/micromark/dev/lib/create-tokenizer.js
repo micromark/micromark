@@ -88,6 +88,7 @@ export function createTokenizer(parser, initialize, from) {
    * @type {TokenizeContext}
    */
   const context = {
+    twoPrevious: codes.eof,
     previous: codes.eof,
     code: codes.eof,
     containerState: {},
@@ -274,6 +275,7 @@ export function createTokenizer(parser, initialize, from) {
     }
 
     // Expose the previous character.
+    context.twoPrevious = context.previous
     context.previous = code
 
     // Mark as consumed.
@@ -528,6 +530,7 @@ export function createTokenizer(parser, initialize, from) {
    */
   function store() {
     const startPoint = now()
+    const startTwoPrevious = context.twoPrevious
     const startPrevious = context.previous
     const startCurrentConstruct = context.currentConstruct
     const startEventsIndex = context.events.length
@@ -542,6 +545,7 @@ export function createTokenizer(parser, initialize, from) {
      */
     function restore() {
       point = startPoint
+      context.twoPrevious = startTwoPrevious
       context.previous = startPrevious
       context.currentConstruct = startCurrentConstruct
       context.events.length = startEventsIndex

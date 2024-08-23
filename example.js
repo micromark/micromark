@@ -177,6 +177,8 @@ Git**（注：不是GitHub）**
 𮹝**(simplified form of 龘 in China)**
 
 大塚︀**(U+585A U+FE00)** 大塚**(U+FA10)**
+
+〽︎**(庵点)**は、
 `
 
 const result = micromark(doc, {})
