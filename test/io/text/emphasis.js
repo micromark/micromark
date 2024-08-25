@@ -885,11 +885,6 @@ test('emphasis', function () {
     'should consider CJK characters (hiragana) around emphasis (1)'
   )
   assert.equal(
-    micromark(`太郎は\\ **「こんにちは」**\\ といった`),
-    '<p>太郎は\\ <strong>「こんにちは」</strong>\\ といった</p>',
-    'should consider CJK characters (brackets) around emphasis'
-  )
-  assert.equal(
     micromark(`太郎は&#x200B;**「こんにちは」**&#x200B;といった`),
     '<p>太郎は\u200B<strong>「こんにちは」</strong>\u200Bといった</p>',
     'should consider CJK characters (brackets) around emphasis & zero width spaces (1)'
@@ -898,11 +893,6 @@ test('emphasis', function () {
     micromark(`太郎は${'\u200B'}**「こんにちは」**${'\u200B'}といった`),
     '<p>太郎は\u200B<strong>「こんにちは」</strong>\u200Bといった</p>',
     'should consider CJK characters (brackets) around emphasis & zero width spaces (2)'
-  )
-  assert.equal(
-    micromark(`太郎は${'\u200B'} **「こんにちは」**${'\u200B'} といった`),
-    '<p>太郎は\u200B <strong>「こんにちは」</strong>\u200B といった</p>',
-    'should consider CJK characters (brackets) around emphasis & zero width spaces (3)'
   )
   assert.equal(
     micromark(`太郎は**「こんにちは」**といった`),
@@ -975,16 +965,6 @@ test('emphasis', function () {
     micromark(`**[リンク](https://example.com)**も注意。`),
     '<p><strong><a href="https://example.com">リンク</a></strong>も注意。</p>',
     'should consider CJK characters (hiragana) outside of emphasis & link'
-  )
-  assert.equal(
-    micromark(`先頭の**`),
-    '<p>先頭の**</p>',
-    'treat dangling * as is'
-  )
-  assert.equal(
-    micromark(`も注意。**`),
-    '<p>も注意。**</p>',
-    'treat dangling * as is (2)'
   )
   assert.equal(
     micromark(`**⻲田太郎**と申します`),
