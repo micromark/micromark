@@ -885,38 +885,38 @@ test('emphasis', function () {
     'should consider CJK characters (hiragana) around emphasis (1)'
   )
   assert.equal(
-    micromark(`太郎は\\ **「こんにちわ」**\\ といった`),
-    '<p>太郎は\\ <strong>「こんにちわ」</strong>\\ といった</p>',
+    micromark(`太郎は\\ **「こんにちは」**\\ といった`),
+    '<p>太郎は\\ <strong>「こんにちは」</strong>\\ といった</p>',
     'should consider CJK characters (brackets) around emphasis'
   )
   assert.equal(
-    micromark(`太郎は&#x200B;**「こんにちわ」**&#x200B;といった`),
-    '<p>太郎は\u200B<strong>「こんにちわ」</strong>\u200Bといった</p>',
+    micromark(`太郎は&#x200B;**「こんにちは」**&#x200B;といった`),
+    '<p>太郎は\u200B<strong>「こんにちは」</strong>\u200Bといった</p>',
     'should consider CJK characters (brackets) around emphasis & zero width spaces (1)'
   )
   assert.equal(
-    micromark(`太郎は${'\u200B'}**「こんにちわ」**${'\u200B'}といった`),
-    '<p>太郎は\u200B<strong>「こんにちわ」</strong>\u200Bといった</p>',
+    micromark(`太郎は${'\u200B'}**「こんにちは」**${'\u200B'}といった`),
+    '<p>太郎は\u200B<strong>「こんにちは」</strong>\u200Bといった</p>',
     'should consider CJK characters (brackets) around emphasis & zero width spaces (2)'
   )
   assert.equal(
-    micromark(`太郎は${'\u200B'} **「こんにちわ」**${'\u200B'} といった`),
-    '<p>太郎は\u200B <strong>「こんにちわ」</strong>\u200B といった</p>',
+    micromark(`太郎は${'\u200B'} **「こんにちは」**${'\u200B'} といった`),
+    '<p>太郎は\u200B <strong>「こんにちは」</strong>\u200B といった</p>',
     'should consider CJK characters (brackets) around emphasis & zero width spaces (3)'
   )
   assert.equal(
-    micromark(`太郎は**「こんにちわ」**といった`),
-    '<p>太郎は<strong>「こんにちわ」</strong>といった</p>',
+    micromark(`太郎は**「こんにちは」**といった`),
+    '<p>太郎は<strong>「こんにちは」</strong>といった</p>',
     'should consider CJK characters (hiragana & brackets) around emphasis (1)'
   )
   assert.equal(
-    micromark(`太郎は**"こんにちわ"**といった`),
-    '<p>太郎は<strong>&quot;こんにちわ&quot;</strong>といった</p>',
+    micromark(`太郎は**"こんにちは"**といった`),
+    '<p>太郎は<strong>&quot;こんにちは&quot;</strong>といった</p>',
     'should consider CJK characters (hiragana) outside of emphasis (1)'
   )
   assert.equal(
-    micromark(`太郎は**こんにちわ**といった`),
-    '<p>太郎は<strong>こんにちわ</strong>といった</p>',
+    micromark(`太郎は**こんにちは**といった`),
+    '<p>太郎は<strong>こんにちは</strong>といった</p>',
     'should consider CJK characters (hiragana) around emphasis (2)'
   )
   assert.equal(
@@ -957,13 +957,13 @@ test('emphasis', function () {
     'should consider CJK characters (hiragana & brackets) around emphasis (4)'
   )
   assert.equal(
-    micromark(`IDが**001号**になります。`),
-    '<p>IDが<strong>001号</strong>になります。</p>',
+    micromark(`番号は**001番**です。`),
+    '<p>番号は<strong>001番</strong>です。</p>',
     'should consider CJK a character (hiragana) outside of emphasis (4)'
   )
   assert.equal(
-    micromark(`IDが**００１号**になります。`),
-    '<p>IDが<strong>００１号</strong>になります。</p>',
+    micromark(`番号は**００１番**です。`),
+    '<p>番号は<strong>００１番</strong>です。</p>',
     'should consider CJK characters (hiragana & double width numbers & basic han) around emphasis'
   )
   assert.equal(
@@ -1182,8 +1182,8 @@ test('emphasis', function () {
     'should consider CJK characters (parentheses) around emphasis'
   )
   assert.equal(
-    micromark(`太郎は**「こんにちわ」**といった。`),
-    '<p>太郎は<strong>「こんにちわ」</strong>といった。</p>'
+    micromark(`太郎は**「こんにちは」**といった。`),
+    '<p>太郎は<strong>「こんにちは」</strong>といった。</p>'
   )
   assert.equal(
     micromark(`𰻞𰻞**（ビャンビャン）**麺`),
