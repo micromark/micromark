@@ -18,6 +18,30 @@ test('list-item', function () {
   )
 
   assert.equal(
+    micromark('1. a\n\n    * b'),
+    '<ol>\n<li>\n<p>a</p>\n<ul>\n<li>b</li>\n</ul>\n</li>\n</ol>',
+    'should not misidentify documents in list items (1) (correct)'
+  )
+
+  assert.equal(
+    micromark('1.   a\n\n    * b'),
+    '<ol>\n<li>\n<p>a</p>\n<ul>\n<li>b</li>\n</ul>\n</li>\n</ol>',
+    'should not misidentify documents in list items (1)'
+  )
+
+  assert.equal(
+    micromark('10.  a\n\n    * b'),
+    '<ol start="10">\n<li>\n<p>a</p>\n<ul>\n<li>b</li>\n</ul>\n</li>\n</ol>',
+    'should not misidentify documents in list items (2)'
+  )
+
+  assert.equal(
+    micromark('100. a\n\n    * b'),
+    '<ol start="100">\n<li>\n<p>a</p>\n<ul>\n<li>b</li>\n</ul>\n</li>\n</ol>',
+    'should not misidentify documents in list items (3)'
+  )
+
+  assert.equal(
     micromark('- one\n\n two'),
     '<ul>\n<li>one</li>\n</ul>\n<p>two</p>',
     'should not support 1 space for a two-character list prefix'
