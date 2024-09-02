@@ -7,9 +7,9 @@
 
 import childProcess from 'node:child_process'
 import fs from 'node:fs/promises'
-import util from 'node:util'
+import {promisify} from 'node:util'
 
-const exec = util.promisify(childProcess.exec)
+const exec = promisify(childProcess.exec)
 
 await fs.rename(
   new URL('../packages/micromark/index.js', import.meta.url),
