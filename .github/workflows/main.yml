@@ -1,9 +1,37 @@
-name: main
-on:
-  - pull_request
-  - push
 jobs:
-  test:
+  canary:
+    name: canary / ${{matrix.package}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: node
+      - run: npm install
+      - run: npm run build
+      - uses: actions/checkout@v4
+        with:
+          path: canary/${{matrix.package}}
+          repository: ${{matrix.package}}
+      - run: |
+          npm install
+          for package in $(ls ../../packages); do
+            npx rimraf "node_modules/**/$package"
+          done
+          npm test
+        working-directory: canary/${{matrix.package}}
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - micromark/micromark-extension-directive
+          - micromark/micromark-extension-gfm
+          - micromark/micromark-extension-mdx
+          - remarkjs/react-markdown
+          - remarkjs/remark
+          - syntax-tree/mdast-util-from-markdown
+      max-parallel: 2
+  main:
     name: ${{matrix.node}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}
     steps:
@@ -13,54 +41,16 @@ jobs:
           node-version: ${{matrix.node}}
       - run: npm install
       - run: npm test
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
     strategy:
       matrix:
+        node:
+          - lts/hydrogen
+          - node
         os:
           - ubuntu-latest
           - windows-latest
-        node:
-          - lts/gallium
-          - node
-  canary:
-    name: canary / ${{matrix.package}} / ${{matrix.node}} on ${{matrix.os}}
-    runs-on: ${{matrix.os}}
-    steps:
-      - name: checkout micromark
-        uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{matrix.node}}
-      - name: setup micromark
-        run: |
-          npm install -g npm
-          npm install
-          npm run build
-      - name: checkout ${{matrix.package}}
-        uses: actions/checkout@v4
-        with:
-          repository: ${{matrix.package}}
-          path: canary/${{matrix.package}}
-      - name: test ${{matrix.package}}
-        run: |
-          npm install
-          for package in $(ls ../../packages); do
-            npx rimraf "node_modules/**/$package"
-          done
-          npm test
-        working-directory: canary/${{matrix.package}}
-    strategy:
-      fail-fast: false
-      max-parallel: 2
-      matrix:
-        os:
-          - ubuntu-latest
-        node:
-          - node
-        package:
-          - micromark/micromark-extension-gfm
-          - micromark/micromark-extension-directive
-          - micromark/micromark-extension-mdx
-          - syntax-tree/mdast-util-from-markdown
-          - remarkjs/remark
-          - remarkjs/react-markdown
+name: main
+on:
+  - pull_request
+  - push
