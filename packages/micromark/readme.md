@@ -105,7 +105,7 @@ In browsers with [`esm.sh`][esmsh]:
 
 ## Use
 
-<!-- Note: this section has to be in sync with the monorepo readme. -->
+<!-- Note: this section has to be in sync with the `micromark` readme. -->
 
 Typical use (buffering):
 
