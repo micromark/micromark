@@ -1,5 +1,5 @@
 /**
- * @import {Encoding, Options, Value} from 'micromark-util-types'
+ * @import {Encoding, Value} from 'micromark-util-types'
  */
 
 /**
