@@ -1,7 +1,9 @@
 /**
+ * @import {Encoding, Options, Value} from 'micromark-util-types'
+ */
+
+/**
  * @typedef {import('micromark-util-types').Options} Options
- * @typedef {import('micromark-util-types').Value} Value
- * @typedef {import('micromark-util-types').Encoding} Encoding
  */
 
 /**

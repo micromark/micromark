@@ -1,7 +1,5 @@
 /**
- * @typedef {import('micromark-util-types').Effects} Effects
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').TokenType} TokenType
+ * @import {Effects, State, TokenType} from 'micromark-util-types'
  */
 
 import {markdownSpace} from 'micromark-util-character'

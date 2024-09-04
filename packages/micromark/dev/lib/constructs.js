@@ -1,5 +1,5 @@
 /**
- * @typedef {import('micromark-util-types').Extension} Extension
+ * @import {Extension} from 'micromark-util-types'
  */
 
 import {

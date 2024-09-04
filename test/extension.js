@@ -1,10 +1,13 @@
 /**
- * @typedef {import('micromark-util-types').CompileContext} CompileContext
- * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').Extension} Extension
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @import {
+ *   CompileContext,
+ *   Construct,
+ *   Extension,
+ *   HtmlExtension,
+ *   State,
+ *   TokenizeContext,
+ *   Tokenizer
+ * } from 'micromark-util-types'
  */
 
 import assert from 'node:assert/strict'
@@ -80,9 +83,9 @@ test('syntax extension', function () {
 })
 
 test('html extension', async function (t) {
-  /** @type {import('micromark-util-types').Extension} */
+  /** @type {Extension} */
   const syntax = {flow: {47: {tokenize: tokenizeCommentLine}}}
-  /** @type {import('micromark-util-types').HtmlExtension} */
+  /** @type {HtmlExtension} */
   const html = {
     // An unknown key is treated as an existing key, probably never useful, but
     // symetrical to syntax extensions.
@@ -110,7 +113,7 @@ test('html extension', async function (t) {
   assert.deepEqual(
     micromark('!', {
       htmlExtensions: [
-        /** @type {import('micromark-util-types').HtmlExtension} */
+        /** @type {HtmlExtension} */
         ({enter: {null: enterDocument}, exit: {null: exitDocument}})
       ]
     }),
@@ -121,7 +124,7 @@ test('html extension', async function (t) {
   assert.deepEqual(
     micromark('', {
       htmlExtensions: [
-        /** @type {import('micromark-util-types').HtmlExtension} */
+        /** @type {HtmlExtension} */
         ({enter: {null: enterDocument}, exit: {null: exitDocument}})
       ]
     }),

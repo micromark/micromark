@@ -1,8 +1,10 @@
 /**
- * @typedef {import('micromark-util-types').Effects} Effects
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').TokenType} TokenType
+ * @import {
+ *   Effects,
+ *   State,
+ *   TokenizeContext,
+ *   TokenType
+ * } from 'micromark-util-types'
  */
 
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'

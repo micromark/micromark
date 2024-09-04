@@ -1,5 +1,5 @@
 /**
- * @typedef {import('micromark-util-types').Code} Code
+ * @import {Code} from 'micromark-util-types'
  */
 
 import {

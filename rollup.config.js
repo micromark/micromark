@@ -1,12 +1,17 @@
+/**
+ * @import Terser from '@rollup/plugin-terser'
+ * @import {RollupOptions} from 'rollup'
+ */
+
 import {nodeResolve} from '@rollup/plugin-node-resolve'
 import terser_ from '@rollup/plugin-terser'
 
 // Note: `terser` is typed incorrectly.
-const terser = /** @type {import('@rollup/plugin-terser')['default']} */ (
+const terser = /** @type {(typeof Terser)['default']} */ (
   /** @type {unknown} */ (terser_)
 )
 
-/** @type {import('rollup').RollupOptions} */
+/** @type {RollupOptions} */
 const config = {
   input: './packages/micromark/index.js',
   output: {

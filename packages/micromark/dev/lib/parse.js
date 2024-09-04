@@ -1,9 +1,11 @@
 /**
- * @typedef {import('micromark-util-types').Create} Create
- * @typedef {import('micromark-util-types').FullNormalizedExtension} FullNormalizedExtension
- * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
- * @typedef {import('micromark-util-types').ParseContext} ParseContext
- * @typedef {import('micromark-util-types').ParseOptions} ParseOptions
+ * @import {
+ *   Create,
+ *   FullNormalizedExtension,
+ *   InitialConstruct,
+ *   ParseContext,
+ *   ParseOptions
+ * } from 'micromark-util-types'
  */
 
 import {combineExtensions} from 'micromark-util-combine-extensions'

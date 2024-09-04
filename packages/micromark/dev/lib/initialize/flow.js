@@ -1,8 +1,10 @@
 /**
- * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
- * @typedef {import('micromark-util-types').Initializer} Initializer
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @import {
+ *   InitialConstruct,
+ *   Initializer,
+ *   State,
+ *   TokenizeContext
+ * } from 'micromark-util-types'
  */
 
 import {blankLine, content} from 'micromark-core-commonmark'

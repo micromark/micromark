@@ -13,16 +13,18 @@
  */
 
 /**
- * @typedef {import('micromark-util-types').Compile} Compile
- * @typedef {import('micromark-util-types').CompileContext} CompileContext
- * @typedef {import('micromark-util-types').CompileData} CompileData
- * @typedef {import('micromark-util-types').CompileOptions} CompileOptions
- * @typedef {import('micromark-util-types').Definition} Definition
- * @typedef {import('micromark-util-types').Event} Event
- * @typedef {import('micromark-util-types').Handle} Handle
- * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
- * @typedef {import('micromark-util-types').NormalizedHtmlExtension} NormalizedHtmlExtension
- * @typedef {import('micromark-util-types').Token} Token
+ * @import {
+ *   CompileContext,
+ *   CompileData,
+ *   CompileOptions,
+ *   Compile,
+ *   Definition,
+ *   Event,
+ *   Handle,
+ *   HtmlExtension,
+ *   NormalizedHtmlExtension,
+ *   Token
+ * } from 'micromark-util-types'
  */
 
 /**

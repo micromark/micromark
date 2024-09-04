@@ -1,13 +1,15 @@
 /**
- * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').ContainerState} ContainerState
- * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
- * @typedef {import('micromark-util-types').Initializer} Initializer
- * @typedef {import('micromark-util-types').Point} Point
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').Token} Token
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @import {
+ *   Construct,
+ *   ContainerState,
+ *   InitialConstruct,
+ *   Initializer,
+ *   Point,
+ *   State,
+ *   Token,
+ *   TokenizeContext,
+ *   Tokenizer
+ * } from 'micromark-util-types'
  */
 
 /**

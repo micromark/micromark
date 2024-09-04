@@ -1,8 +1,10 @@
 /**
- * @typedef {import('micromark-util-types').Code} Code
- * @typedef {import('micromark-util-types').Effects} Effects
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').TokenType} TokenType
+ * @import {
+ *   Code,
+ *   Effects,
+ *   State,
+ *   TokenType
+ * } from 'micromark-util-types'
  */
 
 import {factorySpace} from 'micromark-factory-space'

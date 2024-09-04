@@ -51,7 +51,7 @@ import type {Point, /* … */} from 'https://esm.sh/micromark-util-types@1'
 
 ```js
 /**
- * @typedef {import('micromark-util-types').Point} Point
+ * @import {Point} from 'micromark-util-types'
  */
 ```
 

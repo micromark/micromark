@@ -1,8 +1,10 @@
 /**
- * @typedef {import('micromark-util-types').Extension} Extension
- * @typedef {import('micromark-util-types').Handles} Handles
- * @typedef {import('micromark-util-types').HtmlExtension} HtmlExtension
- * @typedef {import('micromark-util-types').NormalizedExtension} NormalizedExtension
+ * @import {
+ *   Extension,
+ *   Handles,
+ *   HtmlExtension,
+ *   NormalizedExtension
+ * } from 'micromark-util-types'
  */
 
 import {splice} from 'micromark-util-chunked'

@@ -1,8 +1,5 @@
 /**
- * @typedef {import('micromark-util-types').Chunk} Chunk
- * @typedef {import('micromark-util-types').Code} Code
- * @typedef {import('micromark-util-types').Encoding} Encoding
- * @typedef {import('micromark-util-types').Value} Value
+ * @import {Chunk, Code, Encoding, Value} from 'micromark-util-types'
  */
 
 /**

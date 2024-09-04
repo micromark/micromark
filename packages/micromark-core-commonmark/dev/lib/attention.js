@@ -1,13 +1,15 @@
 /**
- * @typedef {import('micromark-util-types').Code} Code
- * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').Event} Event
- * @typedef {import('micromark-util-types').Point} Point
- * @typedef {import('micromark-util-types').Resolver} Resolver
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').Token} Token
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @import {
+ *   Code,
+ *   Construct,
+ *   Event,
+ *   Point,
+ *   Resolver,
+ *   State,
+ *   TokenizeContext,
+ *   Token,
+ *   Tokenizer
+ * } from 'micromark-util-types'
  */
 
 import {push, splice} from 'micromark-util-chunked'

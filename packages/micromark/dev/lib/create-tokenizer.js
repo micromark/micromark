@@ -1,16 +1,17 @@
 /**
- * @typedef {import('micromark-util-types').Chunk} Chunk
- * @typedef {import('micromark-util-types').Code} Code
- * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').ConstructRecord} ConstructRecord
- * @typedef {import('micromark-util-types').Effects} Effects
- * @typedef {import('micromark-util-types').InitialConstruct} InitialConstruct
- * @typedef {import('micromark-util-types').ParseContext} ParseContext
- * @typedef {import('micromark-util-types').Point} Point
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').Token} Token
- * @typedef {import('micromark-util-types').TokenType} TokenType
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
+ * @import {
+ *   Chunk,
+ *   Code,
+ *   ConstructRecord,
+ *   Construct,
+ *   Effects,
+ *   InitialConstruct,
+ *   ParseContext,
+ *   Point,
+ *   State,
+ *   Token,
+ *   TokenizeContext,
+ * } from 'micromark-util-types'
  */
 
 /**

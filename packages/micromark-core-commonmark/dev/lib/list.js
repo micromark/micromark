@@ -1,11 +1,13 @@
 /**
- * @typedef {import('micromark-util-types').Code} Code
- * @typedef {import('micromark-util-types').Construct} Construct
- * @typedef {import('micromark-util-types').ContainerState} ContainerState
- * @typedef {import('micromark-util-types').Exiter} Exiter
- * @typedef {import('micromark-util-types').State} State
- * @typedef {import('micromark-util-types').TokenizeContext} TokenizeContext
- * @typedef {import('micromark-util-types').Tokenizer} Tokenizer
+ * @import {
+ *   Code,
+ *   Construct,
+ *   ContainerState,
+ *   Exiter,
+ *   State,
+ *   TokenizeContext,
+ *   Tokenizer
+ * } from 'micromark-util-types'
  */
 
 import {factorySpace} from 'micromark-factory-space'

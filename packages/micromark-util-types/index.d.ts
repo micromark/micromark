@@ -77,7 +77,7 @@ export type ContentType = 'content' | 'document' | 'flow' | 'string' | 'text'
  * The interface for the location in the document comes from unist `Point`:
  * <https://github.com/syntax-tree/unist#point>
  */
-export type Point = {
+export interface Point {
   /**
    * Position in a string chunk (or `-1` when pointing to a numeric chunk).
    */
@@ -298,7 +298,7 @@ export type Attempt = (
 /**
  * A context object to transition the state machine.
  */
-export type Effects = {
+export interface Effects {
   /**
    * Start a new token.
    */
@@ -433,7 +433,7 @@ export type Previous = (this: TokenizeContext, code: Code) => boolean
 /**
  * An object describing how to parse a markdown construct.
  */
-export type Construct = {
+export interface Construct {
   /**
    * Set up a state machine to handle character codes streaming in.
    */
@@ -872,7 +872,7 @@ export interface ParseContext {
 /**
  * HTML compiler context.
  */
-export type CompileContext = {
+export interface CompileContext {
   /**
    * Configuration passed by the user.
    */
@@ -888,10 +888,10 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  setData: <Key extends keyof CompileData>(
+  setData<Key extends keyof CompileData>(
     key: Key,
     value?: CompileData[Key]
-  ) => undefined
+  ): undefined
 
   /**
    * Get data from the key-value store.
@@ -901,7 +901,7 @@ export type CompileContext = {
    * @returns
    *   Value at `key` in compile data.
    */
-  getData: <Key extends keyof CompileData>(key: Key) => CompileData[Key]
+  getData<Key extends keyof CompileData>(key: Key): CompileData[Key]
 
   /**
    * Output an extra line ending if the previous value wasn’t EOF/EOL.
@@ -909,7 +909,7 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  lineEndingIfNeeded: () => undefined
+  lineEndingIfNeeded(): undefined
 
   /**
    * Make a value safe for injection in HTML (except w/ `ignoreEncode`).
@@ -919,7 +919,7 @@ export type CompileContext = {
    * @returns
    *   Safe value.
    */
-  encode: (value: string) => string
+  encode(value: string): string
 
   /**
    * Capture some of the output data.
@@ -927,7 +927,7 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  buffer: () => undefined
+  buffer(): undefined
 
   /**
    * Stop capturing and access the output data.
@@ -935,7 +935,7 @@ export type CompileContext = {
    * @returns
    *   Captured data.
    */
-  resume: () => string
+  resume(): string
 
   /**
    * Output raw data.
@@ -945,7 +945,7 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  raw: (value: string) => undefined
+  raw(value: string): undefined
 
   /**
    * Output (parts of) HTML tags.
@@ -955,7 +955,7 @@ export type CompileContext = {
    * @returns
    *   Nothing.
    */
-  tag: (value: string) => undefined
+  tag(value: string): undefined
 
   /**
    * Get the string value of a token.
@@ -967,7 +967,10 @@ export type CompileContext = {
    * @returns
    *   Serialized chunks.
    */
-  sliceSerialize: TokenizeContext['sliceSerialize']
+  sliceSerialize(
+    token: Pick<Token, 'end' | 'start'>,
+    expandTabs?: boolean | undefined
+  ): string
 }
 
 /**

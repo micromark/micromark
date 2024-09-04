@@ -1,7 +1,5 @@
 /**
- * @typedef {import('micromark-util-types').Chunk} Chunk
- * @typedef {import('micromark-util-types').Event} Event
- * @typedef {import('micromark-util-types').Token} Token
+ * @import {Chunk, Event, Token} from 'micromark-util-types'
  */
 
 import {splice} from 'micromark-util-chunked'

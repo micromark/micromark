@@ -1,7 +1,9 @@
 /**
- * @typedef {import('micromark-util-types').Encoding} Encoding
+ * @import {Encoding, Options, Value} from 'micromark-util-types'
+ */
+
+/**
  * @typedef {import('micromark-util-types').Options} Options
- * @typedef {import('micromark-util-types').Value} Value
  */
 
 import {compile} from './lib/compile.js'
