@@ -55,7 +55,6 @@
     "packages/micromark"
   ],
   "devDependencies": {
-    "@jazzer.js/core": "^2.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-terser": "^0.4.0",
     "@types/concat-stream": "^2.0.0",
@@ -79,7 +78,8 @@
   "scripts": {
     "build": "tsc --build --clean && tsc && type-coverage && npm run build --workspaces --if-present && rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
-    "test-fuzz": "esbuild micromark --bundle --conditions=development --format=cjs --platform=node --target=es2022 > test/fuzz-bundle.cjs && node script/generate-fixtures.js && jazzer test/fuzz.cjs test/fixtures -- -max_total_time=1800",
+    "#": "fuzzer turned off for now as `jazzer` is unmaintained, with sec vulns",
+    "#test-fuzz": "esbuild micromark --bundle --conditions=development --format=cjs --platform=node --target=es2022 > test/fuzz-bundle.cjs && node script/generate-fixtures.js && jazzer test/fuzz.cjs test/fixtures -- -max_total_time=1800",
     "test-api-dev": "node --conditions development test/index.js",
     "test-api-prod": "node --conditions production test/index.js",
     "test-api": "npm run test-api-dev && npm run test-api-prod",
