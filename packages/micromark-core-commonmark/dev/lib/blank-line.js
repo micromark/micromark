@@ -12,10 +12,11 @@ import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes, types} from 'micromark-util-symbol'
 
 /** @type {Construct} */
-export const blankLine = {tokenize: tokenizeBlankLine, partial: true}
+export const blankLine = {partial: true, tokenize: tokenizeBlankLine}
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeBlankLine(effects, ok, nok) {

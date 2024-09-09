@@ -4,35 +4,38 @@ import {characterEntities} from 'character-entities'
 import {htmlRawNames} from 'micromark-util-html-tag-name'
 import {constants} from 'micromark-util-symbol'
 
-test('constants', function () {
-  assert.equal(
-    constants.characterReferenceDecimalSizeMax,
-    (0x10_ff_ff).toString(10).length,
-    '`characterReferenceDecimalSizeMax`'
-  )
+test('constants', async function (t) {
+  await t.test('`characterReferenceDecimalSizeMax`', async function () {
+    assert.equal(
+      constants.characterReferenceDecimalSizeMax,
+      (0x10_ff_ff).toString(10).length
+    )
+  })
 
-  assert.equal(
-    constants.characterReferenceHexadecimalSizeMax,
-    (0x10_ff_ff).toString(16).length,
-    '`characterReferenceHexadecimalSizeMax`'
-  )
+  await t.test('`characterReferenceHexadecimalSizeMax`', async function () {
+    assert.equal(
+      constants.characterReferenceHexadecimalSizeMax,
+      (0x10_ff_ff).toString(16).length
+    )
+  })
 
-  assert.equal(
-    constants.characterReferenceNamedSizeMax,
-    longest(Object.keys(characterEntities)).length,
-    '`characterReferenceNamedSizeMax`'
-  )
+  await t.test('`characterReferenceNamedSizeMax`', async function () {
+    assert.equal(
+      constants.characterReferenceNamedSizeMax,
+      longest(Object.keys(characterEntities)).length
+    )
+  })
 
-  assert.equal(
-    constants.htmlRawSizeMax,
-    longest(htmlRawNames).length,
-    '`htmlRawSizeMax`'
-  )
+  await t.test('`htmlRawSizeMax`', async function () {
+    assert.equal(constants.htmlRawSizeMax, longest(htmlRawNames).length)
+  })
 })
 
 /**
- * @param {Array<string>} list
+ * @param {ReadonlyArray<string>} list
+ *   List of strings.
  * @returns {string}
+ *   Longest string.
  */
 function longest(list) {
   let index = -1

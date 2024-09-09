@@ -5,7 +5,7 @@
 /**
  * Call all `resolveAll`s.
  *
- * @param {Array<{resolveAll?: Resolver | undefined}>} constructs
+ * @param {ReadonlyArray<{resolveAll?: Resolver | undefined}>} constructs
  *   List of constructs, optionally with `resolveAll`s.
  * @param {Array<Event>} events
  *   List of events.

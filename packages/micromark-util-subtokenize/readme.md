@@ -103,8 +103,8 @@ versions of Node.js.
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
 This means we try to keep the current release line,
-`micromark-util-subtokenize@^2`, compatible with Node.js 16.
-This package works with `micromark@^3`.
+`micromark-util-subtokenize@2`, compatible with Node.js 16.
+This package works with `micromark@3`.
 
 ## Security
 

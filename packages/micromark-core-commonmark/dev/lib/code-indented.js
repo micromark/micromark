@@ -7,10 +7,10 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const codeIndented = {
@@ -19,10 +19,11 @@ export const codeIndented = {
 }
 
 /** @type {Construct} */
-const furtherStart = {tokenize: tokenizeFurtherStart, partial: true}
+const furtherStart = {partial: true, tokenize: tokenizeFurtherStart}
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeCodeIndented(effects, ok, nok) {
@@ -131,6 +132,7 @@ function tokenizeCodeIndented(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeFurtherStart(effects, ok, nok) {

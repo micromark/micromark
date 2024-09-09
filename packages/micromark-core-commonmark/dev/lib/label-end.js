@@ -10,6 +10,7 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factoryDestination} from 'micromark-factory-destination'
 import {factoryLabel} from 'micromark-factory-label'
 import {factoryTitle} from 'micromark-factory-title'
@@ -19,14 +20,13 @@ import {push, splice} from 'micromark-util-chunked'
 import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
 import {resolveAll} from 'micromark-util-resolve-all'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const labelEnd = {
   name: 'labelEnd',
-  tokenize: tokenizeLabelEnd,
+  resolveAll: resolveAllLabelEnd,
   resolveTo: resolveToLabelEnd,
-  resolveAll: resolveAllLabelEnd
+  tokenize: tokenizeLabelEnd
 }
 
 /** @type {Construct} */
@@ -112,20 +112,20 @@ function resolveToLabelEnd(events, context) {
 
   const group = {
     type: events[open][1].type === types.labelLink ? types.link : types.image,
-    start: Object.assign({}, events[open][1].start),
-    end: Object.assign({}, events[events.length - 1][1].end)
+    start: {...events[open][1].start},
+    end: {...events[events.length - 1][1].end}
   }
 
   const label = {
     type: types.label,
-    start: Object.assign({}, events[open][1].start),
-    end: Object.assign({}, events[close][1].end)
+    start: {...events[open][1].start},
+    end: {...events[close][1].end}
   }
 
   const text = {
     type: types.labelText,
-    start: Object.assign({}, events[open + offset + 2][1].end),
-    end: Object.assign({}, events[close - 2][1].start)
+    start: {...events[open + offset + 2][1].end},
+    end: {...events[close - 2][1].start}
   }
 
   media = [
@@ -175,6 +175,7 @@ function resolveToLabelEnd(events, context) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeLabelEnd(effects, ok, nok) {
@@ -357,6 +358,7 @@ function tokenizeLabelEnd(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeResource(effects, ok, nok) {
@@ -525,6 +527,7 @@ function tokenizeResource(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeReferenceFull(effects, ok, nok) {
@@ -592,6 +595,7 @@ function tokenizeReferenceFull(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeReferenceCollapsed(effects, ok, nok) {

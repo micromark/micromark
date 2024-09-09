@@ -7,9 +7,9 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const hardBreakEscape = {
@@ -19,6 +19,7 @@ export const hardBreakEscape = {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeHardBreakEscape(effects, ok, nok) {

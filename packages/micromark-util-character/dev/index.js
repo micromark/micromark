@@ -231,7 +231,9 @@ export const unicodeWhitespace = regexCheck(/\s/)
  * Create a code check from a regex.
  *
  * @param {RegExp} regex
+ *   Expression.
  * @returns {(code: Code) => boolean}
+ *   Check.
  */
 function regexCheck(regex) {
   return check

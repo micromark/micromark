@@ -7,22 +7,22 @@
  *   Resolver,
  *   State,
  *   TokenizeContext,
- *   Token,
- *   Tokenizer
+ *   Tokenizer,
+ *   Token
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {push, splice} from 'micromark-util-chunked'
 import {classifyCharacter} from 'micromark-util-classify-character'
 import {resolveAll} from 'micromark-util-resolve-all'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const attention = {
   name: 'attention',
-  tokenize: tokenizeAttention,
-  resolveAll: resolveAllAttention
+  resolveAll: resolveAllAttention,
+  tokenize: tokenizeAttention
 }
 
 /**
@@ -99,34 +99,34 @@ function resolveAllAttention(events, context) {
               ? 2
               : 1
 
-          const start = Object.assign({}, events[open][1].end)
-          const end = Object.assign({}, events[index][1].start)
+          const start = {...events[open][1].end}
+          const end = {...events[index][1].start}
           movePoint(start, -use)
           movePoint(end, use)
 
           openingSequence = {
             type: use > 1 ? types.strongSequence : types.emphasisSequence,
             start,
-            end: Object.assign({}, events[open][1].end)
+            end: {...events[open][1].end}
           }
           closingSequence = {
             type: use > 1 ? types.strongSequence : types.emphasisSequence,
-            start: Object.assign({}, events[index][1].start),
+            start: {...events[index][1].start},
             end
           }
           text = {
             type: use > 1 ? types.strongText : types.emphasisText,
-            start: Object.assign({}, events[open][1].end),
-            end: Object.assign({}, events[index][1].start)
+            start: {...events[open][1].end},
+            end: {...events[index][1].start}
           }
           group = {
             type: use > 1 ? types.strong : types.emphasis,
-            start: Object.assign({}, openingSequence.start),
-            end: Object.assign({}, closingSequence.end)
+            start: {...openingSequence.start},
+            end: {...closingSequence.end}
           }
 
-          events[open][1].end = Object.assign({}, openingSequence.start)
-          events[index][1].start = Object.assign({}, closingSequence.end)
+          events[open][1].end = {...openingSequence.start}
+          events[index][1].start = {...closingSequence.end}
 
           nextEvents = []
 
@@ -204,6 +204,7 @@ function resolveAllAttention(events, context) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeAttention(effects, ok) {
@@ -286,8 +287,11 @@ function tokenizeAttention(effects, ok) {
  * chunks (replacement characters, tabs, or line endings).
  *
  * @param {Point} point
+ *   Point.
  * @param {number} offset
+ *   Amount to move.
  * @returns {undefined}
+ *   Nothing.
  */
 function movePoint(point, offset) {
   point.column += offset

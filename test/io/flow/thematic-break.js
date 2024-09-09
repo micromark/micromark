@@ -2,172 +2,197 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {micromark} from 'micromark'
 
-test('thematic-break', function () {
-  assert.equal(
-    micromark('***\n---\n___'),
-    '<hr />\n<hr />\n<hr />',
-    'should support thematic breaks w/ asterisks, dashes, and underscores'
+test('thematic-break', async function (t) {
+  await t.test(
+    'should support thematic breaks w/ asterisks, dashes, and underscores',
+    async function () {
+      assert.equal(micromark('***\n---\n___'), '<hr />\n<hr />\n<hr />')
+    }
   )
 
-  assert.equal(
-    micromark('+++'),
-    '<p>+++</p>',
-    'should not support thematic breaks w/ plusses'
+  await t.test(
+    'should not support thematic breaks w/ plusses',
+    async function () {
+      assert.equal(micromark('+++'), '<p>+++</p>')
+    }
   )
 
-  assert.equal(
-    micromark('==='),
-    '<p>===</p>',
-    'should not support thematic breaks w/ equals'
+  await t.test(
+    'should not support thematic breaks w/ equals',
+    async function () {
+      assert.equal(micromark('==='), '<p>===</p>')
+    }
   )
 
-  assert.equal(
-    micromark('--'),
-    '<p>--</p>',
-    'should not support thematic breaks w/ two dashes'
+  await t.test(
+    'should not support thematic breaks w/ two dashes',
+    async function () {
+      assert.equal(micromark('--'), '<p>--</p>')
+    }
   )
 
-  assert.equal(
-    micromark('**'),
-    '<p>**</p>',
-    'should not support thematic breaks w/ two asterisks'
+  await t.test(
+    'should not support thematic breaks w/ two asterisks',
+    async function () {
+      assert.equal(micromark('**'), '<p>**</p>')
+    }
   )
 
-  assert.equal(
-    micromark('__'),
-    '<p>__</p>',
-    'should not support thematic breaks w/ two underscores'
+  await t.test(
+    'should not support thematic breaks w/ two underscores',
+    async function () {
+      assert.equal(micromark('__'), '<p>__</p>')
+    }
   )
 
-  assert.equal(
-    micromark(' ***'),
-    '<hr />',
-    'should support thematic breaks w/ 1 space'
+  await t.test('should support thematic breaks w/ 1 space', async function () {
+    assert.equal(micromark(' ***'), '<hr />')
+  })
+
+  await t.test('should support thematic breaks w/ 2 spaces', async function () {
+    assert.equal(micromark('  ***'), '<hr />')
+  })
+
+  await t.test('should support thematic breaks w/ 3 spaces', async function () {
+    assert.equal(micromark('   ***'), '<hr />')
+  })
+
+  await t.test(
+    'should not support thematic breaks w/ 4 spaces',
+    async function () {
+      assert.equal(micromark('    ***'), '<pre><code>***\n</code></pre>')
+    }
   )
 
-  assert.equal(
-    micromark('  ***'),
-    '<hr />',
-    'should support thematic breaks w/ 2 spaces'
+  await t.test(
+    'should not support thematic breaks w/ 4 spaces as paragraph continuation',
+    async function () {
+      assert.equal(micromark('Foo\n    ***'), '<p>Foo\n***</p>')
+    }
   )
 
-  assert.equal(
-    micromark('   ***'),
-    '<hr />',
-    'should support thematic breaks w/ 3 spaces'
+  await t.test(
+    'should support thematic breaks w/ many markers',
+    async function () {
+      assert.equal(micromark('_____________________________________'), '<hr />')
+    }
   )
 
-  assert.equal(
-    micromark('    ***'),
-    '<pre><code>***\n</code></pre>',
-    'should not support thematic breaks w/ 4 spaces'
+  await t.test(
+    'should support thematic breaks w/ spaces (1)',
+    async function () {
+      assert.equal(micromark(' - - -'), '<hr />')
+    }
   )
 
-  assert.equal(
-    micromark('Foo\n    ***'),
-    '<p>Foo\n***</p>',
-    'should not support thematic breaks w/ 4 spaces as paragraph continuation'
+  await t.test(
+    'should support thematic breaks w/ spaces (2)',
+    async function () {
+      assert.equal(micromark(' **  * ** * ** * **'), '<hr />')
+    }
   )
 
-  assert.equal(
-    micromark('_____________________________________'),
-    '<hr />',
-    'should support thematic breaks w/ many markers'
+  await t.test(
+    'should support thematic breaks w/ spaces (3)',
+    async function () {
+      assert.equal(micromark('-     -      -      -'), '<hr />')
+    }
   )
 
-  assert.equal(
-    micromark(' - - -'),
-    '<hr />',
-    'should support thematic breaks w/ spaces (1)'
+  await t.test(
+    'should support thematic breaks w/ trailing spaces',
+    async function () {
+      assert.equal(micromark('- - - -    '), '<hr />')
+    }
   )
 
-  assert.equal(
-    micromark(' **  * ** * ** * **'),
-    '<hr />',
-    'should support thematic breaks w/ spaces (2)'
+  await t.test(
+    'should not support thematic breaks w/ other characters (1)',
+    async function () {
+      assert.equal(micromark('_ _ _ _ a'), '<p>_ _ _ _ a</p>')
+    }
   )
 
-  assert.equal(
-    micromark('-     -      -      -'),
-    '<hr />',
-    'should support thematic breaks w/ spaces (3)'
+  await t.test(
+    'should not support thematic breaks w/ other characters (2)',
+    async function () {
+      assert.equal(micromark('a------'), '<p>a------</p>')
+    }
   )
 
-  assert.equal(
-    micromark('- - - -    '),
-    '<hr />',
-    'should support thematic breaks w/ trailing spaces'
+  await t.test(
+    'should not support thematic breaks w/ other characters (3)',
+    async function () {
+      assert.equal(micromark('---a---'), '<p>---a---</p>')
+    }
   )
 
-  assert.equal(
-    micromark('_ _ _ _ a'),
-    '<p>_ _ _ _ a</p>',
-    'should not support thematic breaks w/ other characters (1)'
+  await t.test(
+    'should not support thematic breaks w/ mixed markers',
+    async function () {
+      assert.equal(micromark(' *-*'), '<p><em>-</em></p>')
+    }
   )
 
-  assert.equal(
-    micromark('a------'),
-    '<p>a------</p>',
-    'should not support thematic breaks w/ other characters (2)'
+  await t.test(
+    'should support thematic breaks mixed w/ lists (1)',
+    async function () {
+      assert.equal(
+        micromark('- foo\n***\n- bar'),
+        '<ul>\n<li>foo</li>\n</ul>\n<hr />\n<ul>\n<li>bar</li>\n</ul>'
+      )
+    }
   )
 
-  assert.equal(
-    micromark('---a---'),
-    '<p>---a---</p>',
-    'should not support thematic breaks w/ other characters (3)'
+  await t.test(
+    'should support thematic breaks mixed w/ lists (2)',
+    async function () {
+      assert.equal(
+        micromark('* Foo\n* * *\n* Bar'),
+        '<ul>\n<li>Foo</li>\n</ul>\n<hr />\n<ul>\n<li>Bar</li>\n</ul>'
+      )
+    }
   )
 
-  assert.equal(
-    micromark(' *-*'),
-    '<p><em>-</em></p>',
-    'should not support thematic breaks w/ mixed markers'
+  await t.test(
+    'should support thematic breaks interrupting paragraphs',
+    async function () {
+      assert.equal(micromark('Foo\n***\nbar'), '<p>Foo</p>\n<hr />\n<p>bar</p>')
+    }
   )
 
-  assert.equal(
-    micromark('- foo\n***\n- bar'),
-    '<ul>\n<li>foo</li>\n</ul>\n<hr />\n<ul>\n<li>bar</li>\n</ul>',
-    'should support thematic breaks mixed w/ lists (1)'
+  await t.test(
+    'should not support thematic breaks w/ dashes interrupting paragraphs (setext heading)',
+    async function () {
+      assert.equal(micromark('Foo\n---\nbar'), '<h2>Foo</h2>\n<p>bar</p>')
+    }
   )
 
-  assert.equal(
-    micromark('* Foo\n* * *\n* Bar'),
-    '<ul>\n<li>Foo</li>\n</ul>\n<hr />\n<ul>\n<li>Bar</li>\n</ul>',
-    'should support thematic breaks mixed w/ lists (2)'
-  )
+  await t.test('should support thematic breaks in lists', async function () {
+    assert.equal(
+      micromark('- Foo\n- * * *'),
+      '<ul>\n<li>Foo</li>\n<li>\n<hr />\n</li>\n</ul>'
+    )
+  })
 
-  assert.equal(
-    micromark('Foo\n***\nbar'),
-    '<p>Foo</p>\n<hr />\n<p>bar</p>',
-    'should support thematic breaks interrupting paragraphs'
-  )
+  await t.test('should not support lazyness (1)', async function () {
+    assert.equal(
+      micromark('> ---\na'),
+      '<blockquote>\n<hr />\n</blockquote>\n<p>a</p>'
+    )
+  })
 
-  assert.equal(
-    micromark('Foo\n---\nbar'),
-    '<h2>Foo</h2>\n<p>bar</p>',
-    'should not support thematic breaks w/ dashes interrupting paragraphs (setext heading)'
-  )
+  await t.test('should not support lazyness (2)', async function () {
+    assert.equal(
+      micromark('> a\n---'),
+      '<blockquote>\n<p>a</p>\n</blockquote>\n<hr />'
+    )
+  })
 
-  assert.equal(
-    micromark('- Foo\n- * * *'),
-    '<ul>\n<li>Foo</li>\n<li>\n<hr />\n</li>\n</ul>',
-    'should support thematic breaks in lists'
-  )
-
-  assert.equal(
-    micromark('> ---\na'),
-    '<blockquote>\n<hr />\n</blockquote>\n<p>a</p>',
-    'should not support lazyness (1)'
-  )
-
-  assert.equal(
-    micromark('> a\n---'),
-    '<blockquote>\n<p>a</p>\n</blockquote>\n<hr />',
-    'should not support lazyness (2)'
-  )
-
-  assert.equal(
-    micromark('***', {extensions: [{disable: {null: ['thematicBreak']}}]}),
-    '<p>***</p>',
-    'should support turning off thematic breaks'
-  )
+  await t.test('should support turning off thematic breaks', async function () {
+    assert.equal(
+      micromark('***', {extensions: [{disable: {null: ['thematicBreak']}}]}),
+      '<p>***</p>'
+    )
+  })
 })

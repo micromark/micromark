@@ -9,16 +9,16 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const setextUnderline = {
   name: 'setextUnderline',
-  tokenize: tokenizeSetextUnderline,
-  resolveTo: resolveToSetextUnderline
+  resolveTo: resolveToSetextUnderline,
+  tokenize: tokenizeSetextUnderline
 }
 
 /** @type {Resolver} */
@@ -63,8 +63,8 @@ function resolveToSetextUnderline(events, context) {
 
   const heading = {
     type: types.setextHeading,
-    start: Object.assign({}, events[text][1].start),
-    end: Object.assign({}, events[events.length - 1][1].end)
+    start: {...events[text][1].start},
+    end: {...events[events.length - 1][1].end}
   }
 
   // Change the paragraph to setext heading text.
@@ -75,7 +75,7 @@ function resolveToSetextUnderline(events, context) {
   if (definition) {
     events.splice(text, 0, ['enter', heading, context])
     events.splice(definition + 1, 0, ['exit', events[content][1], context])
-    events[content][1].end = Object.assign({}, events[definition][1].end)
+    events[content][1].end = {...events[definition][1].end}
   } else {
     events[content][1] = heading
   }
@@ -88,6 +88,7 @@ function resolveToSetextUnderline(events, context) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeSetextUnderline(effects, ok, nok) {

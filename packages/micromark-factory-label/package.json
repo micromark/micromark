@@ -52,6 +52,7 @@
     "prettier": true,
     "rules": {
       "logical-assignment-operators": "off",
+      "max-params": "off",
       "unicorn/no-this-assignment": "off",
       "unicorn/prefer-code-point": "off"
     }

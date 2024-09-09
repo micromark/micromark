@@ -9,8 +9,8 @@
  * } from 'micromark-util-types'
  */
 
-import {codes, constants, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
+import {codes, constants, types} from 'micromark-util-symbol'
 
 export const resolver = {resolveAll: createResolver()}
 export const string = initializeFactory('string')
@@ -18,18 +18,21 @@ export const text = initializeFactory('text')
 
 /**
  * @param {'string' | 'text'} field
+ *   Field.
  * @returns {InitialConstruct}
+ *   Construct.
  */
 function initializeFactory(field) {
   return {
-    tokenize: initializeText,
     resolveAll: createResolver(
       field === 'text' ? resolveAllLineSuffixes : undefined
-    )
+    ),
+    tokenize: initializeText
   }
 
   /**
    * @this {TokenizeContext}
+   *   Context.
    * @type {Initializer}
    */
   function initializeText(effects) {
@@ -70,7 +73,9 @@ function initializeFactory(field) {
 
     /**
      * @param {Code} code
+     *   Code.
      * @returns {boolean}
+     *   Whether the code is a break.
      */
     function atBreak(code) {
       if (code === codes.eof) {
@@ -99,7 +104,9 @@ function initializeFactory(field) {
 
 /**
  * @param {Resolver | undefined} [extraResolver]
+ *   Resolver.
  * @returns {Resolver}
+ *   Resolver.
  */
 function createResolver(extraResolver) {
   return resolveAllText
@@ -198,18 +205,18 @@ function resolveAllLineSuffixes(events, context) {
               ? types.lineSuffix
               : types.hardBreakTrailing,
           start: {
-            line: data.end.line,
-            column: data.end.column - size,
-            offset: data.end.offset - size,
-            _index: data.start._index + index,
             _bufferIndex: index
               ? bufferIndex
-              : data.start._bufferIndex + bufferIndex
+              : data.start._bufferIndex + bufferIndex,
+            _index: data.start._index + index,
+            line: data.end.line,
+            column: data.end.column - size,
+            offset: data.end.offset - size
           },
-          end: Object.assign({}, data.end)
+          end: {...data.end}
         }
 
-        data.end = Object.assign({}, token.start)
+        data.end = {...token.start}
 
         if (data.start.offset === data.end.offset) {
           Object.assign(data, token)

@@ -7,9 +7,9 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /**
  * Parse labels.
@@ -42,7 +42,6 @@ import {ok as assert} from 'devlop'
  * @returns {State}
  *   Start state.
  */
-// eslint-disable-next-line max-params
 export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
   const self = this
   let size = 0

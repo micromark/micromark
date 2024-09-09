@@ -9,31 +9,31 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {
-  asciiAlpha,
   asciiAlphanumeric,
-  markdownLineEnding,
+  asciiAlpha,
   markdownLineEndingOrSpace,
+  markdownLineEnding,
   markdownSpace
 } from 'micromark-util-character'
 import {htmlBlockNames, htmlRawNames} from 'micromark-util-html-tag-name'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 import {blankLine} from './blank-line.js'
 
 /** @type {Construct} */
 export const htmlFlow = {
+  concrete: true,
   name: 'htmlFlow',
-  tokenize: tokenizeHtmlFlow,
   resolveTo: resolveToHtmlFlow,
-  concrete: true
+  tokenize: tokenizeHtmlFlow
 }
 
 /** @type {Construct} */
-const blankLineBefore = {tokenize: tokenizeBlankLineBefore, partial: true}
+const blankLineBefore = {partial: true, tokenize: tokenizeBlankLineBefore}
 const nonLazyContinuationStart = {
-  tokenize: tokenizeNonLazyContinuationStart,
-  partial: true
+  partial: true,
+  tokenize: tokenizeNonLazyContinuationStart
 }
 
 /** @type {Resolver} */
@@ -63,6 +63,7 @@ function resolveToHtmlFlow(events) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeHtmlFlow(effects, ok, nok) {
@@ -152,8 +153,8 @@ function tokenizeHtmlFlow(effects, ok, nok) {
 
     // ASCII alphabetical.
     if (asciiAlpha(code)) {
+      assert(code !== null) // Always the case.
       effects.consume(code)
-      // @ts-expect-error: not null.
       buffer = String.fromCharCode(code)
       return tagName
     }
@@ -262,8 +263,8 @@ function tokenizeHtmlFlow(effects, ok, nok) {
    */
   function tagCloseStart(code) {
     if (asciiAlpha(code)) {
+      assert(code !== null) // Always the case.
       effects.consume(code)
-      // @ts-expect-error: not null.
       buffer = String.fromCharCode(code)
       return tagName
     }
@@ -810,8 +811,8 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     }
 
     if (asciiAlpha(code) && buffer.length < constants.htmlRawSizeMax) {
+      assert(code !== null) // Always the case.
       effects.consume(code)
-      // @ts-expect-error: not null.
       buffer += String.fromCharCode(code)
       return continuationRawEndTag
     }
@@ -913,6 +914,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeNonLazyContinuationStart(effects, ok, nok) {
@@ -960,6 +962,7 @@ function tokenizeNonLazyContinuationStart(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeBlankLineBefore(effects, ok, nok) {

@@ -2,40 +2,40 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {micromark} from 'micromark'
 
-test('default-line-ending', function () {
-  assert.equal(
-    micromark('> a'),
-    '<blockquote>\n<p>a</p>\n</blockquote>',
-    'should use `\\n` default'
-  )
+test('default-line-ending', async function (t) {
+  await t.test('should use `\\n` default', async function () {
+    assert.equal(micromark('> a'), '<blockquote>\n<p>a</p>\n</blockquote>')
+  })
 
-  assert.equal(
-    micromark('> a\n'),
-    '<blockquote>\n<p>a</p>\n</blockquote>\n',
-    'should infer the first line ending (1)'
-  )
+  await t.test('should infer the first line ending (1)', async function () {
+    assert.equal(micromark('> a\n'), '<blockquote>\n<p>a</p>\n</blockquote>\n')
+  })
 
-  assert.equal(
-    micromark('> a\r'),
-    '<blockquote>\r<p>a</p>\r</blockquote>\r',
-    'should infer the first line ending (2)'
-  )
+  await t.test('should infer the first line ending (2)', async function () {
+    assert.equal(micromark('> a\r'), '<blockquote>\r<p>a</p>\r</blockquote>\r')
+  })
 
-  assert.equal(
-    micromark('> a\r\n'),
-    '<blockquote>\r\n<p>a</p>\r\n</blockquote>\r\n',
-    'should infer the first line ending (3)'
-  )
+  await t.test('should infer the first line ending (3)', async function () {
+    assert.equal(
+      micromark('> a\r\n'),
+      '<blockquote>\r\n<p>a</p>\r\n</blockquote>\r\n'
+    )
+  })
 
-  assert.equal(
-    micromark('> a', {defaultLineEnding: '\r'}),
-    '<blockquote>\r<p>a</p>\r</blockquote>',
-    'should support the given line ending'
-  )
+  await t.test('should support the given line ending', async function () {
+    assert.equal(
+      micromark('> a', {defaultLineEnding: '\r'}),
+      '<blockquote>\r<p>a</p>\r</blockquote>'
+    )
+  })
 
-  assert.equal(
-    micromark('> a\n', {defaultLineEnding: '\r'}),
-    '<blockquote>\r<p>a</p>\r</blockquote>\n',
-    'should support the given line ending, even if line endings exist'
+  await t.test(
+    'should support the given line ending, even if line endings exist',
+    async function () {
+      assert.equal(
+        micromark('> a\n', {defaultLineEnding: '\r'}),
+        '<blockquote>\r<p>a</p>\r</blockquote>\n'
+      )
+    }
   )
 })

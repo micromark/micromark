@@ -9,21 +9,21 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {
-  markdownLineEnding,
   markdownLineEndingOrSpace,
+  markdownLineEnding,
   markdownSpace
 } from 'micromark-util-character'
 import {splice} from 'micromark-util-chunked'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const headingAtx = {
   name: 'headingAtx',
-  tokenize: tokenizeHeadingAtx,
-  resolve: resolveHeadingAtx
+  resolve: resolveHeadingAtx,
+  tokenize: tokenizeHeadingAtx
 }
 
 /** @type {Resolver} */
@@ -83,6 +83,7 @@ function resolveHeadingAtx(events, context) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeHeadingAtx(effects, ok, nok) {

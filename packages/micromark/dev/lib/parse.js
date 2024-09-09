@@ -13,12 +13,14 @@ import {content} from './initialize/content.js'
 import {document} from './initialize/document.js'
 import {flow} from './initialize/flow.js'
 import {string, text} from './initialize/text.js'
-import {createTokenizer} from './create-tokenizer.js'
 import * as defaultConstructs from './constructs.js'
+import {createTokenizer} from './create-tokenizer.js'
 
 /**
  * @param {ParseOptions | null | undefined} [options]
+ *   Configuration (optional).
  * @returns {ParseContext}
+ *   Parser.
  */
 export function parse(options) {
   const settings = options || {}
@@ -28,12 +30,12 @@ export function parse(options) {
 
   /** @type {ParseContext} */
   const parser = {
-    defined: [],
-    lazy: {},
     constructs,
     content: create(content),
+    defined: [],
     document: create(document),
     flow: create(flow),
+    lazy: {},
     string: create(string),
     text: create(text)
   }
@@ -42,6 +44,9 @@ export function parse(options) {
 
   /**
    * @param {InitialConstruct} initial
+   *   Construct to start with.
+   * @returns {Create}
+   *   Create a tokenizer.
    */
   function create(initial) {
     return creator

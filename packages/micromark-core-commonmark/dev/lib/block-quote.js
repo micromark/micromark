@@ -8,21 +8,22 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownSpace} from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const blockQuote = {
-  name: 'blockQuote',
-  tokenize: tokenizeBlockQuoteStart,
   continuation: {tokenize: tokenizeBlockQuoteContinuation},
-  exit
+  exit,
+  name: 'blockQuote',
+  tokenize: tokenizeBlockQuoteStart
 }
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeBlockQuoteStart(effects, ok, nok) {
@@ -95,6 +96,7 @@ function tokenizeBlockQuoteStart(effects, ok, nok) {
  * ```
  *
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeBlockQuoteContinuation(effects, ok, nok) {

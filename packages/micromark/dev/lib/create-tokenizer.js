@@ -9,32 +9,40 @@
  *   ParseContext,
  *   Point,
  *   State,
- *   Token,
  *   TokenizeContext,
+ *   Token
  * } from 'micromark-util-types'
  */
 
 /**
  * @callback Restore
+ *   Restore the state.
  * @returns {undefined}
+ *   Nothing.
  *
  * @typedef Info
+ *   Info.
  * @property {Restore} restore
+ *   Restore.
  * @property {number} from
+ *   From.
  *
  * @callback ReturnHandle
  *   Handle a successful run.
  * @param {Construct} construct
+ *   Construct.
  * @param {Info} info
+ *   Info.
  * @returns {undefined}
+ *   Nothing.
  */
 
 import createDebug from 'debug'
+import {ok as assert} from 'devlop'
 import {markdownLineEnding} from 'micromark-util-character'
 import {push, splice} from 'micromark-util-chunked'
 import {resolveAll} from 'micromark-util-resolve-all'
 import {codes, values} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 const debug = createDebug('micromark')
 
@@ -48,16 +56,23 @@ const debug = createDebug('micromark')
  * when further lines are indented, they must be set with `defineSkip`.
  *
  * @param {ParseContext} parser
+ *   Parser.
  * @param {InitialConstruct} initialize
+ *   Construct.
  * @param {Omit<Point, '_bufferIndex' | '_index'> | undefined} [from]
+ *   Point (optional).
  * @returns {TokenizeContext}
+ *   Context.
  */
 export function createTokenizer(parser, initialize, from) {
   /** @type {Point} */
-  let point = Object.assign(
-    from ? Object.assign({}, from) : {line: 1, column: 1, offset: 0},
-    {_index: 0, _bufferIndex: -1}
-  )
+  let point = {
+    _bufferIndex: -1,
+    _index: 0,
+    line: (from && from.line) || 1,
+    column: (from && from.column) || 1,
+    offset: (from && from.offset) || 0
+  }
   /** @type {Record<string, number>} */
   const columnStart = {}
   /** @type {Array<Construct>} */
@@ -75,11 +90,11 @@ export function createTokenizer(parser, initialize, from) {
    * @type {Effects}
    */
   const effects = {
+    attempt: constructFactory(onsuccessfulconstruct),
+    check: constructFactory(onsuccessfulcheck),
     consume,
     enter,
     exit,
-    attempt: constructFactory(onsuccessfulconstruct),
-    check: constructFactory(onsuccessfulcheck),
     interrupt: constructFactory(onsuccessfulcheck, {interrupt: true})
   }
 
@@ -89,15 +104,15 @@ export function createTokenizer(parser, initialize, from) {
    * @type {TokenizeContext}
    */
   const context = {
-    previous: codes.eof,
     code: codes.eof,
     containerState: {},
-    events: [],
-    parser,
-    sliceStream,
-    sliceSerialize,
-    now,
     defineSkip,
+    events: [],
+    now,
+    parser,
+    previous: codes.eof,
+    sliceSerialize,
+    sliceStream,
     write
   }
 
@@ -157,8 +172,8 @@ export function createTokenizer(parser, initialize, from) {
   /** @type {TokenizeContext['now']} */
   function now() {
     // This is a hot path, so we clone manually instead of `Object.assign({}, point)`
-    const {line, column, offset, _index, _bufferIndex} = point
-    return {line, column, offset, _index, _bufferIndex}
+    const {_bufferIndex, _index, line, column, offset} = point
+    return {_bufferIndex, _index, line, column, offset}
   }
 
   /** @type {TokenizeContext['defineSkip']} */
@@ -181,6 +196,7 @@ export function createTokenizer(parser, initialize, from) {
    * drain.
    *
    * @returns {undefined}
+   *   Nothing.
    */
   function main() {
     /** @type {number} */
@@ -213,7 +229,9 @@ export function createTokenizer(parser, initialize, from) {
    * Deal with one code.
    *
    * @param {Code} code
+   *   Code.
    * @returns {undefined}
+   *   Nothing.
    */
   function go(code) {
     assert(consumed === true, 'expected character to be consumed')
@@ -260,9 +278,12 @@ export function createTokenizer(parser, initialize, from) {
       point._bufferIndex++
 
       // At end of string chunk.
-      // @ts-expect-error Points w/ non-negative `_bufferIndex` reference
-      // strings.
-      if (point._bufferIndex === chunks[point._index].length) {
+      if (
+        point._bufferIndex ===
+        // Points w/ non-negative `_bufferIndex` reference
+        // strings.
+        /** @type {string} */ (chunks[point._index]).length
+      ) {
         point._bufferIndex = -1
         point._index++
       }
@@ -341,7 +362,9 @@ export function createTokenizer(parser, initialize, from) {
    * Factory to attempt/check/interrupt.
    *
    * @param {ReturnHandle} onreturn
+   *   Callback.
    * @param {{interrupt?: boolean | undefined} | undefined} [fields]
+   *   Fields.
    */
   function constructFactory(onreturn, fields) {
     return hook
@@ -350,13 +373,17 @@ export function createTokenizer(parser, initialize, from) {
      * Handle either an object mapping codes to constructs, a list of
      * constructs, or a single construct.
      *
-     * @param {Array<Construct> | Construct | ConstructRecord} constructs
+     * @param {Array<Construct> | ConstructRecord | Construct} constructs
+     *   Constructs.
      * @param {State} returnState
+     *   State.
      * @param {State | undefined} [bogusState]
+     *   State.
      * @returns {State}
+     *   State.
      */
     function hook(constructs, returnState, bogusState) {
-      /** @type {Array<Construct>} */
+      /** @type {ReadonlyArray<Construct>} */
       let listOfConstructs
       /** @type {number} */
       let constructIndex
@@ -369,15 +396,17 @@ export function createTokenizer(parser, initialize, from) {
         ? /* c8 ignore next 1 */
           handleListOfConstructs(constructs)
         : 'tokenize' in constructs
-          ? // @ts-expect-error Looks like a construct.
-            handleListOfConstructs([constructs])
+          ? // Looks like a construct.
+            handleListOfConstructs([/** @type {Construct} */ (constructs)])
           : handleMapOfConstructs(constructs)
 
       /**
        * Handle a list of construct.
        *
        * @param {ConstructRecord} map
+       *   Constructs.
        * @returns {State}
+       *   State.
        */
       function handleMapOfConstructs(map) {
         return start
@@ -400,8 +429,10 @@ export function createTokenizer(parser, initialize, from) {
       /**
        * Handle a list of construct.
        *
-       * @param {Array<Construct>} list
+       * @param {ReadonlyArray<Construct>} list
+       *   Constructs.
        * @returns {State}
+       *   State.
        */
       function handleListOfConstructs(list) {
         listOfConstructs = list
@@ -419,7 +450,9 @@ export function createTokenizer(parser, initialize, from) {
        * Handle a single construct.
        *
        * @param {Construct} construct
+       *   Construct.
        * @returns {State}
+       *   State.
        */
       function handleConstruct(construct) {
         return start
@@ -487,8 +520,11 @@ export function createTokenizer(parser, initialize, from) {
 
   /**
    * @param {Construct} construct
+   *   Construct.
    * @param {number} from
+   *   From.
    * @returns {undefined}
+   *   Nothing.
    */
   function addResult(construct, from) {
     if (construct.resolveAll && !resolveAllConstructs.includes(construct)) {
@@ -520,6 +556,7 @@ export function createTokenizer(parser, initialize, from) {
    * Store state.
    *
    * @returns {Info}
+   *   Info.
    */
   function store() {
     const startPoint = now()
@@ -528,12 +565,13 @@ export function createTokenizer(parser, initialize, from) {
     const startEventsIndex = context.events.length
     const startStack = Array.from(stack)
 
-    return {restore, from: startEventsIndex}
+    return {from: startEventsIndex, restore}
 
     /**
      * Restore state.
      *
      * @returns {undefined}
+     *   Nothing.
      */
     function restore() {
       point = startPoint
@@ -551,6 +589,7 @@ export function createTokenizer(parser, initialize, from) {
    * skip.
    *
    * @returns {undefined}
+   *   Nothing.
    */
   function accountForPotentialSkip() {
     if (point.line in columnStart && point.column < 2) {
@@ -563,9 +602,12 @@ export function createTokenizer(parser, initialize, from) {
 /**
  * Get the chunks from a slice of chunks in the range of a token.
  *
- * @param {Array<Chunk>} chunks
+ * @param {ReadonlyArray<Chunk>} chunks
+ *   Chunks.
  * @param {Pick<Token, 'end' | 'start'>} token
+ *   Token.
  * @returns {Array<Chunk>}
+ *   Chunks.
  */
 function sliceChunks(chunks, token) {
   const startIndex = token.start._index
@@ -605,9 +647,12 @@ function sliceChunks(chunks, token) {
 /**
  * Get the string value of a slice of chunks.
  *
- * @param {Array<Chunk>} chunks
+ * @param {ReadonlyArray<Chunk>} chunks
+ *   Chunks.
  * @param {boolean | undefined} [expandTabs=false]
+ *   Whether to expand tabs (default: `false`).
  * @returns {string}
+ *   Result.
  */
 function serializeChunks(chunks, expandTabs) {
   let index = -1

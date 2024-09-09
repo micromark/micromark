@@ -144,7 +144,7 @@ You can pass extensions (in this case [`micromark-extension-gfm`][gfm]):
 
 ```js
 import {micromark} from 'micromark'
-import {gfm, gfmHtml} from 'micromark-extension-gfm'
+import {gfmHtml, gfm} from 'micromark-extension-gfm'
 
 const value = '* [x] contact@example.com ~~strikethrough~~'
 
@@ -731,7 +731,7 @@ Change `example.js` to use one like so:
  import fs from 'node:fs/promises'
  import {micromark} from 'micromark'
 -import {variables} from './index.js'
-+import {variables, variablesHtml} from './index.js'
++import {variablesHtml, variables} from './index.js'
 
  const buf = await fs.readFile('example.md')
 -const out = micromark(buf, {extensions: [variables]})
@@ -1066,7 +1066,7 @@ Then do something like this:
 ```js
 import fs from 'node:fs/promises'
 import {micromark} from 'micromark'
-import {gfm, gfmHtml} from 'micromark-extension-gfm'
+import {gfmHtml, gfm} from 'micromark-extension-gfm'
 
 const doc = await fs.readFile('example.md')
 
@@ -1131,7 +1131,7 @@ Then do something like this:
 ```js
 import fs from 'node:fs/promises'
 import {micromark} from 'micromark'
-import {math, mathHtml} from 'micromark-extension-math'
+import {mathHtml, math} from 'micromark-extension-math'
 
 const doc = await fs.readFile('example.md')
 

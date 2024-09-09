@@ -1,10 +1,12 @@
-import stream from 'node:stream'
-
-const PassThrough = stream.PassThrough
+import {PassThrough} from 'node:stream'
 
 /**
  * @param {Uint8Array | string} value
+ *   Value.
  * @param {BufferEncoding | undefined} [encoding]
+ *   Encoding.
+ * @returns {PassThrough}
+ *   Stream.
  */
 export function slowStream(value, encoding) {
   const stream = new PassThrough()

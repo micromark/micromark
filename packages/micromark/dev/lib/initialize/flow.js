@@ -7,18 +7,20 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {blankLine, content} from 'micromark-core-commonmark'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {InitialConstruct} */
 export const flow = {tokenize: initializeFlow}
 
 /**
  * @this {TokenizeContext}
+ *   Self.
  * @type {Initializer}
+ *   Initializer.
  */
 function initializeFlow(effects) {
   const self = this

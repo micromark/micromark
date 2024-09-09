@@ -8,6 +8,7 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {
   asciiAlphanumeric,
@@ -15,7 +16,6 @@ import {
   asciiHexDigit
 } from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const characterReference = {
@@ -25,6 +25,7 @@ export const characterReference = {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeCharacterReference(effects, ok, nok) {

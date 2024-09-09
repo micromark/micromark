@@ -17,7 +17,7 @@ while (++index < commonmark.length) {
   list.push({input: d.markdown, output: d.html})
 }
 
-test('commonmark', function () {
+test('commonmark', async function (t) {
   /** @type {string} */
   let key
 
@@ -28,10 +28,11 @@ test('commonmark', function () {
     let index = -1
 
     while (++index < section.length) {
-      assert.equal(
-        micromark(section[index].input, options),
-        section[index].output
-      )
+      const d = section[index]
+
+      await t.test(key + ' (' + index + ')', async function () {
+        assert.equal(micromark(d.input, options), d.output)
+      })
     }
   }
 })

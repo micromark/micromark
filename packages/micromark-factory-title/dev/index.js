@@ -42,7 +42,6 @@ import {codes, constants, types} from 'micromark-util-symbol'
  * @returns {State}
  *   Start state.
  */
-// eslint-disable-next-line max-params
 export function factoryTitle(effects, ok, nok, type, markerType, stringType) {
   /** @type {NonNullable<Code>} */
   let marker

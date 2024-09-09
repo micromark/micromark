@@ -17,68 +17,77 @@ import {micromark} from 'micromark'
 import {stream} from 'micromark/stream'
 import {slowStream} from './util/slow-stream.js'
 
-test('syntax extension', function () {
-  /** @type {Extension} */
-  const syntax = {
-    // An unknown key is treated as an existing key, potentially useful for
-    // new tokenizers.
-    // @ts-expect-error: this is a custom field, which users are supposed to
-    // manually type, but the runtime should just support it.
-    unknown: {},
-    flow: {
-      // No construct (dot, not used by default).
-      46: undefined,
-      // A proper construct (slash, not used).
-      47: createFunkyThematicBreak(47),
-      // A proper construct (less than, used for html).
-      60: createFunkyThematicBreak(60)
-    }
+/** @type {Extension} */
+const syntax = {
+  // An unknown key is treated as an existing key, potentially useful for
+  // new tokenizers.
+  // @ts-expect-error: this is a custom field, which users are supposed to
+  // manually type, but the runtime should just support it.
+  unknown: {},
+  flow: {
+    // No construct (dot, not used by default).
+    46: undefined,
+    // A proper construct (slash, not used).
+    47: createFunkyThematicBreak(47),
+    // A proper construct (less than, used for html).
+    60: createFunkyThematicBreak(60)
   }
+}
 
-  assert.deepEqual(micromark('///'), '<p>///</p>', 'baseline (slash)')
-  assert.deepEqual(
-    micromark('<<<'),
-    '<p>&lt;&lt;&lt;</p>',
-    'baseline (less than)'
+test('syntax extension', async function (t) {
+  await t.test('baseline (slash)', async function () {
+    assert.deepEqual(micromark('///'), '<p>///</p>')
+  })
+
+  await t.test('baseline (less than)', async function () {
+    assert.deepEqual(micromark('<<<'), '<p>&lt;&lt;&lt;</p>')
+  })
+
+  await t.test('should support syntax extensions (slash)', async function () {
+    assert.deepEqual(micromark('///', {extensions: [syntax]}), '<hr />')
+  })
+
+  await t.test(
+    'should support syntax extensions for an existing hook (less than)',
+    async function () {
+      assert.deepEqual(micromark('<<<', {extensions: [syntax]}), '<hr />')
+    }
   )
 
-  assert.deepEqual(
-    micromark('///', {extensions: [syntax]}),
-    '<hr />',
-    'should support syntax extensions (slash)'
+  await t.test('should not taint (slash)', async function () {
+    assert.deepEqual(micromark('///'), '<p>///</p>')
+  })
+
+  await t.test('should not taint (less than)', async function () {
+    assert.deepEqual(micromark('<<<'), '<p>&lt;&lt;&lt;</p>')
+  })
+
+  await t.test(
+    'should precede over previously attached constructs by default',
+    async function () {
+      assert.deepEqual(
+        micromark('a <i> b, 1 < 3', {
+          allowDangerousHtml: true,
+          extensions: [{text: {60: {tokenize: tokenizeJustALessThan}}}]
+        }),
+        '<p>a i&gt; b, 1  3</p>'
+      )
+    }
   )
 
-  assert.deepEqual(
-    micromark('<<<', {extensions: [syntax]}),
-    '<hr />',
-    'should support syntax extensions for an existing hook (less than)'
-  )
-
-  assert.deepEqual(micromark('///'), '<p>///</p>', 'should not taint (slash)')
-  assert.deepEqual(
-    micromark('<<<'),
-    '<p>&lt;&lt;&lt;</p>',
-    'should not taint (less than)'
-  )
-
-  assert.deepEqual(
-    micromark('a <i> b, 1 < 3', {
-      allowDangerousHtml: true,
-      extensions: [{text: {60: {tokenize: tokenizeJustALessThan}}}]
-    }),
-    '<p>a i&gt; b, 1  3</p>',
-    'should precede over previously attached constructs by default'
-  )
-
-  assert.deepEqual(
-    micromark('a <i> b, 1 < 3', {
-      allowDangerousHtml: true,
-      extensions: [
-        {text: {60: {tokenize: tokenizeJustALessThan, add: 'after'}}}
-      ]
-    }),
-    '<p>a <i> b, 1  3</p>',
-    'should go after previously attached constructs w/ `add: after`'
+  await t.test(
+    'should go after previously attached constructs w/ `add: after`',
+    async function () {
+      assert.deepEqual(
+        micromark('a <i> b, 1 < 3', {
+          allowDangerousHtml: true,
+          extensions: [
+            {text: {60: {tokenize: tokenizeJustALessThan, add: 'after'}}}
+          ]
+        }),
+        '<p>a <i> b, 1  3</p>'
+      )
+    }
   )
 })
 
@@ -87,53 +96,65 @@ test('html extension', async function (t) {
   const syntax = {flow: {47: {tokenize: tokenizeCommentLine}}}
   /** @type {HtmlExtension} */
   const html = {
-    // An unknown key is treated as an existing key, probably never useful, but
-    // symetrical to syntax extensions.
-    unknown: {},
     // @ts-expect-error: custom token, which should be registered in the types.
     enter: {commentLine: enterComment},
     // @ts-expect-error: custom token.
-    exit: {commentLine: exitComment}
+    exit: {commentLine: exitComment},
+    // An unknown key is treated as an existing key, probably never useful, but
+    // symetrical to syntax extensions.
+    unknown: {}
   }
 
-  assert.deepEqual(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>', 'baseline')
+  await t.test('baseline', async function () {
+    assert.deepEqual(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>')
+  })
 
-  assert.deepEqual(
-    micromark('// a\n//\rb', {extensions: [syntax], htmlExtensions: [html]}),
-    '<p>b</p>',
-    'should support html extensions'
+  await t.test('should support html extensions', async function () {
+    assert.deepEqual(
+      micromark('// a\n//\rb', {
+        extensions: [syntax],
+        htmlExtensions: [html]
+      }),
+      '<p>b</p>'
+    )
+  })
+
+  await t.test('should not taint', async function () {
+    assert.deepEqual(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>')
+  })
+
+  await t.test(
+    'should support html extensions for documents',
+    async function () {
+      assert.deepEqual(
+        micromark('!', {
+          htmlExtensions: [
+            /** @type {HtmlExtension} */
+            ({enter: {null: enterDocument}, exit: {null: exitDocument}})
+          ]
+        }),
+        '+\n<p>!</p>-'
+      )
+    }
   )
 
-  assert.deepEqual(
-    micromark('// a\n//\rb'),
-    '<p>// a\n//\rb</p>',
-    'should not taint'
-  )
-
-  assert.deepEqual(
-    micromark('!', {
-      htmlExtensions: [
-        /** @type {HtmlExtension} */
-        ({enter: {null: enterDocument}, exit: {null: exitDocument}})
-      ]
-    }),
-    '+\n<p>!</p>-',
-    'should support html extensions for documents'
-  )
-
-  assert.deepEqual(
-    micromark('', {
-      htmlExtensions: [
-        /** @type {HtmlExtension} */
-        ({enter: {null: enterDocument}, exit: {null: exitDocument}})
-      ]
-    }),
-    '+-',
-    'should support html extensions for empty documents'
+  await t.test(
+    'should support html extensions for empty documents',
+    async function () {
+      assert.deepEqual(
+        micromark('', {
+          htmlExtensions: [
+            /** @type {HtmlExtension} */
+            ({enter: {null: enterDocument}, exit: {null: exitDocument}})
+          ]
+        }),
+        '+-'
+      )
+    }
   )
 
   await t.test('stream', function () {
-    return new Promise((resolve) => {
+    return new Promise(function (resolve) {
       slowStream('// a\r\nb')
         .pipe(stream({extensions: [syntax], htmlExtensions: [html]}))
         .pipe(
@@ -148,14 +169,18 @@ test('html extension', async function (t) {
 
 /**
  * @param {number} marker
+ *   Marker.
  * @returns {Construct}
+ *   Construct.
  */
 function createFunkyThematicBreak(marker) {
   return {tokenize: tokenizeFunkyThematicBreak}
 
   /**
    * @this {TokenizeContext}
+   *   Context.
    * @type {Tokenizer}
+   *   Tokenizer.
    */
   function tokenizeFunkyThematicBreak(effects, ok, nok) {
     let size = 0
@@ -225,6 +250,7 @@ function createFunkyThematicBreak(marker) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeCommentLine(effects, ok, nok) {
@@ -288,6 +314,7 @@ function tokenizeCommentLine(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeJustALessThan(effects, ok, nok) {
@@ -310,6 +337,7 @@ function tokenizeJustALessThan(effects, ok, nok) {
 
 /**
  * @this {CompileContext}
+ *   Context.
  */
 function enterComment() {
   this.buffer()
@@ -317,6 +345,7 @@ function enterComment() {
 
 /**
  * @this {CompileContext}
+ *   Context.
  */
 function exitComment() {
   this.resume()
@@ -325,6 +354,7 @@ function exitComment() {
 
 /**
  * @this {CompileContext}
+ *   Context.
  */
 function enterDocument() {
   this.raw('+')
@@ -332,6 +362,7 @@ function enterDocument() {
 
 /**
  * @this {CompileContext}
+ *   Context.
  */
 function exitDocument() {
   this.raw('-')

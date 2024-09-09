@@ -125,7 +125,7 @@ You can pass extensions (in this case [`micromark-extension-gfm`][gfm]):
 
 ```js
 import {micromark} from 'micromark'
-import {gfm, gfmHtml} from 'micromark-extension-gfm'
+import {gfmHtml, gfm} from 'micromark-extension-gfm'
 
 const value = '* [x] contact@example.com ~~strikethrough~~'
 
@@ -287,7 +287,7 @@ versions of Node.js.
 
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
-This means we try to keep the current release line, `micromark@^4`, compatible
+This means we try to keep the current release line, `micromark@4`, compatible
 with Node.js 16.
 
 ## Security

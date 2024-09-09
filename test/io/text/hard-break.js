@@ -2,148 +2,165 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {micromark} from 'micromark'
 
-test('hard-break', function () {
-  assert.equal(
-    micromark('foo  \nbaz'),
-    '<p>foo<br />\nbaz</p>',
-    'should support two trailing spaces to form a hard break'
+test('hard-break', async function (t) {
+  await t.test(
+    'should support two trailing spaces to form a hard break',
+    async function () {
+      assert.equal(micromark('foo  \nbaz'), '<p>foo<br />\nbaz</p>')
+    }
   )
 
-  assert.equal(
-    micromark('foo\\\nbaz'),
-    '<p>foo<br />\nbaz</p>',
-    'should support a backslash to form a hard break'
+  await t.test(
+    'should support a backslash to form a hard break',
+    async function () {
+      assert.equal(micromark('foo\\\nbaz'), '<p>foo<br />\nbaz</p>')
+    }
   )
 
-  assert.equal(
-    micromark('foo       \nbaz'),
-    '<p>foo<br />\nbaz</p>',
-    'should support multiple trailing spaces'
+  await t.test('should support multiple trailing spaces', async function () {
+    assert.equal(micromark('foo       \nbaz'), '<p>foo<br />\nbaz</p>')
+  })
+
+  await t.test(
+    'should support leading spaces after a trailing hard break',
+    async function () {
+      assert.equal(micromark('foo  \n     bar'), '<p>foo<br />\nbar</p>')
+    }
   )
 
-  assert.equal(
-    micromark('foo  \n     bar'),
-    '<p>foo<br />\nbar</p>',
-    'should support leading spaces after a trailing hard break'
+  await t.test(
+    'should support leading spaces after an escape hard break',
+    async function () {
+      assert.equal(micromark('foo\\\n     bar'), '<p>foo<br />\nbar</p>')
+    }
   )
 
-  assert.equal(
-    micromark('foo\\\n     bar'),
-    '<p>foo<br />\nbar</p>',
-    'should support leading spaces after an escape hard break'
+  await t.test(
+    'should support trailing hard breaks in emphasis',
+    async function () {
+      assert.equal(micromark('*foo  \nbar*'), '<p><em>foo<br />\nbar</em></p>')
+    }
   )
 
-  assert.equal(
-    micromark('*foo  \nbar*'),
-    '<p><em>foo<br />\nbar</em></p>',
-    'should support trailing hard breaks in emphasis'
+  await t.test(
+    'should support escape hard breaks in emphasis',
+    async function () {
+      assert.equal(micromark('*foo\\\nbar*'), '<p><em>foo<br />\nbar</em></p>')
+    }
   )
 
-  assert.equal(
-    micromark('*foo\\\nbar*'),
-    '<p><em>foo<br />\nbar</em></p>',
-    'should support escape hard breaks in emphasis'
+  await t.test(
+    'should not support trailing hard breaks in code',
+    async function () {
+      assert.equal(
+        micromark('`code  \ntext`'),
+        '<p><code>code   text</code></p>'
+      )
+    }
   )
 
-  assert.equal(
-    micromark('`code  \ntext`'),
-    '<p><code>code   text</code></p>',
-    'should not support trailing hard breaks in code'
+  await t.test(
+    'should not support escape hard breaks in code',
+    async function () {
+      assert.equal(
+        micromark('``code\\\ntext``'),
+        '<p><code>code\\ text</code></p>'
+      )
+    }
   )
 
-  assert.equal(
-    micromark('``code\\\ntext``'),
-    '<p><code>code\\ text</code></p>',
-    'should not support escape hard breaks in code'
+  await t.test(
+    'should not support trailing hard breaks at the end of a paragraph',
+    async function () {
+      assert.equal(micromark('foo  '), '<p>foo</p>')
+    }
   )
 
-  assert.equal(
-    micromark('foo  '),
-    '<p>foo</p>',
-    'should not support trailing hard breaks at the end of a paragraph'
+  await t.test(
+    'should not support escape hard breaks at the end of a paragraph',
+    async function () {
+      assert.equal(micromark('foo\\'), '<p>foo\\</p>')
+    }
   )
 
-  assert.equal(
-    micromark('foo\\'),
-    '<p>foo\\</p>',
-    'should not support escape hard breaks at the end of a paragraph'
+  await t.test(
+    'should not support escape hard breaks at the end of a heading',
+    async function () {
+      assert.equal(micromark('### foo\\'), '<h3>foo\\</h3>')
+    }
   )
 
-  assert.equal(
-    micromark('### foo\\'),
-    '<h3>foo\\</h3>',
-    'should not support escape hard breaks at the end of a heading'
+  await t.test(
+    'should not support trailing hard breaks at the end of a heading',
+    async function () {
+      assert.equal(micromark('### foo  '), '<h3>foo</h3>')
+    }
   )
 
-  assert.equal(
-    micromark('### foo  '),
-    '<h3>foo</h3>',
-    'should not support trailing hard breaks at the end of a heading'
+  await t.test('should support a mixed line suffix (1)', async function () {
+    assert.equal(micromark('aaa  \t\nbb'), '<p>aaa\nbb</p>')
+  })
+
+  await t.test('should support a mixed line suffix (2)', async function () {
+    assert.equal(micromark('aaa\t  \nbb'), '<p>aaa\nbb</p>')
+  })
+
+  await t.test('should support a mixed line suffix (3)', async function () {
+    assert.equal(micromark('aaa  \t  \nbb'), '<p>aaa\nbb</p>')
+  })
+
+  await t.test(
+    'should support a hard break after a replacement character',
+    async function () {
+      assert.equal(micromark('aaa\0  \nbb'), '<p>aaa�<br />\nbb</p>')
+    }
   )
 
-  assert.equal(
-    micromark('aaa  \t\nbb'),
-    '<p>aaa\nbb</p>',
-    'should support a mixed line suffix (1)'
+  await t.test(
+    'should support a line suffix after a replacement character',
+    async function () {
+      assert.equal(micromark('aaa\0\t\nbb'), '<p>aaa�\nbb</p>')
+    }
   )
 
-  assert.equal(
-    micromark('aaa\t  \nbb'),
-    '<p>aaa\nbb</p>',
-    'should support a mixed line suffix (2)'
+  await t.test('should support a hard break after a span', async function () {
+    assert.equal(micromark('*a*  \nbb'), '<p><em>a</em><br />\nbb</p>')
+  })
+
+  await t.test('should support a line suffix after a span', async function () {
+    assert.equal(micromark('*a*\t\nbb'), '<p><em>a</em>\nbb</p>')
+  })
+
+  await t.test(
+    'should support a mixed line suffix after a span (1)',
+    async function () {
+      assert.equal(micromark('*a*  \t\nbb'), '<p><em>a</em>\nbb</p>')
+    }
   )
 
-  assert.equal(
-    micromark('aaa  \t  \nbb'),
-    '<p>aaa\nbb</p>',
-    'should support a mixed line suffix (3)'
+  await t.test(
+    'should support a mixed line suffix after a span (2)',
+    async function () {
+      assert.equal(micromark('*a*\t  \nbb'), '<p><em>a</em>\nbb</p>')
+    }
   )
 
-  assert.equal(
-    micromark('aaa\0  \nbb'),
-    '<p>aaa�<br />\nbb</p>',
-    'should support a hard break after a replacement character'
+  await t.test(
+    'should support a mixed line suffix after a span (3)',
+    async function () {
+      assert.equal(micromark('*a*  \t  \nbb'), '<p><em>a</em>\nbb</p>')
+    }
   )
 
-  assert.equal(
-    micromark('aaa\0\t\nbb'),
-    '<p>aaa�\nbb</p>',
-    'should support a line suffix after a replacement character'
-  )
-
-  assert.equal(
-    micromark('*a*  \nbb'),
-    '<p><em>a</em><br />\nbb</p>',
-    'should support a hard break after a span'
-  )
-
-  assert.equal(
-    micromark('*a*\t\nbb'),
-    '<p><em>a</em>\nbb</p>',
-    'should support a line suffix after a span'
-  )
-
-  assert.equal(
-    micromark('*a*  \t\nbb'),
-    '<p><em>a</em>\nbb</p>',
-    'should support a mixed line suffix after a span (1)'
-  )
-
-  assert.equal(
-    micromark('*a*\t  \nbb'),
-    '<p><em>a</em>\nbb</p>',
-    'should support a mixed line suffix after a span (2)'
-  )
-
-  assert.equal(
-    micromark('*a*  \t  \nbb'),
-    '<p><em>a</em>\nbb</p>',
-    'should support a mixed line suffix after a span (3)'
-  )
-
-  assert.equal(
-    micromark('a\\\nb', {extensions: [{disable: {null: ['hardBreakEscape']}}]}),
-    '<p>a\\\nb</p>',
-    'should support turning off hard break (escape)'
+  await t.test(
+    'should support turning off hard break (escape)',
+    async function () {
+      assert.equal(
+        micromark('a\\\nb', {
+          extensions: [{disable: {null: ['hardBreakEscape']}}]
+        }),
+        '<p>a\\\nb</p>'
+      )
+    }
   )
 })

@@ -117,7 +117,7 @@ test('stream', async function (t) {
     async function () {
       await fs.writeFile('integrate-input', '&because;')
 
-      return new Promise((resolve) => {
+      return new Promise(function (resolve) {
         createReadStream('integrate-input')
           .pipe(stream())
           .pipe(createWriteStream('integrate-output'))
@@ -138,7 +138,7 @@ test('stream', async function (t) {
   )
 
   await t.test('should be safe by default', function () {
-    return new Promise((resolve) => {
+    return new Promise(function (resolve) {
       slowStream('<x>')
         .pipe(stream())
         .pipe(
@@ -171,11 +171,8 @@ test('stream', async function (t) {
 
     await fs.writeFile('non-utf8-input', document, encoding)
 
-    return new Promise((resolve) => {
-      createReadStream('non-utf8-input', {
-        encoding,
-        highWaterMark: 1
-      })
+    return new Promise(function (resolve) {
+      createReadStream('non-utf8-input', {encoding, highWaterMark: 1})
         .pipe(stream())
         .pipe(createWriteStream('non-utf8-output'))
         .on('close', async function () {
@@ -193,182 +190,197 @@ test('stream', async function (t) {
     })
   })
 
-  await t.test('#end: should return true for `end`', function () {
-    assert.equal(stream().end(), true)
-  })
-
-  await t.test('#end: should throw on end after end', function () {
-    assert.throws(function () {
-      const tr = stream()
-      tr.end()
-      tr.end()
-    }, /^Error: Did not expect `write` after `end`$/)
-  })
-
-  await t.test('#end: should end w/o ever receiving data', async function () {
-    await new Promise(function (resolve) {
-      const s = stream()
-      s.pipe(
-        concatStream(function (value) {
-          assert.equal(String(value), '')
-          resolve(undefined)
-        })
-      )
-      s.end()
+  await t.test('#end', async function (t) {
+    await t.test('should return true for `end`', function () {
+      assert.equal(stream().end(), true)
     })
-  })
 
-  await t.test('#end: should end', async function () {
-    await new Promise(function (resolve) {
-      const s = stream()
-      s.pipe(
-        concatStream(function (value) {
-          assert.equal(String(value), '<p>x</p>')
-          resolve(undefined)
-        }),
-        {end: true}
-      )
-      s.end('x')
+    await t.test('should throw on end after end', function () {
+      assert.throws(function () {
+        const tr = stream()
+        tr.end()
+        tr.end()
+      }, /^Error: Did not expect `write` after `end`$/)
     })
-  })
 
-  await t.test('#end: should receive final data from `end`', async function () {
-    await new Promise(function (resolve) {
-      const s = stream()
-      s.pipe(
-        concatStream(function (value) {
-          assert.equal(String(value), '<p>alpha</p>')
-          resolve(undefined)
-        })
-      )
-      s.end('alpha')
-    })
-  })
-
-  await t.test('#end: should honour encoding', async function () {
-    await new Promise(function (resolve) {
-      const s = stream()
-      s.pipe(
-        concatStream(function (value) {
-          assert.equal(String(value), '<p>abc</p>')
-          resolve(undefined)
-        })
-      )
-
-      // @ts-expect-error Types for `WritableStream#end` are wrong: typed arrays are
-      // fine.
-      s.end(
-        new Uint8Array([0xfe, 0xff, 0x00, 0x61, 0x00, 0x62, 0x00, 0x63]),
-        'utf-16be'
-      )
-    })
-  })
-
-  await t.test(
-    '#end: should trigger callback and data in the correct order',
-    async function () {
+    await t.test('should end w/o ever receiving data', async function () {
       await new Promise(function (resolve) {
-        let phase = 0
         const s = stream()
         s.pipe(
-          concatStream(function () {
-            assert.equal(phase, 1)
-            phase++
+          concatStream(function (value) {
+            assert.equal(String(value), '')
             resolve(undefined)
           })
         )
-        s.end('charlie', function () {
-          assert.equal(phase, 0)
-          phase++
-        })
+        s.end()
       })
-    }
-  )
+    })
 
-  await t.test(
-    '#end: should trigger callback when it’s the only argument',
-    async function () {
+    await t.test('should end', async function () {
       await new Promise(function (resolve) {
-        let phase = 0
-
-        stream().end(() => {
-          phase++
-        })
-
-        assert.equal(phase, 1)
-        resolve(undefined)
+        const s = stream()
+        s.pipe(
+          concatStream(function (value) {
+            assert.equal(String(value), '<p>x</p>')
+            resolve(undefined)
+          }),
+          {end: true}
+        )
+        s.end('x')
       })
-    }
-  )
-
-  await t.test('#pipe', function () {
-    /** @type {ReturnType<stream>} */
-    let tr
-
-    assert.doesNotThrow(function () {
-      // Not writable.
-      const tr = stream()
-      // @ts-expect-error Runtime.
-      tr.pipe(new Readable())
-      tr.end('foo')
-    }, 'should not throw when piping to a non-writable stream')
-
-    tr = stream()
-    const s = new PassThrough()
-    // @ts-expect-error `std{err,out}` can have this field.
-    s._isStdio = true // Act as if we’re stdout.
-
-    tr.pipe(s)
-
-    tr.write('alpha')
-
-    let called = false
-    tr.write('bravo', function () {
-      called = true
     })
 
-    assert(called, 'should call callbacks')
-
-    tr.end('charlie')
-
-    assert.doesNotThrow(function () {
-      s.write('delta')
-    }, 'should not `end` stdio streams')
-
-    tr = stream().on('error', function (/** @type {Error} */ error) {
-      assert.equal(error.message, 'Whoops!', 'should pass errors')
+    await t.test('should receive final data from `end`', async function () {
+      await new Promise(function (resolve) {
+        const s = stream()
+        s.pipe(
+          concatStream(function (value) {
+            assert.equal(String(value), '<p>alpha</p>')
+            resolve(undefined)
+          })
+        )
+        s.end('alpha')
+      })
     })
 
-    tr.pipe(new PassThrough())
-    tr.emit('error', new Error('Whoops!'))
+    await t.test('should honour encoding', async function () {
+      await new Promise(function (resolve) {
+        const s = stream()
+        s.pipe(
+          concatStream(function (value) {
+            assert.equal(String(value), '<p>abc</p>')
+            resolve(undefined)
+          })
+        )
 
-    tr = stream()
-    tr.pipe(new PassThrough())
-
-    assert.throws(
-      function () {
-        tr.emit('error', new Error('Whoops!'))
-      },
-      /Whoops!/,
-      'should throw if errors are not listened to'
-    )
-
-    tr = stream()
-
-    tr.pipe(
-      concatStream(function (buf) {
-        assert.equal(
-          String(buf),
-          '<p>alphabravocharlie</p>',
-          'should pipe the processed result'
+        // @ts-expect-error: typed arrays + buffer encoding is fine.
+        s.end(
+          new Uint8Array([0xfe, 0xff, 0x00, 0x61, 0x00, 0x62, 0x00, 0x63]),
+          'utf-16be'
         )
       })
-    ).on('error', function () {
-      assert.fail('should not trigger `error`')
     })
 
-    tr.write('alpha')
-    tr.write('bravo')
-    tr.end('charlie')
+    await t.test(
+      'should trigger callback and data in the correct order',
+      async function () {
+        await new Promise(function (resolve) {
+          let phase = 0
+          const s = stream()
+          s.pipe(
+            concatStream(function () {
+              assert.equal(phase, 1)
+              phase++
+              resolve(undefined)
+            })
+          )
+          s.end('charlie', function () {
+            assert.equal(phase, 0)
+            phase++
+          })
+        })
+      }
+    )
+
+    await t.test(
+      'should trigger callback when it’s the only argument',
+      async function () {
+        await new Promise(function (resolve) {
+          let phase = 0
+
+          stream().end(function () {
+            phase++
+          })
+
+          assert.equal(phase, 1)
+          resolve(undefined)
+        })
+      }
+    )
+  })
+
+  await t.test('#pipe', async function (t) {
+    await t.test(
+      'should not throw when piping to a non-writable stream',
+      async function () {
+        assert.doesNotThrow(function () {
+          // Not writable.
+          const tr = stream()
+          // @ts-expect-error Runtime.
+          tr.pipe(new Readable())
+          tr.end('foo')
+        })
+      }
+    )
+
+    await t.test('should not `end` stdio streams', async function () {
+      let called = false
+      const tr = stream()
+      const s = new PassThrough()
+      // @ts-expect-error `std{err,out}` can have this field.
+      s._isStdio = true // Act as if we’re stdout.
+
+      tr.pipe(s)
+      tr.write('alpha')
+
+      tr.write('bravo', function () {
+        called = true
+      })
+
+      assert(called)
+
+      tr.end('charlie')
+
+      assert.doesNotThrow(function () {
+        s.write('delta')
+      })
+    })
+
+    await t.test('should pass errors', async function () {
+      let called = false
+
+      const tr = stream().on('error', function (/** @type {Error} */ error) {
+        assert.equal(error.message, 'Whoops!')
+        called = true
+      })
+
+      tr.pipe(new PassThrough())
+      tr.emit('error', new Error('Whoops!'))
+      assert(called)
+    })
+
+    await t.test(
+      'should throw if errors are not listened to',
+      async function () {
+        const tr = stream()
+        tr.pipe(new PassThrough())
+
+        assert.throws(function () {
+          tr.emit('error', new Error('Whoops!'))
+        }, /Whoops!/)
+      }
+    )
+
+    await t.test('should pipe the processed result', async function () {
+      await new Promise(function (resolve) {
+        const tr = stream()
+
+        tr.pipe(
+          concatStream(function (buf) {
+            assert.equal(String(buf), '<p>alphabravocharlie</p>')
+          })
+        )
+          .on('error', function () {
+            assert.fail('should not trigger `error`')
+          })
+          .on('finish', function () {
+            resolve(undefined)
+          })
+
+        tr.write('alpha')
+        tr.write('bravo')
+        tr.end('charlie')
+      })
+    })
   })
 })

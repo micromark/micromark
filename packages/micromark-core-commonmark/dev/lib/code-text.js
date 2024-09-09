@@ -10,16 +10,16 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const codeText = {
   name: 'codeText',
-  tokenize: tokenizeCodeText,
+  previous,
   resolve: resolveCodeText,
-  previous
+  tokenize: tokenizeCodeText
 }
 
 // To do: next major: don’t resolve, like `markdown-rs`.
@@ -88,6 +88,7 @@ function resolveCodeText(events) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Previous}
  */
 function previous(code) {
@@ -100,6 +101,7 @@ function previous(code) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeCodeText(effects, ok, nok) {

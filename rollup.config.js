@@ -15,14 +15,14 @@ const terser = /** @type {(typeof Terser)['default']} */ (
 const config = {
   input: './packages/micromark/index.js',
   output: {
-    file: './micromark.min.js',
     compact: true,
+    file: './micromark.min.js',
     freeze: false,
     plugins: [
       // Running terser twice shaves a couple of bytes off.
       /* eslint-disable camelcase */
-      terser({output: {ascii_only: true}, mangle: {safari10: true}}),
-      terser({output: {ascii_only: true}, mangle: {safari10: true}})
+      terser({mangle: {safari10: true}, output: {ascii_only: true}}),
+      terser({mangle: {safari10: true}, output: {ascii_only: true}})
       /* eslint-enable camelcase */
     ]
   },

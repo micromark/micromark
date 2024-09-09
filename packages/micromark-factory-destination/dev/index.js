@@ -46,7 +46,6 @@ import {codes, constants, types} from 'micromark-util-symbol'
  * @returns {State}
  *   Start state.
  */
-// eslint-disable-next-line max-params
 export function factoryDestination(
   effects,
   ok,

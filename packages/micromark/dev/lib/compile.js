@@ -22,6 +22,7 @@
  *   Event,
  *   Handle,
  *   HtmlExtension,
+ *   LineEnding,
  *   NormalizedHtmlExtension,
  *   Token
  * } from 'micromark-util-types'
@@ -38,6 +39,7 @@
  */
 
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'
+import {ok as assert} from 'devlop'
 import {push} from 'micromark-util-chunked'
 import {combineHtmlExtensions} from 'micromark-util-combine-extensions'
 import {decodeNumericCharacterReference} from 'micromark-util-decode-numeric-character-reference'
@@ -45,7 +47,6 @@ import {encode as _encode} from 'micromark-util-encode'
 import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
 import {sanitizeUri} from 'micromark-util-sanitize-uri'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 const hasOwnProperty = {}.hasOwnProperty
 
@@ -201,9 +202,7 @@ export function compile(options) {
    * that token, and a context as `this`.
    */
   const handlers = /** @type {NormalizedHtmlExtension} */ (
-    combineHtmlExtensions(
-      [defaultHandlers].concat(settings.htmlExtensions || [])
-    )
+    combineHtmlExtensions([defaultHandlers, ...(settings.htmlExtensions || [])])
   )
 
   /**
@@ -213,8 +212,8 @@ export function compile(options) {
    * @type {CompileData}
    */
   const data = {
-    tightStack,
-    definitions
+    definitions,
+    tightStack
   }
 
   /**
@@ -225,15 +224,15 @@ export function compile(options) {
    * @type {Omit<CompileContext, 'sliceSerialize'>}
    */
   const context = {
+    buffer,
+    encode,
+    getData,
     lineEndingIfNeeded,
     options: settings,
-    encode,
     raw,
-    tag,
-    buffer,
     resume,
     setData,
-    getData
+    tag
   }
 
   /**
@@ -255,7 +254,7 @@ export function compile(options) {
    * Return either the empty string if there’s nothing of note to return, or the
    * result when done.
    *
-   * @param {Array<Event>} events
+   * @param {ReadonlyArray<Event>} events
    * @returns {string}
    */
   function compile(events) {
@@ -279,8 +278,9 @@ export function compile(options) {
         (events[index][1].type === types.lineEnding ||
           events[index][1].type === types.lineEndingBlank)
       ) {
-        // @ts-expect-error Hush, it’s a line ending.
-        lineEndingStyle = events[index][2].sliceSerialize(events[index][1])
+        lineEndingStyle = /** @type {LineEnding} */ (
+          events[index][2].sliceSerialize(events[index][1])
+        )
       }
 
       // Preprocess lists to infer whether the list is loose or not.
@@ -325,10 +325,7 @@ export function compile(options) {
 
       if (hasOwnProperty.call(handles, kind) && handle) {
         handle.call(
-          Object.assign(
-            {sliceSerialize: result[index][2].sliceSerialize},
-            context
-          ),
+          {sliceSerialize: result[index][2].sliceSerialize, ...context},
           result[index][1]
         )
       }
@@ -345,7 +342,7 @@ export function compile(options) {
   /**
    * Figure out whether lists are loose or not.
    *
-   * @param {Array<Event>} slice
+   * @param {ReadonlyArray<Event>} slice
    * @returns {undefined}
    */
   function prepareList(slice) {
@@ -1106,12 +1103,8 @@ export function compile(options) {
    * @type {Handle}
    */
   function onexitcharacterreferencevalue(token) {
-    let value = this.sliceSerialize(token)
-
-    // @ts-expect-error `decodeNamedCharacterReference` can return false for
-    // invalid named character references, but everything we’ve tokenized is
-    // valid.
-    value = getData('characterReferenceType')
+    const value = this.sliceSerialize(token)
+    const decoded = getData('characterReferenceType')
       ? decodeNumericCharacterReference(
           value,
           getData('characterReferenceType') ===
@@ -1121,7 +1114,10 @@ export function compile(options) {
         )
       : decodeNamedCharacterReference(value)
 
-    raw(encode(value))
+    // `decodeNamedCharacterReference` can return `false` for invalid named
+    // character references,
+    // but everything we’ve tokenized is valid.
+    raw(encode(/** @type {string} */ (decoded)))
     setData('characterReferenceType')
   }
 

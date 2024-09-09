@@ -2,16 +2,12 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import {micromark} from 'micromark'
 
-test('soft-break', function () {
-  assert.equal(
-    micromark('foo\nbaz'),
-    '<p>foo\nbaz</p>',
-    'should support line endings'
-  )
+test('soft-break', async function (t) {
+  await t.test('should support line endings', async function () {
+    assert.equal(micromark('foo\nbaz'), '<p>foo\nbaz</p>')
+  })
 
-  assert.equal(
-    micromark('foo \n baz'),
-    '<p>foo\nbaz</p>',
-    'should trim spaces around line endings'
-  )
+  await t.test('should trim spaces around line endings', async function () {
+    assert.equal(micromark('foo \n baz'), '<p>foo\nbaz</p>')
+  })
 })

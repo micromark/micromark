@@ -51,6 +51,7 @@
     ],
     "prettier": true,
     "rules": {
+      "max-params": "off",
       "unicorn/prefer-code-point": "off"
     }
   }

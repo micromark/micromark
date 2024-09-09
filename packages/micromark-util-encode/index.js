@@ -17,10 +17,17 @@ export function encode(value) {
 
   /**
    * @param {string} value
+   *   Value to replace.
    * @returns {string}
+   *   Encoded value.
    */
   function replace(value) {
-    // @ts-expect-error Hush, it’s fine.
-    return '&' + characterReferences[value] + ';'
+    return (
+      '&' +
+      characterReferences[
+        /** @type {keyof typeof characterReferences} */ (value)
+      ] +
+      ';'
+    )
   }
 }

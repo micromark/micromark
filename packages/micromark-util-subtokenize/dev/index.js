@@ -2,9 +2,9 @@
  * @import {Chunk, Event, Token} from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {splice} from 'micromark-util-chunked'
 import {codes, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 import {SpliceBuffer} from './lib/splice-buffer.js'
 
 // Hidden API exposed for testing.
@@ -116,7 +116,7 @@ export function subtokenize(eventsArray) {
 
       if (lineIndex) {
         // Fix position.
-        event[1].end = Object.assign({}, events.get(lineIndex)[1].start)
+        event[1].end = {...events.get(lineIndex)[1].start}
 
         // Switch container exit w/ line endings.
         parameters = events.slice(lineIndex, index)
@@ -135,8 +135,11 @@ export function subtokenize(eventsArray) {
  * Tokenize embedded tokens.
  *
  * @param {SpliceBuffer<Event>} events
+ *   Events.
  * @param {number} eventIndex
+ *   Index.
  * @returns {Record<string, number>}
+ *   Gaps.
  */
 function subcontent(events, eventIndex) {
   const token = events.get(eventIndex)[1]

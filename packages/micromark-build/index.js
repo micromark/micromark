@@ -8,9 +8,9 @@ import path from 'node:path'
 import process from 'node:process'
 import {fileURLToPath, pathToFileURL} from 'node:url'
 import {transformAsync as babel} from '@babel/core'
-import {resolve} from 'import-meta-resolve'
 import {glob} from 'glob'
-// @ts-expect-error: intyped.
+import {resolve} from 'import-meta-resolve'
+// @ts-expect-error: untyped.
 import RelativizeUrl from 'relativize-url'
 
 const root = pathToFileURL(process.cwd())
@@ -42,7 +42,7 @@ while (++index < files.length) {
   }
 
   const modules = ['micromark-util-symbol']
-    .map((d) => {
+    .map(function (d) {
       try {
         return resolve(d, input.href)
       } catch {}

@@ -7,20 +7,21 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {
-  asciiAlpha,
   asciiAlphanumeric,
+  asciiAlpha,
   asciiAtext,
   asciiControl
 } from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const autolink = {name: 'autolink', tokenize: tokenizeAutolink}
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeAutolink(effects, ok, nok) {

@@ -38,11 +38,33 @@
     "envs": [
       "shared-node-browser"
     ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.d.ts"
+        ],
+        "rules": {
+          "@typescript-eslint/array-type": [
+            "error",
+            {
+              "default": "generic"
+            }
+          ],
+          "@typescript-eslint/ban-types": [
+            "error",
+            {
+              "extendDefaults": true
+            }
+          ],
+          "@typescript-eslint/consistent-type-definitions": [
+            "error",
+            "interface"
+          ]
+        }
+      }
+    ],
     "prettier": true,
     "rules": {
-      "@typescript-eslint/array-type": "off",
-      "@typescript-eslint/ban-types": "off",
-      "@typescript-eslint/consistent-type-definitions": "off",
       "unicorn/text-encoding-identifier-case": "off"
     }
   }

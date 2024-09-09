@@ -116,11 +116,13 @@ export class SpliceBuffer {
         .reverse()
     }
 
-    return this.left
-      .slice(start)
-      .concat(
-        this.right.slice(this.right.length - stop + this.left.length).reverse()
-      )
+    const list = this.left.slice(start)
+
+    list.push(
+      ...this.right.slice(this.right.length - stop + this.left.length).reverse()
+    )
+
+    return list
   }
 
   /**

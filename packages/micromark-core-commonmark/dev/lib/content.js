@@ -9,20 +9,20 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {subtokenize} from 'micromark-util-subtokenize'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /**
  * No name because it must not be turned off.
  * @type {Construct}
  */
-export const content = {tokenize: tokenizeContent, resolve: resolveContent}
+export const content = {resolve: resolveContent, tokenize: tokenizeContent}
 
 /** @type {Construct} */
-const continuationConstruct = {tokenize: tokenizeContinuation, partial: true}
+const continuationConstruct = {partial: true, tokenize: tokenizeContinuation}
 
 /**
  * Content is transparent: it’s parsed right now. That way, definitions are also
@@ -37,6 +37,7 @@ function resolveContent(events) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeContent(effects, ok) {
@@ -130,6 +131,7 @@ function tokenizeContent(effects, ok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeContinuation(effects, ok, nok) {

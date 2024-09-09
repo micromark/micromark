@@ -7,28 +7,29 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factoryDestination} from 'micromark-factory-destination'
 import {factoryLabel} from 'micromark-factory-label'
 import {factorySpace} from 'micromark-factory-space'
 import {factoryTitle} from 'micromark-factory-title'
 import {factoryWhitespace} from 'micromark-factory-whitespace'
 import {
-  markdownLineEnding,
   markdownLineEndingOrSpace,
+  markdownLineEnding,
   markdownSpace
 } from 'micromark-util-character'
 import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
 import {codes, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const definition = {name: 'definition', tokenize: tokenizeDefinition}
 
 /** @type {Construct} */
-const titleBefore = {tokenize: tokenizeTitleBefore, partial: true}
+const titleBefore = {partial: true, tokenize: tokenizeTitleBefore}
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeDefinition(effects, ok, nok) {
@@ -212,6 +213,7 @@ function tokenizeDefinition(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeTitleBefore(effects, ok, nok) {

@@ -23,9 +23,13 @@ export function decodeString(value) {
 
 /**
  * @param {string} $0
+ *   Match.
  * @param {string} $1
+ *   Character escape.
  * @param {string} $2
+ *   Character reference.
  * @returns {string}
+ *   Decoded value
  */
 function decode($0, $1, $2) {
   if ($1) {

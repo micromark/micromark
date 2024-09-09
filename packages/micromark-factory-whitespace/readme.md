@@ -65,6 +65,7 @@ import {codes, types} from 'micromark-util-symbol'
 // A micromark tokenizer that uses the factory:
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeTitle(effects, ok, nok) {
@@ -124,8 +125,8 @@ versions of Node.js.
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
 This means we try to keep the current release line,
-`micromark-factory-whitespace@^2`, compatible with Node.js 16.
-This package works with `micromark@^3`.
+`micromark-factory-whitespace@2`, compatible with Node.js 16.
+This package works with `micromark@3`.
 
 ## Security
 

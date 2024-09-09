@@ -39,11 +39,11 @@ await fs.writeFile(
     'function onexit() {',
     '  captured',
     '    .sort()',
-    '    .filter((d, i, a) => a.indexOf(d) === i)',
-    '    .forEach((d, i) => fs.writeFileSync(',
+    '    .filter(function (d, i, a) { return a.indexOf(d) === i })',
+    '    .forEach(function (d, i) { fs.writeFileSync(',
     '      path.join(base, String(i)),',
     '      d',
-    '    ))',
+    '    ) })',
     '}'
   ].join('\n')
 )

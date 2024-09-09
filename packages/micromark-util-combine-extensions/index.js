@@ -14,7 +14,7 @@ const hasOwnProperty = {}.hasOwnProperty
 /**
  * Combine multiple syntax extensions into one.
  *
- * @param {Array<Extension>} extensions
+ * @param {ReadonlyArray<Extension>} extensions
  *   List of syntax extensions.
  * @returns {NormalizedExtension}
  *   A single combined extension.
@@ -39,6 +39,7 @@ export function combineExtensions(extensions) {
  * @param {Extension} extension
  *   Extension to merge.
  * @returns {undefined}
+ *   Nothing.
  */
 function syntaxExtension(all, extension) {
   /** @type {keyof Extension} */
@@ -72,8 +73,11 @@ function syntaxExtension(all, extension) {
  * Mutates `existing`.
  *
  * @param {Array<unknown>} existing
+ *   List of constructs to merge into.
  * @param {Array<unknown>} list
+ *   List of constructs to merge.
  * @returns {undefined}
+ *   Nothing.
  */
 function constructs(existing, list) {
   let index = -1
@@ -91,10 +95,10 @@ function constructs(existing, list) {
 /**
  * Combine multiple HTML extensions into one.
  *
- * @param {Array<HtmlExtension>} htmlExtensions
+ * @param {ReadonlyArray<HtmlExtension>} htmlExtensions
  *   List of HTML extensions.
  * @returns {HtmlExtension}
- *   A single combined HTML extension.
+ *   Single combined HTML extension.
  */
 export function combineHtmlExtensions(htmlExtensions) {
   /** @type {HtmlExtension} */
@@ -116,6 +120,7 @@ export function combineHtmlExtensions(htmlExtensions) {
  * @param {HtmlExtension} extension
  *   Extension to merge.
  * @returns {undefined}
+ *   Nothing.
  */
 function htmlExtension(all, extension) {
   /** @type {keyof HtmlExtension} */

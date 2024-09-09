@@ -3,22 +3,24 @@
  *   InitialConstruct,
  *   Initializer,
  *   State,
- *   Token,
- *   TokenizeContext
+ *   TokenizeContext,
+ *   Token
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {InitialConstruct} */
 export const content = {tokenize: initializeContent}
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Initializer}
+ *   Content.
  */
 function initializeContent(effects) {
   const contentStart = effects.attempt(

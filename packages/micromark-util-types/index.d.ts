@@ -290,7 +290,7 @@ export type Consume = (code: Code) => undefined
  *   Next state.
  */
 export type Attempt = (
-  construct: Array<Construct> | Construct | ConstructRecord,
+  construct: Array<Construct> | ConstructRecord | Construct,
   ok: State,
   nok?: State | undefined
 ) => State
@@ -299,6 +299,21 @@ export type Attempt = (
  * A context object to transition the state machine.
  */
 export interface Effects {
+  /**
+   * Try to tokenize a construct.
+   */
+  attempt: Attempt
+
+  /**
+   * Attempt, then revert.
+   */
+  check: Attempt
+
+  /**
+   * Deal with the character and move to the next.
+   */
+  consume: Consume
+
   /**
    * Start a new token.
    */
@@ -310,24 +325,9 @@ export interface Effects {
   exit: Exit
 
   /**
-   * Deal with the character and move to the next.
-   */
-  consume: Consume
-
-  /**
-   * Try to tokenize a construct.
-   */
-  attempt: Attempt
-
-  /**
    * Interrupt is used for stuff right after a line of content.
    */
   interrupt: Attempt
-
-  /**
-   * Attempt, then revert.
-   */
-  check: Attempt
 }
 
 /**
@@ -435,70 +435,12 @@ export type Previous = (this: TokenizeContext, code: Code) => boolean
  */
 export interface Construct {
   /**
-   * Set up a state machine to handle character codes streaming in.
-   */
-  tokenize: Tokenizer
-
-  /**
-   * Guard whether the previous character can come before the construct.
-   */
-  previous?: Previous | undefined
-
-  /**
-   * For containers, a continuation construct.
-   */
-  continuation?: Construct | undefined
-
-  /**
-   * For containers, a final hook.
-   */
-  exit?: Exiter | undefined
-
-  /**
-   * Name of the construct, used to toggle constructs off.
+   * Whether the construct, when in a `ConstructRecord`, precedes over existing
+   * constructs for the same character code when merged.
    *
-   * Named constructs must not be `partial`.
+   * The default is that new constructs precede over existing ones.
    */
-  name?: string | undefined
-
-  /**
-   * Whether this construct represents a partial construct.
-   *
-   * Partial constructs must not have a `name`.
-   */
-  partial?: boolean | undefined
-
-  /**
-   * Resolve the events parsed by `tokenize`.
-   *
-   * For example, if we’re currently parsing a link title and this construct
-   * parses character references, then `resolve` is called with the events
-   * ranging from the start to the end of a character reference each time one is
-   * found.
-   */
-  resolve?: Resolver | undefined
-
-  /**
-   * Resolve the events from the start of the content (which includes other
-   * constructs) to the last one parsed by `tokenize`.
-   *
-   * For example, if we’re currently parsing a link title and this construct
-   * parses character references, then `resolveTo` is called with the events
-   * ranging from the start of the link title to the end of a character
-   * reference each time one is found.
-   */
-  resolveTo?: Resolver | undefined
-
-  /**
-   * Resolve all events when the content is complete, from the start to the end.
-   * Only used if `tokenize` is successful once in the content.
-   *
-   * For example, if we’re currently parsing a link title and this construct
-   * parses character references, then `resolveAll` is called *if* at least one
-   * character reference is found, ranging from the start to the end of the link
-   * title to the end.
-   */
-  resolveAll?: Resolver | undefined
+  add?: 'after' | 'before' | undefined
 
   /**
    * Concrete constructs cannot be interrupted by more containers.
@@ -526,18 +468,76 @@ export interface Construct {
   concrete?: boolean | undefined
 
   /**
-   * Whether the construct, when in a `ConstructRecord`, precedes over existing
-   * constructs for the same character code when merged.
-   *
-   * The default is that new constructs precede over existing ones.
+   * For containers, a continuation construct.
    */
-  add?: 'after' | 'before' | undefined
+  continuation?: Construct | undefined
+
+  /**
+   * For containers, a final hook.
+   */
+  exit?: Exiter | undefined
+
+  /**
+   * Name of the construct, used to toggle constructs off.
+   *
+   * Named constructs must not be `partial`.
+   */
+  name?: string | undefined
+
+  /**
+   * Whether this construct represents a partial construct.
+   *
+   * Partial constructs must not have a `name`.
+   */
+  partial?: boolean | undefined
+
+  /**
+   * Guard whether the previous character can come before the construct.
+   */
+  previous?: Previous | undefined
+
+  /**
+   * Resolve all events when the content is complete, from the start to the end.
+   * Only used if `tokenize` is successful once in the content.
+   *
+   * For example, if we’re currently parsing a link title and this construct
+   * parses character references, then `resolveAll` is called *if* at least one
+   * character reference is found, ranging from the start to the end of the link
+   * title to the end.
+   */
+  resolveAll?: Resolver | undefined
+
+  /**
+   * Resolve the events from the start of the content (which includes other
+   * constructs) to the last one parsed by `tokenize`.
+   *
+   * For example, if we’re currently parsing a link title and this construct
+   * parses character references, then `resolveTo` is called with the events
+   * ranging from the start of the link title to the end of a character
+   * reference each time one is found.
+   */
+  resolveTo?: Resolver | undefined
+
+  /**
+   * Resolve the events parsed by `tokenize`.
+   *
+   * For example, if we’re currently parsing a link title and this construct
+   * parses character references, then `resolve` is called with the events
+   * ranging from the start to the end of a character reference each time one is
+   * found.
+   */
+  resolve?: Resolver | undefined
+
+  /**
+   * Set up a state machine to handle character codes streaming in.
+   */
+  tokenize: Tokenizer
 }
 
 /**
  * Like a construct, but `tokenize` does not accept `ok` or `nok`.
  */
-export type InitialConstruct = Omit<Construct, 'tokenize'> & {
+export interface InitialConstruct extends Omit<Construct, 'tokenize'> {
   tokenize: Initializer
 }
 
@@ -559,24 +559,9 @@ export interface ContainerState {
   _closeFlow?: boolean | undefined
 
   /**
-   * Used by block quotes.
+   * Whether there are further blank lines, used by lists.
    */
-  open?: boolean | undefined
-
-  /**
-   * Current marker, used by lists.
-   */
-  marker?: Code | undefined
-
-  /**
-   * Current token type, used by lists.
-   */
-  type?: TokenType | undefined
-
-  /**
-   * Current size, used by lists.
-   */
-  size?: number | undefined
+  furtherBlankLines?: boolean | undefined
 
   /**
    * Whether there first line is blank, used by lists.
@@ -584,133 +569,30 @@ export interface ContainerState {
   initialBlankLine?: boolean | undefined
 
   /**
-   * Whether there are further blank lines, used by lists.
+   * Current marker, used by lists.
    */
-  furtherBlankLines?: boolean | undefined
+  marker?: Code | undefined
+
+  /**
+   * Used by block quotes.
+   */
+  open?: boolean | undefined
+
+  /**
+   * Current size, used by lists.
+   */
+  size?: number | undefined
+
+  /**
+   * Current token type, used by lists.
+   */
+  type?: TokenType | undefined
 }
 
 /**
  * A context object that helps w/ tokenizing markdown constructs.
  */
 export interface TokenizeContext {
-  /**
-   * The previous code.
-   */
-  previous: Code
-
-  /**
-   * Current code.
-   */
-  code: Code
-
-  /**
-   * Whether we’re currently interrupting.
-   *
-   * Take for example:
-   *
-   * ```markdown
-   * a
-   * # b
-   * ```
-   *
-   * At 2:1, we’re “interrupting”.
-   */
-  interrupt?: boolean | undefined
-
-  /**
-   * The current construct.
-   *
-   * Constructs that are not `partial` are set here.
-   */
-  currentConstruct?: Construct | undefined
-
-  /**
-   * Share state set when parsing containers.
-   *
-   * Containers are parsed in separate phases: their first line (`tokenize`),
-   * continued lines (`continuation.tokenize`), and finally `exit`.
-   * This record can be used to store some information between these hooks.
-   */
-  containerState?: ContainerState | undefined
-
-  /**
-   * Current list of events.
-   */
-  events: Array<Event>
-
-  /**
-   * The relevant parsing context.
-   */
-  parser: ParseContext
-
-  /**
-   * Get the chunks that span a token (or location).
-   *
-   * @param token
-   *   Start/end in stream.
-   * @returns
-   *   List of chunks.
-   */
-  sliceStream: (token: Pick<Token, 'end' | 'start'>) => Array<Chunk>
-
-  /**
-   * Get the source text that spans a token (or location).
-   *
-   * @param token
-   *   Start/end in stream.
-   * @param expandTabs
-   *   Whether to expand tabs.
-   * @returns
-   *   Serialized chunks.
-   */
-  sliceSerialize: (
-    token: Pick<Token, 'end' | 'start'>,
-    expandTabs?: boolean | undefined
-  ) => string
-
-  /**
-   * Get the current place.
-   *
-   * @returns
-   *   Current point.
-   */
-  now: () => Point
-
-  /**
-   * Define a skip
-   *
-   * As containers (block quotes, lists), “nibble” a prefix from the margins,
-   * where a line starts after that prefix is defined here.
-   * When the tokenizers moves after consuming a line ending corresponding to
-   * the line number in the given point, the tokenizer shifts past the prefix
-   * based on the column in the shifted point.
-   *
-   * @param point
-   *   Skip.
-   * @returns
-   *   Nothing.
-   */
-  defineSkip: (point: Point) => undefined
-
-  /**
-   * Write a slice of chunks.
-   *
-   * The eof code (`null`) can be used to signal the end of the stream.
-   *
-   * @param slice
-   *   Chunks.
-   * @returns
-   *   Events.
-   */
-  write: (slice: Array<Chunk>) => Array<Event>
-
-  /**
-   * Internal boolean shared with `micromark-extension-gfm-task-list-item` to
-   * signal whether the tokenizer is tokenizing the first content of a list item
-   * construct.
-   */
-  _gfmTasklistFirstContentOfListItem?: boolean | undefined
-
   // To do: next major: remove `_gfmTableDynamicInterruptHack` (no longer
   // needed in micromark-extension-gfm-table@1.0.6).
   /**
@@ -735,6 +617,124 @@ export interface TokenizeContext {
    * The above list interrupts the table.
    */
   _gfmTableDynamicInterruptHack?: boolean
+
+  /**
+   * Internal boolean shared with `micromark-extension-gfm-task-list-item` to
+   * signal whether the tokenizer is tokenizing the first content of a list item
+   * construct.
+   */
+  _gfmTasklistFirstContentOfListItem?: boolean | undefined
+
+  /**
+   * Current code.
+   */
+  code: Code
+
+  /**
+   * Share state set when parsing containers.
+   *
+   * Containers are parsed in separate phases: their first line (`tokenize`),
+   * continued lines (`continuation.tokenize`), and finally `exit`.
+   * This record can be used to store some information between these hooks.
+   */
+  containerState?: ContainerState | undefined
+
+  /**
+   * The current construct.
+   *
+   * Constructs that are not `partial` are set here.
+   */
+  currentConstruct?: Construct | undefined
+
+  /**
+   * Current list of events.
+   */
+  events: Array<Event>
+
+  /**
+   * Whether we’re currently interrupting.
+   *
+   * Take for example:
+   *
+   * ```markdown
+   * a
+   * # b
+   * ```
+   *
+   * At 2:1, we’re “interrupting”.
+   */
+  interrupt?: boolean | undefined
+
+  /**
+   * The relevant parsing context.
+   */
+  parser: ParseContext
+
+  /**
+   * The previous code.
+   */
+  previous: Code
+
+  /**
+   * Define a skip
+   *
+   * As containers (block quotes, lists), “nibble” a prefix from the margins,
+   * where a line starts after that prefix is defined here.
+   * When the tokenizers moves after consuming a line ending corresponding to
+   * the line number in the given point, the tokenizer shifts past the prefix
+   * based on the column in the shifted point.
+   *
+   * @param point
+   *   Skip.
+   * @returns
+   *   Nothing.
+   */
+  defineSkip(point: Point): undefined
+
+  /**
+   * Get the current place.
+   *
+   * @returns
+   *   Current point.
+   */
+  now(): Point
+
+  /**
+   * Get the source text that spans a token (or location).
+   *
+   * @param token
+   *   Start/end in stream.
+   * @param expandTabs
+   *   Whether to expand tabs.
+   * @returns
+   *   Serialized chunks.
+   */
+  sliceSerialize(
+    token: Pick<Token, 'end' | 'start'>,
+    expandTabs?: boolean | undefined
+  ): string
+
+  /**
+   * Get the chunks that span a token (or location).
+   *
+   * @param token
+   *   Start/end in stream.
+   * @returns
+   *   List of chunks.
+   */
+  sliceStream(token: Pick<Token, 'end' | 'start'>): Array<Chunk>
+
+  /**
+   * Write a slice of chunks.
+   *
+   * The eof code (`null`) can be used to signal the end of the stream.
+   *
+   * @param slice
+   *   Chunks.
+   * @returns
+   *   Events.
+   */
+  write(slice: Array<Chunk>): Array<Event>
 }
 
 /**
@@ -751,6 +751,7 @@ export type Encoding =
   | 'utf-16le' // Always supported in Node.
   | 'utf-16be' // Not supported when ICU is disabled.
   // Everything else (depends on browser, or full ICU data).
+  // eslint-disable-next-line @typescript-eslint/ban-types
   | (string & {})
 
 /**
@@ -766,17 +767,17 @@ export type Value = Uint8Array | string
  * See: <https://github.com/micromark/micromark#syntaxextension>
  */
 export interface Extension {
-  document?: ConstructRecord | undefined
+  attentionMarkers?: {null?: Array<Code> | undefined} | undefined
   contentInitial?: ConstructRecord | undefined
+  disable?: {null?: Array<string> | undefined} | undefined
+  document?: ConstructRecord | undefined
   flowInitial?: ConstructRecord | undefined
   flow?: ConstructRecord | undefined
-  string?: ConstructRecord | undefined
-  text?: ConstructRecord | undefined
-  disable?: {null?: Array<string> | undefined} | undefined
   insideSpan?:
     | {null?: Array<Pick<Construct, 'resolveAll'>> | undefined}
     | undefined
-  attentionMarkers?: {null?: Array<Code> | undefined} | undefined
+  string?: ConstructRecord | undefined
+  text?: ConstructRecord | undefined
 }
 
 /**
@@ -825,6 +826,25 @@ export interface ParseContext {
   constructs: FullNormalizedExtension
 
   /**
+   * List of defined identifiers.
+   */
+  defined: Array<string>
+
+  /**
+   * Map of line numbers to whether they are lazy (as opposed to the line before
+   * them).
+   * Take for example:
+   *
+   * ```markdown
+   * > a
+   * b
+   * ```
+   *
+   * L1 here is not lazy, L2 is.
+   */
+  lazy: Record<number, boolean>
+
+  /**
    * Create a content tokenizer.
    */
   content: Create
@@ -848,25 +868,6 @@ export interface ParseContext {
    * Create a text tokenizer.
    */
   text: Create
-
-  /**
-   * List of defined identifiers.
-   */
-  defined: Array<string>
-
-  /**
-   * Map of line numbers to whether they are lazy (as opposed to the line before
-   * them).
-   * Take for example:
-   *
-   * ```markdown
-   * > a
-   * b
-   * ```
-   *
-   * L1 here is not lazy, L2 is.
-   */
-  lazy: Record<number, boolean>
 }
 
 /**
@@ -879,19 +880,22 @@ export interface CompileContext {
   options: CompileOptions
 
   /**
-   * Set data into the key-value store.
+   * Capture some of the output data.
    *
-   * @param key
-   *   Key.
-   * @param value
-   *   Value.
    * @returns
    *   Nothing.
    */
-  setData<Key extends keyof CompileData>(
-    key: Key,
-    value?: CompileData[Key]
-  ): undefined
+  buffer(): undefined
+
+  /**
+   * Make a value safe for injection in HTML (except w/ `ignoreEncode`).
+   *
+   * @param value
+   *   Raw value.
+   * @returns
+   *   Safe value.
+   */
+  encode(value: string): string
 
   /**
    * Get data from the key-value store.
@@ -912,32 +916,6 @@ export interface CompileContext {
   lineEndingIfNeeded(): undefined
 
   /**
-   * Make a value safe for injection in HTML (except w/ `ignoreEncode`).
-   *
-   * @param value
-   *   Raw value.
-   * @returns
-   *   Safe value.
-   */
-  encode(value: string): string
-
-  /**
-   * Capture some of the output data.
-   *
-   * @returns
-   *   Nothing.
-   */
-  buffer(): undefined
-
-  /**
-   * Stop capturing and access the output data.
-   *
-   * @returns
-   *   Captured data.
-   */
-  resume(): string
-
-  /**
    * Output raw data.
    *
    * @param value
@@ -948,14 +926,27 @@ export interface CompileContext {
   raw(value: string): undefined
 
   /**
-   * Output (parts of) HTML tags.
+   * Stop capturing and access the output data.
    *
+   * @returns
+   *   Captured data.
+   */
+  resume(): string
+
+  /**
+   * Set data into the key-value store.
+   *
+   * @param key
+   *   Key.
    * @param value
-   *   Raw value.
+   *   Value.
    * @returns
    *   Nothing.
    */
-  tag(value: string): undefined
+  setData<Key extends keyof CompileData>(
+    key: Key,
+    value?: CompileData[Key]
+  ): undefined
 
   /**
    * Get the string value of a token.
@@ -971,6 +962,16 @@ export interface CompileContext {
     token: Pick<Token, 'end' | 'start'>,
     expandTabs?: boolean | undefined
   ): string
+
+  /**
+   * Output (parts of) HTML tags.
+   *
+   * @param value
+   *   Raw value.
+   * @returns
+   *   Nothing.
+   */
+  tag(value: string): undefined
 }
 
 /**
@@ -1001,12 +1002,7 @@ export type DocumentHandle = (
 /**
  * Token types mapping to handles.
  */
-export type Handles = {
-  /**
-   * Token handle.
-   */
-  [Key in TokenType]?: Handle
-} & {
+export interface Handles extends Partial<Record<TokenType, Handle>> {
   /**
    * Document handle.
    */
@@ -1031,7 +1027,7 @@ export type NormalizedHtmlExtension = {
 /**
  * Definition.
  */
-export type Definition = {
+export interface Definition {
   /**
    * Destination.
    */
@@ -1047,25 +1043,19 @@ export type Definition = {
  */
 export interface CompileData {
   /**
-   * Whether the last emitted value was a tag.
-   */
-  lastWasTag?: boolean | undefined
-
-  /**
    * Whether the first list item is expected, used by lists.
    */
   expectFirstItem?: boolean | undefined
 
   /**
-   * Whether to slurp the next line ending (resets itself on the next line
-   * ending).
+   * Current character reference kind.
    */
-  slurpOneLineEnding?: boolean | undefined
+  characterReferenceType?: string | undefined
 
   /**
-   * Whether to slurp all future line endings (has to be unset manually).
+   * Collected definitions.
    */
-  slurpAllLineEndings?: boolean | undefined
+  definitions: Record<string, Definition>
 
   /**
    * Whether we’re in fenced code, used by code (fenced).
@@ -1083,15 +1073,15 @@ export interface CompileData {
   flowCodeSeenData?: boolean | undefined
 
   /**
+   * Current heading rank, used by heading (atx, setext).
+   */
+  headingRank?: number | undefined
+
+  /**
    * Ignore encoding unsafe characters, used for example for URLs which are
    * first percent encoded, or by HTML when supporting it.
    */
   ignoreEncode?: boolean | undefined
-
-  /**
-   * Current heading rank, used by heading (atx, setext).
-   */
-  headingRank?: number | undefined
 
   /**
    * Whether we’re in code data, used by code (text).
@@ -1099,19 +1089,25 @@ export interface CompileData {
   inCodeText?: boolean | undefined
 
   /**
-   * Current character reference kind.
+   * Whether the last emitted value was a tag.
    */
-  characterReferenceType?: string | undefined
+  lastWasTag?: boolean | undefined
+
+  /**
+   * Whether to slurp all future line endings (has to be unset manually).
+   */
+  slurpAllLineEndings?: boolean | undefined
+
+  /**
+   * Whether to slurp the next line ending (resets itself on the next line
+   * ending).
+   */
+  slurpOneLineEnding?: boolean | undefined
 
   /**
    * Stack of containers, whether they’re tight or not.
    */
   tightStack: Array<boolean>
-
-  /**
-   * Collected definitions.
-   */
-  definitions: Record<string, Definition>
 }
 
 /**
@@ -1175,7 +1171,7 @@ export interface CompileOptions {
 /**
  * Configuration.
  */
-export type Options = ParseOptions & CompileOptions
+export type Options = CompileOptions & ParseOptions
 
 /**
  * Enum of allowed token types.

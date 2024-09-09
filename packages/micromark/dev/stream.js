@@ -13,9 +13,12 @@
  *   Nothing.
  *
  * @typedef PipeOptions
+ *   Configuration for piping.
  * @property {boolean | null | undefined} [end]
+ *   Whether to end the destination stream when the source stream ends.
  *
  * @typedef {Omit<NodeJS.ReadableStream & NodeJS.WritableStream, 'isPaused' | 'pause' | 'read' | 'resume' | 'setEncoding' | 'unpipe' | 'unshift' | 'wrap'>} MinimalDuplex
+ *   Duplex stream.
  */
 
 import {EventEmitter} from 'node:events'
@@ -46,15 +49,14 @@ export function stream(options) {
   /** @type {boolean} */
   let ended
 
-  /** @type {MinimalDuplex} */
-  // @ts-expect-error `addListener` is fine.
-  const emitter = Object.assign(new EventEmitter(), {
-    end,
-    pipe,
-    readable: true,
-    writable: true,
-    write
-  })
+  const emitter = /** @type {MinimalDuplex} */ (new EventEmitter())
+  // @ts-expect-error: fine.
+  emitter.end = end
+  emitter.pipe = pipe
+  emitter.readable = true
+  emitter.writable = true
+  // @ts-expect-error: fine.
+  emitter.write = write
 
   return emitter
 
@@ -138,6 +140,7 @@ export function stream(options) {
    * @param {Callback | null | undefined} [callback]
    *   Function called when write was successful.
    * @returns {boolean}
+   *   Whether write was successful.
    *
    * @param {Callback | Value | null | undefined} [chunk]
    *   Slice of markdown to parse (`string` or `Uint8Array`).
@@ -177,9 +180,13 @@ export function stream(options) {
    * See: <https://github.com/nodejs/node/blob/43a5170/lib/internal/streams/legacy.js#L13>.
    *
    * @template {NodeJS.WritableStream} Stream
+   *   Writable stream.
    * @param {Stream} destination
+   *   Stream to pipe into.
    * @param {PipeOptions | null | undefined} [options]
+   *   Configuration.
    * @returns {Stream}
+   *   Destination stream.
    */
   function pipe(destination, options) {
     emitter.on('data', ondata)
@@ -205,6 +212,7 @@ export function stream(options) {
      * End destination stream.
      *
      * @returns {undefined}
+     *   Nothing.
      */
     function onend() {
       if (destination.end) {
@@ -216,7 +224,9 @@ export function stream(options) {
      * Handle data.
      *
      * @param {string} chunk
+     *   Data.
      * @returns {undefined}
+     *   Nothing.
      */
     function ondata(chunk) {
       if (destination.writable) {
@@ -228,6 +238,7 @@ export function stream(options) {
      * Clean listeners.
      *
      * @returns {undefined}
+     *   Nothing.
      */
     function cleanup() {
       emitter.removeListener('data', ondata)
@@ -244,7 +255,9 @@ export function stream(options) {
      * Close dangling pipes and handle unheard errors.
      *
      * @param {Error | null | undefined} [error]
+     *   Error, if any.
      * @returns {undefined}
+     *   Nothing.
      */
     function onerror(error) {
       cleanup()

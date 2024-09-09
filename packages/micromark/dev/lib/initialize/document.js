@@ -6,21 +6,22 @@
  *   Initializer,
  *   Point,
  *   State,
- *   Token,
  *   TokenizeContext,
- *   Tokenizer
+ *   Tokenizer,
+ *   Token
  * } from 'micromark-util-types'
  */
 
 /**
  * @typedef {[Construct, ContainerState]} StackItem
+ *   Construct and its state.
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {splice} from 'micromark-util-chunked'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {InitialConstruct} */
 export const document = {tokenize: initializeDocument}
@@ -30,7 +31,9 @@ const containerConstruct = {tokenize: tokenizeContainer}
 
 /**
  * @this {TokenizeContext}
+ *   Self.
  * @type {Initializer}
+ *   Initializer.
  */
 function initializeDocument(effects) {
   const self = this
@@ -121,7 +124,7 @@ function initializeDocument(effects) {
       let index = indexBeforeExits
 
       while (index < self.events.length) {
-        self.events[index][1].end = Object.assign({}, point)
+        self.events[index][1].end = {...point}
         index++
       }
 
@@ -235,9 +238,9 @@ function initializeDocument(effects) {
 
     childFlow = childFlow || self.parser.flow(self.now())
     effects.enter(types.chunkFlow, {
+      _tokenizer: childFlow,
       contentType: constants.contentTypeFlow,
-      previous: childToken,
-      _tokenizer: childFlow
+      previous: childToken
     })
 
     return flowContinue(code)
@@ -267,8 +270,11 @@ function initializeDocument(effects) {
 
   /**
    * @param {Token} token
+   *   Token.
    * @param {boolean | undefined} [endOfFile]
+   *   Whether the token is at the end of the file (default: `false`).
    * @returns {undefined}
+   *   Nothing.
    */
   function writeToChild(token, endOfFile) {
     assert(childFlow, 'expected `childFlow` to be defined when continuing')
@@ -363,7 +369,7 @@ function initializeDocument(effects) {
       index = indexBeforeExits
 
       while (index < self.events.length) {
-        self.events[index][1].end = Object.assign({}, point)
+        self.events[index][1].end = {...point}
         index++
       }
 
@@ -382,7 +388,9 @@ function initializeDocument(effects) {
 
   /**
    * @param {number} size
+   *   Size.
    * @returns {undefined}
+   *   Nothing.
    */
   function exitContainers(size) {
     let index = stack.length
@@ -416,7 +424,9 @@ function initializeDocument(effects) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
+ *   Tokenizer.
  */
 function tokenizeContainer(effects, ok, nok) {
   // Always populated by defaults.

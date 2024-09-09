@@ -7,19 +7,20 @@
  * } from 'micromark-util-types'
  */
 
-import {codes, types} from 'micromark-util-symbol'
 import {ok as assert} from 'devlop'
+import {codes, types} from 'micromark-util-symbol'
 import {labelEnd} from './label-end.js'
 
 /** @type {Construct} */
 export const labelStartLink = {
   name: 'labelStartLink',
-  tokenize: tokenizeLabelStartLink,
-  resolveAll: labelEnd.resolveAll
+  resolveAll: labelEnd.resolveAll,
+  tokenize: tokenizeLabelStartLink
 }
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeLabelStartLink(effects, ok, nok) {

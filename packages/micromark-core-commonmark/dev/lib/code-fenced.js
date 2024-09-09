@@ -8,32 +8,33 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 const nonLazyContinuation = {
-  tokenize: tokenizeNonLazyContinuation,
-  partial: true
+  partial: true,
+  tokenize: tokenizeNonLazyContinuation
 }
 
 /** @type {Construct} */
 export const codeFenced = {
+  concrete: true,
   name: 'codeFenced',
-  tokenize: tokenizeCodeFenced,
-  concrete: true
+  tokenize: tokenizeCodeFenced
 }
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeCodeFenced(effects, ok, nok) {
   const self = this
   /** @type {Construct} */
-  const closeStart = {tokenize: tokenizeCloseStart, partial: true}
+  const closeStart = {partial: true, tokenize: tokenizeCloseStart}
   let initialPrefix = 0
   let sizeOpen = 0
   /** @type {NonNullable<Code>} */
@@ -348,6 +349,7 @@ function tokenizeCodeFenced(effects, ok, nok) {
 
   /**
    * @this {TokenizeContext}
+   *   Context.
    * @type {Tokenizer}
    */
   function tokenizeCloseStart(effects, ok, nok) {
@@ -476,6 +478,7 @@ function tokenizeCodeFenced(effects, ok, nok) {
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeNonLazyContinuation(effects, ok, nok) {

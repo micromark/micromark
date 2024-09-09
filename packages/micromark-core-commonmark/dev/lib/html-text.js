@@ -8,22 +8,23 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {
-  asciiAlpha,
   asciiAlphanumeric,
-  markdownLineEnding,
+  asciiAlpha,
   markdownLineEndingOrSpace,
+  markdownLineEnding,
   markdownSpace
 } from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 
 /** @type {Construct} */
 export const htmlText = {name: 'htmlText', tokenize: tokenizeHtmlText}
 
 /**
  * @this {TokenizeContext}
+ *   Context.
  * @type {Tokenizer}
  */
 function tokenizeHtmlText(effects, ok, nok) {

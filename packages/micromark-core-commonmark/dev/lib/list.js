@@ -2,7 +2,6 @@
  * @import {
  *   Code,
  *   Construct,
- *   ContainerState,
  *   Exiter,
  *   State,
  *   TokenizeContext,
@@ -10,36 +9,37 @@
  * } from 'micromark-util-types'
  */
 
+import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {asciiDigit, markdownSpace} from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-import {ok as assert} from 'devlop'
 import {blankLine} from './blank-line.js'
 import {thematicBreak} from './thematic-break.js'
 
 /** @type {Construct} */
 export const list = {
-  name: 'list',
-  tokenize: tokenizeListStart,
   continuation: {tokenize: tokenizeListContinuation},
-  exit: tokenizeListEnd
+  exit: tokenizeListEnd,
+  name: 'list',
+  tokenize: tokenizeListStart
 }
 
 /** @type {Construct} */
 const listItemPrefixWhitespaceConstruct = {
-  tokenize: tokenizeListItemPrefixWhitespace,
-  partial: true
+  partial: true,
+  tokenize: tokenizeListItemPrefixWhitespace
 }
 
 /** @type {Construct} */
-const indentConstruct = {tokenize: tokenizeIndent, partial: true}
+const indentConstruct = {partial: true, tokenize: tokenizeIndent}
 
 // To do: `markdown-rs` parses list items on their own and later stitches them
 // together.
 
 /**
- * @type {Tokenizer}
  * @this {TokenizeContext}
+ *   Context.
+ * @type {Tokenizer}
  */
 function tokenizeListStart(effects, ok, nok) {
   const self = this
@@ -162,8 +162,9 @@ function tokenizeListStart(effects, ok, nok) {
 }
 
 /**
- * @type {Tokenizer}
  * @this {TokenizeContext}
+ *   Context.
+ * @type {Tokenizer}
  */
 function tokenizeListContinuation(effects, ok, nok) {
   const self = this
@@ -229,8 +230,9 @@ function tokenizeListContinuation(effects, ok, nok) {
 }
 
 /**
- * @type {Tokenizer}
  * @this {TokenizeContext}
+ *   Context.
+ * @type {Tokenizer}
  */
 function tokenizeIndent(effects, ok, nok) {
   const self = this
@@ -258,8 +260,9 @@ function tokenizeIndent(effects, ok, nok) {
 }
 
 /**
- * @type {Exiter}
  * @this {TokenizeContext}
+ *   Context.
+ * @type {Exiter}
  */
 function tokenizeListEnd(effects) {
   assert(this.containerState, 'expected state')
@@ -268,8 +271,9 @@ function tokenizeListEnd(effects) {
 }
 
 /**
- * @type {Tokenizer}
  * @this {TokenizeContext}
+ *   Context.
+ * @type {Tokenizer}
  */
 function tokenizeListItemPrefixWhitespace(effects, ok, nok) {
   const self = this
