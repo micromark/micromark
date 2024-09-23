@@ -233,7 +233,7 @@ export const unicodeWhitespace = regexCheck(/\s/)
  * Note: IVS character are included but SVS characters are not. Both of them can follow an ideographic character.
  */
 export const cjk = regexCheck(
-  /[\u2E80-\uA4CF\uF900-\uFAFF\uFE10-\uFE1F\uFE30-\uFE6F\uFF00-\uFFEE\u{1B000}-\u{1B16F}\u{20000}-\u{3FFFF}\u{E0100}-\u{E01EF}]/u // eslint-disable-line no-misleading-character-class
+  /[\u2E80-\u4BDF\u4E00-\uA4CF\uF900-\uFAFF\uFE10-\uFE1F\uFE30-\uFE6F\uFF00-\uFFEE\u{1B000}-\u{1B16F}\u{20000}-\u{3FFFF}\u{E0100}-\u{E01EF}]/u // eslint-disable-line no-misleading-character-class
 )
 
 /**
