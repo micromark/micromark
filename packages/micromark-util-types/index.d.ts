@@ -594,6 +594,10 @@ export interface ContainerState {
  */
 export interface TokenizeContext {
   /**
+   * The 2 previous code.
+   */
+  twoPrevious: Code;
+  /**
    * The previous code.
    */
   previous: Code

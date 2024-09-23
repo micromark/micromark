@@ -228,11 +228,20 @@ export const unicodePunctuation = regexCheck(/\p{P}|\p{S}/u)
 export const unicodeWhitespace = regexCheck(/\s/)
 
 /**
- * To do...
+ * Check whether the character code represents CJK characters.
+ *
+ * Note: IVS character are included but SVS characters are not. Both of them can follow an ideographic character.
  */
 export const cjk = regexCheck(
-  /[\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\u3000-\u303f\uFF00-\uFFEE]/ // eslint-disable-line unicorn/escape-case
+  /[\u2E80-\u4BDF\u4E00-\uA4CF\uF900-\uFAFF\uFE10-\uFE1F\uFE30-\uFE6F\uFF00-\uFFEE\u{1B000}-\u{1B16F}\u{20000}-\u{3FFFF}\u{E0100}-\u{E01EF}]/u // eslint-disable-line no-misleading-character-class
 )
+
+/**
+ * Check whether the character code represents Standard Variation Sequence that can follow an ideographic character.
+ *
+ * U+FE0E is used for some CJK symbols (e.g. U+3299) that can also be
+ */
+export const svsFollowingCjk = regexCheck(/[\uFE00-\uFE02\uFE0E]/u)
 
 /**
  * Create a code check from a regex.
@@ -252,6 +261,6 @@ function regexCheck(regex) {
    *   Whether the character code matches the bound regex.
    */
   function check(code) {
-    return code !== null && code > -1 && regex.test(String.fromCharCode(code))
+    return code !== null && code > -1 && regex.test(String.fromCodePoint(code))
   }
 }
