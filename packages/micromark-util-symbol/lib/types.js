@@ -405,22 +405,22 @@ export const types = /** @type {const} */ ({
   // The optional ` ` of a block quote prefix.
   blockQuotePrefixWhitespace: 'blockQuotePrefixWhitespace',
 
-  // Whole unordered list:
+  // Whole ordered list:
   //
   // ```markdown
-  // - a
-  //   b
+  // 1. a
+  //    b
   // ```
   //
   // Includes `listItemPrefix`, flow, and optionally  `listItemIndent` on further
   // lines.
   listOrdered: 'listOrdered',
 
-  // Whole ordered list:
+  // Whole unordered list:
   //
   // ```markdown
-  // 1. a
-  //    b
+  // - a
+  //   b
   // ```
   //
   // Includes `listItemPrefix`, flow, and optionally  `listItemIndent` on further
