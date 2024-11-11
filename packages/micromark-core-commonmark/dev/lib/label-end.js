@@ -43,11 +43,7 @@ function resolveAllLabelEnd(events) {
   const newEvents = []
   while (++index < events.length) {
     const token = events[index][1]
-    if (newEvents.length > 0) {
-      push(newEvents, [events[index]])
-    } else {
-      newEvents.push(events[index])
-    }
+    newEvents.push(events[index])
 
     if (
       token.type === types.labelImage ||
@@ -57,15 +53,15 @@ function resolveAllLabelEnd(events) {
       // Remove the marker.
       const offset = token.type === types.labelImage ? 4 : 2
       token.type = types.data
-      // Exit effect can skip the check
-      index += offset + 1
-      if (index < events.length) {
-        push(newEvents, [events[index]])
-      }
+      index += offset
     }
   }
 
-  splice(events, 0, events.length, newEvents)
+  // If the events are equal, we don't have to copy newEvents to events
+  if (events.length !== newEvents.length) {
+    splice(events, 0, events.length, newEvents)
+  }
+
   return events
 }
 
