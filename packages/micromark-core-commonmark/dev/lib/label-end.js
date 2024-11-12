@@ -39,9 +39,11 @@ const referenceCollapsedConstruct = {tokenize: tokenizeReferenceCollapsed}
 /** @type {Resolver} */
 function resolveAllLabelEnd(events) {
   let index = -1
-
+  /** @type {Array<Event>} */
+  const newEvents = []
   while (++index < events.length) {
     const token = events[index][1]
+    newEvents.push(events[index])
 
     if (
       token.type === types.labelImage ||
@@ -49,10 +51,15 @@ function resolveAllLabelEnd(events) {
       token.type === types.labelEnd
     ) {
       // Remove the marker.
-      events.splice(index + 1, token.type === types.labelImage ? 4 : 2)
+      const offset = token.type === types.labelImage ? 4 : 2
       token.type = types.data
-      index++
+      index += offset
     }
+  }
+
+  // If the events are equal, we don't have to copy newEvents to events
+  if (events.length !== newEvents.length) {
+    splice(events, 0, events.length, newEvents)
   }
 
   return events
