@@ -1,6 +1,6 @@
 {
   "name": "micromark-factory-destination",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "micromark factory to parse destinations (found in resources, definitions)",
   "license": "MIT",
   "keywords": [

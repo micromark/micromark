@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-decode-numeric-character-reference",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "micromark utility to decode numeric character references",
   "license": "MIT",
   "keywords": [

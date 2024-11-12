@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-character",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "micromark utility to handle character codes",
   "license": "MIT",
   "keywords": [

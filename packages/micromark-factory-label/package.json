@@ -1,6 +1,6 @@
 {
   "name": "micromark-factory-label",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "micromark factory to parse labels (found in media, definitions)",
   "license": "MIT",
   "keywords": [

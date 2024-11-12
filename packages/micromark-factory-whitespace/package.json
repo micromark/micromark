@@ -1,6 +1,6 @@
 {
   "name": "micromark-factory-whitespace",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "micromark factory to parse markdown whitespace (found in lots of places)",
   "license": "MIT",
   "keywords": [

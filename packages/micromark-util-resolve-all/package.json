@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-resolve-all",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "micromark utility to resolve subtokens",
   "license": "MIT",
   "keywords": [

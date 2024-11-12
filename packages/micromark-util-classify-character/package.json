@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-classify-character",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "micromark utility to classify whether a character is whitespace or punctuation",
   "license": "MIT",
   "keywords": [
