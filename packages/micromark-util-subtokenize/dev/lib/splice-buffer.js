@@ -10,7 +10,7 @@ import {constants} from 'micromark-util-symbol'
  *    proportional to the number of elements added or removed, whereas
  *    other operations (shift/unshift and splice) are much less efficient.
  *  - Function arguments are passed on the stack, so adding tens of thousands
- *    of elements to an array with `arr.push[...newElements]` will frequently
+ *    of elements to an array with `arr.push(...newElements)` will frequently
  *    cause stack overflows. (see <https://stackoverflow.com/questions/22123769/rangeerror-maximum-call-stack-size-exceeded-why>)
  *
  * SpliceBuffers are an implementation of gap buffers, which are a
@@ -116,13 +116,11 @@ export class SpliceBuffer {
         .reverse()
     }
 
-    const list = this.left.slice(start)
-
-    list.push(
-      ...this.right.slice(this.right.length - stop + this.left.length).reverse()
-    )
-
-    return list
+    return this.left
+      .slice(start)
+      .concat(
+        this.right.slice(this.right.length - stop + this.left.length).reverse()
+      )
   }
 
   /**
