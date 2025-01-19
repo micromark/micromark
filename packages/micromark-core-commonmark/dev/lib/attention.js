@@ -209,7 +209,25 @@ function resolveAllAttention(events, context) {
  */
 function tokenizeAttention(effects, ok) {
   const attentionMarkers = this.parser.constructs.attentionMarkers.null
-  const previous = this.previous
+  let previous = this.previous
+  const {now, sliceSerialize} = this
+  // second (lower) surrogate likely to be preceded by first (higher) surrogate
+  if (previous && previous >= 0xdc_00 && previous <= 0xdf_ff) {
+    const nowPoint = now() // @ first attention marker
+    if (nowPoint._bufferIndex >= 2) {
+      const previousBuffer = sliceSerialize({
+        // take 2 characters
+        start: {...nowPoint, _bufferIndex: nowPoint._bufferIndex - 2},
+        end: nowPoint
+      })
+      const previousCandidate = previousBuffer.codePointAt(0)
+      // possibly undefined or non-surrogate (=lonely surrogate), so we have to make sure not
+      if (previousCandidate && previousCandidate >= 65_536) {
+        previous = previousCandidate
+      }
+    }
+  }
+
   const before = classifyCharacter(previous)
 
   /** @type {NonNullable<Code>} */
@@ -255,8 +273,21 @@ function tokenizeAttention(effects, ok) {
 
     const token = effects.exit('attentionSequence')
 
-    // To do: next major: move this to resolver, just like `markdown-rs`.
-    const after = classifyCharacter(code)
+    // To do: next major: move these to resolver, just like `markdown-rs`.
+    let next = code
+    // possibly first (lower) surrogate
+    if (next && next >= 0xd8_00 && next <= 0xdf_ff) {
+      const nowPoint = now() // @ first character next to attention marker
+      const nextCandidate = sliceSerialize({
+        start: nowPoint,
+        end: {...nowPoint, _bufferIndex: nowPoint._bufferIndex + 2}
+      }).codePointAt(0)
+      if (nextCandidate && nextCandidate >= 65_536) {
+        next = nextCandidate
+      }
+    }
+
+    const after = classifyCharacter(next)
 
     // Always populated by defaults.
     assert(attentionMarkers, 'expected `attentionMarkers` to be populated')

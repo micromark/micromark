@@ -1001,4 +1001,34 @@ test('emphasis', async function (t) {
       '<p>*a*</p>'
     )
   })
+
+  await t.test(
+    'should recognize non-BMP punctuation & symbols (1)',
+    async function () {
+      assert.equal(
+        micromark('a*a𝜵*a\n\na*𝜵a*a\n\na*𐬻a*a\n\na*a𐬻*a'),
+        '<p>a*a𝜵*a</p>\n<p>a*𝜵a*a</p>\n<p>a*𐬻a*a</p>\n<p>a*a𐬻*a</p>'
+      )
+    }
+  )
+
+  await t.test(
+    'should recognize non-BMP punctuation & symbols (2)',
+    async function () {
+      assert.equal(
+        micromark('a**a𝜵**a\n\na**𝜵a**a\n\na**𐬻a**a\n\na**a𐬻**a'),
+        '<p>a**a𝜵**a</p>\n<p>a**𝜵a**a</p>\n<p>a**𐬻a**a</p>\n<p>a**a𐬻**a</p>'
+      )
+    }
+  )
+
+  await t.test(
+    'Should handle lonely surrogate pair around emphasis',
+    async function () {
+      assert.equal(
+        micromark('\uDC00*\uD800\n\na\uDBFF*\uDFFFa'),
+        '<p>\uDC00*\uD800</p>\n<p>a\uDBFF*\uDFFFa</p>'
+      )
+    }
+  )
 })
