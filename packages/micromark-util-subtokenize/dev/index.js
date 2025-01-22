@@ -109,6 +109,8 @@ export function subtokenize(eventsArray) {
             otherEvent[1].type = types.lineEnding
             lineIndex = otherIndex
           }
+        } else if (otherEvent[1].type === types.linePrefix) {
+          // Move past.
         } else {
           break
         }
