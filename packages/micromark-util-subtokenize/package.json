@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-subtokenize",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "micromark utility to tokenize subtokens",
   "license": "MIT",
   "keywords": [
