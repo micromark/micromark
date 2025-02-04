@@ -74,7 +74,6 @@ These npm packages have a sibling project in Rust:
 
 * to learn markdown, see this [cheatsheet and tutorial][cheat]
 * for more about us, see [`unifiedjs.com`][site]
-* for updates, see [Twitter][]
 * for questions, see [Discussions][chat]
 * to help, see [contribute][] and [sponsor][] below
 
@@ -483,8 +482,6 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 [support]: https://github.com/micromark/.github/blob/main/support.md
 
 [test]: https://github.com/micromark/micromark#test
-
-[twitter]: https://twitter.com/unifiedjs
 
 [typescript]: https://www.typescriptlang.org
 

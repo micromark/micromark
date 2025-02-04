@@ -93,7 +93,6 @@ These npm packages have a sibling project in Rust:
 
 * to learn markdown, see this [cheatsheet and tutorial][cheat]
 * for more about us, see [`unifiedjs.com`][site]
-* for updates, see [Twitter][]
 * for questions, see [Discussions][chat]
 * to help, see [contribute][] and [sponsor][] below
 
@@ -1673,8 +1672,6 @@ Super cool that I got to continue this work and bring it to a new language.
 [syntax-extension]: #syntaxextension
 
 [test]: #test
-
-[twitter]: https://twitter.com/unifiedjs
 
 [unified]: https://github.com/unifiedjs/unified
 
