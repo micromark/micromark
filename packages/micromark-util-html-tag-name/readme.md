@@ -83,7 +83,7 @@ For tag names not in this list, a more strict algorithm (condition 7) is used
 to detect whether the HTML-like syntax is seen as HTML (flow) or not.
 
 This is copied from:
-[`spec.commonmark.org/0.30/#html-blocks`][commonmark-html-blocks].
+[`spec.commonmark.org/0.31.2/#html-blocks`][commonmark-html-blocks].
 
 > 👉 **Note**: `search` was added in `CommonMark@0.31`.
 
@@ -96,7 +96,7 @@ without exiting, until a closing tag also in this list is found (condition
 1\).
 
 This module is copied from:
-[`spec.commonmark.org/0.30/#html-blocks`][commonmark-html-blocks].
+[`spec.commonmark.org/0.31.2/#html-blocks`][commonmark-html-blocks].
 
 > 👉 **Note**: `textarea` was added in `CommonMark@0.30`.
 
@@ -160,7 +160,7 @@ abide by its terms.
 
 [coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
 
-[commonmark-html-blocks]: https://spec.commonmark.org/0.30/#html-blocks
+[commonmark-html-blocks]: https://spec.commonmark.org/0.31.2/#html-blocks
 
 [contributing]: https://github.com/micromark/.github/blob/main/contributing.md
 

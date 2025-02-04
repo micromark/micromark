@@ -9,7 +9,7 @@
  * to detect whether the HTML-like syntax is seen as HTML (flow) or not.
  *
  * This is copied from:
- * <https://spec.commonmark.org/0.30/#html-blocks>.
+ * <https://spec.commonmark.org/0.31.2/#html-blocks>.
  *
  * > 👉 **Note**: `search` was added in `CommonMark@0.31`.
  */
@@ -86,7 +86,7 @@ export const htmlBlockNames = [
  * 1).
  *
  * This module is copied from:
- * <https://spec.commonmark.org/0.30/#html-blocks>.
+ * <https://spec.commonmark.org/0.31.2/#html-blocks>.
  *
  * > 👉 **Note**: `textarea` was added in `CommonMark@0.30`.
  */
