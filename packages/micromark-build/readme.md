@@ -48,7 +48,7 @@ npm install micromark-build --save-dev
 
 Say we have this folder (called `my-micromark-extension`):
 
-```txt
+```text
 dev/lib/core.js
 dev/lib/util.js
 dev/index.js
@@ -142,40 +142,40 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[author]: https://wooorm.com
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[opencollective]: https://opencollective.com/unified
+[build]: https://github.com/micromark/micromark/actions
 
-[npm]: https://docs.npmjs.com/cli/install
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
 
 [chat]: https://github.com/micromark/micromark/discussions
 
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[securitymd]: https://github.com/micromark/.github/blob/main/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/main/support.md
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
 [coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
 
-[typescript]: https://www.typescriptlang.org
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/micromark/micromark
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
+
+[health]: https://github.com/micromark/.github
+
+[license]: https://github.com/micromark/micromark/blob/main/license
 
 [micromark]: https://github.com/micromark/micromark
+
+[npm]: https://docs.npmjs.com/cli/install
+
+[opencollective]: https://opencollective.com/unified
+
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/micromark/.github/blob/main/support.md
+
+[typescript]: https://www.typescriptlang.org

@@ -392,100 +392,100 @@ Support this effort and give back by sponsoring on [OpenCollective][]!
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
+[api-micromark]: #micromarkvalue-encoding-options
 
-[build]: https://github.com/micromark/micromark/actions
+[api-options]: #options
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
+[api-stream]: #streamoptions
 
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark.svg
-
-[downloads]: https://www.npmjs.com/package/micromark
-
-[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark
-
-[bundle-size]: https://bundlejs.com/?q=micromark
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[author]: https://wooorm.com
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[opencollective]: https://opencollective.com/unified
+[build]: https://github.com/micromark/micromark/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
+
+[bundle-size]: https://bundlejs.com/?q=micromark
+
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark
 
 [chat]: https://github.com/micromark/micromark/discussions
 
-[npm]: https://docs.npmjs.com/cli/install
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[cheat]: https://commonmark.org/help/
+
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[commonmark]: https://commonmark.org
+
+[comparison]: https://github.com/micromark/micromark#comparison
+
+[contribute]: #contribute
+
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/micromark/micromark
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
+
+[development]: https://nodejs.org/api/packages.html#packages_resolving_user_conditions
+
+[directives]: https://github.com/micromark/micromark-extension-directive
+
+[downloads]: https://www.npmjs.com/package/micromark
+
+[downloads-badge]: https://img.shields.io/npm/dm/micromark.svg
+
+[encoding]: https://nodejs.org/api/util.html#whatwg-supported-encodings
 
 [esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
 [esmsh]: https://esm.sh
 
-[typescript]: https://www.typescriptlang.org
-
-[development]: https://nodejs.org/api/packages.html#packages_resolving_user_conditions
-
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[securitymd]: https://github.com/micromark/.github/blob/main/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/main/support.md
-
-[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
-
-[cheat]: https://commonmark.org/help/
-
-[twitter]: https://twitter.com/unifiedjs
-
-[site]: https://unifiedjs.com
-
-[contribute]: #contribute
-
-[uint8-array]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
-
-[encoding]: https://nodejs.org/api/util.html#whatwg-supported-encodings
-
-[commonmark]: https://commonmark.org
-
-[directives]: https://github.com/micromark/micromark-extension-directive
+[extensions]: https://github.com/micromark/micromark#extensions
 
 [frontmatter]: https://github.com/micromark/micromark-extension-frontmatter
 
 [gfm]: https://github.com/micromark/micromark-extension-gfm
 
-[math]: https://github.com/micromark/micromark-extension-math
+[health]: https://github.com/micromark/.github
 
-[mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
-
-[security]: #security
-
-[sponsor]: #sponsor
-
-[micromark]: https://github.com/micromark/micromark
-
-[extensions]: https://github.com/micromark/micromark#extensions
-
-[test]: https://github.com/micromark/micromark#test
-
-[size-debug]: https://github.com/micromark/micromark#size--debug
-
-[comparison]: https://github.com/micromark/micromark#comparison
+[license]: https://github.com/micromark/micromark/blob/main/license
 
 [markdown-rs]: https://github.com/wooorm/markdown-rs
 
+[math]: https://github.com/micromark/micromark-extension-math
+
 [mdast-util-to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
 
-[api-micromark]: #micromarkvalue-encoding-options
+[mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
 
-[api-stream]: #streamoptions
+[micromark]: https://github.com/micromark/micromark
 
-[api-options]: #options
+[npm]: https://docs.npmjs.com/cli/install
+
+[opencollective]: https://opencollective.com/unified
+
+[security]: #security
+
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
+
+[site]: https://unifiedjs.com
+
+[size-debug]: https://github.com/micromark/micromark#size--debug
+
+[sponsor]: #sponsor
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/micromark/.github/blob/main/support.md
+
+[test]: https://github.com/micromark/micromark#test
+
+[twitter]: https://twitter.com/unifiedjs
+
+[typescript]: https://www.typescriptlang.org
+
+[uint8-array]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array

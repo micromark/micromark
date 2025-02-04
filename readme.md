@@ -227,7 +227,7 @@ As a (potential) author of extensions, refer to
   — support MDX
 * [`micromark/micromark-extension-mdxjs`][mdxjs]
   — support MDX.js
-* [`micromark/micromark-extension-mdx-expression`](https://github.com/micromark/micromark-extension-mdx-expression)
+* [`micromark/micromark-extension-mdx-expression`][mdx-expression]
   — support MDX (or MDX.js) expressions
 * [`micromark/micromark-extension-mdx-jsx`](https://github.com/micromark/micromark-extension-mdx-jsx)
   — support MDX (or MDX.js) JSX
@@ -289,13 +289,13 @@ Respectively, their solutions are:
 4. custom plugin similar to
    [`rehype-katex`](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex)
    but integrating [`abcjs`](https://www.abcjs.net)
-5. either [`remark-directive`](https://github.com/remarkjs/remark-directive)
+5. either [`remark-directive`][remark-directive]
    and a custom plugin or with
    [`rehype-attr`](https://github.com/jaywcjlove/rehype-attr)
-6. [`remark-directive`](https://github.com/remarkjs/remark-directive)
+6. [`remark-directive`][remark-directive]
    combined with a custom plugin
 7. combining the existing micromark MDX extensions however you please, such as
-   done by [`mdx-js/mdx`](https://github.com/mdx-js/mdx) or
+   done by [`mdx-js/mdx`][mdx] or
    [`xdm`](https://github.com/wooorm/xdm)
 8. Writing a micromark extension
 
@@ -312,7 +312,8 @@ Looking at these from a higher level, they can be categorized:
   **[remark][]** and **[rehype][]**.
   There are many existing
   [utilities for working with that tree][utilities].
-  Many [remark plugins][] and [rehype plugins][] also exist.
+  Many [remark plugins][remark-plugins] and
+  [rehype plugins][rehype-plugins] also exist.
 * **Using and abusing markdown to add new meaning**
   (3, 4, potentially 5)
 
@@ -853,7 +854,7 @@ The first takes all input at once whereas the last uses a Node.js stream to take
 input separately.
 They thinly wrap how data flows through micromark:
 
-```txt
+```text
                                             micromark
 +-----------------------------------------------------------------------------------------------+
 |            +------------+         +-------+         +-------------+         +---------+       |
@@ -1211,8 +1212,8 @@ of documenting input and output examples.
 
 The syntax of markdown can be described in Backus–Naur form (BNF) as:
 
-```bnf
-markdown = .*
+```abnf
+markdown ::= .*
 ```
 
 No, that’s [not a typo](http://trevorjim.com/a-specification-for-markdown/):
@@ -1523,158 +1524,160 @@ Super cool that I got to continue this work and bring it to a new language.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark.svg
-
-[downloads]: https://www.npmjs.com/package/micromark
-
-[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark
-
-[bundle-size]: https://bundlejs.com/?q=micromark
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[opencollective]: https://opencollective.com/unified
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
-
-[esmsh]: https://esm.sh
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
-
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[xss]: https://en.wikipedia.org/wiki/Cross-site_scripting
-
-[securitymd]: https://github.com/micromark/.github/blob/main/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/main/support.md
-
-[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
-
-[cheat]: https://commonmark.org/help/
-
-[twitter]: https://twitter.com/unifiedjs
-
-[remark]: https://github.com/remarkjs/remark
-
-[rehype]: https://github.com/rehypejs/rehype
-
-[site]: https://unifiedjs.com
-
-[contribute]: #contribute
-
-[commonmark-spec]: https://commonmark.org
-
-[improper]: https://github.com/ChALkeR/notes/blob/master/Improper-markup-sanitization.md
-
-[chalker]: https://github.com/ChALkeR
-
-[cmsm]: https://github.com/micromark/common-markup-state-machine
-
-[mdx-cmsm]: https://github.com/micromark/mdx-state-machine
-
-[directives]: https://github.com/micromark/micromark-extension-directive
-
-[frontmatter]: https://github.com/micromark/micromark-extension-frontmatter
-
-[gfm]: https://github.com/micromark/micromark-extension-gfm
-
-[math]: https://github.com/micromark/micromark-extension-math
-
-[mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
-
-[constructs]: /packages/micromark/dev/lib/constructs.js
-
-[comparison]: #comparison
-
-[extensions]: #list-of-extensions
-
-[syntax-extension]: #syntaxextension
-
-[html-extension]: #htmlextension
-
-[mdast]: https://github.com/syntax-tree/mdast
-
-[utilities]: https://github.com/syntax-tree/mdast#list-of-utilities
-
-[unified]: https://github.com/unifiedjs/unified
-
-[remark plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
-
-[rehype plugins]: https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
-
-[directive-proposal]: https://talk.commonmark.org/t/generic-directives-plugins-syntax/444
-
-[architecture]: #architecture
-
-[extending-markdown]: #extending-markdown
-
-[create-extension]: #creating-a-micromark-extension
-
-[mdx-expression]: https://github.com/micromark/micromark-extension-mdx-expression
-
-[preprocess]: #preprocess
-
-[content-types]: #content-types
-
-[postprocess]: #postprocess
-
-[size-debug]: #size--debug
-
-[packages]: packages/
-
-[marked]: https://github.com/markedjs/marked
-
-[markdown-it]: https://github.com/markdown-it/markdown-it
-
-[mdx]: https://github.com/mdx-js/mdx
-
-[prettier]: https://github.com/prettier/prettier
-
-[astro]: https://github.com/withastro/astro
-
-[commonmark]: #commonmark
-
-[test]: #test
-
-[security]: #security
-
-[sponsor]: #sponsor
-
-[@wooorm]: https://github.com/wooorm
+[200]: https://github.com/micromark/micromark/releases/tag/2.0.0
 
 [@johno]: https://github.com/johno
 
-[200]: https://github.com/micromark/micromark/releases/tag/2.0.0
-
-[markdown-rs]: https://github.com/wooorm/markdown-rs
-
-[mdast-util-to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
-
-[mdast-util-from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
+[@wooorm]: https://github.com/wooorm
 
 [api]: https://github.com/micromark/micromark/blob/main/packages/micromark/readme.md#api
 
 [api-option-extensions]: https://github.com/micromark/micromark/blob/main/packages/micromark/readme.md#extensions
 
 [api-option-htmlextensions]: https://github.com/micromark/micromark/blob/main/packages/micromark/readme.md#htmlextensions
+
+[architecture]: #architecture
+
+[astro]: https://github.com/withastro/astro
+
+[author]: https://wooorm.com
+
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[build]: https://github.com/micromark/micromark/actions
+
+[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
+
+[bundle-size]: https://bundlejs.com/?q=micromark
+
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark
+
+[chalker]: https://github.com/ChALkeR
+
+[chat]: https://github.com/micromark/micromark/discussions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[cheat]: https://commonmark.org/help/
+
+[cmsm]: https://github.com/micromark/common-markup-state-machine
+
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[commonmark]: #commonmark
+
+[commonmark-spec]: https://commonmark.org
+
+[comparison]: #comparison
+
+[constructs]: /packages/micromark/dev/lib/constructs.js
+
+[content-types]: #content-types
+
+[contribute]: #contribute
+
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/micromark/micromark
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
+
+[create-extension]: #creating-a-micromark-extension
+
+[directive-proposal]: https://talk.commonmark.org/t/generic-directives-plugins-syntax/444
+
+[directives]: https://github.com/micromark/micromark-extension-directive
+
+[downloads]: https://www.npmjs.com/package/micromark
+
+[downloads-badge]: https://img.shields.io/npm/dm/micromark.svg
+
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
+
+[extending-markdown]: #extending-markdown
+
+[extensions]: #list-of-extensions
+
+[frontmatter]: https://github.com/micromark/micromark-extension-frontmatter
+
+[gfm]: https://github.com/micromark/micromark-extension-gfm
+
+[health]: https://github.com/micromark/.github
+
+[html-extension]: #htmlextension
+
+[improper]: https://github.com/ChALkeR/notes/blob/master/Improper-markup-sanitization.md
+
+[license]: https://github.com/micromark/micromark/blob/main/license
+
+[markdown-it]: https://github.com/markdown-it/markdown-it
+
+[markdown-rs]: https://github.com/wooorm/markdown-rs
+
+[marked]: https://github.com/markedjs/marked
+
+[math]: https://github.com/micromark/micromark-extension-math
+
+[mdast]: https://github.com/syntax-tree/mdast
+
+[mdast-util-from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
+
+[mdast-util-to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
+
+[mdx]: https://github.com/mdx-js/mdx
+
+[mdx-cmsm]: https://github.com/micromark/mdx-state-machine
+
+[mdx-expression]: https://github.com/micromark/micromark-extension-mdx-expression
+
+[mdxjs]: https://github.com/micromark/micromark-extension-mdxjs
+
+[npm]: https://docs.npmjs.com/cli/install
+
+[opencollective]: https://opencollective.com/unified
+
+[packages]: packages/
+
+[postprocess]: #postprocess
+
+[preprocess]: #preprocess
+
+[prettier]: https://github.com/prettier/prettier
+
+[rehype]: https://github.com/rehypejs/rehype
+
+[rehype-plugins]: https://github.com/rehypejs/rehype/blob/main/doc/plugins.md#list-of-plugins
+
+[remark]: https://github.com/remarkjs/remark
+
+[remark-directive]: https://github.com/remarkjs/remark-directive
+
+[remark-plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md#list-of-plugins
+
+[security]: #security
+
+[securitymd]: https://github.com/micromark/.github/blob/main/security.md
+
+[site]: https://unifiedjs.com
+
+[size-debug]: #size--debug
+
+[sponsor]: #sponsor
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/micromark/.github/blob/main/support.md
+
+[syntax-extension]: #syntaxextension
+
+[test]: #test
+
+[twitter]: https://twitter.com/unifiedjs
+
+[unified]: https://github.com/unifiedjs/unified
+
+[utilities]: https://github.com/syntax-tree/mdast#list-of-utilities
+
+[xss]: https://en.wikipedia.org/wiki/Cross-site_scripting

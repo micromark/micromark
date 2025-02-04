@@ -32,10 +32,10 @@ export function splice(list, start, remove, items) {
   if (start < 0) {
     start = -start > end ? 0 : end + start
   } else {
-    start = start > end ? end : start
+    start = Math.min(start, end)
   }
 
-  remove = remove > 0 ? remove : 0
+  remove = Math.max(remove, 0)
 
   // No need to chunk the items if there’s only a couple (10k) items.
   if (items.length < constants.v8MaxSafeChunkSize) {

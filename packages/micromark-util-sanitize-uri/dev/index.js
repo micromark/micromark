@@ -38,11 +38,11 @@ export function sanitizeUri(url, protocol) {
 
   if (
     // If there is no protocol, it’s relative.
-    colon < 0 ||
+    colon === -1 ||
     // If the first colon is after a `?`, `#`, or `/`, it’s not a protocol.
-    (slash > -1 && colon > slash) ||
-    (questionMark > -1 && colon > questionMark) ||
-    (numberSign > -1 && colon > numberSign) ||
+    (slash !== -1 && colon > slash) ||
+    (questionMark !== -1 && colon > questionMark) ||
+    (numberSign !== -1 && colon > numberSign) ||
     // It is a protocol, it should be allowed.
     protocol.test(value.slice(0, colon))
   ) {

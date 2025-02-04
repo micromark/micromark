@@ -164,56 +164,56 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
+[api-push]: #pushlist-items
 
-[build]: https://github.com/micromark/micromark/actions
+[api-splice]: #splicelist-start-remove-items
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-chunked.svg
-
-[downloads]: https://www.npmjs.com/package/micromark-util-chunked
-
-[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-util-chunked
-
-[bundle-size]: https://bundlejs.com/?q=micromark-util-chunked
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+[author]: https://wooorm.com
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[opencollective]: https://opencollective.com/unified
+[build]: https://github.com/micromark/micromark/actions
 
-[npm]: https://docs.npmjs.com/cli/install
+[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
+
+[bundle-size]: https://bundlejs.com/?q=micromark-util-chunked
+
+[bundle-size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=micromark-util-chunked
+
+[chat]: https://github.com/micromark/micromark/discussions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
+
+[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/micromark/micromark
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
+
+[downloads]: https://www.npmjs.com/package/micromark-util-chunked
+
+[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-chunked.svg
 
 [esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
 [esmsh]: https://esm.sh
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
+[health]: https://github.com/micromark/.github
 
 [license]: https://github.com/micromark/micromark/blob/main/license
 
-[author]: https://wooorm.com
+[micromark]: https://github.com/micromark/micromark
 
-[health]: https://github.com/micromark/.github
+[npm]: https://docs.npmjs.com/cli/install
+
+[opencollective]: https://opencollective.com/unified
 
 [securitymd]: https://github.com/micromark/.github/blob/main/security.md
 
-[contributing]: https://github.com/micromark/.github/blob/main/contributing.md
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
 [support]: https://github.com/micromark/.github/blob/main/support.md
 
-[coc]: https://github.com/micromark/.github/blob/main/code-of-conduct.md
-
 [typescript]: https://www.typescriptlang.org
-
-[micromark]: https://github.com/micromark/micromark
-
-[api-push]: #pushlist-items
-
-[api-splice]: #splicelist-start-remove-items
