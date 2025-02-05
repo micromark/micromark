@@ -795,6 +795,34 @@ test('list-item', async function (t) {
     }
   )
 
+  await t.test('should ignore trailing whitespace (1)', async function () {
+    assert.equal(
+      micromark('* a\n* b\n\n\n'),
+      '<ul>\n<li>a</li>\n<li>b</li>\n</ul>\n'
+    )
+  })
+
+  await t.test('should ignore trailing whitespace (2)', async function () {
+    assert.equal(
+      micromark('* a\n* b\n \n\n'),
+      '<ul>\n<li>a</li>\n<li>b</li>\n</ul>\n'
+    )
+  })
+
+  await t.test('should ignore trailing whitespace (3)', async function () {
+    assert.equal(
+      micromark('* a\n* b\n\n \n'),
+      '<ul>\n<li>a</li>\n<li>b</li>\n</ul>\n'
+    )
+  })
+
+  await t.test('should ignore trailing whitespace (4)', async function () {
+    assert.equal(
+      micromark('* a\n* b\n \n \n'),
+      '<ul>\n<li>a</li>\n<li>b</li>\n</ul>\n'
+    )
+  })
+
   await t.test('should support turning off lists', async function () {
     assert.equal(
       micromark('- one\n\n two', {extensions: [{disable: {null: ['list']}}]}),

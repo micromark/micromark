@@ -109,7 +109,10 @@ export function subtokenize(eventsArray) {
             otherEvent[1].type = types.lineEnding
             lineIndex = otherIndex
           }
-        } else if (otherEvent[1].type === types.linePrefix) {
+        } else if (
+          otherEvent[1].type === types.linePrefix ||
+          otherEvent[1].type === types.listItemIndent
+        ) {
           // Move past.
         } else {
           break
