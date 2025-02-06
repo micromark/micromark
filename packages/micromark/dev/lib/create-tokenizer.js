@@ -629,6 +629,7 @@ function sliceChunks(chunks, token) {
       const head = view[0]
       if (typeof head === 'string') {
         view[0] = head.slice(startBufferIndex)
+        /* c8 ignore next 4 -- used to be used, no longer */
       } else {
         assert(startBufferIndex === 0, 'expected `startBufferIndex` to be `0`')
         view.shift()

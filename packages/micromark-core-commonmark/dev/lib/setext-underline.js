@@ -60,10 +60,14 @@ function resolveToSetextUnderline(events, context) {
 
   assert(text !== undefined, 'expected a `text` index to be found')
   assert(content !== undefined, 'expected a `text` index to be found')
-
+  assert(events[content][2] === context, 'enter context should be same')
+  assert(
+    events[events.length - 1][2] === context,
+    'enter context should be same'
+  )
   const heading = {
     type: types.setextHeading,
-    start: {...events[text][1].start},
+    start: {...events[content][1].start},
     end: {...events[events.length - 1][1].end}
   }
 
