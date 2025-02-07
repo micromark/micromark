@@ -20,8 +20,7 @@ export function slowStream(value, encoding) {
     if (index === value.length) {
       stream.end()
     } else {
-      stream.write(value.slice(index, ++index), encoding)
-      tick()
+      stream.write(value.slice(index, ++index), encoding, tick)
     }
   }
 
