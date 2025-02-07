@@ -166,6 +166,15 @@ export interface Token {
   contentType?: ContentType | undefined
 
   /**
+   * Declares that trailing whitespace is sensitive,
+   * is allowed,
+   * when `contentType` is `text` (or `string`).
+   * Normally,
+   * trailing spaces and tabs are dropped.
+   */
+  _contentTypeTextTrailing?: boolean | undefined
+
+  /**
    * Connected tokenizer.
    *
    * Used when dealing with linked tokens.
@@ -624,6 +633,15 @@ export interface TokenizeContext {
    * construct.
    */
   _gfmTasklistFirstContentOfListItem?: boolean | undefined
+
+  /**
+   * Declares that trailing whitespace is sensitive,
+   * is allowed,
+   * when tokenizing `text` (or `string`).
+   * Normally,
+   * trailing spaces and tabs are dropped.
+   */
+  _contentTypeTextTrailing?: boolean | undefined
 
   /**
    * Current code.

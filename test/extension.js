@@ -167,6 +167,102 @@ test('html extension', async function (t) {
   })
 })
 
+test('text (trailing) extension', async function (t) {
+  /** @type {Extension} */
+  const syntax = {
+    text: {
+      171: {
+        tokenize(effects, ok, nok) {
+          return start
+
+          /** @type {State} */
+          function start(code) {
+            if (code !== 171) return nok(code)
+
+            // @ts-expect-error: custom.
+            effects.enter('guillemets')
+            // @ts-expect-error: custom.
+            effects.enter('guillemetMarker')
+            effects.consume(code)
+            // @ts-expect-error: custom.
+            effects.exit('guillemetMarker')
+            return before
+          }
+
+          /** @type {State} */
+          function before(code) {
+            if (code === 187) {
+              // @ts-expect-error: custom.
+              effects.enter('guillemetMarker')
+              effects.consume(code)
+              // @ts-expect-error: custom.
+              effects.exit('guillemetMarker')
+              // @ts-expect-error: custom.
+              effects.exit('guillemets')
+              return ok
+            }
+
+            effects.enter('chunkText', {
+              _contentTypeTextTrailing: true,
+              contentType: 'text'
+            })
+            return inside(code)
+          }
+
+          /** @type {State} */
+          function inside(code) {
+            if (code === -5 || code === -4 || code === -3 || code === null) {
+              return nok(code)
+            }
+
+            if (code === 187) {
+              effects.exit('chunkText')
+              return before(code)
+            }
+
+            effects.consume(code)
+            return inside
+          }
+        }
+      }
+    }
+  }
+  /** @type {HtmlExtension} */
+  const html = {
+    enter: {
+      /**
+       * @this {CompileContext}
+       *   Context.
+       */
+      // @ts-expect-error: custom token, which should be registered in the types.
+      guillemets() {
+        this.raw('<g-uillemets>')
+      }
+    },
+    exit: {
+      /**
+       * @this {CompileContext}
+       *   Context.
+       */
+      // @ts-expect-error: custom token.
+      guillemets() {
+        this.raw('</g-uillemets>')
+      }
+    }
+  }
+
+  await t.test('baseline', async function () {
+    assert.deepEqual(micromark('a « b » c'), '<p>a « b » c</p>')
+  })
+
+  await t.test('should support text (trailing)', async function () {
+    assert.deepEqual(
+      micromark('a « b » c', {extensions: [syntax], htmlExtensions: [html]}),
+      '<p>a <g-uillemets> b </g-uillemets> c</p>'
+    )
+  })
+})
+
 /**
  * @param {number} marker
  *   Marker.

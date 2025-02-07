@@ -196,6 +196,11 @@ function resolveAllLineSuffixes(events, context) {
         }
       }
 
+      // Allow final trailing whitespace.
+      if (context._contentTypeTextTrailing && eventIndex === events.length) {
+        size = 0
+      }
+
       if (size) {
         const token = {
           type:

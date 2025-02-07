@@ -153,8 +153,17 @@ function subcontent(events, eventIndex) {
   /** @type {Array<number>} */
   const startPositions = []
   assert(token.contentType, 'expected `contentType` on subtokens')
-  const tokenizer =
-    token._tokenizer || context.parser[token.contentType](token.start)
+
+  let tokenizer = token._tokenizer
+
+  if (!tokenizer) {
+    tokenizer = context.parser[token.contentType](token.start)
+
+    if (token._contentTypeTextTrailing) {
+      tokenizer._contentTypeTextTrailing = true
+    }
+  }
+
   const childEvents = tokenizer.events
   /** @type {Array<[number, number]>} */
   const jumps = []
