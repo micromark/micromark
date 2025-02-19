@@ -1023,9 +1023,12 @@ test('emphasis', async function (t) {
   )
 
   await t.test(
-    'Should not throw even when input has isolated surrogate code units',
+    'Should not throw even when input has isolated surrogate code units and still return a string',
     async function () {
-      micromark('\uDC00*\uD800\n\na\uDBFF*\uDFFFa')
+      assert.equal(
+        typeof micromark('\uDC00*\uD800\n\na\uDBFF*\uDFFFa'),
+        'string'
+      )
     }
   )
 })
