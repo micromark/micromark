@@ -211,17 +211,17 @@ function tokenizeAttention(effects, ok) {
   const attentionMarkers = this.parser.constructs.attentionMarkers.null
   let previous = this.previous
   const {now, sliceSerialize} = this
-  // second (lower) surrogate likely to be preceded by first (higher) surrogate
+  // Second (lower) surrogate likely to be preceded by first (higher) surrogate
   if (previous && previous >= 0xdc_00 && previous <= 0xdf_ff) {
     const nowPoint = now() // @ first attention marker
     if (nowPoint._bufferIndex >= 2) {
       const previousBuffer = sliceSerialize({
-        // take 2 characters
+        // Take 2 characters
         start: {...nowPoint, _bufferIndex: nowPoint._bufferIndex - 2},
         end: nowPoint
       })
       const previousCandidate = previousBuffer.codePointAt(0)
-      // possibly undefined or non-surrogate (=lonely surrogate), so we have to make sure not
+      // Possibly undefined or non-surrogate (=lonely surrogate), so we have to make sure not
       if (previousCandidate && previousCandidate >= 65_536) {
         previous = previousCandidate
       }
@@ -275,7 +275,7 @@ function tokenizeAttention(effects, ok) {
 
     // To do: next major: move these to resolver, just like `markdown-rs`.
     let next = code
-    // possibly first (lower) surrogate
+    // Possibly first (lower) surrogate
     if (next && next >= 0xd8_00 && next <= 0xdf_ff) {
       const nowPoint = now() // @ first character next to attention marker
       const nextCandidate = sliceSerialize({
