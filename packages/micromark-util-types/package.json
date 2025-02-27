@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-types",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "micromark utility with a couple of typescript types",
   "license": "MIT",
   "keywords": [
