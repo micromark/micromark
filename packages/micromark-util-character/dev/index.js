@@ -205,7 +205,7 @@ export function markdownSpace(code) {
  */
 export const unicodePunctuation = regexCheck(/\p{P}|\p{S}/u)
 
-// No Unicode whitespace outside of BMP; Surrogate has its own category Cs
+// No Unicode whitespace outside of BMP; Surrogate code points have its own category Cs
 /**
  * Check whether the character code represents Unicode whitespace.
  *
