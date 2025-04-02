@@ -209,7 +209,25 @@ function resolveAllAttention(events, context) {
  */
 function tokenizeAttention(effects, ok) {
   const attentionMarkers = this.parser.constructs.attentionMarkers.null
-  const previous = this.previous
+  let previous = this.previous
+  const {now, sliceSerialize} = this
+  // Second (lower) surrogate code unit likely to be preceded by first (higher) surrogate code unit
+  if (previous && previous >= 0xdc_00 && previous <= 0xdf_ff) {
+    const nowPoint = now() // @ first attention marker
+    if (nowPoint._bufferIndex >= 2) {
+      const previousBuffer = sliceSerialize({
+        // Take 2 code units
+        start: {...nowPoint, _bufferIndex: nowPoint._bufferIndex - 2},
+        end: nowPoint
+      })
+      const previousCandidate = previousBuffer.codePointAt(0)
+      // Possibly undefined or not surrogate pair (i.e. isolated surrogate code unit), so we have to make sure not
+      if (previousCandidate && previousCandidate >= 65_536) {
+        previous = previousCandidate
+      }
+    }
+  }
+
   const before = classifyCharacter(previous)
 
   /** @type {NonNullable<Code>} */
@@ -255,8 +273,21 @@ function tokenizeAttention(effects, ok) {
 
     const token = effects.exit('attentionSequence')
 
-    // To do: next major: move this to resolver, just like `markdown-rs`.
-    const after = classifyCharacter(code)
+    // To do: next major: move these to resolver, just like `markdown-rs`.
+    let next = code
+    // Possibly first (lower) surrogate code unit
+    if (next && next >= 0xd8_00 && next <= 0xdf_ff) {
+      const nowPoint = now() // @ first code unit next to attention marker
+      const nextCandidate = sliceSerialize({
+        start: nowPoint,
+        end: {...nowPoint, _bufferIndex: nowPoint._bufferIndex + 2}
+      }).codePointAt(0)
+      if (nextCandidate && nextCandidate >= 65_536) {
+        next = nextCandidate
+      }
+    }
+
+    const after = classifyCharacter(next)
 
     // Always populated by defaults.
     assert(attentionMarkers, 'expected `attentionMarkers` to be populated')
