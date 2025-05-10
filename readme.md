@@ -1154,7 +1154,7 @@ A higher level project, [`mdast-util-from-markdown`][mdast-util-from-markdown],
 can give you an AST.
 
 ```js
-import { fromMarkdown } from 'mdast-util-from-markdown' // This wraps micromark.
+import {fromMarkdown} from 'mdast-util-from-markdown' // This wraps micromark.
 
 const result = fromMarkdown('## Hello, *world*!')
 
