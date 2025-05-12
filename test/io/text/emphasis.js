@@ -1001,4 +1001,34 @@ test('emphasis', async function (t) {
       '<p>*a*</p>'
     )
   })
+
+  await t.test(
+    'should recognize supplementary (non-BMP) punctuation & symbols (1)',
+    async function () {
+      assert.equal(
+        micromark('a*a𝜵*a\n\na*𝜵a*a\n\na*𐬻a*a\n\na*a𐬻*a'),
+        '<p>a*a𝜵*a</p>\n<p>a*𝜵a*a</p>\n<p>a*𐬻a*a</p>\n<p>a*a𐬻*a</p>'
+      )
+    }
+  )
+
+  await t.test(
+    'should recognize supplementary (non-BMP) punctuation & symbols (2)',
+    async function () {
+      assert.equal(
+        micromark('a**a𝜵**a\n\na**𝜵a**a\n\na**𐬻a**a\n\na**a𐬻**a'),
+        '<p>a**a𝜵**a</p>\n<p>a**𝜵a**a</p>\n<p>a**𐬻a**a</p>\n<p>a**a𐬻**a</p>'
+      )
+    }
+  )
+
+  await t.test(
+    'Should not throw even when input has isolated surrogate code units and still return a string',
+    async function () {
+      assert.equal(
+        typeof micromark('\uDC00*\uD800\n\na\uDBFF*\uDFFFa'),
+        'string'
+      )
+    }
+  )
 })
