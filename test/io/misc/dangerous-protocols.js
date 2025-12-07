@@ -38,6 +38,14 @@ test('dangerous-protocols', async function (t) {
         '<p><a href="mailto:a">mailto:a</a></p>'
       )
     })
+
+    await t.test('should allow `tel:`', async function () {
+      assert.equal(micromark('<tel:+1>'), '<p><a href="tel:+1">tel:+1</a></p>')
+    })
+
+    await t.test('should allow `sms:`', async function () {
+      assert.equal(micromark('<sms:+1>'), '<p><a href="sms:+1">sms:+1</a></p>')
+    })
   })
 
   await t.test('image', async function (t) {
@@ -134,6 +142,14 @@ test('dangerous-protocols', async function (t) {
 
     await t.test('should allow `mailto:`', async function () {
       assert.equal(micromark('[](mailto:a)'), '<p><a href="mailto:a"></a></p>')
+    })
+
+    await t.test('should allow `tel:`', async function () {
+      assert.equal(micromark('[](tel:+1)'), '<p><a href="tel:+1"></a></p>')
+    })
+
+    await t.test('should allow `sms:`', async function () {
+      assert.equal(micromark('[](sms:+1)'), '<p><a href="sms:+1"></a></p>')
     })
 
     await t.test('should allow a hash', async function () {

@@ -1159,7 +1159,7 @@ export interface CompileOptions {
    * URLs that have no protocol (which means it’s relative to the current page,
    * such as `./some/page.html`) and URLs that have a safe protocol (for
    * images: `http`, `https`; for links: `http`, `https`, `irc`, `ircs`,
-   * `mailto`, `xmpp`), are safe.
+   * `mailto`, `sms`, `tel`, `xmpp`), are safe.
    * All other URLs are dangerous and dropped.
    */
   allowDangerousProtocol?: boolean | null | undefined

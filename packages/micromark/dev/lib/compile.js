@@ -53,10 +53,12 @@ const hasOwnProperty = {}.hasOwnProperty
 /**
  * These two are allowlists of safe protocols for full URLs in respectively the
  * `href` (on `<a>`) and `src` (on `<img>`) attributes.
- * They are based on what is allowed on GitHub,
+ * https?|ircs?|mailto|xmpp are allowed on GitHub,
  * <https://github.com/syntax-tree/hast-util-sanitize/blob/9275b21/lib/github.json#L31>
+ * sms|tel are allowed on WordPress,
+ * <https://developer.wordpress.org/reference/functions/wp_allowed_protocols/>
  */
-const protocolHref = /^(https?|ircs?|mailto|xmpp)$/i
+const protocolHref = /^(https?|ircs?|mailto|sms|tel|xmpp)$/i
 const protocolSource = /^https?$/i
 
 /**
