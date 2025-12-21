@@ -1,5 +1,5 @@
 {
-  "name": "micromark-util-combine-extensions",
+  "name": "@oleksandrtsvirkun/micromark-util-combine-extensions",
   "version": "2.0.1",
   "description": "micromark utility to combine syntax or html extensions",
   "license": "MIT",
@@ -11,8 +11,8 @@
     "combine",
     "merge"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-combine-extensions",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-util-combine-extensions",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -36,8 +36,8 @@
   ],
   "exports": "./index.js",
   "dependencies": {
-    "micromark-util-chunked": "^2.0.0",
-    "micromark-util-types": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-util-chunked": "*",
+    "@oleksandrtsvirkun/micromark-util-types": "*"
   },
   "xo": {
     "envs": [

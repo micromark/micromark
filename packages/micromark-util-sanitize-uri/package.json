@@ -1,5 +1,5 @@
 {
-  "name": "micromark-util-sanitize-uri",
+  "name": "@oleksandrtsvirkun/micromark-util-sanitize-uri",
   "version": "2.0.1",
   "description": "micromark utility to sanitize urls",
   "license": "MIT",
@@ -11,8 +11,8 @@
     "clear",
     "url"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-sanitize-uri",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-util-sanitize-uri",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -40,12 +40,12 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-character": "^2.0.0",
-    "micromark-util-encode": "^2.0.0",
-    "micromark-util-symbol": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-util-character": "*",
+    "@oleksandrtsvirkun/micromark-util-encode": "*",
+    "@oleksandrtsvirkun/micromark-util-symbol": "*"
   },
   "scripts": {
-    "build": "micromark-build"
+    "build": "npx @oleksandrtsvirkun/micromark-build"
   },
   "xo": {
     "envs": [

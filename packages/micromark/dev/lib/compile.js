@@ -25,7 +25,7 @@
  *   LineEnding,
  *   NormalizedHtmlExtension,
  *   Token
- * } from 'micromark-util-types'
+ * } from '@oleksandrtsvirkun/micromark-util-types'
  */
 
 /**
@@ -40,13 +40,13 @@
 
 import {decodeNamedCharacterReference} from 'decode-named-character-reference'
 import {ok as assert} from 'devlop'
-import {push} from 'micromark-util-chunked'
-import {combineHtmlExtensions} from 'micromark-util-combine-extensions'
-import {decodeNumericCharacterReference} from 'micromark-util-decode-numeric-character-reference'
-import {encode as _encode} from 'micromark-util-encode'
-import {normalizeIdentifier} from 'micromark-util-normalize-identifier'
-import {sanitizeUri} from 'micromark-util-sanitize-uri'
-import {codes, constants, types} from 'micromark-util-symbol'
+import {push} from '@oleksandrtsvirkun/micromark-util-chunked'
+import {combineHtmlExtensions} from '@oleksandrtsvirkun/micromark-util-combine-extensions'
+import {decodeNumericCharacterReference} from '@oleksandrtsvirkun/micromark-util-decode-numeric-character-reference'
+import {encode as _encode} from '@oleksandrtsvirkun/micromark-util-encode'
+import {normalizeIdentifier} from '@oleksandrtsvirkun/micromark-util-normalize-identifier'
+import {sanitizeUri} from '@oleksandrtsvirkun/micromark-util-sanitize-uri'
+import {codes, constants, types} from '@oleksandrtsvirkun/micromark-util-symbol'
 
 const hasOwnProperty = {}.hasOwnProperty
 

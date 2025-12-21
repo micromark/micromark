@@ -1,5 +1,5 @@
 {
-  "name": "micromark-build",
+  "name": "@oleksandrtsvirkun/micromark-build",
   "version": "2.0.3",
   "description": "Build production files from dev files",
   "license": "MIT",
@@ -7,8 +7,8 @@
     "micromark",
     "build"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-build",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-build",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",

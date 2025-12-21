@@ -41,7 +41,7 @@ while (++index < files.length) {
     throw new Error('Unknown extension `' + extname + '`')
   }
 
-  const modules = ['micromark-util-symbol']
+  const modules = ['@oleksandrtsvirkun/micromark-util-symbol']
     .map(function (d) {
       try {
         return resolve(d, input.href)

@@ -1,5 +1,5 @@
 {
-  "name": "micromark-util-decode-numeric-character-reference",
+  "name": "@oleksandrtsvirkun/micromark-util-decode-numeric-character-reference",
   "version": "2.0.2",
   "description": "micromark utility to decode numeric character references",
   "license": "MIT",
@@ -13,8 +13,8 @@
     "character",
     "reference"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-decode-numeric-character-reference",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-util-decode-numeric-character-reference",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -42,10 +42,10 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-symbol": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-util-symbol": "*"
   },
   "scripts": {
-    "build": "micromark-build"
+    "build": "npx @oleksandrtsvirkun/micromark-build"
   },
   "xo": {
     "envs": [

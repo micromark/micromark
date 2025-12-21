@@ -1,5 +1,5 @@
 {
-  "name": "micromark-util-normalize-identifier",
+  "name": "@oleksandrtsvirkun/micromark-util-normalize-identifier",
   "version": "2.0.1",
   "description": "micromark utility normalize identifiers (as found in references, definitions)",
   "license": "MIT",
@@ -11,8 +11,8 @@
     "id",
     "identifier"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-normalize-identifier",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-util-normalize-identifier",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -40,10 +40,10 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-symbol": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-util-symbol": "*"
   },
   "scripts": {
-    "build": "micromark-build"
+    "build": "npx @oleksandrtsvirkun/micromark-build"
   },
   "xo": {
     "envs": [

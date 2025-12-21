@@ -1,12 +1,12 @@
 {
   "private": true,
-  "name": "micromark-mono",
+  "name": "@oleksandrtsvirkun/micromark-mono",
   "version": "0.0.1",
   "description": "",
   "license": "MIT",
   "keywords": [],
-  "repository": "micromark/micromark",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "OleksandrTsvirkun/micromark",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",

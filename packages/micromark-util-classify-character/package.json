@@ -1,5 +1,5 @@
 {
-  "name": "micromark-util-classify-character",
+  "name": "@oleksandrtsvirkun/micromark-util-classify-character",
   "version": "2.0.1",
   "description": "micromark utility to classify whether a character is whitespace or punctuation",
   "license": "MIT",
@@ -11,8 +11,8 @@
     "classify",
     "character"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-classify-character",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-util-classify-character",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -40,12 +40,12 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-character": "^2.0.0",
-    "micromark-util-symbol": "^2.0.0",
-    "micromark-util-types": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-util-character": "*",
+    "@oleksandrtsvirkun/micromark-util-symbol": "*",
+    "@oleksandrtsvirkun/micromark-util-types": "*"
   },
   "scripts": {
-    "build": "micromark-build"
+    "build": "npx @oleksandrtsvirkun/micromark-build"
   },
   "xo": {
     "envs": [

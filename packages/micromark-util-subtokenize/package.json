@@ -1,5 +1,5 @@
 {
-  "name": "micromark-util-subtokenize",
+  "name": "@oleksandrtsvirkun/micromark-util-subtokenize",
   "version": "2.1.0",
   "description": "micromark utility to tokenize subtokens",
   "license": "MIT",
@@ -9,8 +9,8 @@
     "utility",
     "tokenize"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-subtokenize",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-util-subtokenize",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -40,12 +40,12 @@
   },
   "dependencies": {
     "devlop": "^1.0.0",
-    "micromark-util-chunked": "^2.0.0",
-    "micromark-util-symbol": "^2.0.0",
-    "micromark-util-types": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-util-chunked": "*",
+    "@oleksandrtsvirkun/micromark-util-symbol": "*",
+    "@oleksandrtsvirkun/micromark-util-types": "*"
   },
   "scripts": {
-    "build": "micromark-build"
+    "build": "npx @oleksandrtsvirkun/micromark-build"
   },
   "xo": {
     "envs": [

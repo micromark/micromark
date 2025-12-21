@@ -1,5 +1,5 @@
 {
-  "name": "micromark",
+  "name": "@oleksandrtsvirkun/micromark",
   "version": "4.0.2",
   "description": "small commonmark compliant markdown parser with positional info and concrete tokens",
   "license": "MIT",
@@ -23,8 +23,8 @@
     "token",
     "tokenizer"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -66,22 +66,22 @@
     "debug": "^4.0.0",
     "decode-named-character-reference": "^1.0.0",
     "devlop": "^1.0.0",
-    "micromark-core-commonmark": "^2.0.0",
-    "micromark-factory-space": "^2.0.0",
-    "micromark-util-character": "^2.0.0",
-    "micromark-util-chunked": "^2.0.0",
-    "micromark-util-combine-extensions": "^2.0.0",
-    "micromark-util-decode-numeric-character-reference": "^2.0.0",
-    "micromark-util-encode": "^2.0.0",
-    "micromark-util-normalize-identifier": "^2.0.0",
-    "micromark-util-resolve-all": "^2.0.0",
-    "micromark-util-sanitize-uri": "^2.0.0",
-    "micromark-util-subtokenize": "^2.0.0",
-    "micromark-util-symbol": "^2.0.0",
-    "micromark-util-types": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-core-commonmark": "*",
+    "@oleksandrtsvirkun/micromark-factory-space": "*",
+    "@oleksandrtsvirkun/micromark-util-character": "*",
+    "@oleksandrtsvirkun/micromark-util-chunked": "*",
+    "@oleksandrtsvirkun/micromark-util-combine-extensions": "*",
+    "@oleksandrtsvirkun/micromark-util-decode-numeric-character-reference": "*",
+    "@oleksandrtsvirkun/micromark-util-encode": "*",
+    "@oleksandrtsvirkun/micromark-util-normalize-identifier": "*",
+    "@oleksandrtsvirkun/micromark-util-resolve-all": "*",
+    "@oleksandrtsvirkun/micromark-util-sanitize-uri": "*",
+    "@oleksandrtsvirkun/micromark-util-subtokenize": "*",
+    "@oleksandrtsvirkun/micromark-util-symbol": "*",
+    "@oleksandrtsvirkun/micromark-util-types": "*"
   },
   "scripts": {
-    "build": "micromark-build"
+    "build": "npx @oleksandrtsvirkun/micromark-build"
   },
   "xo": {
     "envs": [

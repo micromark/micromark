@@ -1,5 +1,5 @@
 {
-  "name": "micromark-factory-title",
+  "name": "@oleksandrtsvirkun/micromark-factory-title",
   "version": "2.0.1",
   "description": "micromark factory to parse markdown titles (found in resources, definitions)",
   "license": "MIT",
@@ -8,8 +8,8 @@
     "factory",
     "title"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-title",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-factory-title",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -37,13 +37,13 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-factory-space": "^2.0.0",
-    "micromark-util-character": "^2.0.0",
-    "micromark-util-symbol": "^2.0.0",
-    "micromark-util-types": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-factory-space": "*",
+    "@oleksandrtsvirkun/micromark-util-character": "*",
+    "@oleksandrtsvirkun/micromark-util-symbol": "*",
+    "@oleksandrtsvirkun/micromark-util-types": "*"
   },
   "scripts": {
-    "build": "micromark-build"
+    "build": "npx @oleksandrtsvirkun/micromark-build"
   },
   "xo": {
     "envs": [

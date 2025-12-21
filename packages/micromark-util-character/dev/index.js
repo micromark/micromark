@@ -1,8 +1,8 @@
 /**
- * @import {Code} from 'micromark-util-types'
+ * @import {Code} from '@oleksandrtsvirkun/micromark-util-types'
  */
 
-import {codes} from 'micromark-util-symbol'
+import {codes} from '@oleksandrtsvirkun/micromark-util-symbol'
 
 /**
  * Check whether the character code represents an ASCII alpha (`a` through `z`,

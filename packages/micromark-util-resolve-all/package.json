@@ -1,5 +1,5 @@
 {
-  "name": "micromark-util-resolve-all",
+  "name": "@oleksandrtsvirkun/micromark-util-resolve-all",
   "version": "2.0.1",
   "description": "micromark utility to resolve subtokens",
   "license": "MIT",
@@ -9,8 +9,8 @@
     "utility",
     "resolve"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-resolve-all",
-  "bugs": "https://github.com/micromark/micromark/issues",
+  "repository": "https://github.com/OleksandrTsvirkun/micromark/tree/main/packages/micromark-util-resolve-all",
+  "bugs": "https://github.com/OleksandrTsvirkun/micromark/issues",
   "funding": [
     {
       "type": "GitHub Sponsors",
@@ -34,7 +34,7 @@
   ],
   "exports": "./index.js",
   "dependencies": {
-    "micromark-util-types": "^2.0.0"
+    "@oleksandrtsvirkun/micromark-util-types": "*"
   },
   "xo": {
     "envs": [
