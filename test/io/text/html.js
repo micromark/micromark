@@ -463,4 +463,14 @@ test('html', async function (t) {
       '<p>a &lt;x&gt;</p>'
     )
   })
+
+  await t.test(
+    'should preserve white spaces in quoted attributes',
+    async function () {
+      assert.equal(
+        micromark('<a foo="  bar \n  baz" bim=\'\n  qux\'>', unsafe),
+        '<p><a foo="  bar \n  baz" bim=\'\n  qux\'></p>'
+      )
+    }
+  )
 })
