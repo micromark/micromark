@@ -750,16 +750,23 @@ function tokenizeHtmlText(effects, ok, nok) {
       self.parser.constructs.disable.null,
       'expected `disable.null` to be populated'
     )
-    return markdownSpace(code)
-      ? factorySpace(
-          effects,
-          lineEndingAfterPrefix,
-          types.linePrefix,
-          self.parser.constructs.disable.null.includes('codeIndented')
-            ? undefined
-            : constants.tabSize
-        )(code)
-      : lineEndingAfterPrefix(code)
+
+    if (!markdownSpace(code)) {
+      return lineEndingAfterPrefix(code)
+    }
+
+    if (marker === codes.quotationMark || marker === codes.apostrophe) {
+      return lineEndingAfterPrefix(code)
+    }
+
+    return factorySpace(
+      effects,
+      lineEndingAfterPrefix,
+      types.linePrefix,
+      self.parser.constructs.disable.null.includes('codeIndented')
+        ? undefined
+        : constants.tabSize
+    )(code)
   }
 
   /**
