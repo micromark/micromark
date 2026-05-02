@@ -37,7 +37,7 @@
  *   Nothing.
  */
 
-import createDebug from 'debug'
+import {createDebug} from 'obug'
 import {ok as assert} from 'devlop'
 import {markdownLineEnding} from 'micromark-util-character'
 import {push, splice} from 'micromark-util-chunked'
