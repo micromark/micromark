@@ -62,7 +62,6 @@
     }
   },
   "dependencies": {
-    "@types/debug": "^4.0.0",
     "obug": "^2.1.1",
     "decode-named-character-reference": "^1.0.0",
     "devlop": "^1.0.0",
