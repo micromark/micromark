@@ -75,6 +75,11 @@
     "typescript": "^5.0.0",
     "xo": "^0.60.0"
   },
+  "overrides": {
+    "c8": {
+      "yargs": "^17.7.3-candidate.0"
+    }
+  },
   "scripts": {
     "build": "tsc --build --clean && tsc && type-coverage && npm run build --workspaces --if-present && rollup -c --silent && gzip-size micromark.min.js && gzip-size --raw micromark.min.js",
     "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
