@@ -152,6 +152,41 @@ function createResolver(extraResolver) {
  *
  * @type {Resolver}
  */
+/**
+ * Count spaces immediately before a line ending.
+ * Tabs between trailing spaces and the line ending prevent hard breaks.
+ *
+ * @param {Array<string | number>} chunks
+ * @returns {number}
+ */
+function trailingHardBreakSpaces(chunks) {
+  let index = chunks.length
+  let trailingSpaces = 0
+
+  while (index--) {
+    const chunk = chunks[index]
+
+    if (typeof chunk === 'string') {
+      let at = chunk.length
+
+      while (at > 0 && chunk.charCodeAt(at - 1) === codes.space) {
+        trailingSpaces++
+        at--
+      }
+
+      if (at > 0) break
+    } else if (chunk === codes.horizontalTab) {
+      break
+    } else if (chunk === codes.virtualSpace) {
+      continue
+    } else {
+      break
+    }
+  }
+
+  return trailingSpaces
+}
+
 function resolveAllLineSuffixes(events, context) {
   let eventIndex = 0 // Skip first.
 
@@ -166,8 +201,6 @@ function resolveAllLineSuffixes(events, context) {
       let index = chunks.length
       let bufferIndex = -1
       let size = 0
-      /** @type {boolean | undefined} */
-      let tabs
 
       while (index--) {
         const chunk = chunks[index]
@@ -185,7 +218,6 @@ function resolveAllLineSuffixes(events, context) {
         }
         // Number
         else if (chunk === codes.horizontalTab) {
-          tabs = true
           size++
         } else if (chunk === codes.virtualSpace) {
           // Empty
@@ -196,6 +228,8 @@ function resolveAllLineSuffixes(events, context) {
         }
       }
 
+      const trailingSpaces = trailingHardBreakSpaces(chunks)
+
       // Allow final trailing whitespace.
       if (context._contentTypeTextTrailing && eventIndex === events.length) {
         size = 0
@@ -205,8 +239,7 @@ function resolveAllLineSuffixes(events, context) {
         const token = {
           type:
             eventIndex === events.length ||
-            tabs ||
-            size < constants.hardBreakPrefixSizeMin
+            trailingSpaces < constants.hardBreakPrefixSizeMin
               ? types.lineSuffix
               : types.hardBreakTrailing,
           start: {
