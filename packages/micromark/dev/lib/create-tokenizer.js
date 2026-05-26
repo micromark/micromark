@@ -37,14 +37,14 @@
  *   Nothing.
  */
 
-import createDebug from 'debug'
+import * as createDebug from 'debug'
 import {ok as assert} from 'devlop'
 import {markdownLineEnding} from 'micromark-util-character'
 import {push, splice} from 'micromark-util-chunked'
 import {resolveAll} from 'micromark-util-resolve-all'
 import {codes, values} from 'micromark-util-symbol'
 
-const debug = createDebug('micromark')
+const debug = (createDebug.default ?? createDebug)('micromark')
 
 /**
  * Create a tokenizer.
