@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+/**
+ * @import {PluginObj} from '@babel/core'
+ */
 
 // A tiny CLI to get (`.d.ts` and) `.js` files from `dev/`, make them ready for
 // production, and place them a directory higher.
@@ -14,11 +17,16 @@ import {resolve} from 'import-meta-resolve'
 import RelativizeUrl from 'relativize-url'
 
 const root = pathToFileURL(process.cwd())
+const debugConstantPath = pathToFileURL(
+  path.join(process.cwd(), 'dev/debug.js')
+)
 const files = await glob('./dev/**/*{.d.ts.map,.d.ts,.js}', {cwd: root})
 let index = -1
 
 while (++index < files.length) {
   const input = new URL(files[index], root + '/')
+  if (input.href === debugConstantPath.href) continue
+
   const output = new URL(input.href.replace(/\/dev\/(?!.*\/dev\/)/, '/'))
   const inputRelative = RelativizeUrl.relativize(input, root)
   const outputRelative = RelativizeUrl.relativize(output, root)
@@ -51,7 +59,13 @@ while (++index < files.length) {
     })
     .filter(Boolean)
 
-  const result = await babel(String(await fs.readFile(input)), {
+  // Check if ./debug.js file exists before inlining
+  try {
+    await fs.access(debugConstantPath)
+    modules.push(debugConstantPath.href)
+  } catch {}
+
+  const result = await babel(await fs.readFile(input, 'utf-8'), {
     filename: fileURLToPath(input),
     plugins: [
       [
@@ -67,8 +81,8 @@ while (++index < files.length) {
           ]
         }
       ],
-      'babel-plugin-undebug',
-      ['babel-plugin-inline-constants', {modules}]
+      ['babel-plugin-inline-constants', {modules}],
+      'babel-plugin-minify-dead-code-elimination'
     ]
   })
 
