@@ -97,16 +97,23 @@ test('hard-break', async function (t) {
     }
   )
 
+  await t.test(
+    'should support hard breaks when tabs precede trailing spaces',
+    async function () {
+      assert.equal(micromark('foo\t  \nbar'), '<p>foo<br />\nbar</p>')
+    }
+  )
+
   await t.test('should support a mixed line suffix (1)', async function () {
     assert.equal(micromark('aaa  \t\nbb'), '<p>aaa\nbb</p>')
   })
 
   await t.test('should support a mixed line suffix (2)', async function () {
-    assert.equal(micromark('aaa\t  \nbb'), '<p>aaa\nbb</p>')
+    assert.equal(micromark('aaa\t  \nbb'), '<p>aaa<br />\nbb</p>')
   })
 
   await t.test('should support a mixed line suffix (3)', async function () {
-    assert.equal(micromark('aaa  \t  \nbb'), '<p>aaa\nbb</p>')
+    assert.equal(micromark('aaa  \t  \nbb'), '<p>aaa<br />\nbb</p>')
   })
 
   await t.test(
@@ -141,14 +148,14 @@ test('hard-break', async function (t) {
   await t.test(
     'should support a mixed line suffix after a span (2)',
     async function () {
-      assert.equal(micromark('*a*\t  \nbb'), '<p><em>a</em>\nbb</p>')
+      assert.equal(micromark('*a*\t  \nbb'), '<p><em>a</em><br />\nbb</p>')
     }
   )
 
   await t.test(
     'should support a mixed line suffix after a span (3)',
     async function () {
-      assert.equal(micromark('*a*  \t  \nbb'), '<p><em>a</em>\nbb</p>')
+      assert.equal(micromark('*a*  \t  \nbb'), '<p><em>a</em><br />\nbb</p>')
     }
   )
 

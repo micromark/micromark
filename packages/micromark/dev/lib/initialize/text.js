@@ -166,8 +166,8 @@ function resolveAllLineSuffixes(events, context) {
       let index = chunks.length
       let bufferIndex = -1
       let size = 0
-      /** @type {boolean | undefined} */
-      let tabs
+      let trailingSpaces = 0
+      let inSpaceRun = true
 
       while (index--) {
         const chunk = chunks[index]
@@ -177,6 +177,7 @@ function resolveAllLineSuffixes(events, context) {
 
           while (chunk.charCodeAt(bufferIndex - 1) === codes.space) {
             size++
+            if (inSpaceRun) trailingSpaces++
             bufferIndex--
           }
 
@@ -185,8 +186,8 @@ function resolveAllLineSuffixes(events, context) {
         }
         // Number
         else if (chunk === codes.horizontalTab) {
-          tabs = true
           size++
+          inSpaceRun = false
         } else if (chunk === codes.virtualSpace) {
           // Empty
         } else {
@@ -202,11 +203,11 @@ function resolveAllLineSuffixes(events, context) {
       }
 
       if (size) {
+        // Only spaces contiguous with the line ending count as hard break spaces.
         const token = {
           type:
             eventIndex === events.length ||
-            tabs ||
-            size < constants.hardBreakPrefixSizeMin
+            trailingSpaces < constants.hardBreakPrefixSizeMin
               ? types.lineSuffix
               : types.hardBreakTrailing,
           start: {
