@@ -23,6 +23,13 @@ test('emphasis', async function (t) {
   )
 
   await t.test(
+    'should not support emphasis if the opening is followed by punctuation and not preceded by punctuation or whitespace (#220)',
+    async function () {
+      assert.equal(micromark('a*_*'), '<p>a*_*</p>')
+    }
+  )
+
+  await t.test(
     'should not support emphasis unicode whitespace either',
     async function () {
       assert.equal(micromark('* a *'), '<p>* a *</p>')
