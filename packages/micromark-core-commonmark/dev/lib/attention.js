@@ -254,17 +254,13 @@ function tokenizeAttention(effects, ok) {
     }
 
     const token = effects.exit('attentionSequence')
-
-    // To do: next major: move this to resolver, just like `markdown-rs`.
     const after = classifyCharacter(code)
 
     // Always populated by defaults.
     assert(attentionMarkers, 'expected `attentionMarkers` to be populated')
 
     const open =
-      !after ||
-      (after === constants.characterGroupPunctuation && before) ||
-      attentionMarkers.includes(code)
+      !after || (after === constants.characterGroupPunctuation && before)
     const close =
       !before ||
       (before === constants.characterGroupPunctuation && after) ||
