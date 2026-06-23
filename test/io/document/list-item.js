@@ -119,6 +119,16 @@ test('list-item', async function (t) {
   })
 
   await t.test(
+    'should support a non-`1` ordered list start after indented code (the start-with-1 rule applies only when interrupting a paragraph)',
+    async function () {
+      assert.equal(
+        micromark('    code\n\n2. xyz'),
+        '<pre><code>code\n</code></pre>\n<ol start="2">\n<li>xyz</li>\n</ol>'
+      )
+    }
+  )
+
+  await t.test(
     'should support ordered item values starting w/ `0`s',
     async function () {
       assert.equal(micromark('003. ok'), '<ol start="3">\n<li>ok</li>\n</ol>')

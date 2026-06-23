@@ -170,10 +170,18 @@ function initializeDocument(effects) {
       // If we do have flow, it could still be a blank line,
       // but we’d be interrupting it w/ a new container if there’s a current
       // construct.
+      // Indented code is an exception: it has no closing token and lingers as
+      // the current construct across the blank line that ends it, so it must
+      // not count as interruptible flow.
+      // Otherwise a following container such as `2. x` would wrongly be treated
+      // as interrupting a paragraph, and the "ordered lists must start with 1
+      // to interrupt" rule would misfire.
       // To do: next major: remove `_gfmTableDynamicInterruptHack` (no longer
       // needed in micromark-extension-gfm-table@1.0.6).
       self.interrupt = Boolean(
-        childFlow.currentConstruct && !childFlow._gfmTableDynamicInterruptHack
+        childFlow.currentConstruct &&
+        childFlow.currentConstruct.name !== 'codeIndented' &&
+        !childFlow._gfmTableDynamicInterruptHack
       )
     }
 
