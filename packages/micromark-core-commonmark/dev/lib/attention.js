@@ -78,16 +78,16 @@ function resolveAllAttention(events, context) {
           // and the close size *is not* a multiple of three,
           // but the sum of the opening and closing size *is* multiple of three,
           // then don’t match.
+          // Use original delimiter-run sizes, not leftover remaining markers.
+          const openSize = events[open][1]._size
+          const closeSize = events[index][1]._size
+          assert(openSize !== undefined, 'expected `_size` on opener')
+          assert(closeSize !== undefined, 'expected `_size` on closer')
+
           if (
             (events[open][1]._close || events[index][1]._open) &&
-            (events[index][1].end.offset - events[index][1].start.offset) % 3 &&
-            !(
-              (events[open][1].end.offset -
-                events[open][1].start.offset +
-                events[index][1].end.offset -
-                events[index][1].start.offset) %
-              3
-            )
+            closeSize % 3 &&
+            !((openSize + closeSize) % 3)
           ) {
             continue
           }
@@ -254,6 +254,7 @@ function tokenizeAttention(effects, ok) {
     }
 
     const token = effects.exit('attentionSequence')
+    token._size = token.end.offset - token.start.offset
 
     // To do: next major: move this to resolver, just like `markdown-rs`.
     const after = classifyCharacter(code)
