@@ -131,6 +131,16 @@ test('link (reference)', async function (t) {
   )
 
   await t.test(
+    'should use default rather than Turkic unicode case-folding',
+    async function () {
+      assert.equal(
+        micromark('[I]: /ascii\n\n[ı]: /dotless\n\n[ascii][i] [dotless][ı]'),
+        '<p><a href="/ascii">ascii</a> <a href="/dotless">dotless</a></p>'
+      )
+    }
+  )
+
+  await t.test(
     'should match references to definitions w/ collapsing',
     async function () {
       assert.equal(

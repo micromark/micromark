@@ -9,6 +9,8 @@ import {values} from 'micromark-util-symbol'
  * lowercase counterpart (U+03B8 (`θ`)) is uppercased will result in a different
  * uppercase character (U+0398 (`Θ`)).
  * So, to get a canonical form, we perform both lower- and uppercase.
+ * Dotless i (U+0131, `ı`) is preserved because default Unicode case folding
+ * does not equate it with ASCII i.
  *
  * Using uppercase last makes sure keys will never interact with default
  * prototypal values (such as `constructor`): nothing in the prototype of
@@ -32,7 +34,10 @@ export function normalizeIdentifier(value) {
       // Hence, to get that form, we perform both lower- and uppercase.
       // Upper case makes sure keys will not interact with default prototypal
       // methods: no method is uppercase.
-      .toLowerCase()
-      .toUpperCase()
+      // Keep dotless i (U+0131) out of that conversion: default Unicode case
+      // folding does not equate it with ASCII i.
+      .replace(/[^ı]+/g, function (value) {
+        return value.toLowerCase().toUpperCase()
+      })
   )
 }
