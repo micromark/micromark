@@ -1257,6 +1257,14 @@ test('html', async function (t) {
         micromark('- a\n<b>\n', unsafe),
         '<ul>\n<li>a\n<b></li>\n</ul>\n'
       )
+      assert.equal(
+        micromark('> a\n<b>\nc\n', unsafe),
+        '<blockquote>\n<p>a\n<b>\nc</p>\n</blockquote>\n'
+      )
+      assert.equal(
+        micromark('- a\n<b>', unsafe),
+        '<ul>\n<li>a\n<b></li>\n</ul>'
+      )
       assert.equal(micromark('a\n<b>\n', unsafe), '<p>a\n<b></p>\n')
     }
   )
