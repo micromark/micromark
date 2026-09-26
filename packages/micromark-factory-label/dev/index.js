@@ -142,7 +142,10 @@ export function factoryLabel(effects, ok, nok, type, markerType, stringType) {
     }
 
     effects.consume(code)
-    if (!seen) seen = !markdownSpace(code)
+    if (!seen) {
+      seen = !markdownSpace(code)
+    }
+
     return code === codes.backslash ? labelEscape : labelInside
   }
 

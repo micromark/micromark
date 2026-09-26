@@ -22,7 +22,9 @@ test('commonmark', async function (t) {
   let key
 
   for (key in sections) {
-    if (!hasOwnProperty.call(sections, key)) continue
+    if (!hasOwnProperty.call(sections, key)) {
+      continue
+    }
 
     const section = sections[key]
     let index = -1

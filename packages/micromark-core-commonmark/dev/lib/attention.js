@@ -33,22 +33,8 @@ export const attention = {
 // eslint-disable-next-line complexity
 function resolveAllAttention(events, context) {
   let index = -1
-  /** @type {number} */
-  let open
-  /** @type {Token} */
-  let group
-  /** @type {Token} */
-  let text
-  /** @type {Token} */
-  let openingSequence
-  /** @type {Token} */
-  let closingSequence
-  /** @type {number} */
-  let use
   /** @type {Array<Event>} */
   let nextEvents
-  /** @type {number} */
-  let offset
 
   // Walk through all events.
   //
@@ -61,7 +47,7 @@ function resolveAllAttention(events, context) {
       events[index][1].type === 'attentionSequence' &&
       events[index][1]._close
     ) {
-      open = index
+      let open = index
 
       // Now walk back to find an opener.
       while (open--) {
@@ -93,7 +79,7 @@ function resolveAllAttention(events, context) {
           }
 
           // Number of markers to use from the sequence.
-          use =
+          const use =
             events[open][1].end.offset - events[open][1].start.offset > 1 &&
             events[index][1].end.offset - events[index][1].start.offset > 1
               ? 2
@@ -104,22 +90,22 @@ function resolveAllAttention(events, context) {
           movePoint(start, -use)
           movePoint(end, use)
 
-          openingSequence = {
+          const openingSequence = {
             type: use > 1 ? types.strongSequence : types.emphasisSequence,
             start,
             end: {...events[open][1].end}
           }
-          closingSequence = {
+          const closingSequence = {
             type: use > 1 ? types.strongSequence : types.emphasisSequence,
             start: {...events[index][1].start},
             end
           }
-          text = {
+          const text = {
             type: use > 1 ? types.strongText : types.emphasisText,
             start: {...events[open][1].end},
             end: {...events[index][1].start}
           }
-          group = {
+          const group = {
             type: use > 1 ? types.strong : types.emphasis,
             start: {...openingSequence.start},
             end: {...closingSequence.end}
@@ -170,6 +156,9 @@ function resolveAllAttention(events, context) {
             ['exit', group, context]
           ])
 
+          /** @type {number} */
+          let offset = 0
+
           // If there are more markers in the closing, add them after.
           if (events[index][1].end.offset - events[index][1].start.offset) {
             offset = 2
@@ -177,8 +166,6 @@ function resolveAllAttention(events, context) {
               ['enter', events[index][1], context],
               ['exit', events[index][1], context]
             ])
-          } else {
-            offset = 0
           }
 
           splice(events, open - 1, index - open + 3, nextEvents)
@@ -292,14 +279,21 @@ function tokenizeAttention(effects, ok) {
     // Always populated by defaults.
     assert(attentionMarkers, 'expected `attentionMarkers` to be populated')
 
+    // Note: `*` and `_` are in `attentionMarkers` through core.
+    // They are excluded here as the loosening is meant for markers registered
+    // by *other* constructs (such as GFM strikethrough’s `~`).
     const open =
       !after ||
       (after === constants.characterGroupPunctuation && before) ||
-      attentionMarkers.includes(code)
+      (attentionMarkers.includes(code) &&
+        code !== codes.asterisk &&
+        code !== codes.underscore)
     const close =
       !before ||
       (before === constants.characterGroupPunctuation && after) ||
-      attentionMarkers.includes(previous)
+      (attentionMarkers.includes(previous) &&
+        previous !== codes.asterisk &&
+        previous !== codes.underscore)
 
     token._open = Boolean(
       marker === codes.asterisk ? open : open && (before || !close)

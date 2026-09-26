@@ -199,15 +199,12 @@ export function createTokenizer(parser, initialize, from) {
    *   Nothing.
    */
   function main() {
-    /** @type {number} */
-    let chunkIndex
-
     while (point._index < chunks.length) {
       const chunk = chunks[point._index]
 
       // If we’re in a buffer chunk, loop through it.
       if (typeof chunk === 'string') {
-        chunkIndex = point._index
+        const chunkIndex = point._index
 
         if (point._bufferIndex < 0) {
           point._bufferIndex = 0
@@ -669,7 +666,7 @@ function serializeChunks(chunks, expandTabs) {
 
     if (typeof chunk === 'string') {
       value = chunk
-    } else
+    } else {
       switch (chunk) {
         case codes.carriageReturn: {
           value = values.cr
@@ -696,7 +693,10 @@ function serializeChunks(chunks, expandTabs) {
         }
 
         case codes.virtualSpace: {
-          if (!expandTabs && atTab) continue
+          if (!expandTabs && atTab) {
+            continue
+          }
+
           value = values.space
 
           break
@@ -708,6 +708,7 @@ function serializeChunks(chunks, expandTabs) {
           value = String.fromCharCode(chunk)
         }
       }
+    }
 
     atTab = chunk === codes.horizontalTab
     result.push(value)

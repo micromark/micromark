@@ -28,10 +28,10 @@ export function decodeNumericCharacterReference(value, base) {
     (code > 55_295 && code < 57_344) ||
     // Noncharacters.
     (code > 64_975 && code < 65_008) ||
-    /* eslint-disable no-bitwise */
+    /* eslint-disable no-bitwise -- useful */
     (code & 65_535) === 65_535 ||
     (code & 65_535) === 65_534 ||
-    /* eslint-enable no-bitwise */
+    /* eslint-enable no-bitwise -- useful */
     // Out of range
     code > 1_114_111
   ) {

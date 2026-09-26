@@ -56,7 +56,10 @@ function syntaxExtension(all, extension) {
 
     if (right) {
       for (code in right) {
-        if (!hasOwnProperty.call(left, code)) left[code] = []
+        if (!hasOwnProperty.call(left, code)) {
+          left[code] = []
+        }
+
         const value = right[code]
         constructs(
           // @ts-expect-error Looks like a list.

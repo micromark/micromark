@@ -45,7 +45,9 @@ export function splice(list, start, remove, items) {
     list.splice(...parameters)
   } else {
     // Delete `remove` items starting from `start`
-    if (remove) list.splice(start, remove)
+    if (remove) {
+      list.splice(start, remove)
+    }
 
     // Insert the items in chunks to not cause stack overflows.
     while (chunkStart < items.length) {

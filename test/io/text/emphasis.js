@@ -62,6 +62,43 @@ test('emphasis', async function (t) {
     }
   )
 
+  await t.test(
+    'should not support emphasis if the opening is preceded by something else and followed by another marker (`_`)',
+    async function () {
+      assert.equal(micromark('a*_*'), '<p>a*_*</p>')
+    }
+  )
+
+  await t.test(
+    'should not support emphasis if the closing is preceded by another marker (`_`) and followed by something else',
+    async function () {
+      assert.equal(micromark('*x_*a'), '<p>*x_*a</p>')
+    }
+  )
+
+  await t.test(
+    'should not loosen flanking around `~` w/o extension',
+    async function () {
+      assert.equal(micromark('a*~b~*c'), '<p>a*~b~*c</p>')
+    }
+  )
+
+  await t.test(
+    'should still loosen flanking for markers registered by *other* constructs (such as GFM strikethrough)',
+    async function () {
+      // `*` and `_` themselves must not get that same loosening from
+      // each other (see above).
+      const tilde = 126
+
+      assert.equal(
+        micromark('a*~b~*c', {
+          extensions: [{attentionMarkers: {null: [tilde]}}]
+        }),
+        '<p>a<em>~b~</em>c</p>'
+      )
+    }
+  )
+
   await t.test('should not support intraword emphasis (1)', async function () {
     assert.equal(micromark('foo_bar_'), '<p>foo_bar_</p>')
   })
@@ -191,6 +228,41 @@ test('emphasis', async function (t) {
     'should not support strong emphasis if the opening is preceded by something else and followed by punctuation',
     async function () {
       assert.equal(micromark('a**"foo"**'), '<p>a**&quot;foo&quot;**</p>')
+    }
+  )
+
+  await t.test(
+    'should not support strong emphasis if the opening is preceded by something else and followed by another marker (`_`)',
+    async function () {
+      assert.equal(micromark('a**_**'), '<p>a**_**</p>')
+    }
+  )
+
+  await t.test(
+    'should not support strong emphasis if the closing is preceded by another marker (`_`) and followed by something else',
+    async function () {
+      assert.equal(micromark('**x_**a'), '<p>**x_**a</p>')
+    }
+  )
+
+  await t.test(
+    'should not loosen flanking around `~` without an extension registering it (strong)',
+    async function () {
+      assert.equal(micromark('a**~b~**c'), '<p>a**~b~**c</p>')
+    }
+  )
+
+  await t.test(
+    'should still loosen flanking for markers registered by *other* constructs (such as GFM strikethrough) (strong)',
+    async function () {
+      const tilde = 126
+
+      assert.equal(
+        micromark('a**~b~**c', {
+          extensions: [{attentionMarkers: {null: [tilde]}}]
+        }),
+        '<p>a<strong>~b~</strong>c</p>'
+      )
     }
   )
 

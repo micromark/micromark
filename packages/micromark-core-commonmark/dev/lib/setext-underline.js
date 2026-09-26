@@ -12,6 +12,7 @@
 import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
+import {EditMap} from 'micromark-util-edit-map'
 import {codes, types} from 'micromark-util-symbol'
 
 /** @type {Construct} */
@@ -23,7 +24,7 @@ export const setextUnderline = {
 
 /** @type {Resolver} */
 function resolveToSetextUnderline(events, context) {
-  // To do: resolve like `markdown-rs`.
+  const editMap = new EditMap()
   let index = events.length
   /** @type {number | undefined} */
   let content
@@ -49,7 +50,7 @@ function resolveToSetextUnderline(events, context) {
     else {
       if (events[index][1].type === types.content) {
         // Remove the content end (if needed we’ll add it later)
-        events.splice(index, 1)
+        editMap.add(index, 1, [])
       }
 
       if (!definition && events[index][1].type === types.definition) {
@@ -77,15 +78,17 @@ function resolveToSetextUnderline(events, context) {
   // If we have definitions in the content, we’ll keep on having content,
   // but we need move it.
   if (definition) {
-    events.splice(text, 0, ['enter', heading, context])
-    events.splice(definition + 1, 0, ['exit', events[content][1], context])
+    editMap.add(text, 0, [['enter', heading, context]])
+    editMap.add(definition + 1, 0, [['exit', events[content][1], context]])
     events[content][1].end = {...events[definition][1].end}
   } else {
     events[content][1] = heading
   }
 
   // Add the heading exit at the end.
-  events.push(['exit', heading, context])
+  editMap.add(events.length, 0, [['exit', heading, context]])
+
+  editMap.consume(events)
 
   return events
 }

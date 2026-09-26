@@ -23,18 +23,10 @@ export function subtokenize(eventsArray) {
   /** @type {Record<string, number>} */
   const jumps = {}
   let index = -1
-  /** @type {Event} */
-  let event
   /** @type {number | undefined} */
   let lineIndex
   /** @type {number} */
   let otherIndex
-  /** @type {Event} */
-  let otherEvent
-  /** @type {Array<Event>} */
-  let parameters
-  /** @type {Array<Event>} */
-  let subevents
   /** @type {boolean | undefined} */
   let more
   const events = new SpliceBuffer(eventsArray)
@@ -44,7 +36,7 @@ export function subtokenize(eventsArray) {
       index = jumps[index]
     }
 
-    event = events.get(index)
+    const event = events.get(index)
 
     // Add a hook for the GFM tasklist extension, which needs to know if text
     // is in the first content of a list item.
@@ -54,7 +46,7 @@ export function subtokenize(eventsArray) {
       events.get(index - 1)[1].type === types.listItemPrefix
     ) {
       assert(event[1]._tokenizer, 'expected `_tokenizer` on subtokens')
-      subevents = event[1]._tokenizer.events
+      const subevents = event[1]._tokenizer.events
       otherIndex = 0
 
       if (
@@ -95,7 +87,7 @@ export function subtokenize(eventsArray) {
       lineIndex = undefined
 
       while (otherIndex--) {
-        otherEvent = events.get(otherIndex)
+        const otherEvent = events.get(otherIndex)
 
         if (
           otherEvent[1].type === types.lineEnding ||
@@ -124,7 +116,7 @@ export function subtokenize(eventsArray) {
         event[1].end = {...events.get(lineIndex)[1].start}
 
         // Switch container exit w/ line endings.
-        parameters = events.slice(lineIndex, index)
+        const parameters = events.slice(lineIndex, index)
         parameters.unshift(event)
         events.splice(lineIndex, index - lineIndex + 1, parameters)
       }
@@ -132,7 +124,7 @@ export function subtokenize(eventsArray) {
   }
 
   // The changes to the `events` buffer must be copied back into the eventsArray
-  splice(eventsArray, 0, Number.POSITIVE_INFINITY, events.slice(0))
+  splice(eventsArray, 0, Infinity, events.slice(0))
   return !more
 }
 
@@ -169,8 +161,6 @@ function subcontent(events, eventIndex) {
   const jumps = []
   /** @type {Record<string, number>} */
   const gaps = {}
-  /** @type {Array<Chunk>} */
-  let stream
   /** @type {Token | undefined} */
   let previous
   let index = -1
@@ -197,7 +187,7 @@ function subcontent(events, eventIndex) {
     startPositions.push(startPosition)
 
     if (!current._tokenizer) {
-      stream = context.sliceStream(current)
+      const stream = context.sliceStream(current)
 
       if (!current.next) {
         stream.push(codes.eof)

@@ -10,6 +10,7 @@
  */
 
 import {ok as assert} from 'devlop'
+import {EditMap} from 'micromark-util-edit-map'
 import {codes, constants, types} from 'micromark-util-symbol'
 
 export const resolver = {resolveAll: createResolver()}
@@ -153,6 +154,7 @@ function createResolver(extraResolver) {
  * @type {Resolver}
  */
 function resolveAllLineSuffixes(events, context) {
+  const editMap = new EditMap()
   let eventIndex = 0 // Skip first.
 
   while (++eventIndex <= events.length) {
@@ -180,7 +182,10 @@ function resolveAllLineSuffixes(events, context) {
             bufferIndex--
           }
 
-          if (bufferIndex) break
+          if (bufferIndex) {
+            break
+          }
+
           bufferIndex = -1
         }
         // Number
@@ -226,19 +231,18 @@ function resolveAllLineSuffixes(events, context) {
         if (data.start.offset === data.end.offset) {
           Object.assign(data, token)
         } else {
-          events.splice(
-            eventIndex,
-            0,
+          editMap.add(eventIndex, 0, [
             ['enter', token, context],
             ['exit', token, context]
-          )
-          eventIndex += 2
+          ])
         }
       }
 
       eventIndex++
     }
   }
+
+  editMap.consume(events)
 
   return events
 }

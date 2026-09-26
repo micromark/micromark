@@ -364,7 +364,7 @@ export function compile(options) {
         } else {
           containerBalance--
         }
-      } else
+      } else {
         switch (event[1].type) {
           case types.listItemPrefix: {
             if (event[0] === 'exit') {
@@ -396,6 +396,7 @@ export function compile(options) {
             atMarker = undefined
           }
         }
+      }
     }
 
     slice[0][1]._loose = loose
@@ -431,7 +432,10 @@ export function compile(options) {
 
   /** @type {CompileContext['tag']} */
   function tag(value) {
-    if (!tags) return
+    if (!tags) {
+      return
+    }
+
     setData('lastWasTag', true)
     buffers[buffers.length - 1].push(value)
   }
@@ -689,7 +693,10 @@ export function compile(options) {
     }
 
     tag('</code></pre>')
-    if (count !== undefined && count < 2) lineEndingIfNeeded()
+    if (count !== undefined && count < 2) {
+      lineEndingIfNeeded()
+    }
+
     setData('flowCodeSeenData')
     setData('fencesCount')
     setData('slurpOneLineEnding')
@@ -909,7 +916,10 @@ export function compile(options) {
    */
   function onexitatxheadingsequence(token) {
     // Exit for further sequences.
-    if (getData('headingRank')) return
+    if (getData('headingRank')) {
+      return
+    }
+
     setData('headingRank', this.sliceSerialize(token).length)
     lineEndingIfNeeded()
     tag('<h' + getData('headingRank') + '>')

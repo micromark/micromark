@@ -36,36 +36,36 @@ const syntax = {
 
 test('syntax extension', async function (t) {
   await t.test('baseline (slash)', async function () {
-    assert.deepEqual(micromark('///'), '<p>///</p>')
+    assert.equal(micromark('///'), '<p>///</p>')
   })
 
   await t.test('baseline (less than)', async function () {
-    assert.deepEqual(micromark('<<<'), '<p>&lt;&lt;&lt;</p>')
+    assert.equal(micromark('<<<'), '<p>&lt;&lt;&lt;</p>')
   })
 
   await t.test('should support syntax extensions (slash)', async function () {
-    assert.deepEqual(micromark('///', {extensions: [syntax]}), '<hr />')
+    assert.equal(micromark('///', {extensions: [syntax]}), '<hr />')
   })
 
   await t.test(
     'should support syntax extensions for an existing hook (less than)',
     async function () {
-      assert.deepEqual(micromark('<<<', {extensions: [syntax]}), '<hr />')
+      assert.equal(micromark('<<<', {extensions: [syntax]}), '<hr />')
     }
   )
 
   await t.test('should not taint (slash)', async function () {
-    assert.deepEqual(micromark('///'), '<p>///</p>')
+    assert.equal(micromark('///'), '<p>///</p>')
   })
 
   await t.test('should not taint (less than)', async function () {
-    assert.deepEqual(micromark('<<<'), '<p>&lt;&lt;&lt;</p>')
+    assert.equal(micromark('<<<'), '<p>&lt;&lt;&lt;</p>')
   })
 
   await t.test(
     'should precede over previously attached constructs by default',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         micromark('a <i> b, 1 < 3', {
           allowDangerousHtml: true,
           extensions: [{text: {60: {tokenize: tokenizeJustALessThan}}}]
@@ -78,7 +78,7 @@ test('syntax extension', async function (t) {
   await t.test(
     'should go after previously attached constructs w/ `add: after`',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         micromark('a <i> b, 1 < 3', {
           allowDangerousHtml: true,
           extensions: [
@@ -106,11 +106,11 @@ test('html extension', async function (t) {
   }
 
   await t.test('baseline', async function () {
-    assert.deepEqual(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>')
+    assert.equal(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>')
   })
 
   await t.test('should support html extensions', async function () {
-    assert.deepEqual(
+    assert.equal(
       micromark('// a\n//\rb', {
         extensions: [syntax],
         htmlExtensions: [html]
@@ -120,13 +120,13 @@ test('html extension', async function (t) {
   })
 
   await t.test('should not taint', async function () {
-    assert.deepEqual(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>')
+    assert.equal(micromark('// a\n//\rb'), '<p>// a\n//\rb</p>')
   })
 
   await t.test(
     'should support html extensions for documents',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         micromark('!', {
           htmlExtensions: [
             /** @type {HtmlExtension} */
@@ -141,7 +141,7 @@ test('html extension', async function (t) {
   await t.test(
     'should support html extensions for empty documents',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         micromark('', {
           htmlExtensions: [
             /** @type {HtmlExtension} */
@@ -177,7 +177,9 @@ test('text (trailing) extension', async function (t) {
 
           /** @type {State} */
           function start(code) {
-            if (code !== 171) return nok(code)
+            if (code !== 171) {
+              return nok(code)
+            }
 
             // @ts-expect-error: custom.
             effects.enter('guillemets')
@@ -252,11 +254,11 @@ test('text (trailing) extension', async function (t) {
   }
 
   await t.test('baseline', async function () {
-    assert.deepEqual(micromark('a « b » c'), '<p>a « b » c</p>')
+    assert.equal(micromark('a « b » c'), '<p>a « b » c</p>')
   })
 
   await t.test('should support text (trailing)', async function () {
-    assert.deepEqual(
+    assert.equal(
       micromark('a « b » c', {extensions: [syntax], htmlExtensions: [html]}),
       '<p>a <g-uillemets> b </g-uillemets> c</p>'
     )

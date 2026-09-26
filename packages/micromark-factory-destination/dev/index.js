@@ -57,7 +57,7 @@ export function factoryDestination(
   stringType,
   max
 ) {
-  const limit = max || Number.POSITIVE_INFINITY
+  const limit = max || Infinity
   let balance = 0
 
   return start

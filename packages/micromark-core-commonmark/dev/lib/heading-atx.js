@@ -30,10 +30,6 @@ export const headingAtx = {
 function resolveHeadingAtx(events, context) {
   let contentEnd = events.length - 2
   let contentStart = 3
-  /** @type {Token} */
-  let content
-  /** @type {Token} */
-  let text
 
   // Prefix whitespace, part of the opening.
   if (events[contentStart][1].type === types.whitespace) {
@@ -58,12 +54,12 @@ function resolveHeadingAtx(events, context) {
   }
 
   if (contentEnd > contentStart) {
-    content = {
+    const content = {
       type: types.atxHeadingText,
       start: events[contentStart][1].start,
       end: events[contentEnd][1].end
     }
-    text = {
+    const text = {
       type: types.chunkText,
       start: events[contentStart][1].start,
       end: events[contentEnd][1].end,

@@ -1,14 +1,17 @@
 {
-  "name": "micromark-factory-destination",
-  "version": "2.0.1",
-  "description": "micromark factory to parse destinations (found in resources, definitions)",
+  "name": "micromark-util-edit-map",
+  "version": "0.0.0",
+  "description": "micromark utility to batch changes to lists of events",
   "license": "MIT",
   "keywords": [
     "micromark",
-    "factory",
-    "destination"
+    "util",
+    "utility",
+    "edit",
+    "map",
+    "splice"
   ],
-  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-destination",
+  "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-edit-map",
   "bugs": "https://github.com/micromark/micromark/issues",
   "funding": [
     {
@@ -37,8 +40,6 @@
     "default": "./index.js"
   },
   "dependencies": {
-    "micromark-util-character": "^2.0.0",
-    "micromark-util-symbol": "^2.0.0",
     "micromark-util-types": "^2.0.0"
   },
   "scripts": {

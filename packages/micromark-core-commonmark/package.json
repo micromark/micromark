@@ -48,6 +48,7 @@
     "micromark-util-character": "^2.0.0",
     "micromark-util-chunked": "^2.0.0",
     "micromark-util-classify-character": "^2.0.0",
+    "micromark-util-edit-map": "^0.0.0",
     "micromark-util-html-tag-name": "^2.0.0",
     "micromark-util-normalize-identifier": "^2.0.0",
     "micromark-util-resolve-all": "^2.0.0",
@@ -57,18 +58,5 @@
   },
   "scripts": {
     "build": "micromark-build"
-  },
-  "xo": {
-    "envs": [
-      "shared-node-browser"
-    ],
-    "prettier": true,
-    "rules": {
-      "logical-assignment-operators": "off",
-      "max-depth": "off",
-      "unicorn/no-this-assignment": "off",
-      "unicorn/prefer-at": "off",
-      "unicorn/prefer-code-point": "off"
-    }
   }
 }

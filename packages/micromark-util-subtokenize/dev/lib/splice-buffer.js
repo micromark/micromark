@@ -63,7 +63,10 @@ export class SpliceBuffer {
       )
     }
 
-    if (index < this.left.length) return this.left[index]
+    if (index < this.left.length) {
+      return this.left[index]
+    }
+
     return this.right[this.right.length - index + this.left.length - 1]
   }
 
@@ -100,8 +103,7 @@ export class SpliceBuffer {
    */
   slice(start, end) {
     /** @type {number} */
-    const stop =
-      end === null || end === undefined ? Number.POSITIVE_INFINITY : end
+    const stop = end === null || end === undefined ? Infinity : end
 
     if (stop < this.left.length) {
       return this.left.slice(start, stop)
@@ -148,11 +150,11 @@ export class SpliceBuffer {
     const count = deleteCount || 0
 
     this.setCursor(Math.trunc(start))
-    const removed = this.right.splice(
-      this.right.length - count,
-      Number.POSITIVE_INFINITY
-    )
-    if (items) chunkedPush(this.left, items)
+    const removed = this.right.splice(this.right.length - count, Infinity)
+    if (items) {
+      chunkedPush(this.left, items)
+    }
+
     return removed.reverse()
   }
 
@@ -165,7 +167,7 @@ export class SpliceBuffer {
    *   Item, optional.
    */
   pop() {
-    this.setCursor(Number.POSITIVE_INFINITY)
+    this.setCursor(Infinity)
     return this.left.pop()
   }
 
@@ -179,7 +181,7 @@ export class SpliceBuffer {
    *   Nothing.
    */
   push(item) {
-    this.setCursor(Number.POSITIVE_INFINITY)
+    this.setCursor(Infinity)
     this.left.push(item)
   }
 
@@ -193,7 +195,7 @@ export class SpliceBuffer {
    *   Nothing.
    */
   pushMany(items) {
-    this.setCursor(Number.POSITIVE_INFINITY)
+    this.setCursor(Infinity)
     chunkedPush(this.left, items)
   }
 
@@ -242,17 +244,19 @@ export class SpliceBuffer {
       n === this.left.length ||
       (n > this.left.length && this.right.length === 0) ||
       (n < 0 && this.left.length === 0)
-    )
+    ) {
       return
+    }
+
     if (n < this.left.length) {
       // Move cursor to the this.left
-      const removed = this.left.splice(n, Number.POSITIVE_INFINITY)
+      const removed = this.left.splice(n, Infinity)
       chunkedPush(this.right, removed.reverse())
     } else {
       // Move cursor to the this.right
       const removed = this.right.splice(
         this.left.length + this.right.length - n,
-        Number.POSITIVE_INFINITY
+        Infinity
       )
       chunkedPush(this.left, removed.reverse())
     }

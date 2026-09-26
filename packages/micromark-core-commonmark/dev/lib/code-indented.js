@@ -8,7 +8,7 @@
  */
 
 import {ok as assert} from 'devlop'
-import {factorySpace} from 'micromark-factory-space'
+import {factorySpaceMinMax} from 'micromark-factory-space'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
 
@@ -27,7 +27,6 @@ const furtherStart = {partial: true, tokenize: tokenizeFurtherStart}
  * @type {Tokenizer}
  */
 function tokenizeCodeIndented(effects, ok, nok) {
-  const self = this
   return start
 
   /**
@@ -48,33 +47,14 @@ function tokenizeCodeIndented(effects, ok, nok) {
     // To do: manually check if interrupting like `markdown-rs`.
     assert(markdownSpace(code))
     effects.enter(types.codeIndented)
-    // To do: use an improved `space_or_tab` function like `markdown-rs`,
-    // so that we can drop the next state.
-    return factorySpace(
+    return factorySpaceMinMax(
       effects,
-      afterPrefix,
+      atBreak,
+      nok,
       types.linePrefix,
-      constants.tabSize + 1
+      constants.tabSize,
+      constants.tabSize
     )(code)
-  }
-
-  /**
-   * At start, after 1 or 4 spaces.
-   *
-   * ```markdown
-   * > |     aaa
-   *         ^
-   * ```
-   *
-   * @type {State}
-   */
-  function afterPrefix(code) {
-    const tail = self.events[self.events.length - 1]
-    return tail &&
-      tail[1].type === types.linePrefix &&
-      tail[2].sliceSerialize(tail[1], true).length >= constants.tabSize
-      ? atBreak(code)
-      : nok(code)
   }
 
   /**
@@ -168,35 +148,31 @@ function tokenizeFurtherStart(effects, ok, nok) {
     // To do: the code here in `micromark-js` is a bit different from
     // `markdown-rs` because there it can attempt spaces.
     // We can’t yet.
-    //
-    // To do: use an improved `space_or_tab` function like `markdown-rs`,
-    // so that we can drop the next state.
-    return factorySpace(
+    return factorySpaceMinMax(
       effects,
-      afterPrefix,
+      ok,
+      onNotEnoughPrefix,
       types.linePrefix,
-      constants.tabSize + 1
+      constants.tabSize,
+      constants.tabSize
     )(code)
   }
 
   /**
-   * At start, after 1 or 4 spaces.
+   * After not enough of a prefix.
+   *
+   * A following line ending is another (potentially blank) line to try,
+   * anything else means this isn’t a continuation.
    *
    * ```markdown
    * > |     aaa
-   *         ^
+   *
+   *   |     bbb
    * ```
    *
    * @type {State}
    */
-  function afterPrefix(code) {
-    const tail = self.events[self.events.length - 1]
-    return tail &&
-      tail[1].type === types.linePrefix &&
-      tail[2].sliceSerialize(tail[1], true).length >= constants.tabSize
-      ? ok(code)
-      : markdownLineEnding(code)
-        ? furtherStart(code)
-        : nok(code)
+  function onNotEnoughPrefix(code) {
+    return markdownLineEnding(code) ? furtherStart(code) : nok(code)
   }
 }

@@ -11,6 +11,7 @@ test('splice', async function (t) {
       /** @type {Array<number>} */
       const list = []
 
+      // eslint-disable-next-line node-test/require-throws-expectation -- Error message depends on engine, something like "Maximum call stack size exceeded".
       assert.throws(function () {
         list.splice(0, 0, ...lots)
       })

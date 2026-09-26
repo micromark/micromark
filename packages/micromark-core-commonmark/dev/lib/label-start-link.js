@@ -2,6 +2,7 @@
  * @import {
  *   Construct,
  *   State,
+ *   Token,
  *   TokenizeContext,
  *   Tokenizer
  * } from 'micromark-util-types'
@@ -25,6 +26,8 @@ export const labelStartLink = {
  */
 function tokenizeLabelStartLink(effects, ok, nok) {
   const self = this
+  /** @type {Token} */
+  let labelLink
 
   return start
 
@@ -44,7 +47,7 @@ function tokenizeLabelStartLink(effects, ok, nok) {
     effects.enter(types.labelMarker)
     effects.consume(code)
     effects.exit(types.labelMarker)
-    effects.exit(types.labelLink)
+    labelLink = effects.exit(types.labelLink)
     return after
   }
 
@@ -53,10 +56,16 @@ function tokenizeLabelStartLink(effects, ok, nok) {
     // To do: this isn’t needed in `micromark-extension-gfm-footnote`,
     // remove.
     // Hidden footnotes hook.
-    /* c8 ignore next 3 */
-    return code === codes.caret &&
+    /* c8 ignore next 6 */
+    if (
+      code === codes.caret &&
       '_hiddenFootnoteSupport' in self.parser.constructs
-      ? nok(code)
-      : ok(code)
+    ) {
+      return nok(code)
+    }
+
+    self._labelStarts = self._labelStarts || []
+    self._labelStarts.push(labelLink)
+    return ok(code)
   }
 }

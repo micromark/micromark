@@ -20,7 +20,7 @@ const config = {
     freeze: false,
     plugins: [
       // Running terser twice shaves a couple of bytes off.
-      /* eslint-disable camelcase */
+      /* eslint-disable camelcase -- terser uses camelcase options */
       terser({mangle: {safari10: true}, output: {ascii_only: true}}),
       terser({mangle: {safari10: true}, output: {ascii_only: true}})
       /* eslint-enable camelcase */

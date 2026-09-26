@@ -30,14 +30,5 @@
   "files": [
     "lib/"
   ],
-  "exports": "./lib/default.js",
-  "xo": {
-    "envs": [
-      "shared-node-browser"
-    ],
-    "prettier": true,
-    "rules": {
-      "unicorn/prefer-code-point": "off"
-    }
-  }
+  "exports": "./lib/default.js"
 }

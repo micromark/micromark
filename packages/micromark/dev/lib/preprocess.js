@@ -36,26 +36,15 @@ export function preprocess() {
   /** @type {Preprocessor} */
   // eslint-disable-next-line complexity
   function preprocessor(value, encoding, end) {
-    /** @type {Array<Chunk>} */
-    const chunks = []
-    /** @type {RegExpMatchArray | null} */
-    let match
-    /** @type {number} */
-    let next
-    /** @type {number} */
-    let startPosition
-    /** @type {number} */
-    let endPosition
-    /** @type {Code} */
-    let code
-
     value =
       buffer +
       (typeof value === 'string'
         ? value.toString()
         : new TextDecoder(encoding || undefined).decode(value))
 
-    startPosition = 0
+    /** @type {Array<Chunk>} */
+    const chunks = []
+    let startPosition = 0
     buffer = ''
 
     if (start) {
@@ -69,10 +58,10 @@ export function preprocess() {
 
     while (startPosition < value.length) {
       search.lastIndex = startPosition
-      match = search.exec(value)
-      endPosition =
+      const match = search.exec(value)
+      const endPosition =
         match && match.index !== undefined ? match.index : value.length
-      code = value.charCodeAt(endPosition)
+      const code = value.charCodeAt(endPosition)
 
       if (!match) {
         buffer = value.slice(startPosition)
@@ -106,9 +95,12 @@ export function preprocess() {
           }
 
           case codes.ht: {
-            next = Math.ceil(column / constants.tabSize) * constants.tabSize
+            const next =
+              Math.ceil(column / constants.tabSize) * constants.tabSize
             chunks.push(codes.horizontalTab)
-            while (column++ < next) chunks.push(codes.virtualSpace)
+            while (column++ < next) {
+              chunks.push(codes.virtualSpace)
+            }
 
             break
           }
@@ -131,8 +123,14 @@ export function preprocess() {
     }
 
     if (end) {
-      if (atCarriageReturn) chunks.push(codes.carriageReturn)
-      if (buffer) chunks.push(buffer)
+      if (atCarriageReturn) {
+        chunks.push(codes.carriageReturn)
+      }
+
+      if (buffer) {
+        chunks.push(buffer)
+      }
+
       chunks.push(codes.eof)
     }
 

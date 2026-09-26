@@ -34,14 +34,5 @@
     "index.d.ts",
     "index.js"
   ],
-  "exports": "./index.js",
-  "xo": {
-    "envs": [
-      "shared-node-browser"
-    ],
-    "prettier": true,
-    "rules": {
-      "unicorn/prefer-code-point": "off"
-    }
-  }
+  "exports": "./index.js"
 }

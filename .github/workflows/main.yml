@@ -3,13 +3,13 @@ jobs:
     name: canary / ${{matrix.package}}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: node
       - run: npm install
       - run: npm run build
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           path: canary/${{matrix.package}}
           repository: ${{matrix.package}}
@@ -35,17 +35,17 @@ jobs:
     name: ${{matrix.node}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{matrix.node}}
       - run: npm install
       - run: npm test
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v7
     strategy:
       matrix:
         node:
-          - lts/hydrogen
+          - lts/jod
           - node
         os:
           - ubuntu-latest

@@ -59,13 +59,7 @@ test('SpliceBuffer', async function (t) {
     assert.deepEqual(sb.slice(6), ['7', '8', '9'])
     assert.equal(sb.pop(), '9')
     assert.equal(sb.shift(), '1')
-    assert.deepEqual(sb.splice(2, Number.POSITIVE_INFINITY), [
-      'a',
-      'x',
-      'd',
-      '7',
-      '8'
-    ])
+    assert.deepEqual(sb.splice(2, Infinity), ['a', 'x', 'd', '7', '8'])
     assert.equal(sb.pop(), '3')
     assert.equal(sb.shift(), '2')
     assert.equal(sb.pop(), undefined)

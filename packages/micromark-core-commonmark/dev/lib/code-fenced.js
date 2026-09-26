@@ -12,12 +12,7 @@ import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding, markdownSpace} from 'micromark-util-character'
 import {codes, constants, types} from 'micromark-util-symbol'
-
-/** @type {Construct} */
-const nonLazyContinuation = {
-  partial: true,
-  tokenize: tokenizeNonLazyContinuation
-}
+import {nonLazyContinuation} from './partial-non-lazy-continuation.js'
 
 /** @type {Construct} */
 export const codeFenced = {
@@ -473,42 +468,5 @@ function tokenizeCodeFenced(effects, ok, nok) {
 
       return nok(code)
     }
-  }
-}
-
-/**
- * @this {TokenizeContext}
- *   Context.
- * @type {Tokenizer}
- */
-function tokenizeNonLazyContinuation(effects, ok, nok) {
-  const self = this
-
-  return start
-
-  /**
-   *
-   *
-   * @type {State}
-   */
-  function start(code) {
-    if (code === codes.eof) {
-      return nok(code)
-    }
-
-    assert(markdownLineEnding(code), 'expected eol')
-    effects.enter(types.lineEnding)
-    effects.consume(code)
-    effects.exit(types.lineEnding)
-    return lineStart
-  }
-
-  /**
-   *
-   *
-   * @type {State}
-   */
-  function lineStart(code) {
-    return self.parser.lazy[self.now().line] ? nok(code) : ok(code)
   }
 }

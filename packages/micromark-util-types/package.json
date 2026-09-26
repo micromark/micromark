@@ -33,39 +33,5 @@
     "index.d.ts",
     "index.js"
   ],
-  "exports": "./index.js",
-  "xo": {
-    "envs": [
-      "shared-node-browser"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/*.d.ts"
-        ],
-        "rules": {
-          "@typescript-eslint/array-type": [
-            "error",
-            {
-              "default": "generic"
-            }
-          ],
-          "@typescript-eslint/ban-types": [
-            "error",
-            {
-              "extendDefaults": true
-            }
-          ],
-          "@typescript-eslint/consistent-type-definitions": [
-            "error",
-            "interface"
-          ]
-        }
-      }
-    ],
-    "prettier": true,
-    "rules": {
-      "unicorn/text-encoding-identifier-case": "off"
-    }
-  }
+  "exports": "./index.js"
 }

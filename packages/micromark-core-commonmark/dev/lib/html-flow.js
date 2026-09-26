@@ -20,6 +20,7 @@ import {
 import {htmlBlockNames, htmlRawNames} from 'micromark-util-html-tag-name'
 import {codes, constants, types} from 'micromark-util-symbol'
 import {blankLine} from './blank-line.js'
+import {nonLazyContinuation} from './partial-non-lazy-continuation.js'
 
 /** @type {Construct} */
 export const htmlFlow = {
@@ -31,10 +32,6 @@ export const htmlFlow = {
 
 /** @type {Construct} */
 const blankLineBefore = {partial: true, tokenize: tokenizeBlankLineBefore}
-const nonLazyContinuationStart = {
-  partial: true,
-  tokenize: tokenizeNonLazyContinuationStart
-}
 
 /** @type {Resolver} */
 function resolveToHtmlFlow(events) {
@@ -704,7 +701,7 @@ function tokenizeHtmlFlow(effects, ok, nok) {
    */
   function continuationStart(code) {
     return effects.check(
-      nonLazyContinuationStart,
+      nonLazyContinuation,
       continuationStartNonLazy,
       continuationAfter
     )(code)
@@ -909,54 +906,6 @@ function tokenizeHtmlFlow(effects, ok, nok) {
     // // No longer concrete.
     // tokenizer.concrete = false
     return ok(code)
-  }
-}
-
-/**
- * @this {TokenizeContext}
- *   Context.
- * @type {Tokenizer}
- */
-function tokenizeNonLazyContinuationStart(effects, ok, nok) {
-  const self = this
-
-  return start
-
-  /**
-   * At eol, before continuation.
-   *
-   * ```markdown
-   * > | * ```js
-   *            ^
-   *   | b
-   * ```
-   *
-   * @type {State}
-   */
-  function start(code) {
-    if (markdownLineEnding(code)) {
-      effects.enter(types.lineEnding)
-      effects.consume(code)
-      effects.exit(types.lineEnding)
-      return after
-    }
-
-    return nok(code)
-  }
-
-  /**
-   * A continuation.
-   *
-   * ```markdown
-   *   | * ```js
-   * > | b
-   *     ^
-   * ```
-   *
-   * @type {State}
-   */
-  function after(code) {
-    return self.parser.lazy[self.now().line] ? nok(code) : ok(code)
   }
 }
 
