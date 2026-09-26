@@ -42,7 +42,7 @@
     "devlop": "^1.0.0",
     "micromark-factory-destination": "^2.0.0",
     "micromark-factory-label": "^2.0.0",
-    "micromark-factory-space": "^2.0.0",
+    "micromark-factory-space": "^2.1.0",
     "micromark-factory-title": "^2.0.0",
     "micromark-factory-whitespace": "^2.0.0",
     "micromark-util-character": "^2.0.0",
@@ -54,7 +54,7 @@
     "micromark-util-resolve-all": "^2.0.0",
     "micromark-util-subtokenize": "^2.0.0",
     "micromark-util-symbol": "^2.0.0",
-    "micromark-util-types": "^2.0.0"
+    "micromark-util-types": "^2.0.3"
   },
   "scripts": {
     "build": "micromark-build"
