@@ -312,8 +312,8 @@ function tokenizeHtmlFlow(effects, ok, nok) {
       }
 
       marker = constants.htmlComplete
-      // Do not support complete HTML when interrupting.
-      return self.interrupt && !self.parser.lazy[self.now().line]
+      // Complete HTML cannot interrupt a paragraph, even on a lazy line.
+      return self.interrupt
         ? nok(code)
         : closingTag
           ? completeClosingTagAfter(code)
