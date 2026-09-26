@@ -5,6 +5,7 @@
  *   Initializer,
  *   Resolver,
  *   State,
+ *   Token,
  *   TokenizeContext
  * } from 'micromark-util-types'
  */
@@ -114,29 +115,39 @@ function createResolver(extraResolver) {
 
   /** @type {Resolver} */
   function resolveAllText(events, context) {
+    // Merge adjacent `data` events in one pass. Constructs registered on
+    // letters (GFM's email autolink literal, for one) end the running `data`
+    // token at every word start, so a paragraph of many lines produces a run
+    // of `data` fragments per line; a splice per run costs the rest of the
+    // array each time, quadratic in the lines. Instead every kept event is
+    // copied down to `write`, and a fragment that follows another `data`
+    // token is folded into it.
     let index = -1
-    /** @type {number | undefined} */
-    let enter
+    let write = 0
+    /** @type {Token | undefined} */
+    let run
 
-    // A rather boring computation (to merge adjacent `data` events) which
-    // improves mm performance by 29%.
-    while (++index <= events.length) {
-      if (enter === undefined) {
-        if (events[index] && events[index][1].type === types.data) {
-          enter = index
+    while (++index < events.length) {
+      const event = events[index]
+      const token = event[1]
+
+      if (token.type === types.data) {
+        // A `data` token is a leaf: its exit is the next event.
+        if (event[0] === 'enter' && run) {
+          run.end = token.end
           index++
-        }
-      } else if (!events[index] || events[index][1].type !== types.data) {
-        // Don’t do anything if there is one data token.
-        if (index !== enter + 2) {
-          events[enter][1].end = events[index - 1][1].end
-          events.splice(enter + 2, index - enter - 2)
-          index = enter + 2
+          continue
         }
 
-        enter = undefined
+        run = token
+      } else {
+        run = undefined
       }
+
+      events[write++] = event
     }
+
+    events.length = write
 
     return extraResolver ? extraResolver(events, context) : events
   }
