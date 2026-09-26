@@ -1237,10 +1237,29 @@ test('html', async function (t) {
     await t.test('should not support lazyness (2)', async function () {
       assert.equal(
         micromark('> a\n<a>', unsafe),
-        '<blockquote>\n<p>a</p>\n</blockquote>\n<a>'
+        '<blockquote>\n<p>a\n<a></p>\n</blockquote>'
       )
     })
   })
+
+  await t.test(
+    'should keep lazy complete tags in paragraphs',
+    async function () {
+      assert.equal(
+        micromark('> a\n<b>\n', unsafe),
+        '<blockquote>\n<p>a\n<b></p>\n</blockquote>\n'
+      )
+      assert.equal(
+        micromark('> a\n<b>', unsafe),
+        '<blockquote>\n<p>a\n<b></p>\n</blockquote>'
+      )
+      assert.equal(
+        micromark('- a\n<b>\n', unsafe),
+        '<ul>\n<li>a\n<b></li>\n</ul>\n'
+      )
+      assert.equal(micromark('a\n<b>\n', unsafe), '<p>a\n<b></p>\n')
+    }
+  )
 
   await t.test('should support turning off html (flow)', async function () {
     assert.equal(
