@@ -51,14 +51,14 @@ npm install micromark-util-edit-map
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {EditMap} from 'https://esm.sh/micromark-util-edit-map@0'
+import {EditMap} from 'https://esm.sh/micromark-util-edit-map@1'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {EditMap} from 'https://esm.sh/micromark-util-edit-map@0?bundle'
+  import {EditMap} from 'https://esm.sh/micromark-util-edit-map@1?bundle'
 </script>
 ```
 
@@ -156,7 +156,7 @@ versions of Node.js.
 When we cut a new major release, we drop support for unmaintained versions of
 Node.
 This means we try to keep the current release line,
-`micromark-util-edit-map@0`, compatible with Node.js 16.
+`micromark-util-edit-map@1`, compatible with Node.js 16.
 This package works with `micromark@4`.
 
 ## Security

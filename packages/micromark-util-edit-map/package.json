@@ -1,6 +1,6 @@
 {
   "name": "micromark-util-edit-map",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "micromark utility to batch changes to lists of events",
   "license": "MIT",
   "keywords": [

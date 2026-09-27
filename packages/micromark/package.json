@@ -1,6 +1,6 @@
 {
   "name": "micromark",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "small commonmark compliant markdown parser with positional info and concrete tokens",
   "license": "MIT",
   "keywords": [
@@ -72,7 +72,7 @@
     "micromark-util-chunked": "^2.0.0",
     "micromark-util-combine-extensions": "^2.0.0",
     "micromark-util-decode-numeric-character-reference": "^2.0.0",
-    "micromark-util-edit-map": "^0.0.0",
+    "micromark-util-edit-map": "^1.0.0",
     "micromark-util-encode": "^2.0.0",
     "micromark-util-normalize-identifier": "^2.0.0",
     "micromark-util-resolve-all": "^2.0.0",
