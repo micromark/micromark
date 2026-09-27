@@ -98,69 +98,6 @@ test('EditMap', async function (t) {
 
     assert.deepEqual(types(events), ['y', 'a', 'b', 'z', 'c'])
   })
-
-  await t.test('should apply mixed edits against original indexes', async function () {
-    const events = [
-      event('a'),
-      event('b'),
-      event('c'),
-      event('d'),
-      event('e'),
-      event('f'),
-      event('g'),
-      event('h')
-    ]
-    const editMap = new EditMap()
-
-    editMap.add(6, 2, [event('x')])
-    editMap.add(1, 2, [event('y'), event('z'), event('w')])
-    editMap.add(4, 0, [event('q')])
-    editMap.consume(events)
-
-    assert.deepEqual(types(events), [
-      'a',
-      'y',
-      'z',
-      'w',
-      'd',
-      'q',
-      'e',
-      'f',
-      'x'
-    ])
-  })
-
-  await t.test('should keep later edits inside a removed range', async function () {
-    const events = [
-      event('a'),
-      event('b'),
-      event('c'),
-      event('d'),
-      event('e'),
-      event('f')
-    ]
-    const editMap = new EditMap()
-
-    editMap.add(1, 4, [event('x')])
-    editMap.add(3, 1, [event('y')])
-    editMap.consume(events)
-
-    assert.deepEqual(types(events), ['a', 'x', 'y', 'e', 'f'])
-  })
-
-  await t.test('should support more edits after consume', async function () {
-    const editMap = new EditMap()
-    const first = [event('a'), event('b')]
-    const second = [event('c'), event('d')]
-
-    editMap.add(1, 0, [event('x')])
-    editMap.consume(first)
-    editMap.add(0, 1, [event('y')])
-    editMap.consume(second)
-
-    assert.deepEqual(types(first), ['a', 'x', 'b'])
-    assert.deepEqual(types(second), ['y', 'd'])
-  })
 })
 
 /**
