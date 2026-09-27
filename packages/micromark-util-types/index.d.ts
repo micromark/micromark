@@ -200,6 +200,13 @@ export interface Token {
   _close?: boolean | undefined
 
   /**
+   * Original attention sequence size.
+   *
+   * Used for the multiple-of-3 rule after leftover markers are consumed.
+   */
+  _size?: number | undefined
+
+  /**
    * Field to help parse GFM task lists.
    *
    * This boolean is used internally to figure out if a token is in the first

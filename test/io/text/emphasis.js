@@ -545,6 +545,17 @@ test('emphasis', async function (t) {
     )
   })
 
+  await t.test(
+    'should not leave leftover markers when strong in emphasis is followed by emphasis',
+    async function () {
+      // <https://github.com/micromark/micromark/issues/162>
+      assert.equal(
+        micromark('***123****456*'),
+        '<p><em><strong>123</strong></em><em>456</em></p>'
+      )
+    }
+  )
+
   await t.test('complex (b)', async function () {
     assert.equal(
       micromark('foo******bar*********baz'),
