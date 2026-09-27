@@ -55,8 +55,10 @@ function resolveCodeText(events) {
   }
 
   // Merge adjacent spaces and data.
+  // Events are moved down in one pass instead of splicing out each run.
   index = headEnterIndex - 1
   tailExitIndex++
+  let length = headEnterIndex
 
   while (++index <= tailExitIndex) {
     if (enter === undefined) {
@@ -65,6 +67,8 @@ function resolveCodeText(events) {
         events[index][1].type !== types.lineEnding
       ) {
         enter = index
+      } else if (index !== tailExitIndex) {
+        events[length++] = events[index]
       }
     } else if (
       index === tailExitIndex ||
@@ -74,14 +78,19 @@ function resolveCodeText(events) {
 
       if (index !== enter + 2) {
         events[enter][1].end = events[index - 1][1].end
-        events.splice(enter + 2, index - enter - 2)
-        tailExitIndex -= index - enter - 2
-        index = enter + 2
       }
 
+      events[length++] = events[enter]
+      events[length++] = events[enter + 1]
       enter = undefined
+
+      if (index !== tailExitIndex) {
+        events[length++] = events[index]
+      }
     }
   }
+
+  events.splice(length, tailExitIndex - length)
 
   return events
 }

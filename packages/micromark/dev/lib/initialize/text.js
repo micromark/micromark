@@ -114,29 +114,35 @@ function createResolver(extraResolver) {
 
   /** @type {Resolver} */
   function resolveAllText(events, context) {
-    let index = -1
-    /** @type {number | undefined} */
-    let enter
+    let index = 0
+    let length = 0
 
     // A rather boring computation (to merge adjacent `data` events) which
     // improves mm performance by 29%.
-    while (++index <= events.length) {
-      if (enter === undefined) {
-        if (events[index] && events[index][1].type === types.data) {
-          enter = index
+    // Events are moved down in one pass instead of splicing out each run.
+    while (index < events.length) {
+      const enter = index
+
+      if (events[index][1].type === types.data) {
+        index += 2
+
+        while (index < events.length && events[index][1].type === types.data) {
           index++
         }
-      } else if (!events[index] || events[index][1].type !== types.data) {
+
         // Don’t do anything if there is one data token.
         if (index !== enter + 2) {
           events[enter][1].end = events[index - 1][1].end
-          events.splice(enter + 2, index - enter - 2)
-          index = enter + 2
         }
 
-        enter = undefined
+        events[length++] = events[enter]
+        events[length++] = events[enter + 1]
+      } else {
+        events[length++] = events[index++]
       }
     }
+
+    events.length = length
 
     return extraResolver ? extraResolver(events, context) : events
   }
