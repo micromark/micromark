@@ -115,31 +115,44 @@ export class EditMap {
     //
     // shiftLinks(events, jumps)
 
-    let index = this.map.length
-    /** @type {Array<Array<Event>>} */
-    const vecs = []
-    while (index > 0) {
-      index -= 1
-      vecs.push(
-        events.slice(this.map[index][0] + this.map[index][1]),
-        this.map[index][2]
-      )
+    let index = -1
+    let size = this.map[0][0]
 
-      // Truncate rest.
-      events.length = this.map[index][0]
+    // Calculate the exact result size before allocation.
+    while (++index < this.map.length) {
+      const change = this.map[index]
+      const next = this.map[index + 1]
+      const end = next ? next[0] : events.length
+      size += change[2].length + Math.max(0, end - change[0] - change[1])
     }
 
-    vecs.push(events.slice())
-    events.length = 0
+    /** @type {Array<Event>} */
+    // eslint-disable-next-line unicorn/no-new-array -- Preallocate the result.
+    const result = new Array(size)
+    let resultIndex = 0
+    let sourceIndex = 0
 
-    let slice = vecs.pop()
-
-    while (slice) {
-      for (const element of slice) {
-        events.push(element)
+    for (const change of this.map) {
+      while (sourceIndex < change[0]) {
+        result[resultIndex++] = events[sourceIndex++]
       }
 
-      slice = vecs.pop()
+      for (const event of change[2]) {
+        result[resultIndex++] = event
+      }
+
+      sourceIndex = change[0] + change[1]
+    }
+
+    while (sourceIndex < events.length) {
+      result[resultIndex++] = events[sourceIndex++]
+    }
+
+    events.length = result.length
+    index = -1
+
+    while (++index < result.length) {
+      events[index] = result[index]
     }
 
     // Truncate everything.
