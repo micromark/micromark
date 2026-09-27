@@ -20,8 +20,8 @@ export {SpliceBuffer} from './lib/splice-buffer.js'
  */
 // eslint-disable-next-line complexity
 export function subtokenize(eventsArray) {
-  /** @type {Record<string, number>} */
-  const jumps = {}
+  /** @type {Map<number, number>} */
+  const jumps = new Map()
   let index = -1
   /** @type {number | undefined} */
   let lineIndex
@@ -32,8 +32,8 @@ export function subtokenize(eventsArray) {
   const events = new SpliceBuffer(eventsArray)
 
   while (++index < events.length) {
-    while (index in jumps) {
-      index = jumps[index]
+    while (jumps.has(index)) {
+      index = /** @type {number} */ (jumps.get(index))
     }
 
     const event = events.get(index)
@@ -76,8 +76,8 @@ export function subtokenize(eventsArray) {
     // Enter.
     if (event[0] === 'enter') {
       if (event[1].contentType) {
-        Object.assign(jumps, subcontent(events, index))
-        index = jumps[index]
+        subcontent(events, index, jumps)
+        index = /** @type {number} */ (jumps.get(index))
         more = true
       }
     }
@@ -135,10 +135,12 @@ export function subtokenize(eventsArray) {
  *   Events.
  * @param {number} eventIndex
  *   Index.
- * @returns {Record<string, number>}
- *   Gaps.
+ * @param {Map<number, number>} gaps
+ *   Map of jumps to add the gaps to.
+ * @returns {undefined}
+ *   Nothing.
  */
-function subcontent(events, eventIndex) {
+function subcontent(events, eventIndex, gaps) {
   const token = events.get(eventIndex)[1]
   const context = events.get(eventIndex)[2]
   let startPosition = eventIndex - 1
@@ -159,8 +161,6 @@ function subcontent(events, eventIndex) {
   const childEvents = tokenizer.events
   /** @type {Array<[number, number]>} */
   const jumps = []
-  /** @type {Record<string, number>} */
-  const gaps = {}
   /** @type {Token | undefined} */
   let previous
   let index = -1
@@ -266,9 +266,7 @@ function subcontent(events, eventIndex) {
   index = -1
 
   while (++index < jumps.length) {
-    gaps[adjust + jumps[index][0]] = adjust + jumps[index][1]
+    gaps.set(adjust + jumps[index][0], adjust + jumps[index][1])
     adjust += jumps[index][1] - jumps[index][0] - 1
   }
-
-  return gaps
 }
