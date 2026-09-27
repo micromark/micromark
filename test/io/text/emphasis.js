@@ -1095,20 +1095,26 @@ test('emphasis', async function (t) {
   )
 
   await t.test(
-    'Should not throw even when input has isolated surrogate code units and still return a string',
+    'Should not throw even when input has isolated surrogate code units and still return a string (1)',
     async function () {
-      const delimiters = ['*', '_']
-      for (const delimiter of delimiters) {
-        for (let delimiterCount = 1; delimiterCount < 4; delimiterCount++) {
-          const delimiterRun = delimiter.repeat(delimiterCount)
-          assert.equal(
-            typeof micromark(
-              `\uDC00${delimiterRun}\uD800\n\na\uDFFF${delimiterRun}\uDBFFa\n\na\uD800${delimiterRun}\uDC00a\n\na\uDBFF${delimiterRun}\uDFFFa`
-            ),
-            'string'
-          )
-        }
-      }
+      assert.equal(
+        micromark(
+          `\uDC00****\uD800a\uDFFF****\uDBFFa\n\na\uD800****\uDC00a\uDBFF****\uDFFFa`
+        ),
+        '<p>\uDC00<strong><strong>\uD800a\uDFFF</strong></strong>\uDBFFa</p>\n<p>a\uD800<strong><strong>\uDC00a\uDBFF</strong></strong>\uDFFFa</p>'
+      )
+    }
+  )
+
+  await t.test(
+    'Should not throw even when input has isolated surrogate code units and still return a string (2)',
+    async function () {
+      assert.equal(
+        micromark(
+          `\uDC00____\uD800a\uDFFF____\uDBFFa\n\na\uD800____\uDC00a\uDBFF____\uDFFFa`
+        ),
+        '<p>\uDC00____\uD800a\uDFFF____\uDBFFa</p>\n<p>a\uD800____\uDC00a\uDBFF____\uDFFFa</p>'
+      )
     }
   )
 })
