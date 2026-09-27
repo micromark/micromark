@@ -131,27 +131,21 @@ export class EditMap {
     const result = new Array(size)
     let resultIndex = 0
     let sourceIndex = 0
-    index = -1
 
-    while (++index < this.map.length) {
-      const change = this.map[index]
-      const next = this.map[index + 1]
-      const end = next ? next[0] : events.length
-      let addIndex = -1
-
+    for (const change of this.map) {
       while (sourceIndex < change[0]) {
         result[resultIndex++] = events[sourceIndex++]
       }
 
-      while (++addIndex < change[2].length) {
-        result[resultIndex++] = change[2][addIndex]
+      for (const event of change[2]) {
+        result[resultIndex++] = event
       }
 
       sourceIndex = change[0] + change[1]
+    }
 
-      while (sourceIndex < end) {
-        result[resultIndex++] = events[sourceIndex++]
-      }
+    while (sourceIndex < events.length) {
+      result[resultIndex++] = events[sourceIndex++]
     }
 
     events.length = result.length
