@@ -35,17 +35,27 @@ function resolveAllAttention(events, context) {
   let index = -1
   /** @type {Array<Event>} */
   let nextEvents
+  // Events are moved to `left` as they are walked, and splices happen there,
+  // near its end, so that the rest of `events` is never shifted.
+  /** @type {Array<Event>} */
+  const left = []
+  let read = 0
 
   // Walk through all events.
   //
   // Note: performance of this is fine on an mb of normal markdown, but it’s
   // a bottleneck for malicious stuff.
-  while (++index < events.length) {
+  while (++index < left.length + events.length - read) {
+    // Make sure the event at `index` and the one after it are in `left`.
+    while (left.length < index + 2 && read < events.length) {
+      left.push(events[read++])
+    }
+
     // Find a token that can close.
     if (
-      events[index][0] === 'enter' &&
-      events[index][1].type === 'attentionSequence' &&
-      events[index][1]._close
+      left[index][0] === 'enter' &&
+      left[index][1].type === 'attentionSequence' &&
+      left[index][1]._close
     ) {
       let open = index
 
@@ -53,25 +63,25 @@ function resolveAllAttention(events, context) {
       while (open--) {
         // Find a token that can open the closer.
         if (
-          events[open][0] === 'exit' &&
-          events[open][1].type === 'attentionSequence' &&
-          events[open][1]._open &&
+          left[open][0] === 'exit' &&
+          left[open][1].type === 'attentionSequence' &&
+          left[open][1]._open &&
           // If the markers are the same:
-          context.sliceSerialize(events[open][1]).charCodeAt(0) ===
-            context.sliceSerialize(events[index][1]).charCodeAt(0)
+          context.sliceSerialize(left[open][1]).charCodeAt(0) ===
+            context.sliceSerialize(left[index][1]).charCodeAt(0)
         ) {
           // If the opening can close or the closing can open,
           // and the close size *is not* a multiple of three,
           // but the sum of the opening and closing size *is* multiple of three,
           // then don’t match.
           if (
-            (events[open][1]._close || events[index][1]._open) &&
-            (events[index][1].end.offset - events[index][1].start.offset) % 3 &&
+            (left[open][1]._close || left[index][1]._open) &&
+            (left[index][1].end.offset - left[index][1].start.offset) % 3 &&
             !(
-              (events[open][1].end.offset -
-                events[open][1].start.offset +
-                events[index][1].end.offset -
-                events[index][1].start.offset) %
+              (left[open][1].end.offset -
+                left[open][1].start.offset +
+                left[index][1].end.offset -
+                left[index][1].start.offset) %
               3
             )
           ) {
@@ -80,30 +90,30 @@ function resolveAllAttention(events, context) {
 
           // Number of markers to use from the sequence.
           const use =
-            events[open][1].end.offset - events[open][1].start.offset > 1 &&
-            events[index][1].end.offset - events[index][1].start.offset > 1
+            left[open][1].end.offset - left[open][1].start.offset > 1 &&
+            left[index][1].end.offset - left[index][1].start.offset > 1
               ? 2
               : 1
 
-          const start = {...events[open][1].end}
-          const end = {...events[index][1].start}
+          const start = {...left[open][1].end}
+          const end = {...left[index][1].start}
           movePoint(start, -use)
           movePoint(end, use)
 
           const openingSequence = {
             type: use > 1 ? types.strongSequence : types.emphasisSequence,
             start,
-            end: {...events[open][1].end}
+            end: {...left[open][1].end}
           }
           const closingSequence = {
             type: use > 1 ? types.strongSequence : types.emphasisSequence,
-            start: {...events[index][1].start},
+            start: {...left[index][1].start},
             end
           }
           const text = {
             type: use > 1 ? types.strongText : types.emphasisText,
-            start: {...events[open][1].end},
-            end: {...events[index][1].start}
+            start: {...left[open][1].end},
+            end: {...left[index][1].start}
           }
           const group = {
             type: use > 1 ? types.strong : types.emphasis,
@@ -111,16 +121,16 @@ function resolveAllAttention(events, context) {
             end: {...closingSequence.end}
           }
 
-          events[open][1].end = {...openingSequence.start}
-          events[index][1].start = {...closingSequence.end}
+          left[open][1].end = {...openingSequence.start}
+          left[index][1].start = {...closingSequence.end}
 
           nextEvents = []
 
           // If there are more markers in the opening, add them before.
-          if (events[open][1].end.offset - events[open][1].start.offset) {
+          if (left[open][1].end.offset - left[open][1].start.offset) {
             nextEvents = push(nextEvents, [
-              ['enter', events[open][1], context],
-              ['exit', events[open][1], context]
+              ['enter', left[open][1], context],
+              ['exit', left[open][1], context]
             ])
           }
 
@@ -143,7 +153,7 @@ function resolveAllAttention(events, context) {
             nextEvents,
             resolveAll(
               context.parser.constructs.insideSpan.null,
-              events.slice(open + 1, index),
+              left.slice(open + 1, index),
               context
             )
           )
@@ -160,15 +170,15 @@ function resolveAllAttention(events, context) {
           let offset = 0
 
           // If there are more markers in the closing, add them after.
-          if (events[index][1].end.offset - events[index][1].start.offset) {
+          if (left[index][1].end.offset - left[index][1].start.offset) {
             offset = 2
             nextEvents = push(nextEvents, [
-              ['enter', events[index][1], context],
-              ['exit', events[index][1], context]
+              ['enter', left[index][1], context],
+              ['exit', left[index][1], context]
             ])
           }
 
-          splice(events, open - 1, index - open + 3, nextEvents)
+          splice(left, open - 1, index - open + 3, nextEvents)
 
           index = open + nextEvents.length - offset - 2
           break
@@ -176,6 +186,9 @@ function resolveAllAttention(events, context) {
       }
     }
   }
+
+  // Replace the walked events with the resolved ones.
+  splice(events, 0, read, left)
 
   // Remove remaining sequences.
   index = -1
