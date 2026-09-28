@@ -123,7 +123,7 @@ export interface Point {
  *
  * ```markdown
  * > *a
- * b*.
+ *   b*.
  * ```
  *
  * 1.  The block quote marker and the space after it is parsed first
