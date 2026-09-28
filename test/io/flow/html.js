@@ -1237,10 +1237,67 @@ test('html', async function (t) {
     await t.test('should not support lazyness (2)', async function () {
       assert.equal(
         micromark('> a\n<a>', unsafe),
-        '<blockquote>\n<p>a</p>\n</blockquote>\n<a>'
+        '<blockquote>\n<p>a\n<a></p>\n</blockquote>'
       )
     })
   })
+
+  await t.test(
+    'should keep a lazy complete tag in a blockquote paragraph with a final newline',
+    async function () {
+      assert.equal(
+        micromark('> a\n<b>\n', unsafe),
+        '<blockquote>\n<p>a\n<b></p>\n</blockquote>\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should keep a lazy complete tag in a blockquote paragraph at EOF',
+    async function () {
+      assert.equal(
+        micromark('> a\n<b>', unsafe),
+        '<blockquote>\n<p>a\n<b></p>\n</blockquote>'
+      )
+    }
+  )
+
+  await t.test(
+    'should keep a lazy complete tag in a list item with a final newline',
+    async function () {
+      assert.equal(
+        micromark('- a\n<b>\n', unsafe),
+        '<ul>\n<li>a\n<b></li>\n</ul>\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should keep a line following a lazy complete tag in the blockquote paragraph',
+    async function () {
+      assert.equal(
+        micromark('> a\n<b>\nc\n', unsafe),
+        '<blockquote>\n<p>a\n<b>\nc</p>\n</blockquote>\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should keep a lazy complete tag in a list item at EOF',
+    async function () {
+      assert.equal(
+        micromark('- a\n<b>', unsafe),
+        '<ul>\n<li>a\n<b></li>\n</ul>'
+      )
+    }
+  )
+
+  await t.test(
+    'should keep a complete tag in a plain paragraph',
+    async function () {
+      assert.equal(micromark('a\n<b>\n', unsafe), '<p>a\n<b></p>\n')
+    }
+  )
 
   await t.test('should support turning off html (flow)', async function () {
     assert.equal(
