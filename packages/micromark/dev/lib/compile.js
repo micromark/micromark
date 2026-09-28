@@ -325,7 +325,7 @@ export function compile(options) {
 
       if (hasOwnProperty.call(handles, kind) && handle) {
         handle.call(
-          {sliceSerialize: result[index][2].sliceSerialize, ...context},
+          {...context, sliceSerialize: result[index][2].sliceSerialize},
           result[index][1]
         )
       }
