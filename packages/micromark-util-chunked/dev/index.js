@@ -25,8 +25,6 @@ import {constants} from 'micromark-util-symbol'
 export function splice(list, start, remove, items) {
   const end = list.length
   let chunkStart = 0
-  /** @type {Array<unknown>} */
-  let parameters
 
   // Make start between zero and `end` (included).
   if (start < 0) {
@@ -39,10 +37,7 @@ export function splice(list, start, remove, items) {
 
   // No need to chunk the items if there’s only a couple (10k) items.
   if (items.length < constants.v8MaxSafeChunkSize) {
-    parameters = Array.from(items)
-    parameters.unshift(start, remove)
-    // @ts-expect-error Hush, it’s fine.
-    list.splice(...parameters)
+    list.splice(start, remove, ...items)
   } else {
     // Delete `remove` items starting from `start`
     if (remove) {
@@ -51,7 +46,8 @@ export function splice(list, start, remove, items) {
 
     // Insert the items in chunks to not cause stack overflows.
     while (chunkStart < items.length) {
-      parameters = items.slice(
+      /** @type {Array<unknown>} */
+      const parameters = items.slice(
         chunkStart,
         chunkStart + constants.v8MaxSafeChunkSize
       )
