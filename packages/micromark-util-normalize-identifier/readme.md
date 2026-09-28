@@ -64,6 +64,7 @@ normalizeIdentifier(' a ') // 'A'
 normalizeIdentifier('a\t\r\nb') // 'A B'
 normalizeIdentifier('ТОЛПОЙ') // 'ТОЛПОЙ'
 normalizeIdentifier('Толпой') // 'ТОЛПОЙ'
+normalizeIdentifier('ı') // 'ı'
 ```
 
 ## API
@@ -82,6 +83,9 @@ Some characters are considered “uppercase”, such as U+03F4 (`ϴ`), but if th
 lowercase counterpart (U+03B8 (`θ`)) is uppercased will result in a different
 uppercase character (U+0398 (`Θ`)).
 So, to get a canonical form, we perform both lower- and uppercase.
+
+Dotless i (U+0131, `ı`) is preserved because default Unicode case folding does
+not equate it with ASCII i.
 
 Using uppercase last makes sure keys will never interact with default
 prototypal values (such as `constructor`): nothing in the prototype of `Object`
