@@ -11,6 +11,33 @@ test('definition', async function (t) {
   })
 
   await t.test(
+    'should not support unescaped opening parens in paren enclosed titles',
+    async function () {
+      assert.equal(
+        micromark('[a]: b (c(d)\n\n[a]'),
+        '<p>[a]: b (c(d)</p>\n<p>[a]</p>'
+      )
+    }
+  )
+
+  await t.test(
+    'should support definitions without an invalid title on the next line',
+    async function () {
+      assert.equal(
+        micromark('[a]: b\n(c(d)\n\n[a]'),
+        '<p>(c(d)</p>\n<p><a href="b">a</a></p>'
+      )
+    }
+  )
+
+  await t.test('should support escaped parens in titles', async function () {
+    assert.equal(
+      micromark('[a]: b (\\(c\\))\n\n[a]'),
+      '<p><a href="b" title="(c)">a</a></p>'
+    )
+  })
+
+  await t.test(
     'should not support blank lines before destination',
     async function () {
       assert.equal(

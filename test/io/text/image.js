@@ -10,6 +10,20 @@ test('image', async function (t) {
     )
   })
 
+  await t.test(
+    'should not support unescaped opening parens in paren enclosed titles',
+    async function () {
+      assert.equal(micromark('![a](b (c(d))'), '<p>![a](b (c(d))</p>')
+    }
+  )
+
+  await t.test('should support escaped parens in titles', async function () {
+    assert.equal(
+      micromark('![a](b (c\\(d\\)e))'),
+      '<p><img src="b" alt="a" title="c(d)e" /></p>'
+    )
+  })
+
   await t.test('should support image as shortcut reference', async function () {
     assert.equal(
       micromark('[foo *bar*]: train.jpg "train & tracks"\n\n![foo *bar*]'),

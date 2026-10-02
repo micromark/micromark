@@ -139,6 +139,10 @@ export function factoryTitle(effects, ok, nok, type, markerType, stringType) {
    * @type {State}
    */
   function inside(code) {
+    if (code === codes.leftParenthesis && marker === codes.rightParenthesis) {
+      return nok(code)
+    }
+
     if (code === marker || code === codes.eof || markdownLineEnding(code)) {
       effects.exit(types.chunkString)
       return atBreak(code)
@@ -159,7 +163,11 @@ export function factoryTitle(effects, ok, nok, type, markerType, stringType) {
    * @type {State}
    */
   function escape(code) {
-    if (code === marker || code === codes.backslash) {
+    if (
+      code === marker ||
+      code === codes.backslash ||
+      code === codes.leftParenthesis
+    ) {
       effects.consume(code)
       return inside
     }
