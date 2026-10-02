@@ -212,6 +212,72 @@ test('link (resource)', async function (t) {
   })
 
   await t.test(
+    'should not support unescaped opening parens in paren enclosed titles',
+    async function () {
+      assert.equal(micromark('[a](b (c(d))'), '<p>[a](b (c(d))</p>')
+    }
+  )
+
+  await t.test(
+    'should not support an unescaped opening paren at the start of a title',
+    async function () {
+      assert.equal(micromark('[a](b ((c))'), '<p>[a](b ((c))</p>')
+    }
+  )
+
+  await t.test(
+    'should not support an unescaped opening paren after a line ending in a title',
+    async function () {
+      assert.equal(micromark('[a](b (c\n(d))'), '<p>[a](b (c\n(d))</p>')
+    }
+  )
+
+  await t.test(
+    'should not support an opening paren after an escaped backslash in a title',
+    async function () {
+      assert.equal(micromark('[a](b (c\\\\(d))'), '<p>[a](b (c\\(d))</p>')
+    }
+  )
+
+  await t.test('should support escaped parens in titles', async function () {
+    assert.equal(
+      micromark('[a](b (c\\(d\\)e))'),
+      '<p><a href="b" title="c(d)e">a</a></p>'
+    )
+  })
+
+  await t.test(
+    'should support an escaped opening paren at the start of a title',
+    async function () {
+      assert.equal(
+        micromark('[a](b (\\(c\\)))'),
+        '<p><a href="b" title="(c)">a</a></p>'
+      )
+    }
+  )
+
+  await t.test(
+    'should support escaped parens after a line ending in a title',
+    async function () {
+      assert.equal(
+        micromark('[a](b (c\n\\(d\\)e))'),
+        '<p><a href="b" title="c\n(d)e">a</a></p>'
+      )
+    }
+  )
+
+  await t.test('should support parens in quoted titles', async function () {
+    assert.equal(
+      micromark('[a](b "c(d)")'),
+      '<p><a href="b" title="c(d)">a</a></p>'
+    )
+    assert.equal(
+      micromark("[a](b 'c(d)')"),
+      '<p><a href="b" title="c(d)">a</a></p>'
+    )
+  })
+
+  await t.test(
     'should support character references and escapes in titles',
     async function () {
       assert.equal(
