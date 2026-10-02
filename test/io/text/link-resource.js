@@ -212,6 +212,23 @@ test('link (resource)', async function (t) {
   })
 
   await t.test(
+    'should not support unescaped left parens in titles w/ parens',
+    async function () {
+      assert.equal(micromark('[a](b (c(d))'), '<p>[a](b (c(d))</p>')
+    }
+  )
+
+  await t.test(
+    'should support escaped left parens in titles w/ parens',
+    async function () {
+      assert.equal(
+        micromark('[a](b (c\\(d))'),
+        '<p><a href="b" title="c(d">a</a></p>'
+      )
+    }
+  )
+
+  await t.test(
     'should support character references and escapes in titles',
     async function () {
       assert.equal(

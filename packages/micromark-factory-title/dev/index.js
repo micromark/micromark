@@ -144,6 +144,10 @@ export function factoryTitle(effects, ok, nok, type, markerType, stringType) {
       return atBreak(code)
     }
 
+    if (code === codes.leftParenthesis && marker === codes.rightParenthesis) {
+      return nok(code)
+    }
+
     effects.consume(code)
     return code === codes.backslash ? escape : inside
   }
@@ -159,7 +163,11 @@ export function factoryTitle(effects, ok, nok, type, markerType, stringType) {
    * @type {State}
    */
   function escape(code) {
-    if (code === marker || code === codes.backslash) {
+    if (
+      code === marker ||
+      code === codes.backslash ||
+      (code === codes.leftParenthesis && marker === codes.rightParenthesis)
+    ) {
       effects.consume(code)
       return inside
     }
