@@ -129,9 +129,7 @@ export class EditMap {
       events.length = this.map[index][0]
     }
 
-    vecs.push(events.slice())
-    events.length = 0
-
+    // Keep the unchanged prefix in place: repeated edits can be near the end.
     let slice = vecs.pop()
 
     while (slice) {
