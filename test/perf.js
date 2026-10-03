@@ -34,6 +34,21 @@ then = Date.now()
 micromark('[a]: u\n'.repeat(1e4))
 console.log(ms(Date.now() - then))
 
+console.log('separated block quotes')
+then = Date.now()
+micromark('> a\n\n'.repeat(6554))
+console.log(ms(Date.now() - then))
+
+console.log('nested list items')
+then = Date.now()
+micromark('- a\n  - b\n'.repeat(3277))
+console.log(ms(Date.now() - then))
+
+console.log('setext headings')
+then = Date.now()
+micromark('a\n=\n'.repeat(8192))
+console.log(ms(Date.now() - then))
+
 console.log('readme x1000')
 then = Date.now()
 for (let i = 0; i < 1000; i++) {
