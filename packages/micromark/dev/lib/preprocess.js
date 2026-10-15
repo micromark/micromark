@@ -24,6 +24,8 @@ const search = /[\0\t\n\r]/g
  *   Preprocess a value.
  */
 export function preprocess() {
+  /** @type {TextDecoder | undefined} */
+  let decoder
   let column = 1
   let buffer = ''
   /** @type {boolean | undefined} */
@@ -36,11 +38,20 @@ export function preprocess() {
   /** @type {Preprocessor} */
   // eslint-disable-next-line complexity
   function preprocessor(value, encoding, end) {
-    value =
-      buffer +
-      (typeof value === 'string'
-        ? value.toString()
-        : new TextDecoder(encoding || undefined).decode(value))
+    if (typeof value === 'string') {
+      value = (decoder && (value || end) ? decoder.decode() : '') + value
+    } else {
+      const next = new TextDecoder(encoding || undefined)
+
+      if (!decoder || decoder.encoding !== next.encoding) {
+        buffer += decoder ? decoder.decode() : ''
+        decoder = next
+      }
+
+      value = decoder.decode(value, {stream: !end})
+    }
+
+    value = buffer + value
 
     /** @type {Array<Chunk>} */
     const chunks = []
