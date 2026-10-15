@@ -31,8 +31,7 @@ test('bom (byte order marker)', async function (t) {
         .pipe(stream())
         .pipe(
           concatStream(function (result) {
-            // Note: `TextDecoder` removes the internal BOM.
-            assert.equal(result, '<h1>heading</h1>')
+            assert.equal(result, '<h1>hea\uFEFFding</h1>')
             resolve(undefined)
           })
         )

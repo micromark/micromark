@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import {Buffer} from 'node:buffer'
 import {createReadStream, createWriteStream, promises as fs} from 'node:fs'
 import {PassThrough, Readable} from 'node:stream'
 import test from 'node:test'
@@ -44,6 +45,27 @@ test('stream', async function (t) {
         )
     })
   })
+
+  await t.test(
+    'should support multibyte characters split across byte chunks',
+    function () {
+      const s = stream()
+      let result = ''
+
+      s.on('data', function (/** @type {string} */ value) {
+        result += value
+      })
+
+      for (const byte of new TextEncoder().encode('é€🌈')) {
+        s.write(Buffer.from([byte]))
+      }
+
+      s.write('!')
+      // @ts-expect-error: buffers + encoding is fine.
+      s.end(Buffer.from('é', 'utf16le'), 'utf-16le')
+      assert.equal(result, '<p>é€🌈!é</p>')
+    }
+  )
 
   await t.test('should support reference-first definition-later', function () {
     return new Promise(function (resolve) {
