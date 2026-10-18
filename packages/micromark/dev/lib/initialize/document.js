@@ -222,6 +222,9 @@ function initializeDocument(effects) {
     )
     continued++
     stack.push([self.currentConstruct, self.containerState])
+    // A new container starts its own content, so what follows on this line
+    // (such as a nested list) no longer interrupts a paragraph.
+    self.interrupt = undefined
     // Try another.
     return documentContinued(code)
   }

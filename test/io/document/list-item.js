@@ -448,6 +448,46 @@ test('list-item', async function (t) {
   )
 
   await t.test(
+    'should support a non-1 numbered item at the start of an item that interrupts a paragraph',
+    async function () {
+      assert.equal(
+        micromark('a\n- 2. b'),
+        '<p>a</p>\n<ul>\n<li>\n<ol start="2">\n<li>b</li>\n</ol>\n</li>\n</ul>'
+      )
+    }
+  )
+
+  await t.test(
+    'should support an empty item at the start of an item that interrupts a paragraph',
+    async function () {
+      assert.equal(
+        micromark('a\n- -'),
+        '<p>a</p>\n<ul>\n<li>\n<ul>\n<li></li>\n</ul>\n</li>\n</ul>'
+      )
+    }
+  )
+
+  await t.test(
+    'should support a non-1 numbered item at the start of a block quote that interrupts a paragraph',
+    async function () {
+      assert.equal(
+        micromark('a\n> 2. b'),
+        '<p>a</p>\n<blockquote>\n<ol start="2">\n<li>b</li>\n</ol>\n</blockquote>'
+      )
+    }
+  )
+
+  await t.test(
+    'should support a non-1 numbered item at the start of a nested item',
+    async function () {
+      assert.equal(
+        micromark('- a\n  - 2. b'),
+        '<ul>\n<li>a\n<ul>\n<li>\n<ol start="2">\n<li>b</li>\n</ol>\n</li>\n</ul>\n</li>\n</ul>'
+      )
+    }
+  )
+
+  await t.test(
     'should support blank lines between items (1)',
     async function () {
       assert.equal(
