@@ -49,6 +49,7 @@ function tokenizeListStart(effects, ok, nok) {
       ? tail[2].sliceSerialize(tail[1], true).length
       : 0
   let size = 0
+  let value = 0
 
   return start
 
@@ -78,7 +79,7 @@ function tokenizeListStart(effects, ok, nok) {
           : atMarker(code)
       }
 
-      if (!self.interrupt || code === codes.digit1) {
+      if (!self.interrupt || code === codes.digit0 || code === codes.digit1) {
         effects.enter(types.listItemPrefix)
         effects.enter(types.listItemValue)
         return inside(code)
@@ -93,11 +94,17 @@ function tokenizeListStart(effects, ok, nok) {
     assert(self.containerState, 'expected state')
     if (asciiDigit(code) && ++size < constants.listItemValueSizeMax) {
       effects.consume(code)
+      if (self.interrupt) {
+        assert(code !== null, 'expected digit')
+        value *= 10
+        value += code - codes.digit0
+      }
+
       return inside
     }
 
     if (
-      (!self.interrupt || size < 2) &&
+      (!self.interrupt || value === 1) &&
       (self.containerState.marker
         ? code === self.containerState.marker
         : code === codes.rightParenthesis || code === codes.dot)

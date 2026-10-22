@@ -448,6 +448,18 @@ test('list-item', async function (t) {
   )
 
   await t.test(
+    'should support interrupting a paragraph with an ordered item starting with 01',
+    async function () {
+      assert.equal(micromark('a\n01) b'), '<p>a</p>\n<ol>\n<li>b</li>\n</ol>')
+      assert.equal(micromark('a\n001. b'), '<p>a</p>\n<ol>\n<li>b</li>\n</ol>')
+      assert.equal(micromark('a\n0. b'), '<p>a\n0. b</p>')
+      assert.equal(micromark('a\n00. b'), '<p>a\n00. b</p>')
+      assert.equal(micromark('a\n02. b'), '<p>a\n02. b</p>')
+      assert.equal(micromark('a\n010. b'), '<p>a\n010. b</p>')
+    }
+  )
+
+  await t.test(
     'should support blank lines between items (1)',
     async function () {
       assert.equal(
