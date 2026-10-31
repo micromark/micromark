@@ -134,10 +134,6 @@ Nothing (`undefined`).
 
 Done, change the events.
 
-Events before the first edit are left untouched,
-so the cost depends on how many events come after it,
-not on the size of the whole list.
-
 ###### Parameters
 
 * `events` (`Array<Event>`)
