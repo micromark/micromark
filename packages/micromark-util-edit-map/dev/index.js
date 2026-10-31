@@ -83,6 +83,11 @@ export class EditMap {
   /**
    * Done, change the events.
    *
+   * Events before the first edit are left untouched, so the cost depends on
+   * how many events come after it, not on the size of the whole list.
+   * Callers that edit near the end of a long list, once per line, rely on
+   * this.
+   *
    * @param {Array<Event>} events
    *   List of events to apply the edits to.
    * @returns {undefined}

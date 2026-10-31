@@ -98,6 +98,45 @@ test('EditMap', async function (t) {
 
     assert.deepEqual(types(events), ['y', 'a', 'b', 'z', 'c'])
   })
+
+  await t.test(
+    'should not touch items before the first edit',
+    async function () {
+      /** @type {Array<number>} */
+      const writes = []
+      const events = new Proxy(
+        [event('a'), event('b'), event('c'), event('d')],
+        {
+          /**
+           * @param {Array<Event>} target
+           * @param {string | symbol} key
+           * @param {unknown} value
+           * @returns {boolean}
+           */
+          set(target, key, value) {
+            if (key !== 'length') {
+              writes.push(Number(key))
+            }
+
+            return Reflect.set(target, key, value)
+          }
+        }
+      )
+      const editMap = new EditMap()
+
+      editMap.add(3, 0, [event('x')])
+      editMap.add(2, 1, [])
+      editMap.consume(events)
+
+      assert.deepEqual(types(events), ['a', 'b', 'x', 'd'])
+      assert.ok(
+        writes.every(function (d) {
+          return d >= 2
+        }),
+        'expected only items at or after the first edit to be written'
+      )
+    }
+  )
 })
 
 /**
