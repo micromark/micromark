@@ -473,6 +473,20 @@ test('html', async function (t) {
       'should support cdata w/ a single `]` as content',
       async function () {
         assert.equal(micromark('<![CDATA[]]]>', unsafe), '<![CDATA[]]]>')
+        assert.equal(micromark('<![CDATA[a]b]]>', unsafe), '<![CDATA[a]b]]>')
+        assert.equal(micromark('<![CDATA[a]]b]]>', unsafe), '<![CDATA[a]]b]]>')
+        assert.equal(
+          micromark('<![CDATA[a]]]>\n\nfoo', unsafe),
+          '<![CDATA[a]]]>\n<p>foo</p>'
+        )
+        assert.equal(
+          micromark('<![CDATA[]]]>\n\nfoo', unsafe),
+          '<![CDATA[]]]>\n<p>foo</p>'
+        )
+        assert.equal(
+          micromark('<![CDATA[]]]]]>\n\nfoo', unsafe),
+          '<![CDATA[]]]]]>\n<p>foo</p>'
+        )
       }
     )
 
