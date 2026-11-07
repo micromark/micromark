@@ -562,4 +562,41 @@ test('definition', async function (t) {
       '<p>[foo]: /url &quot;title&quot;</p>'
     )
   })
+
+  await t.test(
+    'should preserve line endings in fenced code blocks following definitions',
+    async function () {
+      assert.equal(
+        micromark('[a]: /u\n```\nx\ny\n```\n'),
+        '<pre><code>x\ny\n</code></pre>\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should preserve line endings in indented code blocks following definitions',
+    async function () {
+      assert.equal(
+        micromark('[a]: /u\n\n    x\n    y\n'),
+        '<pre><code>x\ny\n</code></pre>\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should preserve line endings in HTML blocks following definitions',
+    async function () {
+      assert.equal(
+        micromark('[a]: /u\n<!--\nx\ny\n-->\n', {allowDangerousHtml: true}),
+        '<!--\nx\ny\n-->\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should preserve line endings after headings following definitions',
+    async function () {
+      assert.equal(micromark('[a]: /u\n# Heading\n'), '<h1>Heading</h1>\n')
+    }
+  )
 })
