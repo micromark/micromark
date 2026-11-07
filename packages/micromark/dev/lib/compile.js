@@ -584,6 +584,7 @@ export function compile(options) {
     tightStack.push(false)
     lineEndingIfNeeded()
     tag('<blockquote>')
+    setData('slurpAllLineEndings')
   }
 
   /**
@@ -630,6 +631,7 @@ export function compile(options) {
     lineEndingIfNeeded()
     tag('<pre><code')
     setData('fencesCount', 0)
+    setData('slurpAllLineEndings')
   }
 
   /**
@@ -663,6 +665,7 @@ export function compile(options) {
   function onentercodeindented() {
     lineEndingIfNeeded()
     tag('<pre><code>')
+    setData('slurpAllLineEndings')
   }
 
   /**
@@ -923,6 +926,7 @@ export function compile(options) {
     setData('headingRank', this.sliceSerialize(token).length)
     lineEndingIfNeeded()
     tag('<h' + getData('headingRank') + '>')
+    setData('slurpAllLineEndings')
   }
 
   /**
@@ -1029,6 +1033,7 @@ export function compile(options) {
   function onenterhtmlflow() {
     lineEndingIfNeeded()
     onenterhtml()
+    setData('slurpAllLineEndings')
   }
 
   /**
@@ -1097,6 +1102,7 @@ export function compile(options) {
   function onexitthematicbreak() {
     lineEndingIfNeeded()
     tag('<hr />')
+    setData('slurpAllLineEndings')
   }
 
   /**
