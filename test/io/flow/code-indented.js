@@ -257,4 +257,33 @@ test('code-indented', async function (t) {
       )
     }
   )
+  await t.test(
+    'should support indented code after an empty block quote',
+    async function () {
+      assert.equal(
+        micromark('>\n    a\n    b\n'),
+        '<blockquote>\n</blockquote>\n<pre><code>a\nb\n</code></pre>\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should support indented code with blank lines after an empty block quote',
+    async function () {
+      assert.equal(
+        micromark('>\n    a\n\n    b\n'),
+        '<blockquote>\n</blockquote>\n<pre><code>a\n\nb\n</code></pre>\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should support indented code after an empty list item',
+    async function () {
+      assert.equal(
+        micromark('   *\n    1\n\tt\n'),
+        '<ul>\n<li></li>\n</ul>\n<pre><code>1\nt\n</code></pre>\n'
+      )
+    }
+  )
 })
