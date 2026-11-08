@@ -132,7 +132,19 @@ function tokenizeFurtherStart(effects, ok, nok) {
    * @type {State}
    */
   function furtherStart(code) {
-    // To do: improve `lazy` / `pierce` handling.
+    assert(markdownLineEnding(code))
+    effects.enter(types.lineEnding)
+    effects.consume(code)
+    effects.exit(types.lineEnding)
+    return furtherStartNext
+  }
+
+  /**
+   * At the start of the next line, checking if it continues.
+   *
+   * @type {State}
+   */
+  function furtherStartNext(code) {
     // If this is a lazy line, it can’t be code.
     if (self.parser.lazy[self.now().line]) {
       return nok(code)
@@ -142,12 +154,9 @@ function tokenizeFurtherStart(effects, ok, nok) {
       effects.enter(types.lineEnding)
       effects.consume(code)
       effects.exit(types.lineEnding)
-      return furtherStart
+      return furtherStartNext
     }
 
-    // To do: the code here in `micromark-js` is a bit different from
-    // `markdown-rs` because there it can attempt spaces.
-    // We can’t yet.
     return factorySpaceMinMax(
       effects,
       ok,
