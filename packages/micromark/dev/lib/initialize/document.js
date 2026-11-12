@@ -20,7 +20,6 @@
 import {ok as assert} from 'devlop'
 import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
-import {EditMap} from 'micromark-util-edit-map'
 import {codes, constants, types} from 'micromark-util-symbol'
 
 /** @type {InitialConstruct} */
@@ -128,12 +127,11 @@ function initializeDocument(effects) {
         index++
       }
 
-      const editMap = new EditMap()
-      // Inject the exits earlier (they’re still also at the end).
-      editMap.add(indexBeforeFlow + 1, 0, self.events.slice(indexBeforeExits))
-      // Discard the duplicate exits.
-      editMap.add(indexBeforeExits, index - indexBeforeExits, [])
-      editMap.consume(self.events)
+      // Inject the exits earlier (they’re still also at the end) and drop the
+      // duplicates. Rebuilding the whole events list here would be quadratic.
+      const exits = self.events.slice(indexBeforeExits)
+      self.events.length = indexBeforeExits
+      self.events.splice(indexBeforeFlow + 1, 0, ...exits)
 
       return checkNewContainers(code)
     }
@@ -381,12 +379,11 @@ function initializeDocument(effects) {
         index++
       }
 
-      const editMap = new EditMap()
-      // Inject the exits earlier (they’re still also at the end).
-      editMap.add(indexBeforeFlow + 1, 0, self.events.slice(indexBeforeExits))
-      // Discard the duplicate exits.
-      editMap.add(indexBeforeExits, index - indexBeforeExits, [])
-      editMap.consume(self.events)
+      // Inject the exits earlier (they’re still also at the end) and drop the
+      // duplicates. Rebuilding the whole events list here would be quadratic.
+      const exits = self.events.slice(indexBeforeExits)
+      self.events.length = indexBeforeExits
+      self.events.splice(indexBeforeFlow + 1, 0, ...exits)
     }
   }
 
