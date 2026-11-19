@@ -65,6 +65,37 @@ test('code', async function (t) {
     )
   })
 
+    await t.test(
+          'should drop leading spaces of a continuation line',
+          async function () {
+                  assert.equal(micromark('`a\n b`'), '<p><code>a b</code></p>')
+          }
+        )
+      
+    await t.test(
+          'should drop leading tabs of a continuation line',
+          async function () {
+                  assert.equal(micromark('`a\n\tb`'), '<p><code>a b</code></p>')
+          }
+        )
+      
+    await t.test(
+          'should drop leading spaces of each continuation line',
+          async function () {
+                  assert.equal(micromark('`a\n b\n c`'), '<p><code>a b c</code></p>')
+          }
+        )
+      
+    await t.test(
+          'should drop leading spaces of a lazy continuation line',
+          async function () {
+                  assert.equal(
+                            micromark('* `c\n <`'),
+                            '<ul>\n<li><code>c &lt;</code></li>\n</ul>'
+                          )
+          }
+        )
+      
   await t.test('should not support character escapes', async function () {
     assert.equal(micromark('`foo\\`bar`'), '<p><code>foo\\</code>bar`</p>')
   })

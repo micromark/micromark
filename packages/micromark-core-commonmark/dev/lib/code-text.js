@@ -11,6 +11,7 @@
  */
 
 import {ok as assert} from 'devlop'
+import {factorySpace} from 'micromark-factory-space'
 import {markdownLineEnding} from 'micromark-util-character'
 import {codes, types} from 'micromark-util-symbol'
 
@@ -55,6 +56,9 @@ function resolveCodeText(events) {
   }
 
   // Merge adjacent spaces and data.
+  // A `linePrefix` (the leading spaces or tabs of a continuation line)
+  // ends a run, like a line ending does, so that it is not merged into
+  // data: the compiler ignores it, just like outside code spans.
   index = headEnterIndex - 1
   tailExitIndex++
 
@@ -62,13 +66,15 @@ function resolveCodeText(events) {
     if (enter === undefined) {
       if (
         index !== tailExitIndex &&
-        events[index][1].type !== types.lineEnding
+        events[index][1].type !== types.lineEnding &&
+        events[index][1].type !== types.linePrefix
       ) {
         enter = index
       }
     } else if (
       index === tailExitIndex ||
-      events[index][1].type === types.lineEnding
+      events[index][1].type === types.lineEnding ||
+      events[index][1].type === types.linePrefix
     ) {
       events[enter][1].type = types.codeTextData
 
@@ -192,7 +198,10 @@ function tokenizeCodeText(effects, ok, nok) {
       effects.enter(types.lineEnding)
       effects.consume(code)
       effects.exit(types.lineEnding)
-      return between
+      // The leading spaces or tabs of the next line are paragraph
+      // indentation, not part of the code span: parse them as a prefix,
+      // like line endings do outside code spans.
+      return factorySpace(effects, between, types.linePrefix)
     }
 
     // Data.
