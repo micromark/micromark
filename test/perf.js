@@ -34,6 +34,11 @@ then = Date.now()
 micromark('[a]: u\n'.repeat(1e4))
 console.log(ms(Date.now() - then))
 
+console.log('many block quotes')
+then = Date.now()
+micromark('> A quote with *emphasis*.\n\n'.repeat(32_000))
+console.log(ms(Date.now() - then))
+
 console.log('readme x1000')
 then = Date.now()
 for (let i = 0; i < 1000; i++) {
