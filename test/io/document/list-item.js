@@ -653,6 +653,36 @@ test('list-item', async function (t) {
   )
 
   await t.test(
+    'should support loose lists w/ tight sublists in block quotes (1)',
+    async function () {
+      assert.equal(
+        micromark('> * foo\n>   * bar\n>\n>   baz'),
+        '<blockquote>\n<ul>\n<li>\n<p>foo</p>\n<ul>\n<li>bar</li>\n</ul>\n<p>baz</p>\n</li>\n</ul>\n</blockquote>'
+      )
+    }
+  )
+
+  await t.test(
+    'should support loose lists w/ tight sublists in block quotes (2)',
+    async function () {
+      assert.equal(
+        micromark('> - a\n>   - b\n>   - c\n>\n> - d\n>   - e\n>   - f'),
+        '<blockquote>\n<ul>\n<li>\n<p>a</p>\n<ul>\n<li>b</li>\n<li>c</li>\n</ul>\n</li>\n<li>\n<p>d</p>\n<ul>\n<li>e</li>\n<li>f</li>\n</ul>\n</li>\n</ul>\n</blockquote>'
+      )
+    }
+  )
+
+  await t.test(
+    'should support tight lists w/ trailing blank lines in block quotes',
+    async function () {
+      assert.equal(
+        micromark('> * a\n>\n>\n> b'),
+        '<blockquote>\n<ul>\n<li>a</li>\n</ul>\n<p>b</p>\n</blockquote>'
+      )
+    }
+  )
+
+  await t.test(
     'should support continued list items after an empty list item w/ many blank lines',
     async function () {
       // Extra.
