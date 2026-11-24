@@ -866,6 +866,12 @@ function tokenizeHtmlFlow(effects, ok, nok) {
       return continuationDeclarationInside
     }
 
+    // More brackets.
+    if (code === codes.rightSquareBracket && marker === constants.htmlCdata) {
+      effects.consume(code)
+      return continuationDeclarationInside
+    }
+
     return continuation(code)
   }
 
