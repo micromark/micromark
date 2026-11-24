@@ -103,7 +103,13 @@ export function subtokenize(eventsArray) {
           }
         } else if (
           otherEvent[1].type === types.linePrefix ||
-          otherEvent[1].type === types.listItemIndent
+          otherEvent[1].type === types.listItemIndent ||
+          // Also move past block quote prefixes, except when exiting a block
+          // quote, which keeps its trailing prefixed lines.
+          (event[1].type !== types.blockQuote &&
+            (otherEvent[1].type === types.blockQuotePrefix ||
+              otherEvent[1].type === types.blockQuoteMarker ||
+              otherEvent[1].type === types.blockQuotePrefixWhitespace))
         ) {
           // Move past.
         } else {
