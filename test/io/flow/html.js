@@ -477,6 +477,16 @@ test('html', async function (t) {
     )
 
     await t.test(
+      'should close cdata w/ a single `]` as content',
+      async function () {
+        assert.equal(
+          micromark('<![CDATA[]]]>\n\nfoo', unsafe),
+          '<![CDATA[]]]>\n<p>foo</p>'
+        )
+      }
+    )
+
+    await t.test(
       'should close cdata w/ an odd number of `]` before `>`',
       async function () {
         assert.equal(
