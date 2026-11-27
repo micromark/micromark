@@ -477,6 +477,56 @@ test('html', async function (t) {
     )
 
     await t.test(
+      'should close cdata w/ a single `]` as content',
+      async function () {
+        assert.equal(
+          micromark('<![CDATA[]]]>\n\nfoo', unsafe),
+          '<![CDATA[]]]>\n<p>foo</p>'
+        )
+      }
+    )
+
+    await t.test(
+      'should close cdata w/ an odd number of `]` before `>`',
+      async function () {
+        assert.equal(
+          micromark('<![CDATA[a]]]>\n\nfoo', unsafe),
+          '<![CDATA[a]]]>\n<p>foo</p>'
+        )
+      }
+    )
+
+    await t.test(
+      'should close cdata w/ more `]` before `>`',
+      async function () {
+        assert.equal(
+          micromark('<![CDATA[a]]]]>\n\nfoo', unsafe),
+          '<![CDATA[a]]]]>\n<p>foo</p>'
+        )
+      }
+    )
+
+    await t.test(
+      'should close cdata w/ an odd number of `]` on a later line',
+      async function () {
+        assert.equal(
+          micromark('<![CDATA[a\nb]]]>\nfoo', unsafe),
+          '<![CDATA[a\nb]]]>\n<p>foo</p>'
+        )
+      }
+    )
+
+    await t.test(
+      'should not close cdata w/ a single `]` before `>`',
+      async function () {
+        assert.equal(
+          micromark('<![CDATA[a]>\n\nfoo', unsafe),
+          '<![CDATA[a]>\n\nfoo'
+        )
+      }
+    )
+
+    await t.test(
       'should support interrupting paragraphs w/ cdata',
       async function () {
         // Extra.
